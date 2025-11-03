@@ -62,3 +62,75 @@ if (track && prevBtn && nextBtn) {
 // Footer year update
 const yearSpan = document.getElementById('year');
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+
+// ===== HERO IMAGE ANIMATION =====
+const heroMain = document.querySelector('.hero-main-img');
+const heroSecondary = document.querySelector('.hero-secondary-img');
+
+window.addEventListener('load', () => {
+  heroMain.style.transform = 'translateY(0)';
+  heroMain.style.opacity = '1';
+  heroSecondary.style.transform = 'translateY(0)';
+  heroSecondary.style.opacity = '1';
+});
+
+// ===== MOBILE MENU TOGGLE =====
+const menuToggle = document.querySelector('.menu-toggle');
+const navbarMenu = document.querySelector('.navbar-menu');
+
+menuToggle.addEventListener('click', () => {
+  navbarMenu.classList.toggle('active');
+  menuToggle.classList.toggle('open');
+});
+
+// ===== TESTIMONIAL SLIDER =====
+const testimonialSlider = document.querySelector('.testimonials-slider');
+let isDragging = false;
+let startX, scrollLeft;
+
+testimonialSlider.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  startX = e.pageX - testimonialSlider.offsetLeft;
+  scrollLeft = testimonialSlider.scrollLeft;
+});
+testimonialSlider.addEventListener('mouseleave', () => (isDragging = false));
+testimonialSlider.addEventListener('mouseup', () => (isDragging = false));
+testimonialSlider.addEventListener('mousemove', (e) => {
+  if(!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - testimonialSlider.offsetLeft;
+  const walk = (x - startX) * 2;
+  testimonialSlider.scrollLeft = scrollLeft - walk;
+});
+
+// ===== BLOG SLIDER =====
+const track = document.querySelector('.slider-track');
+const prev = document.querySelector('.slider-arrow.prev');
+const next = document.querySelector('.slider-arrow.next');
+
+prev.addEventListener('click', () => {
+  track.scrollBy({ left: -300, behavior: 'smooth' });
+});
+next.addEventListener('click', () => {
+  track.scrollBy({ left: 300, behavior: 'smooth' });
+});
+
+// ===== SCROLL ANIMATIONS (fade-in) =====
+const faders = document.querySelectorAll('.fade-in');
+
+const appearOptions = {
+  threshold: 0.1,
+  rootMargin: "0px 0px -50px 0px"
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll){
+  entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    entry.target.classList.add('appear');
+    appearOnScroll.unobserve(entry.target);
+  });
+}, appearOptions);
+
+faders.forEach(fader => appearOnScroll.observe(fader));
+
