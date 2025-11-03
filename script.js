@@ -7,15 +7,13 @@ menuToggle.addEventListener("click", () => {
   menuToggle.classList.toggle("open");
 });
 
-// -------------------- HERO FADE-IN ANIMATION --------------------
+// -------------------- HERO FADE-IN & FLOATING --------------------
 const fadeEls = document.querySelectorAll(".fade-in");
 
 const fadeInObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+      if (entry.isIntersecting) entry.target.classList.add("visible");
     });
   },
   { threshold: 0.3 }
@@ -23,45 +21,96 @@ const fadeInObserver = new IntersectionObserver(
 
 fadeEls.forEach((el) => fadeInObserver.observe(el));
 
-// -------------------- FLOATING HERO IMAGE ANIMATION --------------------
-// Already handled via CSS `.floating` class with keyframes
+// Floating effect already handled via CSS animation keyframes on .floating
+
+// -------------------- STICKY NAVBAR SHADOW --------------------
+const navbar = document.querySelector(".navbar");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
+  }
+});
 
 // -------------------- TESTIMONIALS SLIDER --------------------
 const testimonialSlider = document.querySelector(".testimonials-slider");
-let testimonialIndex = 0;
 const testimonialItems = document.querySelectorAll(".testimonial-item");
+let testimonialIndex = 0;
 
-function showTestimonial(index) {
+// Create dots
+const testimonialDotsContainer = document.createElement("div");
+testimonialDotsContainer.className = "testimonial-dots";
+testimonialSlider.appendChild(testimonialDotsContainer);
+
+testimonialItems.forEach((item, i) => {
+  const dot = document.createElement("span");
+  dot.className = "dot";
+  if (i === 0) dot.classList.add("active");
+  dot.addEventListener("click", () => {
+    testimonialIndex = i;
+    updateTestimonials();
+    resetTestimonialInterval();
+  });
+  testimonialDotsContainer.appendChild(dot);
+});
+
+function updateTestimonials() {
   testimonialItems.forEach((item, i) => {
-    item.style.display = i === index ? "block" : "none";
+    item.style.opacity = i === testimonialIndex ? "1" : "0";
+    item.style.transform = i === testimonialIndex ? "translateX(0)" : "translateX(100%)";
+  });
+  document.querySelectorAll(".testimonial-dots .dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === testimonialIndex);
   });
 }
 
-showTestimonial(testimonialIndex);
+function nextTestimonial() {
+  testimonialIndex = (testimonialIndex + 1) % testimonialItems.length;
+  updateTestimonials();
+}
 
-setInterval(() => {
-  testimonialIndex++;
-  if (testimonialIndex >= testimonialItems.length) testimonialIndex = 0;
-  showTestimonial(testimonialIndex);
-}, 5000); // change every 5s
+let testimonialInterval = setInterval(nextTestimonial, 5000);
+function resetTestimonialInterval() {
+  clearInterval(testimonialInterval);
+  testimonialInterval = setInterval(nextTestimonial, 5000);
+}
+
+updateTestimonials();
 
 // -------------------- BLOG SLIDER --------------------
 const blogsSlider = document.querySelector(".blogs-slider");
 const prevBtn = document.querySelector(".slider-arrow.prev");
 const nextBtn = document.querySelector(".slider-arrow.next");
 
+let scrollAmount = 0;
+const scrollStep = 320; // Adjust per card width
+
 prevBtn.addEventListener("click", () => {
-  blogsSlider.scrollBy({
-    left: -300,
-    behavior: "smooth",
-  });
+  scrollAmount = Math.max(scrollAmount - scrollStep, 0);
+  blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
 });
 
 nextBtn.addEventListener("click", () => {
-  blogsSlider.scrollBy({
-    left: 300,
-    behavior: "smooth",
-  });
+  scrollAmount = Math.min(scrollAmount + scrollStep, blogsSlider.scrollWidth - blogsSlider.clientWidth);
+  blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
+});
+
+// Optional auto-scroll
+let autoScrollInterval = setInterval(() => {
+  scrollAmount += scrollStep;
+  if (scrollAmount > blogsSlider.scrollWidth - blogsSlider.clientWidth) scrollAmount = 0;
+  blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
+}, 5000);
+
+// Pause on hover
+blogsSlider.addEventListener("mouseenter", () => clearInterval(autoScrollInterval));
+blogsSlider.addEventListener("mouseleave", () => {
+  autoScrollInterval = setInterval(() => {
+    scrollAmount += scrollStep;
+    if (scrollAmount > blogsSlider.scrollWidth - blogsSlider.clientWidth) scrollAmount = 0;
+    blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
+  }, 5000);
 });
 
 // -------------------- SMOOTH SCROLL FOR NAV LINKS --------------------
@@ -73,35 +122,20 @@ navLinks.forEach((link) => {
     const href = link.getAttribute("href");
     if (href.startsWith("#")) {
       const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
+      if (target) target.scrollIntoView({ behavior: "smooth" });
     }
   });
 });
 
-// -------------------- STICKY NAVBAR SHADOW ON SCROLL --------------------
-const navbar = document.querySelector(".navbar");
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 50) {
-    navbar.classList.add("scrolled");
-  } else {
-    navbar.classList.remove("scrolled");
-  }
-});
-
-// -------------------- ADD VISIBLE CLASS FOR ELEMENTS ON SCROLL --------------------
+// -------------------- SCROLL REVEAL FOR OTHER ELEMENTS --------------------
 const scrollElements = document.querySelectorAll(".scroll-reveal");
-
-const elementObserver = new IntersectionObserver(
+const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+      if (entry.isIntersecting) entry.target.classList.add("visible");
     });
   },
   { threshold: 0.2 }
 );
 
-scrollElements.forEach((el) => elementObserver.observe(el));
+scrollElements.forEach((el) => revealObserver.observe(el));
