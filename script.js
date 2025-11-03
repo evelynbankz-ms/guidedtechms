@@ -1,82 +1,107 @@
-/* ------------------- NAVBAR TOGGLE ------------------- */
-const menuToggle = document.querySelector('.menu-toggle');
-const navbarMenu = document.querySelector('.navbar-menu');
+// -------------------- MOBILE MENU TOGGLE --------------------
+const menuToggle = document.querySelector(".menu-toggle");
+const navbarMenu = document.querySelector(".navbar-menu");
 
-menuToggle.addEventListener('click', () => {
-  navbarMenu.classList.toggle('active');
-  menuToggle.classList.toggle('active');
+menuToggle.addEventListener("click", () => {
+  navbarMenu.classList.toggle("active");
+  menuToggle.classList.toggle("open");
 });
 
-/* ------------------- FADE-IN ON SCROLL ------------------- */
-const faders = document.querySelectorAll('.fade-in');
+// -------------------- HERO FADE-IN ANIMATION --------------------
+const fadeEls = document.querySelectorAll(".fade-in");
 
-const appearOptions = {
-  threshold: 0.2,
-  rootMargin: "0px 0px -50px 0px"
-};
+const fadeInObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  },
+  { threshold: 0.3 }
+);
 
-const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    entry.target.classList.add('appear');
-    appearOnScroll.unobserve(entry.target);
-  });
-}, appearOptions);
+fadeEls.forEach((el) => fadeInObserver.observe(el));
 
-faders.forEach(fader => {
-  appearOnScroll.observe(fader);
-});
+// -------------------- FLOATING HERO IMAGE ANIMATION --------------------
+// Already handled via CSS `.floating` class with keyframes
 
-/* ------------------- SLIDERS ------------------- */
+// -------------------- TESTIMONIALS SLIDER --------------------
+const testimonialSlider = document.querySelector(".testimonials-slider");
+let testimonialIndex = 0;
+const testimonialItems = document.querySelectorAll(".testimonial-item");
 
-// Helper function for slider navigation
-function sliderNav(sliderContainer, prevBtn, nextBtn) {
-  const slider = document.querySelector(sliderContainer);
-  const prev = document.querySelector(prevBtn);
-  const next = document.querySelector(nextBtn);
-
-  if (!slider) return;
-
-  let scrollAmount = 0;
-  const slideWidth = slider.querySelector(':first-child').offsetWidth + 20; // 20px gap
-
-  next.addEventListener('click', () => {
-    slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
-  });
-
-  prev.addEventListener('click', () => {
-    slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+function showTestimonial(index) {
+  testimonialItems.forEach((item, i) => {
+    item.style.display = i === index ? "block" : "none";
   });
 }
 
-// Initialize sliders
-sliderNav('.testimonials-slider', '.testimonials-slider .prev', '.testimonials-slider .next');
-sliderNav('.blogs-slider', '.blogs-slider .prev', '.blogs-slider .next');
+showTestimonial(testimonialIndex);
 
-/* ------------------- FLOATING HERO IMAGES ------------------- */
-const heroMain = document.querySelector('.hero-main-img');
-const heroSecondary = document.querySelector('.hero-secondary-img');
+setInterval(() => {
+  testimonialIndex++;
+  if (testimonialIndex >= testimonialItems.length) testimonialIndex = 0;
+  showTestimonial(testimonialIndex);
+}, 5000); // change every 5s
 
-let angle = 0;
-function floatingAnimation() {
-  angle += 0.01;
-  if (heroMain) heroMain.style.transform = `translateY(${Math.sin(angle) * 10}px)`;
-  if (heroSecondary) heroSecondary.style.transform = `translateY(${Math.cos(angle) * 10}px)`;
-  requestAnimationFrame(floatingAnimation);
-}
-floatingAnimation();
+// -------------------- BLOG SLIDER --------------------
+const blogsSlider = document.querySelector(".blogs-slider");
+const prevBtn = document.querySelector(".slider-arrow.prev");
+const nextBtn = document.querySelector(".slider-arrow.next");
 
-/* ------------------- AUTO UPDATE YEAR ------------------- */
-const yearSpan = document.getElementById('year');
-if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+prevBtn.addEventListener("click", () => {
+  blogsSlider.scrollBy({
+    left: -300,
+    behavior: "smooth",
+  });
+});
 
-/* ------------------- OPTIONAL: SMOOTH SCROLL FOR NAV LINKS ------------------- */
-const navLinks = document.querySelectorAll('.nav-link');
-navLinks.forEach(link => {
-  link.addEventListener('click', e => {
+nextBtn.addEventListener("click", () => {
+  blogsSlider.scrollBy({
+    left: 300,
+    behavior: "smooth",
+  });
+});
+
+// -------------------- SMOOTH SCROLL FOR NAV LINKS --------------------
+const navLinks = document.querySelectorAll(".nav-link");
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
     e.preventDefault();
-    const targetId = link.getAttribute('href').replace('#', '');
-    const target = document.getElementById(targetId);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const href = link.getAttribute("href");
+    if (href.startsWith("#")) {
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   });
 });
+
+// -------------------- STICKY NAVBAR SHADOW ON SCROLL --------------------
+const navbar = document.querySelector(".navbar");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
+  }
+});
+
+// -------------------- ADD VISIBLE CLASS FOR ELEMENTS ON SCROLL --------------------
+const scrollElements = document.querySelectorAll(".scroll-reveal");
+
+const elementObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
+
+scrollElements.forEach((el) => elementObserver.observe(el));
