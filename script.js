@@ -67,13 +67,18 @@ if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 // ===== HERO IMAGE ANIMATION =====
 const heroMain = document.querySelector('.hero-main-img');
 const heroSecondary = document.querySelector('.hero-secondary-img');
+const heroFadeElements = document.querySelectorAll('.hero-section .fade-in');
 
 window.addEventListener('load', () => {
-  heroMain.style.transform = 'translateY(0)';
   heroMain.style.opacity = '1';
-  heroSecondary.style.transform = 'translateY(0)';
+  heroMain.style.transform = 'translateY(0)';
   heroSecondary.style.opacity = '1';
+  heroSecondary.style.transform = 'translateY(0)';
+
+  // Add fade-in for content
+  heroFadeElements.forEach(el => el.classList.add('appear'));
 });
+
 
 // ===== MOBILE MENU TOGGLE =====
 const menuToggle = document.querySelector('.menu-toggle');
