@@ -250,10 +250,152 @@ body {
   background: var(--surface);
 }
 
-/* impact grid */
-.impact-grid { display:flex; gap:32px; flex-wrap:wrap; align-items:center; }
-.impact-label { display:flex; align-items:center; gap:10px; color:var(--primary); font-weight:600; }
-.impact-content { flex: 1 1 72%; }
+/* ---------- IMPACT / "About" SECTION (Clayo-like layout) ---------- */
+.section-impact {
+  background: #f4f6f4;        /* pale, almost-gray background as in screenshot */
+  padding: 96px 0;
+  font-family: "Inter", sans-serif;
+  color: #0f1720;
+}
+
+.section-impact .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Grid: left label + right content */
+.impact-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr; /* left column narrow, right column fluid */
+  gap: 40px;
+  align-items: start;
+}
+
+/* left label */
+.impact-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 600;
+  color: #0f1720;
+  font-size: 16px;
+  padding-top: 6px; /* visually align dot and text with heading */
+}
+.impact-label svg { flex: 0 0 auto; }
+
+/* right content */
+.impact-content {
+  min-width: 0;
+}
+
+/* large heading */
+.impact-heading {
+  font-family: "Poppins", sans-serif;
+  font-size: 56px;     /* large, matching screenshot */
+  line-height: 1.03;
+  font-weight: 700;
+  color: #0b0b0b;
+  margin: 0 0 34px 0;
+  letter-spacing: -0.5px;
+}
+
+/* stats row: four items horizontally with vertical separators */
+.impact-stats {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid transparent;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+/* each stat item */
+.impact-item {
+  flex: 1 1 0;
+  padding: 28px 28px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  position: relative;
+}
+
+/* vertical separators between stats */
+.impact-item + .impact-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 1px;
+  background: rgba(12, 14, 15, 0.08);
+  transform: translateX(-50%);
+}
+
+/* numeric value styling */
+.impact-value {
+  font-family: "Poppins", sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #0b0b0b;
+  margin: 0;
+}
+
+/* description text */
+.impact-description {
+  margin: 0;
+  color: #4b5563; /* muted gray */
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* spacing tweak so the stats sit lower under the large heading */
+.impact-content .impact-stats { margin-top: 8px; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 992px) {
+  .impact-grid {
+    grid-template-columns: 1fr; /* stack label above content on smaller screens */
+  }
+
+  .impact-label {
+    margin-bottom: 18px;
+  }
+
+  .impact-heading {
+    font-size: 40px;
+    text-align: left;
+  }
+
+  .impact-stats {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .impact-item {
+    flex: 1 1 calc(50% - 12px);
+    padding: 20px;
+  }
+
+  /* remove vertical separators when items wrap into multiple rows */
+  .impact-item + .impact-item::before {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .impact-heading {
+    font-size: 28px;
+  }
+  .impact-value {
+    font-size: 34px;
+  }
+  .impact-item {
+    flex: 1 1 100%;
+  }
+}
+
 
 /* about grid */
 .about-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:20px; align-items:center; }
