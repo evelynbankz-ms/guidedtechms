@@ -136,110 +136,183 @@ body {
 }
 
 /* ---------- HERO: force-contained, pixel-perfect image sizing ---------- */
-/* Replace any previous .hero-section/.hero-wrapper/.main-image-container/.hero-main-img/.hero-sub-img rules with the block below */
-
+/* ---------- HERO: FULL SCREEN, PERFECT ALIGNMENT ---------- */
 .hero-section {
-  padding: 96px 0 60px;
+  height: 100vh;                          /* full screen height */
+  min-height: 640px;
   background: var(--bg, #F8F9F9);
+  display: flex;
+  align-items: center;                    /* vertically center content */
+  justify-content: center;
+  overflow: hidden;
   position: relative;
-  /* allow overflow visible so the small image overlap shows, but keep layout stable */
-  overflow: visible;
+  padding: 0;                             /* remove extra top/bottom spacing */
 }
 
-/* Wrapper: limit overall width and add side padding to prevent overflow */
+/* Central wrapper */
 .hero-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 48px;
   width: 100%;
-  max-width: 1100px;    /* tightened max width */
+  max-width: 1150px;
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 32px;
 }
 
-/* Left column unchanged but ensure it doesn't shrink too small */
+/* ---------- LEFT COLUMN ---------- */
 .hero-content {
-  flex: 0 0 48%;
-  max-width: 560px;
-  z-index: 2;
+  flex: 0 0 50%;
+  max-width: 540px;
 }
 
-/* ---------- Right column (images): strict container size ---------- */
-/* Make container a fixed layout so images size relative to it (not the viewport). */
+.hero-content h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 1.1;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.hero-content p {
+  font-size: 1.125rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.hero-content .btn-primary {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  margin-bottom: 40px;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.hero-content .btn-primary:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+/* ---------- AVATARS + SOCIAL PROOF ---------- */
+.hero-avatars {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-group {
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  overflow: hidden;
+  margin-left: -12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-count {
+  background: #000;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 3px solid #fff;
+}
+
+.hero-avatars p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ---------- RIGHT COLUMN ---------- */
 .hero-image-wrapper {
-  flex: 0 0 48%;
+  flex: 0 0 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  min-width: 300px;      /* ensure a minimum width so images don't overflow their own area */
 }
 
-/* Container that holds both images side-by-side in a single frame.
-   We set an explicit pixel cap so images scale predictably. */
 .main-image-container {
   position: relative;
+  max-width: 520px;
   width: 100%;
-  max-width: 520px;      /* explicit cap - change down if still large */
-  display: block;
-  margin: 0 auto;
 }
 
-/* Main hero image: dominate but bounded */
 .hero-main-img {
-  display: block;
-  width: 100%;           /* fills the main-image-container (max 520px) */
-  max-width: 520px;      /* hard cap to prevent overflow */
+  width: 100%;
   height: auto;
-  border-radius: 18px;
+  border-radius: 20px;
   object-fit: cover;
   box-shadow: 0 18px 40px rgba(10,20,40,0.12);
-  z-index: 2;
 }
 
-/* Supporting/sub image: smaller, anchored bottom-left, slight overlap */
+/* Sub image card overlay (bottom-left corner) */
 .hero-sub-img {
   position: absolute;
-  width: 180px;           /* fixed pixel width to avoid scaling issues */
-  height: auto;
-  bottom: -28px;          /* slight overlap below the main image */
-  left: 16px;             /* anchored towards left inside the main-image-container */
+  bottom: 24px;
+  left: 24px;
+  width: 220px;
   border-radius: 14px;
-  object-fit: cover;
   box-shadow: 0 12px 30px rgba(10,20,40,0.12);
   z-index: 3;
-  transform: none;        /* no rotation */
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition: transform 0.2s ease;
 }
 
-/* Hover micro effect (optional) */
 .hero-sub-img:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 18px 40px rgba(10,20,40,0.16);
+  transform: translateY(-4px);
 }
 
-/* ---------- Responsive adjustments (keeps sizes in check) ---------- */
-@media (max-width: 1000px) {
-  .hero-wrapper { gap: 22px; }
-  .main-image-container { max-width: 460px; }
-  .hero-sub-img { width: 160px; bottom: -24px; left: 12px; }
-}
-
-@media (max-width: 820px) {
-  /* stack vertically on smaller screens, keep images bounded */
-  .hero-wrapper { flex-direction: column; text-align: center; }
-  .hero-content, .hero-image-wrapper { flex: 0 0 100%; max-width: 100%; }
-  .main-image-container { max-width: 360px; }
-  .hero-main-img { max-width: 360px; }
-  .hero-sub-img { position: relative; width: 220px; margin: -18px auto 0; bottom: 0; left: 0; }
-}
-
-@media (max-width: 480px) {
-  .main-image-container { max-width: 300px; }
-  .hero-main-img { max-width: 300px; border-radius: 12px; }
-  .hero-sub-img { width: 180px; margin-top: -12px; }
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 960px) {
+  .hero-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  .hero-content {
+    flex: 1;
+    max-width: 100%;
+  }
+  .hero-image-wrapper {
+    flex: 1;
+    max-width: 100%;
+  }
+  .hero-sub-img {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 24px auto 0;
+  }
+  .hero-avatars {
+    justify-content: center;
+  }
 }
 
 /* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
