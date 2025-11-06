@@ -182,21 +182,28 @@ body {
   line-height: 1.6;
 }
 
-/* Or just duplicate the btn-primary styles directly */
-.hero-btn {
+/* Reuse the same styling as the header button */
+.btn-primary {
   display: inline-block;
   background: var(--primary);
   color: #fff;
-  padding: 10px 18px; /* match navbar */
+  padding: 10px 18px;
   border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
   transition: transform var(--transition), background var(--transition);
 }
-.hero-btn:hover {
+
+.btn-primary:hover {
   transform: translateY(-1px);
   background: #154360;
 }
+
+/* Hero CTA – no visual overrides, just spacing */
+.hero-cta {
+  margin-bottom: 36px; /* spacing under the button */
+}
+
 
 /* Avatars */
 .hero-people {
