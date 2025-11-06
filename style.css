@@ -182,27 +182,25 @@ body {
   line-height: 1.6;
 }
 
-/* --- Get Started button --- */
-.hero-left .btn-primary {
+/* ---------- HERO CTA BUTTON (isolated style) ---------- */
+.hero-left .hero-btn {
   display: inline-block;
-  background: var(--primary, #1B4F72);
+  background-color: #1B4F72; /* deep blue – same as header */
   color: #fff;
-  padding: 10px 20px; /* reduced width */
+  padding: 10px 22px; /* reduced width and height */
   border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.3s ease, transform 0.3s ease;
-}
-.hero-left .btn-primary:hover {
-  background: #154360;
-  transform: translateY(-1px);
+  width: auto; /* fit content only */
+  margin-bottom: 36px; /* added space below like .hero-cta */
 }
 
-
-/* Hero CTA – no visual overrides, just spacing */
-.hero-cta {
-  margin-bottom: 36px; /* spacing under the button */
+.hero-left .hero-btn:hover {
+  background-color: #154360; /* darker hover */
+  transform: translateY(-2px);
 }
+
 
 
 /* Avatars */
