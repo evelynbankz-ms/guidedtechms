@@ -257,13 +257,13 @@ body {
 }
 
 .hero-main-img {
-  width: 100%;
-  height: 600px; /* make the main hero image taller */
-  border-radius: 20px;
-  object-fit: cover;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.1);
-  display: block;
-  transform: rotate(-1deg); /* subtle tilt like in your screenshot */
+  width: 100% !important;
+  height: 600px !important;
+  border-radius: 20px !important;
+  object-fit: cover !important;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.1) !important;
+  display: block !important;
+  transform: rotate(-1deg) !important;
 }
 
 
