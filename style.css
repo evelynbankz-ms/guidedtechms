@@ -192,7 +192,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   transition: background 0.3s ease, transform 0.3s ease;
-  width: auto; /* fit content only */
+  /* width: auto; /* fit content only */ */
   margin-bottom: 36px; /* added space below like .hero-cta */
 }
 
