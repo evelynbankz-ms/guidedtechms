@@ -135,19 +135,19 @@ body {
   margin:3px 0;
 }
 
-/* ---------- HERO (Clayo-style, exact alignment) ---------- */
+/* ---------- HERO (Clayo-style, exact layout and colors) ---------- */
 .hero-section {
   padding: 96px 0 60px;
-  background: var(--bg);
+  background: var(--bg, #F8F9F9);
   position: relative;
 }
 
-/* wrapper */
+/* Wrapper */
 .hero-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
+  gap: 48px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -180,15 +180,18 @@ body {
   display: inline-block;
   background: #1B4F72;
   color: #fff;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   transition: background 0.3s ease, transform 0.3s ease;
 }
-.hero-btn:hover { background: #154360; transform: translateY(-2px); }
+.hero-btn:hover {
+  background: #154360;
+  transform: translateY(-2px);
+}
 
-/* people row */
+/* People row */
 .hero-people {
   margin-top: 24px;
   display: flex;
@@ -196,14 +199,26 @@ body {
   gap: 14px;
   flex-wrap: wrap;
 }
-.avatars { display: flex; align-items: center; gap: 0; }
+
+.avatars {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
 .avatar {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
-.avatars img + img { margin-left: -12px; }
+
+.avatars img + img {
+  margin-left: -12px;
+}
+
 .avatar.count {
   display: inline-flex;
   align-items: center;
@@ -226,64 +241,86 @@ body {
   position: relative;
 }
 
-/* container for both images */
+/* Container for both images */
 .main-image-container {
   position: relative;
-  width: min(560px, 100%);
-}
-
-/* main hero image */
-.hero-main-img {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
-  display: block;
-  border-radius: 22px;
+  max-width: 580px;
+}
+
+/* Main hero image (large one) */
+.hero-main-img {
+  width: 75%;
+  height: auto;
+  border-radius: 24px;
   object-fit: cover;
-  box-shadow: 0 18px 50px rgba(18,38,63,0.12);
-  z-index: 10;
-  position: relative;
-  transition: transform 0.6s ease;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+  z-index: 2;
 }
 
-/* smaller floating image (bottom-left overlap) */
-.hero-floating-img {
-  position: absolute;
-  bottom: -40px;
-  left: -50px;
-  width: 220px;
-  max-width: 40%;
-  border-radius: 18px;
+/* Secondary hero image (bottom-left aligned) */
+.hero-sub-img {
+  width: 45%;
+  height: auto;
+  align-self: flex-end;
+  margin-bottom: -25px;
+  border-radius: 20px;
   object-fit: cover;
-  box-shadow: 0 12px 30px rgba(18,38,63,0.18);
-  z-index: 12;
-  transform: rotate(-3deg);
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  z-index: 1;
 }
 
-.hero-floating-img:hover {
-  transform: rotate(0deg) scale(1.03);
-  box-shadow: 0 18px 45px rgba(18,38,63,0.22);
-}
-
-/* responsive adjustments */
+/* ---------- Responsiveness ---------- */
 @media (max-width: 992px) {
   .hero-wrapper {
     flex-direction: column;
     text-align: center;
   }
-  .hero-content, .hero-image-wrapper {
+
+  .hero-content,
+  .hero-image-wrapper {
     flex: 1 1 100%;
     max-width: 100%;
   }
+
   .hero-image-wrapper {
     margin-top: 40px;
   }
-  .hero-floating-img {
-    bottom: -24px;
-    left: 20px;
-    width: 180px;
+
+  .main-image-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-main-img,
+  .hero-sub-img {
+    width: 90%;
+    margin: 0;
+  }
+
+  .hero-sub-img {
+    margin-top: -10px;
   }
 }
 
+/* ---------- Small devices ---------- */
+@media (max-width: 576px) {
+  .hero-title {
+    font-size: 34px;
+  }
+  .hero-subtitle {
+    font-size: 15px;
+  }
+  .hero-btn {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
 
 /* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
 .section-impact, .section-about, .section-dashboard,
