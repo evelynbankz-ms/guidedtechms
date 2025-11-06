@@ -337,11 +337,11 @@ body {
 
 /* ---------- IMPACT SECTION (Clayo-style clean layout) ---------- */
 .section-impact {
-  background: #f6f8f6; /* very light neutral gray-green */
+  background: #cccccc; /* very light neutral gray-green */
   padding: 80px 0;
-  font-family: "Inter", sans-serif;
+  font-family:"Inter", sans-serif;
   color: #111;
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 .section-impact .container {
@@ -363,8 +363,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 400;
   color: #0e0e0e;
   padding-top: 4px;
 }
@@ -383,9 +383,9 @@ body {
 /* Heading text */
 .impact-heading {
   font-family: "Poppins", sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1.15;
-  font-weight: 600;
+  font-weight: 500;
   color: #0b0b0b;
   margin: 0;
   max-width: 900px;
