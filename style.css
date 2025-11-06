@@ -243,11 +243,12 @@ body {
   color: var(--muted, #2E4053);
 }
 
-/* RIGHT SIDE */
+/* ---------- RIGHT SIDE ---------- */
 .hero-right {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 40px; /* adds a little space from the header */
 }
 
 .hero-image-frame {
@@ -256,17 +257,18 @@ body {
   max-width: 480px;
 }
 
+/* Main hero image */
 .hero-main-img {
-  width: 100% !important;
-  height: 600px !important;
-  border-radius: 20px !important;
-  object-fit: cover !important;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.1) !important;
-  display: block !important;
-  transform: rotate(-1deg) !important;
+  width: 100%;
+  height: 600px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+  display: block;
+  transform: none; /* removed the rotation */
 }
 
-
+/* Supporting sub image */
 .hero-sub-img {
   position: absolute;
   bottom: -28px;
@@ -275,9 +277,10 @@ body {
   height: auto;
   border-radius: 14px;
   object-fit: cover;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease;
 }
+
 .hero-sub-img:hover {
   transform: translateY(-4px);
 }
@@ -289,9 +292,15 @@ body {
     gap: 40px;
     text-align: center;
   }
+
   .hero-left {
     align-items: center;
   }
+
+  .hero-right {
+    margin-top: 0; /* no extra space needed on mobile */
+  }
+
   .hero-sub-img {
     position: relative;
     bottom: 0;
@@ -299,9 +308,11 @@ body {
     margin: -24px auto 0;
     display: block;
   }
+
   .avatars {
     justify-content: center;
   }
+
   .hero-people-text {
     text-align: center;
   }
