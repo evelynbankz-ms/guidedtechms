@@ -135,203 +135,112 @@ body {
   margin:3px 0;
 }
 
-/* ---------- HERO (Clayo-style, fixed proportions and positioning) ---------- */
+/* ---------- HERO: force-contained, pixel-perfect image sizing ---------- */
+/* Replace any previous .hero-section/.hero-wrapper/.main-image-container/.hero-main-img/.hero-sub-img rules with the block below */
+
 .hero-section {
   padding: 96px 0 60px;
   background: var(--bg, #F8F9F9);
   position: relative;
-  overflow: hidden; /* prevent overflow issues */
+  /* allow overflow visible so the small image overlap shows, but keep layout stable */
+  overflow: visible;
 }
 
-/* Wrapper */
+/* Wrapper: limit overall width and add side padding to prevent overflow */
 .hero-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 48px;
+  gap: 32px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;    /* tightened max width */
   margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-/* ---------- Left column ---------- */
+/* Left column unchanged but ensure it doesn't shrink too small */
 .hero-content {
-  flex: 1 1 48%;
+  flex: 0 0 48%;
   max-width: 560px;
   z-index: 2;
 }
 
-.hero-title {
-  font-family: "Poppins", sans-serif;
-  font-size: 46px;
-  line-height: 1.05;
-  color: #1B4F72;
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-
-.hero-subtitle {
-  font-size: 17px;
-  color: #566573;
-  margin-bottom: 24px;
-}
-
-/* CTA */
-.hero-btn {
-  display: inline-block;
-  background: #1B4F72;
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-.hero-btn:hover {
-  background: #154360;
-  transform: translateY(-2px);
-}
-
-/* ---------- People ---------- */
-.hero-people {
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.avatars {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.avatars img + img {
-  margin-left: -12px;
-}
-
-.avatar.count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  padding: 0 8px;
-  background: #1B4F72;
-  color: #fff;
-  font-weight: 700;
-  border-radius: 20px;
-  margin-left: -12px;
-}
-
-/* ---------- Right column (hero images) ---------- */
+/* ---------- Right column (images): strict container size ---------- */
+/* Make container a fixed layout so images size relative to it (not the viewport). */
 .hero-image-wrapper {
-  flex: 1 1 48%;
+  flex: 0 0 48%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  min-width: 300px;      /* ensure a minimum width so images don't overflow their own area */
 }
 
-/* Container for both images */
+/* Container that holds both images side-by-side in a single frame.
+   We set an explicit pixel cap so images scale predictably. */
 .main-image-container {
   position: relative;
   width: 100%;
-  max-width: 520px;
-}
-
-/* Main image (dominant) */
-.hero-main-img {
-  width: 100%;
-  height: auto;
-  border-radius: 22px;
-  object-fit: cover;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-  z-index: 2;
+  max-width: 520px;      /* explicit cap - change down if still large */
   display: block;
+  margin: 0 auto;
 }
 
-/* Secondary image (overlapping bottom-left) */
-.hero-sub-img {
-  position: absolute;
-  bottom: -35px;
-  left: -35px;
-  width: 45%;
+/* Main hero image: dominate but bounded */
+.hero-main-img {
+  display: block;
+  width: 100%;           /* fills the main-image-container (max 520px) */
+  max-width: 520px;      /* hard cap to prevent overflow */
+  height: auto;
   border-radius: 18px;
   object-fit: cover;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 18px 40px rgba(10,20,40,0.12);
+  z-index: 2;
+}
+
+/* Supporting/sub image: smaller, anchored bottom-left, slight overlap */
+.hero-sub-img {
+  position: absolute;
+  width: 180px;           /* fixed pixel width to avoid scaling issues */
+  height: auto;
+  bottom: -28px;          /* slight overlap below the main image */
+  left: 16px;             /* anchored towards left inside the main-image-container */
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(10,20,40,0.12);
   z-index: 3;
-  transform: rotate(-2deg);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform: none;        /* no rotation */
+  transition: transform .18s ease, box-shadow .18s ease;
 }
 
+/* Hover micro effect (optional) */
 .hero-sub-img:hover {
-  transform: rotate(0deg) scale(1.03);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(10,20,40,0.16);
 }
 
-/* ---------- Responsiveness ---------- */
-@media (max-width: 992px) {
-  .hero-wrapper {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-content,
-  .hero-image-wrapper {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
-  .hero-image-wrapper {
-    margin-top: 40px;
-  }
-
-  .main-image-container {
-    max-width: 400px;
-  }
-
-  .hero-sub-img {
-    bottom: -24px;
-    left: 20px;
-    width: 50%;
-  }
+/* ---------- Responsive adjustments (keeps sizes in check) ---------- */
+@media (max-width: 1000px) {
+  .hero-wrapper { gap: 22px; }
+  .main-image-container { max-width: 460px; }
+  .hero-sub-img { width: 160px; bottom: -24px; left: 12px; }
 }
 
-@media (max-width: 576px) {
-  .hero-title {
-    font-size: 34px;
-  }
-
-  .hero-subtitle {
-    font-size: 15px;
-  }
-
-  .hero-btn {
-    padding: 10px 18px;
-    font-size: 14px;
-  }
-
-  .main-image-container {
-    max-width: 320px;
-  }
-
-  .hero-sub-img {
-    width: 55%;
-    bottom: -18px;
-    left: 10px;
-  }
+@media (max-width: 820px) {
+  /* stack vertically on smaller screens, keep images bounded */
+  .hero-wrapper { flex-direction: column; text-align: center; }
+  .hero-content, .hero-image-wrapper { flex: 0 0 100%; max-width: 100%; }
+  .main-image-container { max-width: 360px; }
+  .hero-main-img { max-width: 360px; }
+  .hero-sub-img { position: relative; width: 220px; margin: -18px auto 0; bottom: 0; left: 0; }
 }
 
+@media (max-width: 480px) {
+  .main-image-container { max-width: 300px; }
+  .hero-main-img { max-width: 300px; border-radius: 12px; }
+  .hero-sub-img { width: 180px; margin-top: -12px; }
+}
 
 /* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
 .section-impact, .section-about, .section-dashboard,
