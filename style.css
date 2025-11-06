@@ -297,7 +297,7 @@ body {
 /* Heading text */
 .impact-heading {
   font-family: "Poppins", sans-serif;
-  font-size: 42px;
+  font-size: 32px;
   line-height: 1.15;
   font-weight: 600;
   color: #0b0b0b;
@@ -339,7 +339,7 @@ body {
 /* Value (number) */
 .impact-value {
   font-family: "Poppins", sans-serif;
-  font-size: 38px;
+  font-size: 28px;
   font-weight: 600;
   margin: 0;
   color: #0b0b0b;
