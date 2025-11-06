@@ -337,12 +337,12 @@ body {
 
 /* ---------- IMPACT SECTION (Clayo-style clean layout) ---------- */
 .section-impact {
-  background: #cccccc; /* very light neutral gray-green */
+  background: #eeeee; /* very light neutral gray-green */
   padding: 80px 0;
   font-family:"Inter", sans-serif;
   color: #111;
   margin-top: 70px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .section-impact .container {
