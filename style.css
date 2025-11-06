@@ -105,98 +105,203 @@ a {
 }
 
 /* ---------- HERO SECTION ---------- */
+/* ========== HERO SECTION ========== */
 .hero-section {
-  position: relative;
-  padding: 120px 0 80px;
-  background: var(--background-color);
-  overflow: hidden;
+  padding: 6rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F8F9F9;
 }
 
-.hero-container {
-  max-width: 1200px;
-  margin: auto;
+.hero-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 3rem;
+  max-width: 1200px;
+  width: 100%;
   flex-wrap: wrap;
 }
 
+/* Left content */
 .hero-content {
-  flex: 1 1 500px;
-  z-index: 10;
+  flex: 1 1 50%;
+  max-width: 520px;
 }
 
 .hero-title {
-  font-family: var(--font-secondary);
+  font-family: "Poppins", sans-serif;
   font-size: 3rem;
+  line-height: 1.1;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #1B4F72; /* deep navy */
   margin-bottom: 1rem;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--muted-color);
+  font-size: 1.1rem;
+  color: #2E4053;
   margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
-.hero-cta {
+.hero-btn {
   display: inline-block;
-  margin-bottom: 3rem;
+  background: #1B4F72;
+  color: #fff;
+  font-weight: 500;
+  padding: 0.9rem 1.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.hero-btn:hover {
+  background: #154360;
 }
 
-.hero-stats {
+/* Avatars group */
+.hero-people {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
-.hero-icons img {
-  width: 40px;
-  height: 40px;
+.avatars {
+  display: flex;
+  align-items: center;
+}
+.avatar {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  margin-left: -10px;
+  border: 2px solid #fff;
 }
+.avatar:first-child { margin-left: 0; }
 
-.hero-text {
-  color: var(--muted-color);
+.avatar.count {
+  background: #1B4F72;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* Hero Images */
-.hero-images {
-  flex: 1 1 500px;
+.hero-people-text {
+  font-size: 0.95rem;
+  color: #2E4053;
+}
+
+/* Right hero image side */
+.hero-image-wrapper {
+  flex: 1 1 50%;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.main-image-container {
+  position: relative;
+  width: 480px;
+  height: auto;
+}
+
 .hero-main-img {
   width: 100%;
-  max-width: 500px;
-  border-radius: 16px;
-  z-index: 2;
-  animation: float 6s ease-in-out infinite;
-  position: relative;
+  border-radius: 1.5rem;
+  display: block;
+  object-fit: cover;
 }
 
+/* Floating secondary image (bottom-right corner overlay) */
 .hero-secondary-img {
   position: absolute;
-  top: -50px;
-  right: -80px;
-  width: 350px;
-  z-index: 1;
-  transform: rotate(-10deg);
-  animation: float 8s ease-in-out infinite alternate;
-  opacity: 0.9;
+  bottom: -30px;
+  right: -40px;
+  width: 200px;
+  border-radius: 1.2rem;
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-@keyframes float {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(-1deg); }
-  100% { transform: translateY(0) rotate(0deg); }
+/* Floating balance card (bottom-left corner overlay) */
+.floating-card {
+  position: absolute;
+  bottom: -35px;
+  left: -45px;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  width: 220px;
 }
+
+.card-balance {
+  text-align: left;
+}
+
+.balance-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.balance-amount {
+  font-size: 1.4rem;
+  color: #1B4F72;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.balance-chart {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 40px;
+}
+.balance-chart .bar {
+  flex: 1;
+  background: #dce6f2;
+  border-radius: 2px;
+}
+.balance-chart .bar.active {
+  background: #1B4F72;
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: #6c757d;
+  margin-top: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero-wrapper {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+  .hero-image-wrapper {
+    margin-bottom: 3rem;
+  }
+  .hero-secondary-img {
+    display: none;
+  }
+  .floating-card {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -50px;
+  }
+}
+
 
 /* ---------- IMPACT SECTION ---------- */
 .section-impact {
