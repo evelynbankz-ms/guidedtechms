@@ -135,11 +135,12 @@ body {
   margin:3px 0;
 }
 
-/* ---------- HERO (Clayo-style, exact layout and colors) ---------- */
+/* ---------- HERO (Clayo-style, fixed proportions and positioning) ---------- */
 .hero-section {
   padding: 96px 0 60px;
   background: var(--bg, #F8F9F9);
   position: relative;
+  overflow: hidden; /* prevent overflow issues */
 }
 
 /* Wrapper */
@@ -164,7 +165,7 @@ body {
   font-family: "Poppins", sans-serif;
   font-size: 46px;
   line-height: 1.05;
-  color: #1B4F72; /* Deep Navy Blue */
+  color: #1B4F72;
   font-weight: 700;
   margin-bottom: 18px;
 }
@@ -175,7 +176,7 @@ body {
   margin-bottom: 24px;
 }
 
-/* CTA button */
+/* CTA */
 .hero-btn {
   display: inline-block;
   background: #1B4F72;
@@ -191,7 +192,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* People row */
+/* ---------- People ---------- */
 .hero-people {
   margin-top: 24px;
   display: flex;
@@ -232,7 +233,7 @@ body {
   margin-left: -12px;
 }
 
-/* ---------- Right column (images) ---------- */
+/* ---------- Right column (hero images) ---------- */
 .hero-image-wrapper {
   flex: 1 1 48%;
   display: flex;
@@ -244,34 +245,38 @@ body {
 /* Container for both images */
 .main-image-container {
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 20px;
   width: 100%;
-  max-width: 580px;
+  max-width: 520px;
 }
 
-/* Main hero image (large one) */
+/* Main image (dominant) */
 .hero-main-img {
-  width: 75%;
+  width: 100%;
   height: auto;
-  border-radius: 24px;
+  border-radius: 22px;
   object-fit: cover;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
   z-index: 2;
+  display: block;
 }
 
-/* Secondary hero image (bottom-left aligned) */
+/* Secondary image (overlapping bottom-left) */
 .hero-sub-img {
+  position: absolute;
+  bottom: -35px;
+  left: -35px;
   width: 45%;
-  height: auto;
-  align-self: flex-end;
-  margin-bottom: -25px;
-  border-radius: 20px;
+  border-radius: 18px;
   object-fit: cover;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
-  z-index: 1;
+  z-index: 3;
+  transform: rotate(-2deg);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero-sub-img:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
 }
 
 /* ---------- Responsiveness ---------- */
@@ -292,35 +297,41 @@ body {
   }
 
   .main-image-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .hero-main-img,
-  .hero-sub-img {
-    width: 90%;
-    margin: 0;
+    max-width: 400px;
   }
 
   .hero-sub-img {
-    margin-top: -10px;
+    bottom: -24px;
+    left: 20px;
+    width: 50%;
   }
 }
 
-/* ---------- Small devices ---------- */
 @media (max-width: 576px) {
   .hero-title {
     font-size: 34px;
   }
+
   .hero-subtitle {
     font-size: 15px;
   }
+
   .hero-btn {
     padding: 10px 18px;
     font-size: 14px;
   }
+
+  .main-image-container {
+    max-width: 320px;
+  }
+
+  .hero-sub-img {
+    width: 55%;
+    bottom: -18px;
+    left: 10px;
+  }
 }
+
 
 /* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
 .section-impact, .section-about, .section-dashboard,
