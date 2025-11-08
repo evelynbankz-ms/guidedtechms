@@ -611,11 +611,13 @@ body {
 
 /* GRID */
 .features-main {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
   gap: 60px;
-  align-items: flex-start;
+  flex-wrap: nowrap; /* ensures they stay on one line */
 }
+
 
 /* LEFT LIST */
 .features-list {
@@ -689,6 +691,17 @@ body {
   color: #2E4053;
   line-height: 1.6;
 }
+
+.features-list {
+  flex: 1;
+  max-width: 45%;
+}
+
+.feature-card {
+  flex: 1;
+  max-width: 55%;
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 950px) {
