@@ -709,6 +709,134 @@ body {
 }
 
 
+/* FEATURES SECTION */
+.section-features {
+  padding: 100px 0;
+  background: #fff;
+}
+
+.features-header {
+  max-width: 950px;
+  margin: 0 auto 60px;
+  text-align: left;
+}
+
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.features-header h2 {
+  font-size: clamp(1.8rem, 2.5vw, 2.3rem);
+  color: #000;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Grid Layout */
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: stretch;
+}
+
+/* Left list */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-right: 1px solid #eee;
+  padding-right: 40px;
+}
+
+.feature-item {
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #bbb;
+  cursor: pointer;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  color: #222;
+}
+
+.feature-item.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Right card */
+.feature-card {
+  background: #f9faf9;
+  border-radius: 18px;
+  padding: 60px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 280px;
+}
+
+/* Feature content inside the card */
+.feature-content {
+  display: none;
+  text-align: center;
+  max-width: 400px;
+}
+
+.feature-content.active {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+.feature-content h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1B4F72;
+  margin-bottom: 12px;
+}
+
+.feature-content p {
+  font-size: 1.05rem;
+  color: #2E4053;
+  line-height: 1.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .features-list {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+  .feature-card {
+    padding: 40px 24px;
+  }
+}
+
+
 
 /* testimonials simple */
 .testimonials-slider { position:relative; overflow:hidden; min-height:120px; }
