@@ -233,31 +233,53 @@
 
 
     <!-- FEATURES GRID -->
-    <section class="section-features">
-      <div class="container">
-        <div class="features-header text-center">
-          <svg width="12" height="12"><circle cx="6" cy="6" r="6"></circle></svg>
-          <span>Features</span>
-          <h2>Explore our standout features delivering exceptional performance.</h2>
+<section class="section-features">
+  <div class="container">
+    <!-- Header -->
+    <div class="features-header">
+      <div class="label-wrapper">
+        <svg width="12" height="12"><circle cx="6" cy="6" r="6" fill="#000"></circle></svg>
+        <span>Features</span>
+      </div>
+      <h2>
+        Explore our standout features designed to deliver exceptional performance and value,
+        distinguishing us from the competition.
+      </h2>
+    </div>
+
+    <!-- Grid layout -->
+    <div class="features-grid">
+      <!-- Left list -->
+      <div class="features-list">
+        <button class="feature-item active" data-feature="analytics">Real-time analytics</button>
+        <button class="feature-item" data-feature="reports">Customizable reports</button>
+        <button class="feature-item" data-feature="mobile">Mobile accessibility</button>
+        <button class="feature-item" data-feature="security">Enhanced security</button>
+      </div>
+
+      <!-- Right card -->
+      <div class="feature-card">
+        <div class="feature-content active" id="analytics">
+          <h3>Real-time analytics</h3>
+          <p>Gain insights instantly with live data tracking and performance dashboards that help you make smarter decisions.</p>
         </div>
-
-        <div class="features-grid">
-          <div class="features-list">
-            <h3 class="feature-item">Real-time analytics</h3>
-            <h3 class="feature-item">Customizable reports</h3>
-            <h3 class="feature-item">Mobile accessibility</h3>
-            <h3 class="feature-item">Enhanced security</h3>
-          </div>
-
-          <div class="features-images">
-            <div class="feature-image"><img src="feature1.png" alt="Feature 1"></div>
-            <div class="feature-image"><img src="feature2.png" alt="Feature 2"></div>
-            <div class="feature-image"><img src="feature3.png" alt="Feature 3"></div>
-            <div class="feature-image"><img src="feature4.png" alt="Feature 4"></div>
-          </div>
+        <div class="feature-content" id="reports">
+          <h3>Customizable reports</h3>
+          <p>Create tailored reports to match your business needs, enabling deeper financial analysis and trend discovery.</p>
+        </div>
+        <div class="feature-content" id="mobile">
+          <h3>Mobile accessibility</h3>
+          <p>Access your data and tools seamlessly on any device, keeping you connected wherever you are.</p>
+        </div>
+        <div class="feature-content" id="security">
+          <h3>Enhanced security</h3>
+          <p>Protect your assets with industry-leading encryption, authentication, and continuous threat monitoring.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- TESTIMONIALS SECTION -->
     <section class="section-testimonials">
