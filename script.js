@@ -142,13 +142,13 @@ if (scrollEls.length) {
 
 document.querySelectorAll('.feature-item').forEach(item => {
   item.addEventListener('click', () => {
-    // Remove active states
+    // Remove old active
     document.querySelectorAll('.feature-item').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.feature-content').forEach(card => card.classList.remove('active'));
+    document.querySelectorAll('.feature-content').forEach(c => c.classList.remove('active'));
 
-    // Add active to clicked
+    // Activate clicked
     item.classList.add('active');
-    const featureId = item.getAttribute('data-feature');
-    document.getElementById(featureId).classList.add('active');
+    const id = item.dataset.feature;
+    document.getElementById(id).classList.add('active');
   });
 });
