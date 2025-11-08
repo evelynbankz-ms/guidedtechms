@@ -145,6 +145,7 @@ body {
   justify-content: center;
   padding: 20px 0 60px; /* reduced top padding */
   margin-top: -30px; /* pulls hero closer to navbar */
+  margin-bottom: -20px;
 }
 
 
