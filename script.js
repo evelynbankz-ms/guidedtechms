@@ -139,3 +139,16 @@ if (scrollEls.length) {
   }, { threshold: 0.18 });
   scrollEls.forEach(el => obs.observe(el));
 }
+
+document.querySelectorAll('.feature-item').forEach(item => {
+  item.addEventListener('click', () => {
+    // Remove active states
+    document.querySelectorAll('.feature-item').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.feature-content').forEach(card => card.classList.remove('active'));
+
+    // Add active to clicked
+    item.classList.add('active');
+    const featureId = item.getAttribute('data-feature');
+    document.getElementById(featureId).classList.add('active');
+  });
+});
