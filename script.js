@@ -152,3 +152,51 @@ document.querySelectorAll('.feature-item').forEach(item => {
     document.getElementById(id).classList.add('active');
   });
 });
+
+
+  const testimonials = document.querySelectorAll(".testimonial-item");
+  const prevBtn = document.querySelector(".nav-btn.prev");
+  const nextBtn = document.querySelector(".nav-btn.next");
+  let index = 0;
+  let interval;
+
+  function showTestimonial(i) {
+    testimonials.forEach((item, idx) => {
+      item.classList.toggle("active", idx === i);
+    });
+  }
+
+  function nextSlide() {
+    index = (index + 1) % testimonials.length;
+    showTestimonial(index);
+  }
+
+  function prevSlide() {
+    index = (index - 1 + testimonials.length) % testimonials.length;
+    showTestimonial(index);
+  }
+
+  function startAutoSlide() {
+    interval = setInterval(nextSlide, 6000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(interval);
+  }
+
+  nextBtn.addEventListener("click", () => {
+    nextSlide();
+    stopAutoSlide();
+    startAutoSlide();
+  });
+
+  prevBtn.addEventListener("click", () => {
+    prevSlide();
+    stopAutoSlide();
+    startAutoSlide();
+  });
+
+  showTestimonial(index);
+  startAutoSlide();
+
+
