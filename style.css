@@ -338,7 +338,7 @@ body {
 
 /* ---------- IMPACT SECTION (Clayo-style clean layout) ---------- */
 .section-impact {
-  background: #c0cedb; /* very light neutral gray-green */
+  background: #eaeff3; /* very light neutral gray-green */
   padding: 80px 0;
   font-family:"Inter", sans-serif;
   color: #111;
@@ -490,7 +490,7 @@ body {
 /* about grid */
 .section-about {
   padding: 100px 0;
-  background: var(--off-white, #c0cedb);
+  background: var(--off-white);
 }
 
 .about-header {
@@ -873,7 +873,7 @@ body {
 
 /* ---------- Testimonials ---------- */
 .section-testimonials {
-  background: #c0cedb;
+  background: #eaeff3;
   text-align: center;
   padding: 100px 0 80px;
   position: relative;
