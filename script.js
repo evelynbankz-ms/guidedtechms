@@ -200,3 +200,34 @@ document.querySelectorAll('.feature-item').forEach(item => {
   startAutoSlide();
 
 
+// Auto year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Blog scroll arrows
+document.querySelector('.slider-arrow.next')?.addEventListener('click', () => {
+  document.querySelector('.blogs-slider').scrollBy({ left: 350, behavior: 'smooth' });
+});
+document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
+  document.querySelector('.blogs-slider').scrollBy({ left: -350, behavior: 'smooth' });
+});
+
+// Placeholder for auto-loading future blog posts from /blog page
+(async function pullFromBlogPage() {
+  const slider = document.querySelector('.blogs-slider');
+  if (!slider) return;
+
+  try {
+    const res = await fetch('/blog');
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const blogCards = Array.from(doc.querySelectorAll('.blog-card')).slice(0, 4);
+
+    if (blogCards.length) {
+      slider.innerHTML = '';
+      blogCards.forEach(card => slider.appendChild(card.cloneNode(true)));
+    }
+  } catch (err) {
+    console.warn('No blog page found yet — using default posts.');
+  }
+})();
