@@ -34,6 +34,18 @@ body {
   padding-right: 20px;
 }
 
+/* ✨ New: universal section container rule */
+section > .container,
+.mission > .container,
+.clients > .container,
+.about-hero-content {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* Page wrapper */
 .page-wrapper { min-height:100vh; }
 
@@ -62,7 +74,7 @@ body {
   padding: 0 20px;
 }
 
-/* Logo on the left (keeps your anchor structure) */
+/* Logo */
 .navbar-logo {
   display:flex;
   align-items:center;
@@ -74,7 +86,7 @@ body {
   z-index: 1300;
 }
 
-/* Centered nav: we center the actual nav by absolute centering inside navbar */
+/* Centered nav menu */
 .navbar-menu {
   position: absolute;
   left: 50%;
@@ -97,7 +109,7 @@ body {
 .navbar-menu .nav-link:hover,
 .navbar-menu .nav-link.active { color: var(--primary); }
 
-/* Right side actions (Get Started + mobile toggle) */
+/* Right side actions */
 .navbar-actions {
   display:flex;
   align-items:center;
@@ -116,7 +128,7 @@ body {
 }
 .btn-primary:hover { transform: translateY(-1px); background: #154360; }
 
-/* Mobile menu toggle (hidden on desktop) */
+/* Mobile toggle */
 .menu-toggle {
   display:none;
   width:36px;
@@ -136,18 +148,16 @@ body {
 }
 
 
-
-
 /* ---------- ABOUT HERO SECTION ---------- */
 .about-hero {
   position: relative;
-  background-color: var(--bg, #F8F9F9); /* Light Blue Gray */
+  background-color: var(--bg, #F8F9F9);
   color: var(--primary);
   padding: 120px 0 100px;
   overflow: hidden;
 }
 
-/* Subtle textured / gradient overlay for depth */
+/* Overlay */
 .about-hero::before {
   content: "";
   position: absolute;
@@ -179,13 +189,12 @@ body {
   margin-bottom: 20px;
 }
 
-/* Highlight underline using accent */
+/* Highlight underline */
 .about-hero-title .highlight {
   position: relative;
   color: var(--primary);
   z-index: 1;
 }
-
 .about-hero-title .highlight::after {
   content: "";
   position: absolute;
@@ -212,18 +221,13 @@ body {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.8);
 }
-
 .breadcrumbs a {
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
   transition: color var(--transition);
 }
-
-.breadcrumbs a:hover {
-  color: var(--accent);
-}
-
+.breadcrumbs a:hover { color: var(--accent); }
 .breadcrumbs span {
   color: var(--accent);
   font-weight: 600;
@@ -234,14 +238,10 @@ body {
   .about-hero {
     padding: 100px 0 80px;
   }
-
   .about-hero-title {
     font-size: 2rem;
   }
 }
-
-
-
 
 
 /* =============== MISSION SECTION =============== */
@@ -266,7 +266,6 @@ body {
   display: inline-block;
   position: relative;
 }
-
 .section-label::before {
   content: "";
   position: absolute;
@@ -284,13 +283,11 @@ body {
   line-height: 1.2;
   color: var(--muted);
 }
-
 .mission-title .highlight {
   position: relative;
   color: var(--muted);
   z-index: 1;
 }
-
 .mission-title .highlight::after {
   content: "";
   position: absolute;
@@ -298,7 +295,7 @@ body {
   bottom: 6px;
   width: 100%;
   height: 0.3em;
-  background: rgba(39, 174, 96, 0.25); /* soft green accent */
+  background: rgba(39, 174, 96, 0.25);
   border-radius: 4px;
   z-index: -1;
 }
@@ -311,7 +308,6 @@ body {
   overflow: hidden;
   margin-bottom: 25px;
 }
-
 .tab-btn {
   flex: 1;
   padding: 12px 20px;
@@ -323,7 +319,6 @@ body {
   color: var(--muted);
   transition: background var(--transition), color var(--transition);
 }
-
 .tab-btn.active {
   background: var(--primary);
   color: var(--surface);
@@ -334,11 +329,7 @@ body {
   display: none;
   animation: fadeIn 0.4s ease;
 }
-
-.tab-content.active {
-  display: block;
-}
-
+.tab-content.active { display: block; }
 .tab-content p {
   color: #555;
   line-height: 1.7;
@@ -349,6 +340,7 @@ body {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 /* =============== CLIENT LOGOS =============== */
 .clients {
@@ -374,7 +366,6 @@ body {
   text-align: center;
   transition: all var(--transition);
 }
-
 .logo-card:hover {
   background: var(--surface);
   box-shadow: var(--shadow-1);
@@ -387,13 +378,12 @@ body {
     grid-template-columns: 1fr;
     text-align: center;
   }
-
   .mission-left {
     margin-bottom: 40px;
   }
-
   .section-label::before {
     display: none;
   }
 }
+
 
