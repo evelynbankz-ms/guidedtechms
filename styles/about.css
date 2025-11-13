@@ -175,14 +175,14 @@ body {
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--surface);
+  color: var(--primary);
   margin-bottom: 20px;
 }
 
 /* Highlight underline using accent */
 .about-hero-title .highlight {
   position: relative;
-  color: var(--surface);
+  color: var(--primary);
   z-index: 1;
 }
 
