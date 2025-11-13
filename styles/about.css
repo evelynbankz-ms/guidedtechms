@@ -141,7 +141,7 @@ body {
 /* ---------- ABOUT HERO SECTION ---------- */
 .about-hero {
   position: relative;
-  background-color: var(--primary); /* Deep Blue */
+  background-color: #eaeff3; /* Light Blue Gray */
   color: var(--surface);
   padding: 120px 0 100px;
   overflow: hidden;
