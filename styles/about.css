@@ -241,10 +241,13 @@ body {
 }
 
 
+
+
+
 /* =============== MISSION SECTION =============== */
 .mission {
   padding: 100px 0 80px;
-  background: var(--bg);
+  background: #eaeff3;
 }
 
 .mission-grid {
