@@ -231,3 +231,13 @@ document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
     console.warn('No blog page found yet — using default posts.');
   }
 })();
+
+document.querySelectorAll(".feature-item").forEach(item => {
+  item.addEventListener("mouseenter", () => {
+    item.querySelector(".arrow").style.transform = "translateX(4px)";
+  });
+  item.addEventListener("mouseleave", () => {
+    item.querySelector(".arrow").style.transform = "translateX(0)";
+  });
+});
+
