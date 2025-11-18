@@ -136,16 +136,166 @@ body {
 }
 
 /* ---------- HERO: force-contained, pixel-perfect image sizing ---------- */
-/* ---------- HERO SECTION (Fixed layout, matches reference) ---------- */
+/* -------------------------------------------
+   HERO SECTION (MakeItFuture Layout Matching)
+--------------------------------------------*/
+
 .hero-section {
+  padding: 140px 0 120px;
+  background: #0d1c24;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  color: #fff;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 60px;
+}
+
+/* Small tag text like MakeItFuture */
+.hero-tag {
+  color: #1B4F72;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+/* Title style matching screenshot */
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #d8d8d8;
+  max-width: 520px;
+  margin-bottom: 36px;
+}
+
+/* CTA Button */
+.hero-btn {
+  display: inline-block;
+  background: #1B4F72;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.hero-btn:hover {
+  background: #163b57;
+  transform: translateY(-2px);
+}
+
+/* People Group */
+.hero-people {
+  margin-top: 40px;
+}
+
+.avatars {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-right: -10px;
+}
+
+.avatar-count {
+  background: #1B4F72;
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.hero-people-text {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #d8d8d8;
+}
+
+/* -------------------------------------------
+   HERO IMAGES — REDUCED & POSITIONED BETTER
+--------------------------------------------*/
+
+.hero-image-frame {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+/* Main image — reduced size */
+.hero-main-img {
+  width: 100%;
+  border-radius: 20px;
+}
+
+/* Supporting image — smaller overlay */
+.hero-sub-img {
+  width: 55%;
+  border-radius: 18px;
+  position: absolute;
+  bottom: -30px;
+  right: -20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+}
+
+/* Responsive Behavior */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .hero-image-frame {
+    margin-top: 50px;
+    max-width: 340px;
+  }
+
+  .hero-title {
+    font-size: 42px;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* /* ---------- HERO SECTION (Fixed layout, matches reference) ---------- */
+/* .hero-section {
   background: var(--bg, #F8F9F9);
   min-height: calc(100vh - var(--nav-height));
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px 0 60px; /* reduced top padding */
-  margin-top: -20px; /* pulls hero closer to navbar */
-  margin-bottom: -10px;
+  justify-content: center; */
+  /* padding: 20px 0 60px; /* reduced top padding */ 
+  /* margin-top: -20px; /* pulls hero closer to navbar */ 
+  /* margin-bottom: -10px;
 }
 
 
@@ -158,10 +308,10 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 0 24px;
-}
+} */
 
 /* LEFT SIDE */
-.hero-left {
+/* .hero-left {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -181,39 +331,39 @@ body {
   color: var(--muted, #2E4053);
   margin-bottom: 28px;
   line-height: 1.6;
-}
+} */
 
 /* ---------- HERO CTA BUTTON (isolated style) ---------- */
-.hero-left .hero-btn {
+/* .hero-left .hero-btn {
   display: inline-block;
-  background-color: #1B4F72; /* deep blue – same as header */
-  color: #fff;
-  padding: 10px 22px; /* reduced width and height */
-  border-radius: 10px;
+  background-color: #1B4F72; /* deep blue – same as header */ */
+  /* color: #fff;
+  padding: 10px 22px; /* reduced width and height */ 
+  /* border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.3s ease, transform 0.3s ease;
-  width: fit-content; /* fit content only */
-  margin-bottom: 36px; /* added space below like .hero-cta */
-}
+  width: fit-content; /* fit content only */ 
+  /* margin-bottom: 36px; /* added space below like .hero-cta */ 
+/* } */
 
-.hero-left .hero-btn:hover {
-  background-color: #154360; /* darker hover */
-  transform: translateY(-2px);
-}
+/* .hero-left .hero-btn:hover {
+  background-color: #154360; /* darker hover */ 
+  /* transform: translateY(-2px);
+} */
 
 
 
 /* Avatars */
 /* --- People group --- */
-.hero-people {
-  display: flex;
-  flex-direction: column; /* stack items vertically */
-  align-items: flex-start; /* align with left side */
-  gap: 10px;
-}
+/* .hero-people {
+  display: flex; */
+  /* flex-direction: column; /* stack items vertically */ 
+  /* align-items: flex-start; /* align with left side */ 
+  /* gap: 10px;
+} */
 
-.avatars {
+/* .avatars {
   display: flex;
   align-items: center;
 }
@@ -249,35 +399,35 @@ body {
   color: var(--muted, #2E4053);
   line-height: 1.4;
   margin-left: 4px;
-}
+} */
 
 /* ---------- RIGHT SIDE ---------- */
-.hero-right {
+/* .hero-right {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 45px; /* adds a little space from the header */
-}
+  margin-top: 45px; /* adds a little space from the header */ 
+/* } */
 
-.hero-image-frame {
+/* .hero-image-frame {
   position: relative;
   width: 100%;
   max-width: 480px;
-}
+} */
 
 /* Main hero image */
-.hero-main-img {
+/* .hero-main-img {
   width: 100%;
   height: 600px;
   border-radius: 20px;
   object-fit: cover;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
   display: block;
-  transform: none !important; /* removed the rotation */
-}
+  transform: none !important; /* removed the rotation */ 
+/* } */
 
 /* Supporting sub image */
-.hero-sub-img {
+/* .hero-sub-img {
   position: absolute;
   bottom: -28px;
   left: 24px;
@@ -291,10 +441,10 @@ body {
 
 .hero-sub-img:hover {
   transform: translateY(-4px);
-}
+} */
 
 /* ---------- RESPONSIVE ---------- */
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -303,15 +453,15 @@ body {
 
   .hero-left {
     align-items: center;
-  }
+  } */
 
-  .hero-right {
-    margin-top: 0; /* no extra space needed on mobile */
-  }
+  /* .hero-right {
+    margin-top: 0; /* no extra space needed on mobile */ 
+  /* } */
 
-  .hero-sub-img {
-    position: relative;
-    bottom: 0;
+  /* .hero-sub-img {
+    position: relative; */
+    /* bottom: 0;
     left: 0;
     margin: -24px auto 0;
     display: block;
@@ -324,8 +474,8 @@ body {
   .hero-people-text {
     text-align: center;
   }
-}
-
+} */
+ 
 
 
 /* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
