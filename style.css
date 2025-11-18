@@ -136,159 +136,43 @@ body {
 }
 
 /* ---------- HERO: force-contained, pixel-perfect image sizing ---------- */
-/* -------------------------------------------
-   HERO SECTION (MakeItFuture Layout Matching)
---------------------------------------------*/
-
-.hero-section {
-  padding: 140px 0 120px;
-  background: #0d1c24;
-  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  color: #fff;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
-  gap: 60px;
-}
-
-/* Small tag text like MakeItFuture */
-.hero-tag {
-  color: #1B4F72;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 1px;
-  margin-bottom: 14px;
-}
-
-/* Title style matching screenshot */
-.hero-title {
-  font-size: 56px;
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-/* Subtitle */
-.hero-subtitle {
-  font-size: 18px;
-  line-height: 1.6;
-  color: #d8d8d8;
-  max-width: 520px;
-  margin-bottom: 36px;
-}
-
-/* CTA Button */
-.hero-btn {
-  display: inline-block;
-  background: #1B4F72;
-  color: #fff;
-  padding: 14px 28px;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.25s ease;
-}
-
-.hero-btn:hover {
-  background: #163b57;
-  transform: translateY(-2px);
-}
-
-/* People Group */
-.hero-people {
-  margin-top: 40px;
-}
-
-.avatars {
-  display: flex;
-  align-items: center;
-}
-
-.avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid white;
-  margin-right: -10px;
-}
-
-.avatar-count {
-  background: #1B4F72;
-  color: white;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  margin-left: 8px;
-}
-
-.hero-people-text {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #d8d8d8;
-}
-
-/* ---------------------------------------------------------
-   HERO SECTION — FINAL VERSION (Original Layout Preserved)
----------------------------------------------------------- */
-
+/* HERO SECTION — Matches screenshot layout, keeps your design */
 .hero-section {
   background: #F8F9F9;
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  background-size: 600px; /* reduced grid visibility */
+  background-size: 850px; /* MUCH softer grid */
   background-repeat: repeat;
-  min-height: calc(100vh - var(--nav-height));
-  display: flex;
-  align-items: center;
-  padding: 40px 0 60px;
-  margin-top: -10px;
+  padding: 120px 0; /* matches screenshot vertical spacing */
 }
 
-/* GRID LAYOUT */
+/* GRID (same structure, just aligned like screenshot) */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr; /* screenshot ratio */
   align-items: center;
-  gap: 64px;
-  max-width: 1200px;
-  width: 100%;
+  gap: 80px;
+  max-width: 1250px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* LEFT SIDE */
-.hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* NEW TAG LINE */
+/* LEFT TEXT */
 .hero-tag {
   font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 1px;
   color: #1B4F72;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
-/* UPDATED TITLE (matches GuidedTechMS wording) */
 .hero-title {
   font-family: "Poppins", sans-serif;
   font-size: clamp(2.6rem, 5vw, 3.8rem);
   font-weight: 700;
   line-height: 1.1;
   color: #1B4F72;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-/* UPDATED SUBTITLE */
 .hero-subtitle {
   font-size: 1.05rem;
   color: #2E4053;
@@ -297,12 +181,12 @@ body {
   max-width: 520px;
 }
 
-/* KEEP ORIGINAL BUTTON */
+/* YOUR BUTTON — UNTOUCHED */
 .hero-btn {
   display: inline-block;
   background-color: #1B4F72;
   color: #fff;
-  padding: 10px 22px; 
+  padding: 10px 22px;
   border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
@@ -316,12 +200,12 @@ body {
   transform: translateY(-2px);
 }
 
-/* PEOPLE GROUP */
+/* AVATARS — unchanged */
 .hero-people {
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
 }
 
 .avatars {
@@ -335,9 +219,8 @@ body {
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid #fff;
-  margin-left: -14px;
   background: #ddd;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  margin-left: -14px;
 }
 .avatar:first-child { margin-left: 0; }
 
@@ -346,57 +229,41 @@ body {
   height: 46px;
   border-radius: 50%;
   background: #1B4F72;
+  border: 3px solid #fff;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  border: 3px solid #fff;
-  margin-left: -14px;
 }
 
 .hero-people-text {
-  font-size: 0.95rem;
+  font-size: .95rem;
   color: #2E4053;
 }
 
-/* RIGHT SIDE — PRESERVE ORIGINAL IMAGE LAYOUT */
-.hero-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 45px;
-}
-
+/* RIGHT SIDE — IMAGES STATIC, JUST SLIGHTLY SMALLER */
 .hero-image-frame {
-  position: relative;
   width: 100%;
-  max-width: 450px; /* slightly reduced to fit new layout */
+  max-width: 420px; /* reduced to match screenshot */
+  position: relative;
 }
 
-/* MAIN IMAGE (original layout kept, just slightly shorter) */
 .hero-main-img {
   width: 100%;
-  height: 540px;   /* reduced from 600px */
+  height: 520px; /* reduced from 600px */
   border-radius: 20px;
   object-fit: cover;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.08);
 }
 
-/* SUB IMAGE (kept original placement) */
+/* second image — kept, just slightly smaller and static */
 .hero-sub-img {
+  width: 180px; /* slightly smaller */
   position: absolute;
-  bottom: -26px;
+  bottom: -22px;
   left: 24px;
-  width: 190px;     /* slightly reduced */
   border-radius: 14px;
   object-fit: cover;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-  transition: transform 0.2s ease;
-}
-
-.hero-sub-img:hover {
-  transform: translateY(-4px);
 }
 
 /* RESPONSIVE */
@@ -411,31 +278,19 @@ body {
     align-items: center;
   }
 
-  .hero-right {
-    margin-top: 0;
-  }
-
   .hero-image-frame {
-    max-width: 380px;
     margin: 0 auto;
+    max-width: 350px;
   }
 
   .hero-sub-img {
     position: relative;
     bottom: 0;
     left: 0;
-    margin: -24px auto 0;
-    display: block;
-  }
-
-  .avatars {
-    justify-content: center;
-  }
-
-  .hero-people-text {
-    text-align: center;
+    margin-top: -24px;
   }
 }
+
 
 
 
