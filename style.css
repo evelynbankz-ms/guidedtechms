@@ -136,19 +136,24 @@ body {
 }
 
 /* ---------- HERO: force-contained, pixel-perfect image sizing ---------- */
-/* HERO SECTION — Matches screenshot layout, keeps your design */
+/* ----------------------------------------------------
+   HERO SECTION — FINAL CORRECTED VERSION
+   (Matches screenshot layout, keeps your button + images)
+----------------------------------------------------- */
+
+/* HERO BACKGROUND (screenshot style) */
 .hero-section {
-  background: #F8F9F9;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  background-size: 850px; /* MUCH softer grid */
-  background-repeat: repeat;
-  padding: 120px 0; /* matches screenshot vertical spacing */
+  background-size: 900px; /* subtle grid, not too strong */
+  background-blend-mode: overlay;
+  padding: 130px 0;
 }
 
-/* GRID (same structure, just aligned like screenshot) */
+/* GRID LAYOUT */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr; /* screenshot ratio */
+  grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 80px;
   max-width: 1250px;
@@ -156,11 +161,11 @@ body {
   padding: 0 24px;
 }
 
-/* LEFT TEXT */
+/* LEFT TEXT AREA */
 .hero-tag {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #1B4F72;
+  color: #4aa3ff;
   margin-bottom: 14px;
 }
 
@@ -169,19 +174,38 @@ body {
   font-size: clamp(2.6rem, 5vw, 3.8rem);
   font-weight: 700;
   line-height: 1.1;
-  color: #1B4F72;
+  color: #ffffff;
   margin-bottom: 18px;
+}
+
+/* UNDERLINE EFFECT (like screenshot) */
+.hero-title .underline {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.hero-title .underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  width: 100%;
+  height: 10px;
+  background: rgba(74, 163, 255, 0.35); /* soft blue brush */
+  border-radius: 8px;
+  z-index: -1;
 }
 
 .hero-subtitle {
   font-size: 1.05rem;
-  color: #2E4053;
+  color: #d4e6f1;
   margin-bottom: 28px;
   line-height: 1.6;
   max-width: 520px;
 }
 
-/* YOUR BUTTON — UNTOUCHED */
+/* GET STARTED BUTTON — UNTOUCHED */
 .hero-btn {
   display: inline-block;
   background-color: #1B4F72;
@@ -239,31 +263,46 @@ body {
 
 .hero-people-text {
   font-size: .95rem;
-  color: #2E4053;
+  color: #d4e6f1;
 }
 
-/* RIGHT SIDE — IMAGES STATIC, JUST SLIGHTLY SMALLER */
+/* ----------------------------------------------------
+   IMAGES — STATIC, NO FLOATING, SLIGHTLY REDUCED SIZE
+----------------------------------------------------- */
+
 .hero-image-frame {
   width: 100%;
-  max-width: 420px; /* reduced to match screenshot */
+  max-width: 420px;
   position: relative;
+  transform: none !important;
+  animation: none !important;
 }
 
+/* MAIN IMAGE — reduced but static */
 .hero-main-img {
   width: 100%;
-  height: 520px; /* reduced from 600px */
+  height: 520px;
   border-radius: 20px;
   object-fit: cover;
+
+  /* REMOVE ALL FLOATING */
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
 }
 
-/* second image — kept, just slightly smaller and static */
+/* SUB IMAGE — kept, slightly smaller */
 .hero-sub-img {
-  width: 180px; /* slightly smaller */
+  width: 180px;
   position: absolute;
   bottom: -22px;
   left: 24px;
   border-radius: 14px;
   object-fit: cover;
+
+  /* ALSO FORCE STATIC */
+  transform: none !important;
+  animation: none !important;
 }
 
 /* RESPONSIVE */
