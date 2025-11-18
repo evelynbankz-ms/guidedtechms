@@ -142,24 +142,31 @@ body {
 ----------------------------------------------------- */
 
 /* HERO BACKGROUND (screenshot style) */
+/* NEW CORRECT HERO BACKGROUND */
 .hero-section {
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
-  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  background-size: 900px; /* subtle grid, not too strong */
-  background-blend-mode: overlay;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue base */
+  position: relative;
   padding: 130px 0;
 }
 
-/* GRID LAYOUT */
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
-  gap: 80px;
-  max-width: 1250px;
-  margin: 0 auto;
-  padding: 0 24px;
+/* Add grid on top WITHOUT overriding gradient */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  background-size: 850px;
+  opacity: 0.12;  /* subtle grid */
+  pointer-events: none;
+  z-index: 0;
 }
+
+/* Push content above the grid */
+.hero-grid {
+  position: relative;
+  z-index: 2;
+}
+
 
 /* LEFT TEXT AREA */
 .hero-tag {
