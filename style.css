@@ -234,55 +234,208 @@ body {
   color: #d8d8d8;
 }
 
-/* -------------------------------------------
-   HERO IMAGES — REDUCED & POSITIONED BETTER
---------------------------------------------*/
+/* ---------------------------------------------------------
+   HERO SECTION — FINAL VERSION (Original Layout Preserved)
+---------------------------------------------------------- */
+
+.hero-section {
+  background: #F8F9F9;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  background-size: 600px; /* reduced grid visibility */
+  background-repeat: repeat;
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  padding: 40px 0 60px;
+  margin-top: -10px;
+}
+
+/* GRID LAYOUT */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 64px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* LEFT SIDE */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* NEW TAG LINE */
+.hero-tag {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #1B4F72;
+  margin-bottom: 10px;
+}
+
+/* UPDATED TITLE (matches GuidedTechMS wording) */
+.hero-title {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #1B4F72;
+  margin-bottom: 20px;
+}
+
+/* UPDATED SUBTITLE */
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #2E4053;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* KEEP ORIGINAL BUTTON */
+.hero-btn {
+  display: inline-block;
+  background-color: #1B4F72;
+  color: #fff;
+  padding: 10px 22px; 
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.3s ease;
+  width: fit-content;
+  margin-bottom: 36px;
+}
+
+.hero-btn:hover {
+  background-color: #154360;
+  transform: translateY(-2px);
+}
+
+/* PEOPLE GROUP */
+.hero-people {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.avatars {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #fff;
+  margin-left: -14px;
+  background: #ddd;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+.avatar:first-child { margin-left: 0; }
+
+.avatar-count {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #1B4F72;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 3px solid #fff;
+  margin-left: -14px;
+}
+
+.hero-people-text {
+  font-size: 0.95rem;
+  color: #2E4053;
+}
+
+/* RIGHT SIDE — PRESERVE ORIGINAL IMAGE LAYOUT */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 45px;
+}
 
 .hero-image-frame {
   position: relative;
   width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
+  max-width: 450px; /* slightly reduced to fit new layout */
 }
 
-/* Main image — reduced size */
+/* MAIN IMAGE (original layout kept, just slightly shorter) */
 .hero-main-img {
   width: 100%;
+  height: 540px;   /* reduced from 600px */
   border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.08);
 }
 
-/* Supporting image — smaller overlay */
+/* SUB IMAGE (kept original placement) */
 .hero-sub-img {
-  width: 55%;
-  border-radius: 18px;
   position: absolute;
-  bottom: -30px;
-  right: -20px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+  bottom: -26px;
+  left: 24px;
+  width: 190px;     /* slightly reduced */
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
 }
 
-/* Responsive Behavior */
+.hero-sub-img:hover {
+  transform: translateY(-4px);
+}
+
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
-    text-align: left;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .hero-left {
+    align-items: center;
+  }
+
+  .hero-right {
+    margin-top: 0;
   }
 
   .hero-image-frame {
-    margin-top: 50px;
-    max-width: 340px;
+    max-width: 380px;
+    margin: 0 auto;
   }
 
-  .hero-title {
-    font-size: 42px;
+  .hero-sub-img {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: -24px auto 0;
+    display: block;
+  }
+
+  .avatars {
+    justify-content: center;
+  }
+
+  .hero-people-text {
+    text-align: center;
   }
 }
-
-
-
-
-
-
 
 
 
