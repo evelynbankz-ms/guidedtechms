@@ -232,6 +232,9 @@ document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
   }
 })();
 
+
+
+// Mega Menu in Navbar
 document.querySelectorAll(".feature-item").forEach(item => {
   item.addEventListener("mouseenter", () => {
     item.querySelector(".arrow").style.transform = "translateX(4px)";
@@ -241,3 +244,26 @@ document.querySelectorAll(".feature-item").forEach(item => {
   });
 });
 
+document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const parent = toggle.parentElement;
+
+    // close others
+    document.querySelectorAll(".nav-item.open").forEach((item) => {
+      if (item !== parent) item.classList.remove("open");
+    });
+
+    // toggle this one
+    parent.classList.toggle("open");
+  });
+});
+
+// close on outside click
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".nav-item")) {
+    document.querySelectorAll(".nav-item.open").forEach((item) =>
+      item.classList.remove("open")
+    );
+  }
+});
