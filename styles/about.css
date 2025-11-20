@@ -289,36 +289,46 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
-.hero {
-  /* background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */ 
-  background: linear-gradient(135deg, #0f3042 0%, #18475e 100%);
+/* HERO SECTION — softer deep blue */
+.hero-section {
+  background: linear-gradient(
+    135deg,
+    #081e2b 0%,   /* softened version of #071a24 */
+    #0f3144 100%  /* softened version of #0d2a3a */
+  );
   position: relative;
-  padding: 120px 0 100px;
+  padding: 130px 0;
   overflow: hidden;
 }
 
-
-/* Overlay */
-hero::before {
+/* VISIBLE TEMPLATE GRID */
+.hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at top right,
-    rgba(255, 255, 255, 0.08),
-    transparent 70%
-  ),
-  linear-gradient(to bottom left, rgba(0, 0, 0, 0.2), transparent);
-  opacity: 0.15;
+
+  /* NOTICE THE STRONGER LINES */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+
+  background-size: 160px 160px; /* Bigger grid = more visible */
+  opacity: 0.35;                /* Much stronger */
+  pointer-events: none;
   z-index: 0;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  max-width: 850px;
+/* CONTENT ABOVE GRID */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 80px;
+  max-width: 1250px;
   margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
 }
 
 /* Title */
