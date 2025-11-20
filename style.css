@@ -82,6 +82,7 @@ body {
   align-items: center;
 }
 
+/* NAV LINKS */
 .nav-link {
   color: #cfe4f4;
   font-size: 16px;
@@ -97,18 +98,21 @@ body {
 }
 
 /* ------------------------------------------------
-   MEGA MENU (3-Column Multi-Section Dropdown)
+   NAV ITEM + GAP FIX (Important)
 ------------------------------------------------- */
 .nav-item {
   position: relative;
+  padding-bottom: 14px; /* creates a hover-safe buffer below the nav item */
 }
 
-/* Mega dropdown container (centered under nav item) */
+/* ------------------------------------------------
+   MEGA MENU — Multi-column dropdown
+------------------------------------------------- */
 .mega-dropdown {
   position: absolute;
   top: 58px;
 
-  left: 50%;                          /* center under nav item */
+  left: 50%; /* center under the nav item */
   transform: translateX(-50%) translateY(12px);
 
   width: 700px;
@@ -128,18 +132,24 @@ body {
 
   transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 4000;
+
+  margin-top: -8px; /* overlap upward to eliminate hover gap */
 }
 
-/* Show on hover — now properly aligned */
-.nav-item:hover .mega-dropdown {
+/* ------------------------------------------------
+   KEEP DROPDOWN OPEN (CRITICAL FIX)
+------------------------------------------------- */
+.nav-item:hover .mega-dropdown,
+.mega-dropdown:hover {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
 }
 
-
-/* Columns inside the mega menu */
+/* ------------------------------------------------
+   MEGA MENU COLUMNS
+------------------------------------------------- */
 .mega-col {
   flex: 1;
   min-width: 180px;
@@ -148,7 +158,7 @@ body {
   gap: 6px;
 }
 
-/* Section headings */
+/* Section titles */
 .mega-col h4 {
   color: #9cc7e1;
   font-size: 13px;
@@ -173,7 +183,6 @@ body {
   transition: padding-left 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
-/* Hover effects */
 .mega-col a:hover {
   background: rgba(255,255,255,0.08);
   padding-left: 12px;
@@ -181,7 +190,7 @@ body {
 }
 
 /* ------------------------------------------------
-   ICON PLACEHOLDER SUPPORT
+   ICON PLACEHOLDERS
 ------------------------------------------------- */
 .mega-col a .icon {
   width: 18px;
@@ -235,6 +244,8 @@ body {
   background: #ffffff;
   margin: 3px 0;
 }
+
+
 
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
