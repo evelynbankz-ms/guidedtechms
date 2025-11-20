@@ -103,11 +103,13 @@ body {
   position: relative;
 }
 
-/* Mega dropdown container */
+/* Mega dropdown container (centered under nav item) */
 .mega-dropdown {
   position: absolute;
   top: 58px;
-  left: 0;
+
+  left: 50%;                          /* center under nav item */
+  transform: translateX(-50%) translateY(12px);
 
   width: 700px;
   display: flex;
@@ -124,18 +126,18 @@ body {
   visibility: hidden;
   pointer-events: none;
 
-  transform: translateY(12px);
   transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 4000;
 }
 
-/* SHOW ON HOVER (template behavior) */
+/* Show on hover — now properly aligned */
 .nav-item:hover .mega-dropdown {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
+
 
 /* Columns inside the mega menu */
 .mega-col {
