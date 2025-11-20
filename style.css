@@ -40,7 +40,7 @@ body {
 /* ------------------------------------------------
    NAVBAR — FINAL VERSION (Hero-style dark theme)
 ------------------------------------------------- */
-/* Navbar background = hero background */
+/* ---------- NAVBAR (existing) ---------- */
 .navbar {
   width: 100%;
   position: sticky;
@@ -51,7 +51,6 @@ body {
   transition: background 0.3s ease;
 }
 
-/* Container layout */
 .navbar-container {
   max-width: 1250px;
   margin: 0 auto;
@@ -63,7 +62,6 @@ body {
   position: relative;
 }
 
-/* Logo */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -74,7 +72,6 @@ body {
   text-decoration: none;
 }
 
-/* NAV LINKS */
 .navbar-menu {
   position: absolute;
   left: 50%;
@@ -90,7 +87,6 @@ body {
   font-weight: 500;
   padding: 6px 4px;
   text-decoration: none;
-  position: relative;
   transition: color 0.25s ease;
 }
 
@@ -99,14 +95,16 @@ body {
   color: #ffffff;
 }
 
-/* DROPDOWN */
+/* ---------- DROPDOWN ---------- */
 .nav-item {
   position: relative;
 }
 
+/* base dropdown styles (your original) */
 .dropdown {
   visibility: hidden;
   opacity: 0;
+  pointer-events: none;
   position: absolute;
   top: 48px;
   left: 0;
@@ -115,15 +113,26 @@ body {
   border-radius: 12px;
   padding: 16px 0;
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: opacity 0.25s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: translateY(6px);
   backdrop-filter: blur(6px);
   z-index: 3000;
 }
 
-/* CLICK-TO-OPEN FIX */
-.nav-item.open .dropdown {
+/* allow hover to show (restores hover behaviour) */
+.nav-item:hover .dropdown {
   visibility: visible;
   opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* click-open state */
+.nav-item.open .dropdown {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
 }
 
 /* Dropdown links */
@@ -133,15 +142,16 @@ body {
   font-size: 15px;
   color: #dbe9f2;
   text-decoration: none;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .dropdown a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.08);
   color: #fff;
+  transform: translateX(4px);
 }
 
-/* RIGHT SIDE */
+/* keep existing right side styles */
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -164,7 +174,7 @@ body {
   background: #154360;
 }
 
-/* Mobile toggle */
+/* Mobile toggle default */
 .menu-toggle {
   display: none;
 }
@@ -175,6 +185,9 @@ body {
   background: #ffffff;
   margin: 3px 0;
 }
+
+/* Small improvement: ensure dropdown is not clipped if navbar has overflow settings */
+.navbar, .navbar-container { overflow: visible; }
 
 
 /* ----------------------------------------------------
