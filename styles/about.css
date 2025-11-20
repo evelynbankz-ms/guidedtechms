@@ -290,18 +290,13 @@ section > .container,
 
 /* ---------- ABOUT HERO SECTION ---------- */
 .hero {
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
+  /* background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */ 
+  background: linear-gradient(135deg, #0f3042 0%, #18475e 100%);
   position: relative;
-  padding: 130px 0;
-}
-
-.hero {
-  position: relative;
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
-  color: var(--primary);
   padding: 120px 0 100px;
   overflow: hidden;
 }
+
 
 /* Overlay */
 hero::before {
@@ -330,7 +325,7 @@ hero::before {
 .hero-title {
   font-family: "Poppins", sans-serif;
   font-size: clamp(2.6rem, 5vw, 3.8rem);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   color: #ffffff;
   margin-bottom: 18px;
@@ -340,7 +335,7 @@ hero::before {
 /* Highlight underline */
 .hero-title .highlight {
   position: relative;
-  color: var(--primary);
+  /* color: var(--primary); */
   z-index: 1;
 }
 
