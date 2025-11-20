@@ -49,103 +49,243 @@ section > .container,
 /* Page wrapper */
 .page-wrapper { min-height:100vh; }
 
-/* ---------- NAVBAR ---------- */
+
+/* ------------------------------------------------
+   NAVBAR — Dark theme (matches hero section)
+------------------------------------------------- */
 .navbar {
-  width:100%;
+  width: 100%;
   position: sticky;
-  top:0;
-  background: var(--surface);
-  z-index:1200;
-  box-shadow: none;
-  transition: box-shadow var(--transition), background var(--transition);
+  top: 0;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
+  z-index: 2000;
+  transition: background 0.3s ease;
 }
 
-.navbar.scrolled { box-shadow: var(--shadow-1); }
-
-/* Layout inside navbar */
 .navbar-container {
-  max-width: var(--container);
+  max-width: 1250px;
   margin: 0 auto;
-  height: var(--nav-height);
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 24px;
   position: relative;
-  padding: 0 20px;
+  overflow: visible;
 }
 
-/* Logo */
+/* ------------------------------------------------
+   LOGO
+------------------------------------------------- */
 .navbar-logo {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color: var(--primary);
-  font-weight:700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 700;
   font-family: "Poppins", sans-serif;
   text-decoration: none;
-  z-index: 1300;
 }
 
-/* Centered nav menu */
+/* ------------------------------------------------
+   CENTER NAV MENU + ALIGNMENT FIX
+------------------------------------------------- */
 .navbar-menu {
   position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+
   display: flex;
-  gap: 28px;
-  list-style: none;
-  align-items:center;
-  z-index: 1250;
+  gap: 32px;
+  align-items: center;
 }
 
-.navbar-menu .nav-link {
-  color: var(--muted);
-  font-weight: 500;
-  text-decoration: none;
-  padding: 6px 4px;
-  transition: color var(--transition);
+/* ------------------------------------------------
+   NAV LINK ALIGNMENT (ALL LINKS SAME LINE)
+------------------------------------------------- */
+.nav-link {
+  color: #cfe4f4;
   font-size: 16px;
-}
-.navbar-menu .nav-link:hover,
-.navbar-menu .nav-link.active { color: var(--primary); }
+  font-weight: 500;
 
-/* Right side actions */
-.navbar-actions {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  z-index:1300;
+  /* Ensure perfect vertical alignment */
+  line-height: 78px;
+  display: flex;
+  align-items: center;
+
+  text-decoration: none;
+  transition: color 0.25s ease;
 }
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff;
+}
+
+/* ------------------------------------------------
+   NAV ITEM (hover container)
+------------------------------------------------- */
+.nav-item {
+  position: relative;
+}
+
+/* ------------------------------------------------
+   HOVER BUFFER (prevents dropdown flicker)
+------------------------------------------------- */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 14px; /* invisible hover bridge */
+}
+
+/* ------------------------------------------------
+   MEGA MENU — Multi-column dropdown
+------------------------------------------------- */
+.mega-dropdown {
+  position: absolute;
+  top: calc(100% - 6px); /* attaches directly under item */
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+
+  width: 700px;
+  display: flex;
+  gap: 40px;
+  padding: 28px 32px;
+
+  background: rgba(13, 42, 58, 0.96);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+
+  box-shadow: 0 15px 50px rgba(0,0,0,0.28);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 4000;
+
+  margin-top: -8px;
+}
+
+/* ------------------------------------------------
+   KEEP DROPDOWN OPEN WHILE HOVERED
+------------------------------------------------- */
+.nav-item:hover .mega-dropdown,
+.mega-dropdown:hover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ------------------------------------------------
+   MEGA MENU COLUMNS
+------------------------------------------------- */
+.mega-col {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Section headers */
+.mega-col h4 {
+  color: #9cc7e1;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+/* Dropdown item */
+.mega-col a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #e0edf7;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 8px 0;
+
+  border-radius: 6px;
+  transition: padding-left 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.mega-col a:hover {
+  background: rgba(255,255,255,0.08);
+  padding-left: 12px;
+  color: #ffffff;
+}
+
+/* ------------------------------------------------
+   ICON PLACEHOLDERS
+------------------------------------------------- */
+.mega-col a .icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.mega-col a:hover .icon {
+  background: rgba(255,255,255,0.35);
+  transform: translateX(2px);
+}
+
+/* ------------------------------------------------
+   RIGHT ACTION BUTTON
+------------------------------------------------- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .btn-primary {
-  display:inline-block;
-  background: var(--primary);
+  display: inline-block;
+  background: #1B4F72;
   color: #fff;
   padding: 10px 18px;
   border-radius: 10px;
-  font-weight:600;
-  text-decoration:none;
-  transition: transform var(--transition), background var(--transition);
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.25s ease, background 0.25s ease;
 }
-.btn-primary:hover { transform: translateY(-1px); background: #154360; }
 
-/* Mobile toggle */
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: #154360;
+}
+
+/* ------------------------------------------------
+   MOBILE MENU TOGGLE
+------------------------------------------------- */
 .menu-toggle {
-  display:none;
-  width:36px;
-  height:36px;
-  align-items:center;
-  justify-content:center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  display: none;
 }
+
 .menu-line {
-  display:block;
-  width:18px;
-  height:2px;
-  background: var(--primary);
-  margin:3px 0;
+  width: 18px;
+  height: 2px;
+  background: #ffffff;
+  margin: 3px 0;
 }
+
+
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
