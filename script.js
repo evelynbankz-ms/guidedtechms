@@ -111,11 +111,14 @@ if (blogsSlider && (prevBtn || nextBtn)) {
 }
 
 // SMOOTH SCROLL FOR HASH LINKS (nav)
-const navLinks = safeQueryAll(".nav-link");
+// Only smooth-scroll REAL links, not dropdown toggles
+const navLinks = safeQueryAll(".nav-link:not(.dropdown-toggle)");
+
 navLinks.forEach(link => {
   link.addEventListener("click", (e) => {
     const href = link.getAttribute("href");
     if (!href || href === "#") return;
+
     if (href.startsWith("#")) {
       e.preventDefault();
       const target = document.querySelector(href);
