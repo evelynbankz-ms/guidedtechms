@@ -172,6 +172,79 @@ body {
   background: #154360;
 }
 
+/* ========================= */
+/* MEGA MENU STYLE  */
+/* ========================= */
+
+.nav-item {
+  position: relative;
+}
+
+/* Mega-menu panel */
+.mega-menu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 600px;
+  padding: 22px 28px;
+  background: rgba(9, 32, 44, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.28);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  gap: 40px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: 0.25s ease;
+  z-index: 9999;
+}
+
+/* Open state */
+.nav-item.open > .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Mega sections */
+.mega-section {
+  flex: 1;
+}
+
+.mega-section h4 {
+  font-size: 12px;
+  color: #7eb5cf;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.mega-section a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #d2e4f0;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.mega-section a:hover {
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* Disable hover dropdowns */
+.nav-item:hover .mega-menu {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+
 /* ----------------------------
    Mobile toggle remains same
 ----------------------------- */
