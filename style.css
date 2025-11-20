@@ -276,31 +276,39 @@ body {
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
 ----------------------------------------------------- */
-
-/* BACKGROUND */
+/* HERO SECTION */
 .hero-section {
-  /* background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */ 
-  background: linear-gradient(135deg, #031332 0%, #123d75 100%);
+  background: linear-gradient(
+    135deg,
+    #062040 0%,   /* softer navy */
+    #0b3354 100%  /* gentle deep blue */
+  );
   position: relative;
   padding: 130px 0;
+  overflow: hidden;
 }
 
-/* GRID OVERLAY */
+/* TEMPLATE GRID OVERLAY (soft and subtle) */
 .hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-  background-size: 900px;
-  opacity: 0.12;
+
+  /* Clean geometric grid like MakeItFuture */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+
+  background-size: 120px 120px; /* size of grid squares */
+  opacity: 0.10;               /* subtle, not heavy */
   pointer-events: none;
   z-index: 0;
 }
 
-/* PUT CONTENT ABOVE OVERLAY */
+/* CONTENT ABOVE GRID */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr; /* THIS keeps the image on the right */
+  grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 80px;
   max-width: 1250px;
