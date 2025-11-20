@@ -38,16 +38,14 @@ body {
 .page-wrapper { min-height:100vh; }
 
 /* ------------------------------------------------
-   NAVBAR — FINAL VERSION (Hero-style dark theme)
+   NAVBAR — Dark theme (matches hero section)
 ------------------------------------------------- */
-/* ---------- NAVBAR (existing) ---------- */
 .navbar {
   width: 100%;
   position: sticky;
   top: 0;
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   z-index: 2000;
-  box-shadow: none;
   transition: background 0.3s ease;
 }
 
@@ -60,8 +58,10 @@ body {
   justify-content: space-between;
   padding: 0 24px;
   position: relative;
+  overflow: visible;
 }
 
+/* LOGO */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -72,6 +72,7 @@ body {
   text-decoration: none;
 }
 
+/* CENTER NAV MENU */
 .navbar-menu {
   position: absolute;
   left: 50%;
@@ -95,63 +96,108 @@ body {
   color: #ffffff;
 }
 
-/* ---------- DROPDOWN ---------- */
+/* ------------------------------------------------
+   MEGA MENU (3-Column Multi-Section Dropdown)
+------------------------------------------------- */
 .nav-item {
   position: relative;
 }
 
-/* base dropdown styles (your original) */
-.dropdown {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
+/* Mega dropdown container */
+.mega-dropdown {
   position: absolute;
-  top: 48px;
+  top: 58px;
   left: 0;
-  width: 260px;
-  background: rgba(13, 42, 58, 0.97);
-  border-radius: 12px;
-  padding: 16px 0;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  transform: translateY(6px);
-  backdrop-filter: blur(6px);
-  z-index: 3000;
+
+  width: 700px;
+  display: flex;
+  gap: 40px;
+  padding: 28px 32px;
+
+  background: rgba(13, 42, 58, 0.96);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+
+  box-shadow: 0 15px 50px rgba(0,0,0,0.28);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 4000;
 }
 
-/* allow hover to show (restores hover behaviour) */
-.nav-item:hover .dropdown {
-  visibility: visible;
+/* SHOW ON HOVER (template behavior) */
+.nav-item:hover .mega-dropdown {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
 }
 
-/* click-open state */
-.nav-item.open .dropdown {
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transform: translateY(0) !important;
+/* Columns inside the mega menu */
+.mega-col {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Section headings */
+.mega-col h4 {
+  color: #9cc7e1;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
 }
 
 /* Dropdown links */
-.dropdown a {
-  display: block;
-  padding: 10px 20px;
-  font-size: 15px;
-  color: #dbe9f2;
+.mega-col a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #e0edf7;
   text-decoration: none;
-  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  font-size: 15px;
+  padding: 8px 0;
+
+  border-radius: 6px;
+  transition: padding-left 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
-.dropdown a:hover {
+/* Hover effects */
+.mega-col a:hover {
   background: rgba(255,255,255,0.08);
-  color: #fff;
-  transform: translateX(4px);
+  padding-left: 12px;
+  color: #ffffff;
 }
 
-/* keep existing right side styles */
+/* ------------------------------------------------
+   ICON PLACEHOLDER SUPPORT
+------------------------------------------------- */
+.mega-col a .icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.mega-col a:hover .icon {
+  background: rgba(255,255,255,0.35);
+  transform: translateX(2px);
+}
+
+/* ------------------------------------------------
+   RIGHT ACTION BUTTON
+------------------------------------------------- */
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -174,7 +220,9 @@ body {
   background: #154360;
 }
 
-/* Mobile toggle default */
+/* ------------------------------------------------
+   MOBILE TOGGLE (desktop hidden)
+------------------------------------------------- */
 .menu-toggle {
   display: none;
 }
@@ -185,10 +233,6 @@ body {
   background: #ffffff;
   margin: 3px 0;
 }
-
-/* Small improvement: ensure dropdown is not clipped if navbar has overflow settings */
-.navbar, .navbar-container { overflow: visible; }
-
 
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
