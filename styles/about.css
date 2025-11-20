@@ -289,16 +289,22 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
-.about-hero {
+.hero {
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
   position: relative;
-  background-color: var(--bg, #F8F9F9);
+  padding: 130px 0;
+}
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
   color: var(--primary);
   padding: 120px 0 100px;
   overflow: hidden;
 }
 
 /* Overlay */
-.about-hero::before {
+hero::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -312,7 +318,7 @@ section > .container,
   z-index: 0;
 }
 
-.about-hero-content {
+.hero-content {
   position: relative;
   z-index: 1;
   text-align: left;
@@ -321,21 +327,24 @@ section > .container,
 }
 
 /* Title */
-.about-hero-title {
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
+.hero-title {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--primary);
-  margin-bottom: 20px;
+  color: #ffffff;
+  margin-bottom: 18px;
 }
 
+
 /* Highlight underline */
-.about-hero-title .highlight {
+.hero-title .highlight {
   position: relative;
   color: var(--primary);
   z-index: 1;
 }
-.about-hero-title .highlight::after {
+
+.hero-title .highlight::after {
   content: "";
   position: absolute;
   left: 0;
@@ -348,11 +357,12 @@ section > .container,
 }
 
 /* Subtitle */
-.about-hero-subtitle {
+
+.hero-subtitle {
   font-size: 1.05rem;
-  color: var(--primary);
-  line-height: 1.6;
+  color: #d4e6f1;
   margin-bottom: 30px;
+  line-height: 1.6;
   max-width: 700px;
 }
 
