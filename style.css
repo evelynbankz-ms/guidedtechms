@@ -276,31 +276,30 @@ body {
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
 ----------------------------------------------------- */
-/* HERO SECTION */
+/* HERO SECTION — softer deep blue */
 .hero-section {
   background: linear-gradient(
     135deg,
-    #062040 0%,   /* softer navy */
-    #0b3354 100%  /* gentle deep blue */
+    #081e2b 0%,   /* softened version of #071a24 */
+    #0f3144 100%  /* softened version of #0d2a3a */
   );
   position: relative;
   padding: 130px 0;
   overflow: hidden;
 }
 
-/* TEMPLATE GRID OVERLAY (soft and subtle) */
+/* VISIBLE TEMPLATE GRID */
 .hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
 
-  /* Clean geometric grid like MakeItFuture */
   background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
 
-  background-size: 120px 120px; /* size of grid squares */
-  opacity: 0.10;               /* subtle, not heavy */
+  background-size: 140px 140px;
+  opacity: 0.25;          /* grid visibility */
   pointer-events: none;
   z-index: 0;
 }
