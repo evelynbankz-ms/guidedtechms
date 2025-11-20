@@ -65,7 +65,9 @@ body {
   overflow: visible;
 }
 
-/* LOGO */
+/* ------------------------------------------------
+   LOGO
+------------------------------------------------- */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -86,16 +88,23 @@ body {
   transform: translate(-50%, -50%);
 
   display: flex;
-  gap: 28px;
+  gap: 32px;
   align-items: center;
 }
 
-/* NAV LINKS */
+/* ------------------------------------------------
+   NAV LINK ALIGNMENT (ALL LINKS SAME LINE)
+------------------------------------------------- */
 .nav-link {
   color: #cfe4f4;
   font-size: 16px;
   font-weight: 500;
-  padding: 6px 4px;
+
+  /* Ensure perfect vertical alignment */
+  line-height: 78px;
+  display: flex;
+  align-items: center;
+
   text-decoration: none;
   transition: color 0.25s ease;
 }
@@ -106,11 +115,22 @@ body {
 }
 
 /* ------------------------------------------------
-   NAV ITEM — GAP FIX (Prevents dropdown flicker)
+   NAV ITEM (hover container)
 ------------------------------------------------- */
 .nav-item {
   position: relative;
-  padding-bottom: 14px; /* creates hover buffer below nav item */
+}
+
+/* ------------------------------------------------
+   HOVER BUFFER (prevents dropdown flicker)
+------------------------------------------------- */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 14px; /* invisible hover bridge */
 }
 
 /* ------------------------------------------------
@@ -118,9 +138,8 @@ body {
 ------------------------------------------------- */
 .mega-dropdown {
   position: absolute;
-  top: calc(100% - 6px);  /* sits directly under the nav link */
-
-  left: 50%;              /* center under nav item */
+  top: calc(100% - 6px); /* attaches directly under item */
+  left: 50%;
   transform: translateX(-50%) translateY(12px);
 
   width: 700px;
@@ -141,11 +160,11 @@ body {
   transition: opacity 0.25s ease, transform 0.25s ease;
   z-index: 4000;
 
-  margin-top: -8px;  /* eliminates any tiny hover gap */
+  margin-top: -8px;
 }
 
 /* ------------------------------------------------
-   KEEP DROPDOWN OPEN — (Template Behavior)
+   KEEP DROPDOWN OPEN WHILE HOVERED
 ------------------------------------------------- */
 .nav-item:hover .mega-dropdown,
 .mega-dropdown:hover {
@@ -166,7 +185,7 @@ body {
   gap: 6px;
 }
 
-/* Section titles */
+/* Section headers */
 .mega-col h4 {
   color: #9cc7e1;
   font-size: 13px;
@@ -176,7 +195,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Dropdown links */
+/* Dropdown item */
 .mega-col a {
   display: flex;
   align-items: center;
