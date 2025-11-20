@@ -235,22 +235,13 @@ document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
 
 
 // Mega Menu in Navbar
-document.querySelectorAll(".feature-item").forEach(item => {
-  item.addEventListener("mouseenter", () => {
-    item.querySelector(".arrow").style.transform = "translateX(4px)";
-  });
-  item.addEventListener("mouseleave", () => {
-    item.querySelector(".arrow").style.transform = "translateX(0)";
-  });
-});
-
-document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
+document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
   toggle.addEventListener("click", (e) => {
     e.preventDefault();
     const parent = toggle.parentElement;
 
-    // close others
-    document.querySelectorAll(".nav-item.open").forEach((item) => {
+    // close all other dropdowns
+    document.querySelectorAll(".nav-item.open").forEach(item => {
       if (item !== parent) item.classList.remove("open");
     });
 
@@ -259,10 +250,10 @@ document.querySelectorAll(".dropdown-toggle").forEach((toggle) => {
   });
 });
 
-// close on outside click
+// close dropdown if clicked outside
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".nav-item")) {
-    document.querySelectorAll(".nav-item.open").forEach((item) =>
+    document.querySelectorAll(".nav-item.open").forEach(item =>
       item.classList.remove("open")
     );
   }
