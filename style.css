@@ -294,12 +294,13 @@ body {
   position: absolute;
   inset: 0;
 
+  /* NOTICE THE STRONGER LINES */
   background-image:
-    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
-  background-size: 140px 140px;
-  opacity: 0.25;          /* grid visibility */
+  background-size: 160px 160px; /* Bigger grid = more visible */
+  opacity: 0.35;                /* Much stronger */
   pointer-events: none;
   z-index: 0;
 }
