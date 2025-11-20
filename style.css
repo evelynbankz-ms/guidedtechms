@@ -1251,7 +1251,7 @@ body {
 
 /* ---------- FOOTER ---------- */
 .gts-footer {
-  background: #1B4F72; /* YOUR BRAND HERO COLOR */
+ background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
   background-image: url("asset/grid-lines.png");
   background-size: cover;
   padding: 80px 0 40px;
