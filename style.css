@@ -279,7 +279,8 @@ body {
 
 /* BACKGROUND */
 .hero-section {
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
+  /* background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */ 
+  background: linear-gradient(135deg, #0f3042 0%, #18475e 100%);
   position: relative;
   padding: 130px 0;
 }
