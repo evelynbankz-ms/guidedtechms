@@ -6,6 +6,7 @@ const safeQueryAll = (sel) => {
   try { return Array.from(document.querySelectorAll(sel)); } catch(e){ return []; }
 };
 
+
 // MOBILE MENU TOGGLE
 const menuToggle = safeQuery(".menu-toggle");
 const navbarMenu = safeQuery(".navbar-menu");
@@ -15,7 +16,7 @@ if (menuToggle && navbarMenu) {
   menuToggle.addEventListener("click", () => {
     navbarMenu.classList.toggle("active");
     menuToggle.classList.toggle("open");
-    // simple open/close: show/hide nav on mobile
+
     if (navbarMenu.classList.contains("active")) {
       navbarMenu.style.display = "flex";
       navbarMenu.style.flexDirection = "column";
@@ -40,7 +41,8 @@ if (menuToggle && navbarMenu) {
   });
 }
 
-// HERO FADE-IN (IntersectionObserver)
+
+// HERO FADE-IN
 const fadeEls = safeQueryAll(".fade-in");
 if (fadeEls.length) {
   const fadeInObserver = new IntersectionObserver((entries) => {
@@ -51,7 +53,8 @@ if (fadeEls.length) {
   fadeEls.forEach(el => fadeInObserver.observe(el));
 }
 
-// STICKY NAVBAR SHADOW ON SCROLL
+
+// STICKY NAVBAR SHADOW
 if (navbar) {
   window.addEventListener("scroll", () => {
     if (window.scrollY > 30) navbar.classList.add("scrolled");
@@ -59,61 +62,69 @@ if (navbar) {
   });
 }
 
-// TESTIMONIALS SLIDER (simple fade carousel)
+
+// TESTIMONIALS (FIRST BLOCK)
 const testimonialSlider = safeQuery(".testimonials-slider");
 const testimonialItems = safeQueryAll(".testimonial-item");
+
 if (testimonialSlider && testimonialItems.length) {
   let tIndex = 0;
-  // initialize
+
   testimonialItems.forEach((it, i) => {
-    if (i === 0) it.classList.add("active");
-    else it.classList.remove("active");
+    it.classList.toggle("active", i === 0);
   });
+
   const nextTestimonial = () => {
     testimonialItems[tIndex].classList.remove("active");
     tIndex = (tIndex + 1) % testimonialItems.length;
     testimonialItems[tIndex].classList.add("active");
   };
+
   let tInterval = setInterval(nextTestimonial, 5000);
-  // pause on hover
+
   testimonialSlider.addEventListener("mouseenter", () => clearInterval(tInterval));
   testimonialSlider.addEventListener("mouseleave", () => tInterval = setInterval(nextTestimonial, 5000));
 }
 
-// BLOG SLIDER (scroll container with arrows)
+
+// BLOG SLIDER
 const blogsSlider = safeQuery(".blogs-slider");
-const prevBtn = safeQuery(".slider-arrow.prev");
-const nextBtn = safeQuery(".slider-arrow.next");
-if (blogsSlider && (prevBtn || nextBtn)) {
+const prevBlogBtn = safeQuery(".slider-arrow.prev");
+const nextBlogBtn = safeQuery(".slider-arrow.next");
+
+if (blogsSlider && (prevBlogBtn || nextBlogBtn)) {
   let scrollAmount = 0;
   const step = Math.min(320, Math.round(blogsSlider.clientWidth * 0.8));
-  if (prevBtn) prevBtn.addEventListener("click", () => {
+
+  if (prevBlogBtn) prevBlogBtn.addEventListener("click", () => {
     scrollAmount = Math.max(0, scrollAmount - step);
     blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
   });
-  if (nextBtn) nextBtn.addEventListener("click", () => {
+
+  if (nextBlogBtn) nextBlogBtn.addEventListener("click", () => {
     scrollAmount = Math.min(blogsSlider.scrollWidth - blogsSlider.clientWidth, scrollAmount + step);
     blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
   });
 
-  // Optional auto-scroll (pausable)
   let auto = setInterval(() => {
     scrollAmount += step;
     if (scrollAmount > blogsSlider.scrollWidth - blogsSlider.clientWidth) scrollAmount = 0;
     blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
   }, 5000);
+
   blogsSlider.addEventListener("mouseenter", () => clearInterval(auto));
-  blogsSlider.addEventListener("mouseleave", () => auto = setInterval(() => {
-    scrollAmount += step;
-    if (scrollAmount > blogsSlider.scrollWidth - blogsSlider.clientWidth) scrollAmount = 0;
-    blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
-  }, 5000));
+  blogsSlider.addEventListener("mouseleave", () =>
+    auto = setInterval(() => {
+      scrollAmount += step;
+      if (scrollAmount > blogsSlider.scrollWidth - blogsSlider.clientWidth) scrollAmount = 0;
+      blogsSlider.scrollTo({ left: scrollAmount, behavior: "smooth" });
+    }, 5000)
+  );
 }
 
-// SMOOTH SCROLL FOR HASH LINKS (nav)
-// Only smooth-scroll REAL links, not dropdown toggles
-const navLinks = safeQueryAll(".nav-link:not(.dropdown-toggle)");
 
+// SMOOTH SCROLL (EXCLUDES DROPDOWNS)
+const navLinks = safeQueryAll(".nav-link:not(.dropdown-toggle)");
 navLinks.forEach(link => {
   link.addEventListener("click", (e) => {
     const href = link.getAttribute("href");
@@ -122,11 +133,10 @@ navLinks.forEach(link => {
     if (href.startsWith("#")) {
       e.preventDefault();
       const target = document.querySelector(href);
-      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-      // close mobile menu if open
+      if (target) target.scrollIntoView({ behavior:"smooth", block:"start" });
+
       if (navbarMenu && navbarMenu.classList.contains("active")) {
         navbarMenu.classList.remove("active");
-        // reset styles applied earlier
         navbarMenu.style.display = "";
         navbarMenu.style.position = "";
       }
@@ -134,22 +144,24 @@ navLinks.forEach(link => {
   });
 });
 
-// Scroll reveal for .scroll-reveal
+
+// SCROLL REVEAL
 const scrollEls = safeQueryAll(".scroll-reveal");
 if (scrollEls.length) {
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add("visible"); });
+    entries.forEach(en => {
+      if (en.isIntersecting) en.target.classList.add("visible");
+    });
   }, { threshold: 0.18 });
   scrollEls.forEach(el => obs.observe(el));
 }
 
+// FEATURE SWITCHER
 document.querySelectorAll('.feature-item').forEach(item => {
   item.addEventListener('click', () => {
-    // Remove old active
     document.querySelectorAll('.feature-item').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.feature-content').forEach(c => c.classList.remove('active'));
 
-    // Activate clicked
     item.classList.add('active');
     const id = item.dataset.feature;
     document.getElementById(id).classList.add('active');
@@ -157,56 +169,59 @@ document.querySelectorAll('.feature-item').forEach(item => {
 });
 
 
-  const testimonials = document.querySelectorAll(".testimonial-item");
-  const prevBtn = document.querySelector(".nav-btn.prev");
-  const nextBtn = document.querySelector(".nav-btn.next");
-  let index = 0;
-  let interval;
+// TESTIMONIALS 2nd BLOCK (renamed vars to avoid conflicts!)
+const testimonials2 = document.querySelectorAll(".testimonial-item");
+const navPrevBtn = document.querySelector(".nav-btn.prev");
+const navNextBtn = document.querySelector(".nav-btn.next");
+let index2 = 0;
+let interval2;
 
-  function showTestimonial(i) {
-    testimonials.forEach((item, idx) => {
-      item.classList.toggle("active", idx === i);
-    });
-  }
-
-  function nextSlide() {
-    index = (index + 1) % testimonials.length;
-    showTestimonial(index);
-  }
-
-  function prevSlide() {
-    index = (index - 1 + testimonials.length) % testimonials.length;
-    showTestimonial(index);
-  }
-
-  function startAutoSlide() {
-    interval = setInterval(nextSlide, 6000);
-  }
-
-  function stopAutoSlide() {
-    clearInterval(interval);
-  }
-
-  nextBtn.addEventListener("click", () => {
-    nextSlide();
-    stopAutoSlide();
-    startAutoSlide();
+function showTestimonial2(i) {
+  testimonials2.forEach((item, idx) => {
+    item.classList.toggle("active", idx === i);
   });
+}
 
-  prevBtn.addEventListener("click", () => {
-    prevSlide();
-    stopAutoSlide();
-    startAutoSlide();
+function nextSlide2() {
+  index2 = (index2 + 1) % testimonials2.length;
+  showTestimonial2(index2);
+}
+
+function prevSlide2() {
+  index2 = (index2 - 1 + testimonials2.length) % testimonials2.length;
+  showTestimonial2(index2);
+}
+
+function startAutoSlide2() {
+  interval2 = setInterval(nextSlide2, 6000);
+}
+
+function stopAutoSlide2() {
+  clearInterval(interval2);
+}
+
+if (navNextBtn) {
+  navNextBtn.addEventListener("click", () => {
+    nextSlide2();
+    stopAutoSlide2();
+    startAutoSlide2();
   });
+}
+if (navPrevBtn) {
+  navPrevBtn.addEventListener("click", () => {
+    prevSlide2();
+    stopAutoSlide2();
+    startAutoSlide2();
+  });
+}
 
-  showTestimonial(index);
-  startAutoSlide();
+showTestimonial2(index2);
+startAutoSlide2();
 
-
-// Auto year
+// AUTO YEAR
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Blog scroll arrows
+// BLOG ARROWS
 document.querySelector('.slider-arrow.next')?.addEventListener('click', () => {
   document.querySelector('.blogs-slider').scrollBy({ left: 350, behavior: 'smooth' });
 });
@@ -214,7 +229,7 @@ document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
   document.querySelector('.blogs-slider').scrollBy({ left: -350, behavior: 'smooth' });
 });
 
-// Placeholder for auto-loading future blog posts from /blog page
+// BLOG LOADER
 (async function pullFromBlogPage() {
   const slider = document.querySelector('.blogs-slider');
   if (!slider) return;
@@ -231,29 +246,28 @@ document.querySelector('.slider-arrow.prev')?.addEventListener('click', () => {
       blogCards.forEach(card => slider.appendChild(card.cloneNode(true)));
     }
   } catch (err) {
-    console.warn('No blog page found yet — using default posts.');
+    console.warn('No blog page found — using default posts.');
   }
 })();
 
 
-
-// Mega Menu in Navbar
+// ---------------------------
+// FINAL FIXED DROPDOWN LOGIC
+// ---------------------------
 document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
   toggle.addEventListener("click", (e) => {
     e.preventDefault();
-    const parent = toggle.parentElement;
+    e.stopPropagation();
+    const parent = toggle.closest(".nav-item");
 
-    // close all other dropdowns
     document.querySelectorAll(".nav-item.open").forEach(item => {
       if (item !== parent) item.classList.remove("open");
     });
 
-    // toggle this one
     parent.classList.toggle("open");
   });
 });
 
-// close dropdown if clicked outside
 document.addEventListener("click", (e) => {
   if (!e.target.closest(".nav-item")) {
     document.querySelectorAll(".nav-item.open").forEach(item =>
@@ -261,3 +275,4 @@ document.addEventListener("click", (e) => {
     );
   }
 });
+
