@@ -1251,12 +1251,12 @@ body {
 
 /* ---------- FOOTER ---------- */
 .gts-footer {
- background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%); /* deep blue */
-  background-image: url("asset/grid-lines.png");
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   background-size: cover;
   padding: 80px 0 40px;
   color: rgba(255,255,255,0.85);
 }
+
 
 .gts-footer-inner {
   width: 90%;
