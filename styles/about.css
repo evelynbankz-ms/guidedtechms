@@ -290,7 +290,7 @@ section > .container,
 
 /* ---------- ABOUT HERO SECTION ---------- */
 /* HERO SECTION — softer deep blue */
-.hero-section {
+.hero {
   background: linear-gradient(
     135deg,
     #081e2b 0%,   /* softened version of #071a24 */
@@ -302,7 +302,7 @@ section > .container,
 }
 
 /* VISIBLE TEMPLATE GRID */
-.hero-section::before {
+.hero ::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -319,7 +319,7 @@ section > .container,
 }
 
 /* CONTENT ABOVE GRID */
-.hero-grid {
+.hero-content {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
