@@ -313,7 +313,7 @@ section > .container,
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
   background-size: 160px 160px;
-  opacity: 0.35;
+  opacity: 0.40;
   pointer-events: none;
   z-index: 0;
 }
