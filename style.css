@@ -337,23 +337,17 @@ body {
   margin-bottom: 18px;
 }
 
-/* UNDERLINE */
+/* HOME PAGE HERO HIGHLIGHT — MATCH ABOUT PAGE */
 .hero-title .underline {
-  color: #4ba3ff;     /* same highlight color */
+  color: #4ba3ff;
   font-weight: inherit;
+  position: relative;
+  z-index: 1;
 }
 
+/* REMOVE UNDERLINE EFFECT */
 .hero-title .underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 6px;
-  width: 100%;
-  height: 0.30em;
-  /* background: rgba(74, 163, 255, 0.35); */
-  background-color: var(--accent);
-  border-radius: 4px;
-  z-index: -1;
+  content: none;
 }
 
 .hero-subtitle {
