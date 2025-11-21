@@ -289,7 +289,6 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
-
 .hero {
   background: linear-gradient(
     135deg,
@@ -300,6 +299,7 @@ section > .container,
   padding: 140px 0 120px;
   overflow: hidden;
   z-index: 1;
+  text-align: center; /* CENTER EVERYTHING */
 }
 
 /* VISIBLE GRID OVERLAY */
@@ -318,60 +318,83 @@ section > .container,
   z-index: 0;
 }
 
-/* CONTENT ABOVE GRID */
+/* CONTENT WRAPPER — CENTERED */
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 900px;   /* narrower width improves center layout */
+  margin: 0 auto;     /* center container */
   padding: 0 24px;
 }
 
-/* TITLE */
-.hero-title p {
-  color: #ffffff;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2;
+/* MAIN TITLE */
+/* Wrap both titles */
+.hero-title {
+  text-align: center;
   margin-bottom: 25px;
 }
 
-
-.hero-title {
+/* Top small label */
+.hero-top-title {
   color: #ffffff;
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 18px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  opacity: 0.9;
+  margin: 0;
+  margin-bottom: 8px;
 }
 
-/* HIGHLIGHT COLOR */
+/* Thin underline under top title */
+.hero-top-underline {
+  width: 70px;               /* length of the line */
+  height: 2px;               /* thin modern line */
+  background-color: #4ba3ff; /* same highlight color */
+  margin: 0 auto 18px auto;  /* center it with spacing */
+  border-radius: 2px;
+}
+
+/* Main bold title */
+.hero-title h2 {
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Highlight color */
 .hero-title .highlight {
   color: #4ba3ff;
 }
 
 
-/* Subtitle */
+/* SUBTITLE */
 .hero-subtitle {
-  font-size: 1.05rem;
   color: #d4e6f1;
-  margin-bottom: 30px;
-  line-height: 1.6;
+  font-size: 1.15rem;
   max-width: 700px;
+  margin: 0 auto 30px auto; /* center subtitle block */
+  line-height: 1.6;
 }
 
-/* Breadcrumbs */
+/* BREADCRUMBS */
 .breadcrumbs {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.8);
+  margin-top: 10px;
 }
+
 .breadcrumbs a {
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   transition: color var(--transition);
 }
-.breadcrumbs a:hover { color: var(--accent); }
+
+.breadcrumbs a:hover { 
+  color: var(--accent); 
+}
+
 .breadcrumbs span {
   color: var(--accent);
   font-weight: 600;
@@ -379,13 +402,21 @@ section > .container,
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
-  .about-hero {
-    padding: 100px 0 80px;
+
+  .hero {
+    padding: 110px 0 80px;
+    text-align: center;
   }
-  .about-hero-title {
-    font-size: 2rem;
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
   }
 }
+
 
 
 /* =============== MISSION SECTION =============== */
