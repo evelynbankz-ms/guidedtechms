@@ -606,148 +606,94 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
+/* SECTION */
 .values-section {
-  padding: 100px 0;
+  padding: 110px 0;
+  background: #f7fafc; /* soft template-like background */
+  text-align: center;
 }
 
-.section-title.center {
-  text-align: center;
-  font-size: 2.6rem;
+/* SMALL LABEL */
+.values-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1B4F72;
+  letter-spacing: 0.12rem;
+  margin-bottom: 10px;
+}
+
+/* HEADING */
+.values-heading {
+  font-size: 2.3rem;
   font-weight: 700;
-  margin-bottom: 50px;
   color: #062436;
+  margin-bottom: 50px;
 }
 
 /* GRID */
 .values-grid {
   display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 /* CARD */
 .value-card {
   background: #ffffff;
-  border: 1px solid #e7eef5;
-  border-radius: 16px;
   padding: 40px 32px;
-  text-align: center;
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  border-radius: 18px;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transition: all 0.25s ease;
 }
 
-/* Hover */
+/* Hover effect EXACTLY like the template */
 .value-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.07);
-  border-color: #c9d9e6;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* Icon */
-.value-card .icon {
-  font-size: 40px;
-  margin-bottom: 14px;
-  display: block;
+/* ICON */
+.value-icon {
+  font-size: 2.6rem;
+  margin-bottom: 16px;
 }
 
-/* Card Title */
+/* TITLE */
 .value-card h3 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 10px;
   color: #062436;
+  margin-bottom: 10px;
 }
 
-/* Card Text */
+/* TEXT */
 .value-card p {
-  font-size: 0.97rem;
+  font-size: 0.98rem;
   color: #4b5c6b;
   line-height: 1.55;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
-/* ----------------------------------------------
-   RESPONSIVE BREAKPOINTS
----------------------------------------------- */
+/* ------------ RESPONSIVE ------------ */
 
-/* LARGE TABLETS / SMALL LAPTOPS */
+/* Tablets */
 @media (max-width: 992px) {
-  .section-title.center {
-    font-size: 2.3rem;
-  }
-
-  .value-card {
-    padding: 34px 26px;
-  }
-
-  .value-card h3 {
-    font-size: 1.2rem;
-  }
-
-  .value-card p {
-    font-size: 0.95rem;
-  }
-}
-
-/* MEDIUM TABLETS */
-@media (max-width: 768px) {
-  .values-section {
-    padding: 80px 0;
-  }
-
-  .section-title.center {
-    font-size: 2.1rem;
-    margin-bottom: 40px;
-  }
-
   .values-grid {
-    gap: 24px;
-    grid-template-columns: 1fr 1fr; /* 2 per row */
-  }
-
-  .value-card {
-    padding: 30px 24px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* MOBILE */
+/* Mobile */
 @media (max-width: 576px) {
   .values-grid {
-    grid-template-columns: 1fr; /* 1 per row */
+    grid-template-columns: 1fr;
   }
-
-  .section-title.center {
+  
+  .values-heading {
     font-size: 1.9rem;
   }
-
-  .value-card {
-    padding: 28px 22px;
-  }
-
-  .value-card .icon {
-    font-size: 38px;
-  }
 }
 
-/* VERY SMALL DEVICES (iPhone SE, small Android) */
-@media (max-width: 380px) {
-  .section-title.center {
-    font-size: 1.75rem;
-  }
-
-  .value-card {
-    padding: 24px 18px;
-  }
-
-  .value-card h3 {
-    font-size: 1.15rem;
-  }
-
-  .value-card p {
-    font-size: 0.9rem;
-  }
-}
 
 
