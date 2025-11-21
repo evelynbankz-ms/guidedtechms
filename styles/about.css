@@ -606,109 +606,106 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* VALUES SECTION */
+/* SECTION WRAPPER */
 .values-section {
+  background: #f4f9fc;
   padding: 80px 0 120px;
-  background: #f6fbff; /* same as template */
 }
 
 .values-container {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
-  padding: 0 20px;
 }
 
-/* Heading */
 .values-heading {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  color: #0c1b33;
-  margin-bottom: 70px;
+  margin-bottom: 60px;
+  color: #0a2233;
 }
 
-/* GRID WRAPPER — CENTER EVERYTHING */
+/* GRID — EXACT TEMPLATE LAYOUT */
 .values-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* FIRST ROW: 2 CARDS */
-  gap: 45px 40px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 40px 50px; /* vertical, horizontal spacing */
 }
 
-/* VALUE CARD STYLE */
+/* CARD STYLE — EXACT MATCH TO TEMPLATE */
 .value-card {
+  width: 480px;         /* EXACT WIDTH from screenshot */
   background: #ffffff;
-  border: 1px solid #e6eef4;
-  border-radius: 14px;
-  padding: 55px 45px;
-  width: 520px;         /* EXACT WIDTH from your screenshot */
-  max-width: 100%;
-  margin: 0 auto;
+  border: 1px solid #e6eef2;
+  border-radius: 12px;
+  padding: 45px 35px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
 
+/* FIXED HEIGHT so the rows align perfectly like the screenshot */
+.value-card {
+  height: 260px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  justify-content: flex-start;
 }
 
 /* ICON */
 .value-icon {
   font-size: 40px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 /* TITLE */
 .value-card h3 {
-  font-size: 22px;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #0c1b33;
+  color: #0a2233;
   margin-bottom: 12px;
 }
 
-/* PARAGRAPH */
+/* TEXT */
 .value-card p {
-  font-size: 16px;
+  font-size: 0.97rem;
+  color: #35505e;
   line-height: 1.55;
-  color: #3b4a5a;
-  max-width: 420px;
+  margin: 0 auto;
+  max-width: 340px;
 }
 
-/* HOVER EFFECT */
+/* HOVER EFFECT (subtle, template-style) */
 .value-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.06);
-}
-
-/* --- SECOND ROW LAYOUT: 3 CARDS --- */
-.value-card:nth-child(n+3):nth-child(-n+5) {
-  grid-column: span 1;
-}
-
-/* FULL GRID STRUCTURE:
-   Row 1 → 2 cards
-   Row 2 → 3 cards centered 
-*/
-.values-grid {
-  grid-auto-rows: auto;
-  grid-template-areas:
-    "card1 card2"
-    "card3 card4 card5";
-  justify-items: center;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 /* RESPONSIVE */
 @media (max-width: 1100px) {
-  .values-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas: none;
-  }
-
   .value-card {
-    width: 100%;
+    width: 420px;
   }
 }
+
+@media (max-width: 768px) {
+  .values-grid {
+    gap: 30px;
+  }
+  .value-card {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .value-card {
+    padding: 35px 22px;
+  }
+}
+
 
 
 
