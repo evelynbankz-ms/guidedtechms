@@ -301,7 +301,7 @@ section > .container,
     #0f3144 100%
   );
   position: relative;
-  padding: 140px 0 120px;
+  padding: 120px 0 120px;
   overflow: hidden;
   z-index: 1;
   text-align: center;
@@ -356,16 +356,6 @@ section > .container,
   border-radius: 6px;
 }
 
-/* MAIN SUB-HEADING (Empowering startups…) */
-.hero-title {
-  font-size: 1.20rem;          /* smaller than the big title */
-  line-height: 1.3;
-  font-weight: 500;
-  color: #ffffff;
-  margin-top: 150px !important;           /* LARGE SPACE between title & sub-heading */
-  margin-bottom: 30px;
-}
-
 /* highlight blue word */
 .hero-title .highlight {
   color: #4ba3ff;
@@ -377,7 +367,7 @@ section > .container,
   color: #d4e6f1;
   max-width: 720px;
   margin: 0 auto;
-  margin-bottom: 80px;        /* much more spacing before breadcrumbs */
+  margin-bottom: 30px;        /* much more spacing before breadcrumbs */
   line-height: 1.6;
 }
 
@@ -385,7 +375,7 @@ section > .container,
 .breadcrumbs {
   font-size: 1rem;
   color: rgba(255,255,255,0.85);
-  margin-top: 45px;           /* large gap from text */
+  margin-top: 30px;           /* large gap from text */
 }
 
 .breadcrumbs a {
