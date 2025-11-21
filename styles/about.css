@@ -603,37 +603,57 @@ section > .container,
 }
 
 
-/* =========================
-   VALUES SECTION
-   ========================= */
-/* Base hover card styling */
+/* ----------------------------------------------
+   VALUES SECTION — BASE STYLES
+---------------------------------------------- */
+.values-section {
+  padding: 100px 0;
+}
+
+.section-title.center {
+  text-align: center;
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+  color: #062436;
+}
+
+/* GRID */
+.values-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* CARD */
 .value-card {
   background: #ffffff;
   border: 1px solid #e7eef5;
   border-radius: 16px;
   padding: 40px 32px;
   text-align: center;
-  transition: 
+
+  transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 }
 
-/* Hover effect — elegant & minimal */
+/* Hover */
 .value-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.07);
   border-color: #c9d9e6;
 }
 
-/* Icon inside card */
+/* Icon */
 .value-card .icon {
   font-size: 40px;
   margin-bottom: 14px;
   display: block;
 }
 
-/* Title */
+/* Card Title */
 .value-card h3 {
   font-size: 1.3rem;
   font-weight: 700;
@@ -641,18 +661,93 @@ section > .container,
   color: #062436;
 }
 
-/* Text */
+/* Card Text */
 .value-card p {
   font-size: 0.97rem;
   color: #4b5c6b;
   line-height: 1.55;
 }
 
-/* Grid Layout */
-.values-grid {
-  display: grid;
-  gap: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  margin-top: 40px;
+/* ----------------------------------------------
+   RESPONSIVE BREAKPOINTS
+---------------------------------------------- */
+
+/* LARGE TABLETS / SMALL LAPTOPS */
+@media (max-width: 992px) {
+  .section-title.center {
+    font-size: 2.3rem;
+  }
+
+  .value-card {
+    padding: 34px 26px;
+  }
+
+  .value-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .value-card p {
+    font-size: 0.95rem;
+  }
 }
+
+/* MEDIUM TABLETS */
+@media (max-width: 768px) {
+  .values-section {
+    padding: 80px 0;
+  }
+
+  .section-title.center {
+    font-size: 2.1rem;
+    margin-bottom: 40px;
+  }
+
+  .values-grid {
+    gap: 24px;
+    grid-template-columns: 1fr 1fr; /* 2 per row */
+  }
+
+  .value-card {
+    padding: 30px 24px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 576px) {
+  .values-grid {
+    grid-template-columns: 1fr; /* 1 per row */
+  }
+
+  .section-title.center {
+    font-size: 1.9rem;
+  }
+
+  .value-card {
+    padding: 28px 22px;
+  }
+
+  .value-card .icon {
+    font-size: 38px;
+  }
+}
+
+/* VERY SMALL DEVICES (iPhone SE, small Android) */
+@media (max-width: 380px) {
+  .section-title.center {
+    font-size: 1.75rem;
+  }
+
+  .value-card {
+    padding: 24px 18px;
+  }
+
+  .value-card h3 {
+    font-size: 1.15rem;
+  }
+
+  .value-card p {
+    font-size: 0.9rem;
+  }
+}
+
 
