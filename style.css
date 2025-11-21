@@ -339,9 +339,8 @@ body {
 
 /* UNDERLINE */
 .hero-title .underline {
-  position: relative;
-  z-index: 1;
-  /* display: inline-block; */
+  color: #4ba3ff;     /* same highlight color */
+  font-weight: inherit;
 }
 
 .hero-title .underline::after {
