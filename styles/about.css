@@ -289,6 +289,10 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
+/* ============================================================
+   HERO SECTION — ABOUT PAGE (CENTERED + UNDERLINE STYLE)
+   ============================================================ */
+
 .hero {
   background: linear-gradient(
     135deg,
@@ -299,10 +303,10 @@ section > .container,
   padding: 140px 0 120px;
   overflow: hidden;
   z-index: 1;
-  text-align: center; /* CENTER EVERYTHING */
+  text-align: center;
 }
 
-/* VISIBLE GRID OVERLAY */
+/* GRID OVERLAY — opacity reduced to 0.35 */
 .hero::before {
   content: "";
   position: absolute;
@@ -313,71 +317,79 @@ section > .container,
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
   background-size: 160px 160px;
-  opacity: 0.40;
+  opacity: 0.35;         /* updated as requested */
   pointer-events: none;
   z-index: 0;
 }
 
-/* CONTENT WRAPPER — CENTERED */
+/* CONTENT ABOVE GRID */
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 900px;   /* narrower width improves center layout */
-  margin: 0 auto;     /* center container */
+  max-width: 900px;
+  margin: 0 auto;
   padding: 0 24px;
 }
 
-/* MAIN TITLE */
-/* Wrap both titles */
+/* ============================================================
+   TITLES
+   ============================================================ */
+
+/* Title wrapper */
 .hero-title {
   text-align: center;
   margin-bottom: 25px;
 }
 
-/* Top small label */
+/* Top P Title — Bigger than H2 */
 .hero-top-title {
   color: #ffffff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  opacity: 0.9;
-  margin: 0;
-  margin-bottom: 8px;
+  font-size: 2.1rem;      /* Bigger than the h2 */
+  font-weight: 700;
+  opacity: 0.95;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
 }
 
-/* Thin underline under top title */
+/* Underline under top title */
 .hero-top-underline {
-  width: 70px;               /* length of the line */
-  height: 2px;               /* thin modern line */
-  background-color: #4ba3ff; /* same highlight color */
-  margin: 0 auto 18px auto;  /* center it with spacing */
+  width: 70px;
+  height: 2px;
+  background-color: #4ba3ff;
+  margin: 0 auto 18px auto;
   border-radius: 2px;
 }
 
-/* Main bold title */
+/* Main title (h2) */
 .hero-title h2 {
   color: #ffffff;
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 2.6rem;      /* Slightly smaller than hero-top-title */
+  font-weight: 600;
+  line-height: 1.25;
   margin: 0;
 }
 
-/* Highlight color */
+/* Highlight */
 .hero-title .highlight {
   color: #4ba3ff;
 }
 
+/* ============================================================
+   SUBTITLE
+   ============================================================ */
 
-/* SUBTITLE */
 .hero-subtitle {
+  font-size: 1.12rem;
   color: #d4e6f1;
-  font-size: 1.15rem;
+  margin: 0 auto 30px auto;
   max-width: 700px;
-  margin: 0 auto 30px auto; /* center subtitle block */
   line-height: 1.6;
 }
 
-/* BREADCRUMBS */
+/* ============================================================
+   BREADCRUMBS
+   ============================================================ */
+
 .breadcrumbs {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.8);
@@ -391,8 +403,8 @@ section > .container,
   transition: color var(--transition);
 }
 
-.breadcrumbs a:hover { 
-  color: var(--accent); 
+.breadcrumbs a:hover {
+  color: var(--accent);
 }
 
 .breadcrumbs span {
@@ -400,22 +412,29 @@ section > .container,
   font-weight: 600;
 }
 
-/* ---------- RESPONSIVE ---------- */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
 @media (max-width: 768px) {
 
   .hero {
-    padding: 110px 0 80px;
-    text-align: center;
+    padding: 110px 0 85px;
   }
 
-  .hero-title {
-    font-size: 2.2rem;
+  .hero-top-title {
+    font-size: 1.7rem;
+  }
+
+  .hero-title h2 {
+    font-size: 2.1rem;
   }
 
   .hero-subtitle {
     font-size: 1rem;
   }
 }
+
 
 
 
