@@ -297,7 +297,7 @@ section > .container,
 .hero {
   background: linear-gradient(135deg, #081e2b 0%, #0f3144 100%);
   position: relative;
-  padding: 150px 0 130px; /* Increased height */
+  padding: 140px 0 120px; /* Increased height */
   overflow: hidden;
   z-index: 1;
 }
@@ -353,11 +353,11 @@ section > .container,
 
 /* MAIN SUB-HEADING (Empowering startups…) */
 .hero-title {
-  font-size: 2.0rem;          /* smaller than the big title */
+  font-size: 1.8rem;          /* smaller than the big title */
   line-height: 1.3;
-  font-weight: 600;
+  font-weight: 500;
   color: #ffffff;
-  margin-top: 80px !important;           /* LARGE SPACE between title & sub-heading */
+  margin-top: 150px !important;           /* LARGE SPACE between title & sub-heading */
   margin-bottom: 30px;
 }
 
