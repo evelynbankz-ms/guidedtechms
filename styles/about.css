@@ -606,155 +606,86 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* ------------------------------
-   VALUES SECTION — screenshot-1
-   (2 wide cards on top, 3 below)
-   ------------------------------ */
-
-/* Container helper (if you already have one, keep yours) */
-.container {
-  max-width: 1250px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Section */
+/* SECTION WRAPPER */
 .values-section {
-  background: #f5f8fb; /* light background to match screenshot */
-  padding: 120px 0 90px;
+  padding: 120px 0;
+  background: #f7fbff;
 }
 
-/* Title */
-.values-title {
+/* TITLE */
+.values-heading {
   text-align: center;
   font-size: 3rem;
   font-weight: 700;
-  color: #0a2230;
-  margin-bottom: 56px;
+  margin-bottom: 70px;
+  color: #0b1d2a;
 }
 
-/* GRID: 12-column based so we can position 2-top / 3-bottom exactly */
+/* GRID EXACT LIKE TEMPLATE */
 .values-grid {
+  max-width: 1100px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 28px;
-  align-items: start;
-  max-width: 1250px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 40px;
+  justify-content: center;
+}
+
+/* BOTTOM ROW (3 CARDS) EXACTLY LIKE TEMPLATE */
+.values-grid > :nth-child(n+3) {
+  grid-column: span 1;
+}
+
+/* CARDS */
+.value-card {
+  background: #ffffff;
+  padding: 48px 40px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  text-align: center;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* HOVER — premium template style */
+.value-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+}
+
+/* ICON */
+.value-card .icon {
+  font-size: 38px;
+  margin-bottom: 18px;
+}
+
+/* TITLE inside card */
+.value-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #071a24;
+}
+
+/* DESCRIPTION */
+.value-card p {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #4c5b66;
+  max-width: 360px;
   margin: 0 auto;
 }
 
-/* Default card common styles */
-.value-card {
-  background: #fff;
-  border: 1px solid rgba(10,34,48,0.06);
-  border-radius: 14px;
-  padding: 44px 32px;
-  text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 220px; /* keeps cards visually equal height */
-}
+/* ----------------------
+   RESPONSIVE BEHAVIOR
+----------------------- */
 
-/* Hover effect (subtle lift + shadow) */
-.value-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 36px rgba(6,34,48,0.08);
-}
-
-/* Icon */
-.value-icon {
-  font-size: 40px;
-  line-height: 1;
-  margin-bottom: 16px;
-}
-
-/* Title inside card */
-.value-card h3 {
-  margin: 0 0 12px 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0a2230;
-}
-
-/* Body text */
-.value-card p {
-  margin: 0;
-  color: #4a5d6a;
-  font-size: 1rem;
-  line-height: 1.6;
-  max-width: 420px;
-}
-
-/* ---------------------------
-   Exact placement to match screenshot 1
-   Top row: 2 wide cards centered (span 5 columns each with a gap center)
-   Bottom row: 3 cards each spanning 4 columns
-   --------------------------- */
-
-/* Top-left card -> columns 2 - 6 (span 5) */
-.values-grid > .value-card:nth-child(1) {
-  grid-column: 2 / span 5;
-}
-
-/* Top-right card -> columns 8 - 12 (span 5) */
-.values-grid > .value-card:nth-child(2) {
-  grid-column: 8 / span 5;
-}
-
-/* Bottom row - three equal cards -> col 1-4, 5-8, 9-12 */
-.values-grid > .value-card:nth-child(3) {
-  grid-column: 1 / span 4;
-}
-.values-grid > .value-card:nth-child(4) {
-  grid-column: 5 / span 4;
-}
-.values-grid > .value-card:nth-child(5) {
-  grid-column: 9 / span 4;
-}
-
-/* ---------------------------
-   RESPONSIVE
-   - At <=1024: transform to 2 columns (top row becomes 2 wide stacked, bottom becomes 2 per row)
-   - At <=680: single column stack
-   --------------------------- */
-
-@media (max-width: 1024px) {
-  .values-grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
-
-  /* top two cards become full-width (span 4 of 8) and centered */
-  .values-grid > .value-card:nth-child(1),
-  .values-grid > .value-card:nth-child(2) {
-    grid-column: 2 / span 6; /* centered slightly narrower */
-  }
-
-  /* bottom three cards: 2 columns layout (first two on one row, third spans width of both on next) */
-  .values-grid > .value-card:nth-child(3) { grid-column: 1 / span 4; }
-  .values-grid > .value-card:nth-child(4) { grid-column: 5 / span 4; }
-  .values-grid > .value-card:nth-child(5) { grid-column: 1 / span 8; margin-top: 0; }
-}
-
-@media (max-width: 680px) {
+/* TABLET — matches template */
+@media (max-width: 992px) {
   .values-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 30px;
   }
-
-  /* all cards full width stack */
-  .values-grid > .value-card:nth-child(n) {
-    grid-column: auto !important;
-  }
-
-  .values-section { padding: 80px 0; }
-  .values-title { font-size: 2rem; margin-bottom: 30px; }
-  .value-card { padding: 28px 20px; min-height: auto; }
-  .value-icon { font-size: 36px; margin-bottom: 12px; }
-  .value-card p { max-width: 100%; font-size: 0.98rem; }
 }
-
 
 
 
