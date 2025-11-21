@@ -289,37 +289,90 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
-/* HERO SECTION — softer deep blue */
+
 .hero {
   background: linear-gradient(
     135deg,
-    #081e2b 0%,   /* softened version of #071a24 */
-    #0f3144 100%  /* softened version of #0d2a3a */
+    #081e2b 0%,
+    #0f3144 100%
   );
   position: relative;
-  padding: 130px 0;
+  padding: 140px 0 120px;
   overflow: hidden;
+  z-index: 1;
 }
 
-/* VISIBLE TEMPLATE GRID */
-.hero ::before {
+/* VISIBLE GRID OVERLAY */
+.hero::before {
   content: "";
   position: absolute;
   inset: 0;
 
-  /* NOTICE THE STRONGER LINES */
   background-image:
     linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
-  background-size: 160px 160px; /* Bigger grid = more visible */
-  opacity: 0.35;                /* Much stronger */
+  background-size: 160px 160px;
+  opacity: 0.30;
   pointer-events: none;
   z-index: 0;
 }
 
 /* CONTENT ABOVE GRID */
 .hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* TITLE */
+.hero-title {
+  color: #ffffff;
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+/* HIGHLIGHT COLOR */
+.hero-title .highlight {
+  color: #4ba3ff;
+}
+
+/* /* HERO SECTION — softer deep blue */
+/* .hero {
+  background: linear-gradient(
+    135deg, */
+    /* #081e2b 0%,   /* softened version of #071a24 */ 
+    /* #0f3144 100%  /* softened version of #0d2a3a */ 
+  /* );
+  position: relative;
+  padding: 130px 0;
+  overflow: hidden;
+} */
+
+/* VISIBLE TEMPLATE GRID */
+/* .hero ::before {
+  content: "";
+  position: absolute;
+  inset: 0; */
+
+  /* NOTICE THE STRONGER LINES */
+  /* background-image:
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px); */
+
+  /* background-size: 160px 160px; /* Bigger grid = more visible */ 
+  /* opacity: 0.35;                /* Much stronger */ 
+  /* pointer-events: none;
+  z-index: 0;
+} */
+
+/* CONTENT ABOVE GRID */
+
+/* .hero-content {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
@@ -329,24 +382,24 @@ section > .container,
   padding: 0 24px;
   position: relative;
   z-index: 2;
-}
+} */
 
 /* Title */
-.hero-title {
+/* .hero-title {
   font-family: "Poppins", sans-serif;
   font-size: clamp(2.6rem, 5vw, 3.8rem);
   font-weight: 500;
   line-height: 1.2;
   color: #ffffff;
   margin-bottom: 18px;
-}
+} */
 
 
 /* Highlight underline */
-.hero-title .highlight {
-  position: relative;
+/* .hero-title .highlight {
+  position: relative; */
   /* color: var(--primary); */
-  z-index: 1;
+  /* z-index: 1;
 }
 
 .hero-title .highlight::after {
@@ -359,7 +412,7 @@ section > .container,
   background-color: var(--accent);
   border-radius: 4px;
   z-index: -1;
-}
+} */
 
 /* Subtitle */
 
