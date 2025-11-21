@@ -606,113 +606,158 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* SECTION */
+/* ===== VALUES (screenshot-accurate) ===== */
+
 .values-section {
-  padding: 120px 0;
+  padding: 110px 0 80px;
+  background: #fbfeff; /* subtle light bg to match screenshot */
 }
 
-/* Heading */
+/* container centered and narrow like the screenshot */
+.values-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* heading */
 .values-heading {
   text-align: center;
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 60px;
-  color: #0b1d2a;
+  color: #071a1a;
+  margin-bottom: 44px;
 }
 
-/* GRID — EXACT SCREENSHOT SPACING */
+/* use 12-column grid for precise placement */
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 36px;   /* screenshot horizontal spacing */
-  row-gap: 32px;      /* screenshot vertical spacing */
-  max-width: 1180px;
-  margin: 0 auto;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 22px; /* horizontal spacing */
+  row-gap: 24px;    /* vertical spacing (tight) */
+  align-items: start;
 }
 
-/* CARD — RECTANGULAR EXACTLY LIKE SCREENSHOT */
+/* Card look — rectangular, small radius, thin border like screenshot */
 .value-card {
-  background: #ffffff;
-  padding: 36px 34px;
+  background: #fff;
+  border: 1px solid rgba(7, 31, 32, 0.06);
+  border-radius: 8px;           /* small radius like screenshot */
+  padding: 34px 30px;          /* inner spacing */
   text-align: center;
-  border-radius: 6px; /* SMALL radius — screenshot */
-  border: 1px solid rgba(0,0,0,0.10);
-  min-height: 220px; /* screenshot proportion */
-  transition: transform .25s ease, box-shadow .25s ease;
+  min-height: 210px;           /* keeps rectangular feel */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform .22s ease, box-shadow .22s ease;
 }
 
-/* Hover effect */
+/* subtle hover lift */
 .value-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(6, 34, 40, 0.06);
 }
 
-/* Icon */
-.value-card .icon {
+/* icon */
+.value-icon {
   font-size: 34px;
   margin-bottom: 14px;
+  line-height: 1;
 }
 
-/* Title */
+/* title inside card */
 .value-card h3 {
-  font-size: 1.25rem;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #062028;
-  margin-bottom: 10px;
+  color: #071a1a;
 }
 
-/* Text */
+/* description */
 .value-card p {
-  font-size: 0.97rem;
-  line-height: 1.55;
-  color: #44545c;
-  max-width: 440px;
-  margin: 0 auto;
+  margin: 0;
+  color: #475c63;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 480px;
 }
 
-/* -------------------------------------------
-   SCREENSHOT ROW BEHAVIOR — EXACT
--------------------------------------------- */
+/* -------------------------
+   EXACT PLACEMENT (screenshot)
+   Top row: center two wide cards
+   Second row: three centered cards
+--------------------------*/
 
-/* FIRST ROW: 2 cards centered */
-.value-card:nth-child(1) {
-  grid-column: 2 / span 1;
-}
-.value-card:nth-child(2) {
-  grid-column: 3 / span 1;
-}
-
-/* SECOND ROW: 3 centered cards */
-.value-card:nth-child(3) {
-  grid-column: 1 / span 1;
-}
-.value-card:nth-child(4) {
-  grid-column: 2 / span 1;
-}
-.value-card:nth-child(5) {
-  grid-column: 3 / span 1;
+/* Top-left card: columns 3 - 8 (span 6) */
+.values-grid > .value-card:nth-child(1) {
+  grid-column: 3 / span 6;
 }
 
-/* EXTRA cards: normal 4-column layout */
-.value-card:nth-child(n+6) {
+/* Top-right card: columns 9 - 14 (span 6) => using 3/6 and 9/6 centers them */
+.values-grid > .value-card:nth-child(2) {
+  grid-column: 9 / span 6;
+}
+
+/* Second row: three equal cards each spanning 4 columns (1-4, 5-8, 9-12) */
+.values-grid > .value-card:nth-child(3) {
+  grid-column: 1 / span 4;
+}
+.values-grid > .value-card:nth-child(4) {
+  grid-column: 5 / span 4;
+}
+.values-grid > .value-card:nth-child(5) {
+  grid-column: 9 / span 4;
+}
+
+/* Additional cards flow into normal 4-column pattern (each span 3 of 12 = 1/4 width) */
+.values-grid > .value-card:nth-child(n+6) {
   grid-column: auto;
 }
 
-/* MOBILE + TABLET */
-@media (max-width: 992px) {
+/* -------------------------
+   RESPONSIVE
+--------------------------*/
+
+/* At medium widths: switch to 2-column flow for readability */
+@media (max-width: 1024px) {
   .values-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: 18px;
+    row-gap: 20px;
   }
-  .value-card {
-    grid-column: auto !important;
+
+  /* make all cards behave normally so they stack nicely */
+  .values-grid > .value-card {
+    grid-column: span 4; /* two cards per row */
+  }
+
+  /* top two: center by spanning inner columns */
+  .values-grid > .value-card:nth-child(1),
+  .values-grid > .value-card:nth-child(2) {
+    grid-column: 2 / span 6;
   }
 }
 
-@media (max-width: 600px) {
+/* Small screens: 1 column */
+@media (max-width: 640px) {
   .values-grid {
     grid-template-columns: 1fr;
+    column-gap: 16px;
+    row-gap: 18px;
+  }
+
+  .value-card {
+    padding: 26px 18px;
+    min-height: auto;
+  }
+
+  .values-heading {
+    font-size: 1.9rem;
+    margin-bottom: 28px;
   }
 }
+
 
 
 
