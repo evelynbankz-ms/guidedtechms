@@ -300,7 +300,7 @@ body {
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
   background-size: 160px 160px; /* Bigger grid = more visible */
-  opacity: 0.40;                /* Much stronger */
+  opacity: 0.35;                /* Much stronger */
   pointer-events: none;
   z-index: 0;
 }
