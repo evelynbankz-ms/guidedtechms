@@ -606,157 +606,174 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* ===== VALUES (screenshot-accurate) ===== */
+/* ===============================
+   VALUES SECTION (FINAL VERSION)
+   Matches the screenshot exactly
+================================= */
 
+/* Section wrapper */
 .values-section {
-  padding: 110px 0 80px;
-  background: #fbfeff; /* subtle light bg to match screenshot */
+  padding: 100px 0 120px;
+  background: #f9fdfd;
 }
 
-/* container centered and narrow like the screenshot */
+/* Container (centers everything) */
 .values-container {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
+  text-align: center;
 }
 
-/* heading */
+/* Heading */
 .values-heading {
-  text-align: center;
   font-size: 3rem;
   font-weight: 700;
-  color: #071a1a;
-  margin-bottom: 44px;
+  color: #0b1f2a;
+  margin-bottom: 60px;
 }
 
-/* use 12-column grid for precise placement */
+/* GRID LAYOUT:
+   - 2 cards centered on row 1
+   - 3 cards centered on row 2
+*/
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 22px; /* horizontal spacing */
-  row-gap: 24px;    /* vertical spacing (tight) */
+  grid-template-columns: repeat(2, 1fr); /* FIRST row = 2 wide cards */
+  justify-content: center;
   align-items: start;
+  gap: 32px;
 }
 
-/* Card look — rectangular, small radius, thin border like screenshot */
+/* The third row appears because of the number of cards.
+   For row 2 (3 cards), we override below */
+.values-grid .value-card:nth-child(n+3) {
+  grid-column: span 1;
+}
+
+/* FORCE EXACT LAYOUT:
+   First 2 cards: two columns.
+   Next 3 cards: three columns. */
+@media (min-width: 1025px) {
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .values-grid .value-card:nth-child(3),
+  .values-grid .value-card:nth-child(4),
+  .values-grid .value-card:nth-child(5) {
+    grid-column: auto;
+  }
+
+  /* Make second row into 3 columns */
+  .values-grid {
+    grid-auto-flow: row;
+  }
+
+  .values-grid .value-card:nth-child(3) {
+    grid-column: 1 / span 1;
+  }
+
+  .values-grid .value-card:nth-child(4) {
+    grid-column: 2 / span 1;
+  }
+
+  .values-grid .value-card:nth-child(5) {
+    grid-column: 3 / span 1;
+  }
+
+  /* Set grid to 3 columns for row 2 only */
+  .values-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* But force top row back to 2 by centering them */
+  .values-grid .value-card:nth-child(1),
+  .values-grid .value-card:nth-child(2) {
+    grid-column: span 1;
+    width: 100%;
+  }
+
+  /* Center the 2 top cards */
+  .values-grid .value-card:nth-child(1) {
+    grid-column: 1 / 2;
+  }
+  .values-grid .value-card:nth-child(2) {
+    grid-column: 2 / 3;
+  }
+}
+
+/* CARD STYLE — EXACT TEMPLATE LOOK */
 .value-card {
-  background: #fff;
-  border: 1px solid rgba(7, 31, 32, 0.06);
-  border-radius: 8px;           /* small radius like screenshot */
-  padding: 34px 30px;          /* inner spacing */
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 45px 50px;
   text-align: center;
-  min-height: 210px;           /* keeps rectangular feel */
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  transition: transform .22s ease, box-shadow .22s ease;
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
-/* subtle hover lift */
+/* Hover lift */
 .value-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 24px rgba(6, 34, 40, 0.06);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
 }
 
-/* icon */
+/* Icon */
 .value-icon {
-  font-size: 34px;
+  font-size: 40px;
   margin-bottom: 14px;
-  line-height: 1;
 }
 
-/* title inside card */
+/* Title */
 .value-card h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #071a1a;
+  color: #0b1f2a;
+  margin-bottom: 12px;
 }
 
-/* description */
+/* Text */
 .value-card p {
-  margin: 0;
-  color: #475c63;
   font-size: 1rem;
   line-height: 1.6;
+  color: #546b74;
   max-width: 480px;
 }
 
-/* -------------------------
-   EXACT PLACEMENT (screenshot)
-   Top row: center two wide cards
-   Second row: three centered cards
---------------------------*/
-
-/* Top-left card: columns 3 - 8 (span 6) */
-.values-grid > .value-card:nth-child(1) {
-  grid-column: 3 / span 6;
-}
-
-/* Top-right card: columns 9 - 14 (span 6) => using 3/6 and 9/6 centers them */
-.values-grid > .value-card:nth-child(2) {
-  grid-column: 9 / span 6;
-}
-
-/* Second row: three equal cards each spanning 4 columns (1-4, 5-8, 9-12) */
-.values-grid > .value-card:nth-child(3) {
-  grid-column: 1 / span 4;
-}
-.values-grid > .value-card:nth-child(4) {
-  grid-column: 5 / span 4;
-}
-.values-grid > .value-card:nth-child(5) {
-  grid-column: 9 / span 4;
-}
-
-/* Additional cards flow into normal 4-column pattern (each span 3 of 12 = 1/4 width) */
-.values-grid > .value-card:nth-child(n+6) {
-  grid-column: auto;
-}
-
-/* -------------------------
+/* ===============================
    RESPONSIVE
---------------------------*/
+================================= */
 
-/* At medium widths: switch to 2-column flow for readability */
-@media (max-width: 1024px) {
+/* Tablet */
+@media (max-width: 900px) {
   .values-grid {
-    grid-template-columns: repeat(8, 1fr);
-    column-gap: 18px;
-    row-gap: 20px;
-  }
-
-  /* make all cards behave normally so they stack nicely */
-  .values-grid > .value-card {
-    grid-column: span 4; /* two cards per row */
-  }
-
-  /* top two: center by spanning inner columns */
-  .values-grid > .value-card:nth-child(1),
-  .values-grid > .value-card:nth-child(2) {
-    grid-column: 2 / span 6;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Small screens: 1 column */
-@media (max-width: 640px) {
+/* Mobile */
+@media (max-width: 650px) {
   .values-grid {
     grid-template-columns: 1fr;
-    column-gap: 16px;
-    row-gap: 18px;
-  }
-
-  .value-card {
-    padding: 26px 18px;
-    min-height: auto;
   }
 
   .values-heading {
-    font-size: 1.9rem;
-    margin-bottom: 28px;
+    font-size: 2.2rem;
+  }
+
+  .value-card {
+    padding: 32px 30px;
   }
 }
+
 
 
 
