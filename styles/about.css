@@ -606,13 +606,13 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* SECTION WRAPPER */
+/* SECTION */
 .values-section {
   padding: 120px 0;
-  background: #f7fbff;
+  background: #ffffff;
 }
 
-/* TITLE */
+/* HEADING */
 .values-heading {
   text-align: center;
   font-size: 3rem;
@@ -621,71 +621,103 @@ section > .container,
   color: #0b1d2a;
 }
 
-/* GRID EXACT LIKE TEMPLATE */
+/* GRID */
 .values-grid {
-  max-width: 1100px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px 40px;
-  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+  /* big gap EXACTLY like screenshot */
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* BOTTOM ROW (3 CARDS) EXACTLY LIKE TEMPLATE */
-.values-grid > :nth-child(n+3) {
-  grid-column: span 1;
-}
-
-/* CARDS */
+/* CARD (all equal size) */
 .value-card {
   background: #ffffff;
   padding: 48px 40px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
   text-align: center;
-  transition: transform .25s ease, box-shadow .25s ease;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transition: box-shadow .25s ease, transform .25s ease;
 }
 
-/* HOVER — premium template style */
+/* Hover */
 .value-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.08);
 }
 
-/* ICON */
+/* Icon */
 .value-card .icon {
   font-size: 38px;
   margin-bottom: 18px;
 }
 
-/* TITLE inside card */
+/* Title */
 .value-card h3 {
   font-size: 1.3rem;
   font-weight: 700;
+  color: #062028;
   margin-bottom: 14px;
-  color: #071a24;
 }
 
-/* DESCRIPTION */
+/* Text */
 .value-card p {
   font-size: 1rem;
   line-height: 1.55;
-  color: #4c5b66;
-  max-width: 360px;
-  margin: 0 auto;
+  color: #44545c;
 }
 
-/* ----------------------
-   RESPONSIVE BEHAVIOR
------------------------ */
+/* -------------------------------------------
+   EXACT LAYOUT BEHAVIOR LIKE YOUR SCREENSHOT
+-------------------------------------------- */
 
-/* TABLET — matches template */
+/* First row = 2 centered cards */
+.value-card:nth-child(1) {
+  grid-column: 2 / span 1;
+}
+
+.value-card:nth-child(2) {
+  grid-column: 3 / span 1;
+}
+
+/* Second row = 3 centered cards */
+.value-card:nth-child(3) {
+  grid-column: 1 / span 1;
+}
+
+.value-card:nth-child(4) {
+  grid-column: 2 / span 1;
+}
+
+.value-card:nth-child(5) {
+  grid-column: 3 / span 1;
+}
+
+/* Extra cards automatically go to a full 4-column grid */
+.value-card:nth-child(n+6) {
+  grid-column: auto;
+}
+
+/* RESPONSIVE */
 @media (max-width: 992px) {
   .values-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Remove manual placement */
+  .value-card {
+    grid-column: auto !important;
   }
 }
+
+@media (max-width: 600px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 
 
