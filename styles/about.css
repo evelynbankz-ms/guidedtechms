@@ -289,24 +289,20 @@ section > .container,
 
 
 /* ---------- ABOUT HERO SECTION ---------- */
-/* ============================================================
-   HERO SECTION — ABOUT PAGE (CENTERED + UNDERLINE STYLE)
-   ============================================================ */
+/* ============================================
+   ABOUT PAGE HERO — UPDATED WITH NEW SPACING,
+   BIG TITLE, SMALLER SUBTITLE, BIG GAPS
+============================================ */
 
 .hero {
-  background: linear-gradient(
-    135deg,
-    #081e2b 0%,
-    #0f3144 100%
-  );
+  background: linear-gradient(135deg, #081e2b 0%, #0f3144 100%);
   position: relative;
-  padding: 140px 0 120px;
+  padding: 180px 0 160px; /* Increased height */
   overflow: hidden;
   z-index: 1;
-  text-align: center;
 }
 
-/* GRID OVERLAY — opacity reduced to 0.35 */
+/* GRID OVERLAY */
 .hero::before {
   content: "";
   position: absolute;
@@ -317,124 +313,102 @@ section > .container,
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
 
   background-size: 160px 160px;
-  opacity: 0.35;         /* updated as requested */
+  opacity: 0.35; /* reduced from 0.40 */
   pointer-events: none;
   z-index: 0;
 }
 
-/* CONTENT ABOVE GRID */
+/* CONTENT WRAPPER */
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-}
-
-/* ============================================================
-   TITLES
-   ============================================================ */
-
-/* Title wrapper */
-.hero-title {
   text-align: center;
-  margin-bottom: 25px;
 }
 
-/* Top P Title — Bigger than H2 */
-.hero-top-title {
-  color: #ffffff;
-  font-size: 2.1rem;      /* Bigger than the h2 */
+/* TOP TITLE (Company Overview) */
+.hero-title p {
+  font-size: 3.8rem;           /* BIG headline */
   font-weight: 700;
-  opacity: 0.95;
-  margin: 0 0 10px 0;
-  line-height: 1.2;
-}
-
-/* Underline under top title */
-.hero-top-underline {
-  width: 70px;
-  height: 2px;
-  background-color: #4ba3ff;
-  margin: 0 auto 18px auto;
-  border-radius: 2px;
-}
-
-/* Main title (h2) */
-.hero-title h2 {
+  line-height: 1.1;
   color: #ffffff;
-  font-size: 2.6rem;      /* Slightly smaller than hero-top-title */
-  font-weight: 600;
-  line-height: 1.25;
-  margin: 0;
+  margin-bottom: 24px;
+  position: relative;
 }
 
-/* Highlight */
+/* Underline for Company Overview */
+.hero-title p::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 3px;
+  background-color: #4ba3ff;
+  border-radius: 6px;
+}
+
+/* MAIN SUB-HEADING (Empowering startups…) */
+.hero-title {
+  font-size: 2.4rem;          /* smaller than the big title */
+  line-height: 1.3;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 60px;           /* LARGE SPACE between title & sub-heading */
+  margin-bottom: 30px;
+}
+
+/* highlight blue word */
 .hero-title .highlight {
   color: #4ba3ff;
 }
 
-/* ============================================================
-   SUBTITLE
-   ============================================================ */
-
+/* SUBTITLE BELOW (paragraph) */
 .hero-subtitle {
-  font-size: 1.12rem;
+  font-size: 1.10rem;
   color: #d4e6f1;
-  margin: 0 auto 30px auto;
-  max-width: 700px;
+  max-width: 720px;
+  margin: 0 auto;
+  margin-bottom: 80px;        /* much more spacing before breadcrumbs */
   line-height: 1.6;
 }
 
-/* ============================================================
-   BREADCRUMBS
-   ============================================================ */
-
+/* BREADCRUMBS — moved further down */
 .breadcrumbs {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-top: 10px;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  margin-top: 45px;           /* large gap from text */
 }
 
 .breadcrumbs a {
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
-  transition: color var(--transition);
 }
-
 .breadcrumbs a:hover {
-  color: var(--accent);
+  color: #4ba3ff;
 }
-
 .breadcrumbs span {
-  color: var(--accent);
+  color: #4ba3ff;
   font-weight: 600;
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-
+/* RESPONSIVE */
 @media (max-width: 768px) {
-
-  .hero {
-    padding: 110px 0 85px;
+  .hero-title p {
+    font-size: 2.4rem;
   }
-
-  .hero-top-title {
+  .hero-title {
     font-size: 1.7rem;
+    margin-top: 40px;
   }
-
-  .hero-title h2 {
-    font-size: 2.1rem;
-  }
-
   .hero-subtitle {
-    font-size: 1rem;
+    margin-bottom: 50px;
   }
 }
-
 
 
 
