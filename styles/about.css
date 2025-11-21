@@ -606,94 +606,114 @@ section > .container,
 /* ----------------------------------------------
    VALUES SECTION — BASE STYLES
 ---------------------------------------------- */
-/* SECTION */
+/* --------------------------------------
+   VALUES SECTION (Matches Screenshot 1)
+--------------------------------------- */
+
 .values-section {
-  padding: 110px 0;
-  background: #f7fafc; /* soft template-like background */
+  padding: 120px 0;
+  background: #f8fcff; /* soft very light-blue (to match your brand) */
+}
+
+.values-title {
   text-align: center;
-}
-
-/* SMALL LABEL */
-.values-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1B4F72;
-  letter-spacing: 0.12rem;
-  margin-bottom: 10px;
-}
-
-/* HEADING */
-.values-heading {
-  font-size: 2.3rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  color: #062436;
-  margin-bottom: 50px;
+  color: #0a2230;
+  margin-bottom: 60px;
 }
 
-/* GRID */
+/* GRID — EXACT layout like screenshot: 2 top, 3 bottom */
 .values-grid {
   display: grid;
-  gap: 32px;
+  gap: 34px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.value-card:nth-child(n+3) {
   grid-template-columns: repeat(3, 1fr);
 }
 
-/* CARD */
+/* But we must force the bottom row to be 3 cards */
+.values-grid {
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+}
+
+/* CARD STYLE — Same as screenshot */
 .value-card {
   background: #ffffff;
-  padding: 40px 32px;
+  border: 1px solid rgba(10, 34, 48, 0.10);
   border-radius: 18px;
-  box-shadow: 0 0 0 rgba(0,0,0,0);
-  transition: all 0.25s ease;
+  padding: 45px 36px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Hover effect EXACTLY like the template */
+/* HOVER EFFECT */
 .value-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-8px);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* ICON */
+/* Emoji icon */
 .value-icon {
-  font-size: 2.6rem;
-  margin-bottom: 16px;
+  font-size: 42px;
+  margin-bottom: 18px;
 }
 
-/* TITLE */
+/* Title inside card */
 .value-card h3 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  color: #062436;
-  margin-bottom: 10px;
+  color: #0a2230;
+  margin-bottom: 14px;
 }
 
-/* TEXT */
+/* Paragraph */
 .value-card p {
-  font-size: 0.98rem;
-  color: #4b5c6b;
-  line-height: 1.55;
-  max-width: 260px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #4a5d6a;
+  max-width: 360px;
   margin: 0 auto;
 }
 
-/* ------------ RESPONSIVE ------------ */
+/* ----------------------------------
+   RESPONSIVE BREAKPOINTS
+----------------------------------- */
 
-/* Tablets */
 @media (max-width: 992px) {
-  .values-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .values-section {
+    padding: 90px 0;
+  }
+
+  .values-title {
+    font-size: 2.4rem;
+    margin-bottom: 50px;
+  }
+
+  .value-card {
+    padding: 38px 28px;
   }
 }
 
-/* Mobile */
-@media (max-width: 576px) {
-  .values-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+  .values-title {
+    font-size: 2rem;
   }
-  
-  .values-heading {
-    font-size: 1.9rem;
+
+  .value-card {
+    padding: 32px 22px;
+  }
+
+  .value-icon {
+    font-size: 38px;
   }
 }
+
 
 
 
