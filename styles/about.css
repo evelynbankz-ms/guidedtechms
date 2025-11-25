@@ -581,33 +581,35 @@ section > .container,
 
 /* RIGHT TEXT CARD */
 .choose-card {
-  background: white;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2);
-  padding: 50px 40px;
-  min-height: 350px; /* ensures equal height */
+  background: #ffffff;                       /* clean white card */
+  border-radius: 14px;                       /* smooth rounded edges */
+  padding: 48px 42px;                        /* comfortable spacing */
+  
+  /* lifted card effect */
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+
+  min-height: 360px;                         /* consistent height */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;                   /* left-aligned text like template */
+  max-width: 520px;                          /* matches template card width */
 }
 
 .choose-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 14px;
+  font-size: 1.45rem;
+  font-weight: 700;
   color: var(--primary);
+  margin-bottom: 14px;
 }
 
 .choose-card p {
   color: var(--muted);
-  line-height: 1.6;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .choose-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+  line-height: 1.65;
+  font-size: 1.03rem;
+  max-width: 450px;
 }
 
 
