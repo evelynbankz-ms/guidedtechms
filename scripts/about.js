@@ -22,3 +22,22 @@ tabs.forEach(tab => {
   });
 });
 
+
+
+// why choose us section
+  const buttons = document.querySelectorAll(".feature-item");
+  const title = document.getElementById("chooseTitle");
+  const text = document.getElementById("chooseText");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      buttons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      title.textContent = btn.dataset.title;
+      text.textContent = btn.dataset.text;
+    });
+  });
+
+  // activate first by default
+  buttons[0].classList.add("active");
