@@ -438,9 +438,7 @@ body {
   min-height: 360px;
 }
 
-/* ------------------------------------------------
-   VALUES SECTION
-------------------------------------------------- */
+
 /* ===============================
    VALUES SECTION (Green Layout)
 =============================== */
@@ -455,7 +453,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 60px 70px;
-  background: #0b4f3f; /* the dark green of screenshot */
+  background: #0b4f3f; /* dark green background */
   border-radius: 24px;
   color: #ffffff;
 }
@@ -467,38 +465,46 @@ body {
   color: #ffffff;
 }
 
-/* GRID: 2 columns */
+/* 2-column layout */
 .values-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 60px 80px;
 }
 
-/* Row: icon + text */
+/* ICON + TEXT ROW */
 .value-row {
   display: flex;
-  gap: 28px;
   align-items: flex-start;
+  gap: 28px;
+  background: none;      /* ensures NO card style */
+  border: none;          /* ensures NO lines */
+  box-shadow: none;      /* ensures NO shadows */
+  padding: 0;            /* ensures no card padding */
 }
 
-/* Icon circle */
+/* ICON CIRCLE → Now DEEP BLUE */
 .value-icon-circle {
   width: 86px;
   height: 86px;
   min-width: 86px;
-  background: #d1e8ff; /* light circle color similar to screenshot */
+
+  background: #1B4F72;     /* YOUR deep blue */
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 40px;
+  color: #ffffff;          /* keeps emoji bright */
 }
 
-/* Titles and text */
+/* TEXT CONTENT */
 .value-text h3 {
   font-size: 1.6rem;
-  margin-bottom: 10px;
   font-weight: 600;
+  margin-bottom: 10px;
   color: #ffffff;
 }
 
@@ -526,6 +532,7 @@ body {
     font-size: 32px;
   }
 }
+
 
 
 
