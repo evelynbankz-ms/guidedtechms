@@ -439,30 +439,32 @@ body {
 }
 
 
+
 /* ===============================
-   VALUES SECTION (Green Layout)
+   VALUES SECTION — CLEAN, NO CARD
 =============================== */
 
 .values-section {
   width: 100%;
   padding: 80px 0;
-  background: #f4f9fc; /* page bg */
+  background: #f4f9fc; /* your normal page background */
 }
 
+/* remove the green wrapper entirely */
 .values-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 70px;
-  background: #0b4f3f; /* dark green background */
-  border-radius: 24px;
-  color: #ffffff;
+  padding: 0;           /* remove padding */
+  background: none;     /* remove green */
+  border-radius: 0;     /* remove rounded card look */
+  color: #0a2233;       /* normal text color */
 }
 
 .values-title {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 50px;
-  color: #ffffff;
+  color: #0a2233;
 }
 
 /* 2-column layout */
@@ -472,24 +474,25 @@ body {
   gap: 60px 80px;
 }
 
-/* ICON + TEXT ROW */
+/* icon + text row */
 .value-row {
   display: flex;
   align-items: flex-start;
   gap: 28px;
-  background: none;      /* ensures NO card style */
-  border: none;          /* ensures NO lines */
-  box-shadow: none;      /* ensures NO shadows */
-  padding: 0;            /* ensures no card padding */
+
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
-/* ICON CIRCLE → Now DEEP BLUE */
+/* ICON CIRCLE — deep blue */
 .value-icon-circle {
   width: 86px;
   height: 86px;
   min-width: 86px;
 
-  background: #1B4F72;     /* YOUR deep blue */
+  background: #1B4F72;  /* your deep blue */
   border-radius: 50%;
 
   display: flex;
@@ -497,22 +500,21 @@ body {
   justify-content: center;
 
   font-size: 40px;
-  color: #ffffff;          /* keeps emoji bright */
+  color: #ffffff;
 }
 
-/* TEXT CONTENT */
+/* text */
 .value-text h3 {
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #ffffff;
+  color: #0a2233;
 }
 
 .value-text p {
   font-size: 1.05rem;
   line-height: 1.55;
-  opacity: 0.95;
-  color: #ffffff;
+  color: #35505e;
 }
 
 /* MOBILE */
@@ -520,10 +522,6 @@ body {
   .values-grid {
     grid-template-columns: 1fr;
     gap: 40px;
-  }
-
-  .values-wrapper {
-    padding: 50px 35px;
   }
 
   .value-icon-circle {
