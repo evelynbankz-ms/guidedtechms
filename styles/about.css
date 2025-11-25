@@ -441,8 +441,7 @@ body {
 /* ------------------------------------------------
    VALUES SECTION
 ------------------------------------------------- */
-/* VALUES SECTION */
-/* VALUES SECTION */
+/* ---------- VALUES SECTION - TRIANGLE LAYOUT (screenshot match) ---------- */
 .values-section {
   background: #f4f9fc;
   padding: 80px 0 120px;
@@ -459,74 +458,62 @@ body {
   color: #0a2233;
 }
 
-/* FLEX LAYOUT — EXACTLY LIKE SCREENSHOT */
+/* Grid with 6 columns (we place cards in column pairs to form a pyramid) */
 .values-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px 50px;
-  max-width: 1150px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 40px 40px;             /* vertical gap / horizontal gap */
+  max-width: 1200px;          /* container width to control overall scale */
   margin: 0 auto;
+  align-items: start;
 }
 
-/* Top row (first 2 cards) */
-.values-grid .value-card:nth-child(1),
-.values-grid .value-card:nth-child(2) {
-  width: calc(50% - 25px); /* Two cards across with spacing */
-}
-
-/* Bottom row (3 cards) */
-.values-grid .value-card:nth-child(3),
-.values-grid .value-card:nth-child(4),
-.values-grid .value-card:nth-child(5) {
-  width: calc(33.333% - 34px); /* Three cards across with spacing */
-}
-
-/* CARD STYLE — screenshot accurate */
+/* Card base style (identical for all cards) */
 .value-card {
+  width: 100%;
   background: #ffffff;
   border: 1px solid #e6eef2;
   border-radius: 12px;
   padding: 45px 35px;
   text-align: center;
-  height: 260px;
+  height: 260px;             /* fixed height so all cards match */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
 }
 
-.value-icon {
-  font-size: 40px;
-  margin-bottom: 14px;
-}
+/* Icon / heading / paragraph styling */
+.value-icon { font-size: 40px; margin-bottom: 14px; }
+.value-card h3 { font-size: 1.3rem; font-weight:700; color:#0a2233; margin-bottom:12px; }
+.value-card p { font-size:0.98rem; color:#35505e; line-height:1.55; max-width:340px; margin:0 auto; }
 
-.value-card h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #0a2233;
-  margin-bottom: 12px;
-}
+/* Hover */
+.value-card:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
 
-.value-card p {
-  font-size: 0.97rem;
-  color: #35505e;
-  line-height: 1.55;
-  max-width: 330px;
-  margin: 0 auto;
-}
+/* ---------- Place cards to form triangle ---------- */
+/* Top row: 2 wide cards centered — occupy column pairs (cols 2-3 and 5-6) */
+.values-grid > .value-card:nth-child(1) { grid-column: 2 / span 2; grid-row: 1; }
+.values-grid > .value-card:nth-child(2) { grid-column: 5 / span 2; grid-row: 1; }
 
-.value-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-}
+/* Bottom row: 3 cards — occupy column pairs 1-2, 3-4, 5-6 on row 2 */
+.values-grid > .value-card:nth-child(3) { grid-column: 1 / span 2; grid-row: 2; }
+.values-grid > .value-card:nth-child(4) { grid-column: 3 / span 2; grid-row: 2; }
+.values-grid > .value-card:nth-child(5) { grid-column: 5 / span 2; grid-row: 2; }
 
-/* MOBILE */
-@media (max-width: 900px) {
-  .values-grid .value-card {
-    width: 100% !important;
-    height: auto;
+/* ensure consistent sizing inside each column-pair */
+.values-grid > .value-card { max-width: none; }
+
+/* ---------- Responsiveness: collapse to single column on small screens ---------- */
+@media (max-width: 980px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
+  .values-grid > .value-card { grid-column: auto !important; grid-row: auto !important; width: 100%; max-width: 720px; margin: 0 auto; height: auto; }
+  .value-card { height: auto; padding: 36px 28px; }
+  .values-heading { font-size: 2rem; margin-bottom: 36px; }
 }
 
 
