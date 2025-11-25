@@ -581,21 +581,24 @@ section > .container,
 
 /* RIGHT TEXT CARD */
 .choose-card {
-  background: #ffffff;                       /* clean white card */
-  border-radius: 14px;                       /* smooth rounded edges */
-  padding: 48px 42px;                        /* comfortable spacing */
-  
-  /* lifted card effect */
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 48px 42px;
+
+  /* lifted card like template */
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.04),
     0 4px 12px rgba(0, 0, 0, 0.06);
 
-  min-height: 360px;                         /* consistent height */
+  min-height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;                   /* left-aligned text like template */
-  max-width: 520px;                          /* matches template card width */
+  align-items: center;              /* center content horizontally */
+
+  text-align: center;               /* center text */
+  max-width: 520px;
+  margin: 0 auto;                   /* keeps card perfectly centered */
 }
 
 .choose-card h3 {
