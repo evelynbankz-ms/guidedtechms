@@ -11,7 +11,7 @@
   --transition: 0.28s ease;
   --shadow-1: 0 6px 20px rgba(16,24,40,0.08);
 
-  /* Hero highlight color */
+  /* Highlight color used in hero */
   --highlight: #4ba3ff;
 }
 
@@ -25,7 +25,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* GLOBAL CONTAINER — ALL SECTIONS ALIGN PERFECTLY */
+/* GLOBAL CONTAINER — EVERY SECTION ALIGNED PERFECTLY */
 .container,
 .navbar-container,
 .values-container {
@@ -37,7 +37,6 @@ body {
   padding-right: 24px;
 }
 
-/* On mobile use same consistent padding */
 @media (max-width: 768px) {
   .container,
   .navbar-container,
@@ -48,9 +47,7 @@ body {
 }
 
 /* PAGE WRAPPER */
-.page-wrapper {
-  min-height: 100vh;
-}
+.page-wrapper { min-height: 100vh; }
 
 /* ------------------------------------------------
    NAVBAR
@@ -111,6 +108,7 @@ body {
 
 /* DROPDOWN STRUCTURE */
 .nav-item { position: relative; }
+
 .nav-item::after {
   content: "";
   position: absolute;
@@ -147,7 +145,7 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Columns */
+/* MEGA MENU COLUMNS */
 .mega-col { flex: 1; min-width: 180px; }
 .mega-col h4 {
   color: #9cc7e1;
@@ -155,6 +153,8 @@ body {
   margin-bottom: 10px;
   text-transform: uppercase;
 }
+
+/* RESTORED ICON STYLING */
 .mega-col a {
   color: #e0edf7;
   display: flex;
@@ -165,7 +165,25 @@ body {
   font-size: 15px;
   transition: 0.25s ease;
 }
-.mega-col a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+.mega-col a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  padding-left: 12px;
+}
+
+.mega-col a .icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.18);
+  transition: 0.25s ease;
+}
+
+.mega-col a:hover .icon {
+  background: rgba(255,255,255,0.35);
+  transform: translateX(2px);
+}
 
 /* RIGHT ACTIONS */
 .navbar-actions {
@@ -183,6 +201,7 @@ body {
   font-weight: 600;
   transition: 0.25s ease;
 }
+
 .btn-primary:hover {
   background: #154360;
   transform: translateY(-2px);
@@ -194,8 +213,8 @@ body {
 .hero {
   background: linear-gradient(135deg, #081e2b, #0f3144);
   padding: 120px 0;
-  position: relative;
   text-align: center;
+  position: relative;
   overflow: hidden;
 }
 
@@ -225,7 +244,7 @@ body {
   position: relative;
 }
 
-/* UNDERLINE — changed to hero highlight color */
+/* HERO UNDERLINE (HIGHLIGHT) */
 .hero-title p::after {
   content: "";
   position: absolute;
@@ -245,9 +264,15 @@ body {
   font-size: 1.1rem;
 }
 
-.breadcrumbs { color: #fff; }
-.breadcrumbs a { color: #fff; font-weight: 600; }
-.breadcrumbs span { color: var(--highlight); }
+/* REMOVE UNDERLINE IN BREADCRUMBS */
+.breadcrumbs a {
+  text-decoration: none !important;
+  color: #fff;
+}
+.breadcrumbs span {
+  color: var(--highlight);
+  font-weight: 600;
+}
 
 /* ------------------------------------------------
    MISSION SECTION
@@ -263,26 +288,25 @@ body {
   gap: 60px;
 }
 
-/* SECTION LABEL WITH PERFECT LEFT ALIGN */
+/* LABEL + LINE aligned with container */
 .section-label {
   color: var(--accent);
   font-weight: 600;
   letter-spacing: 1px;
   margin-bottom: 20px;
   position: relative;
-  padding-left: 60px; /* ensures alignment */
+  padding-left: 60px;
 }
 
-/* LINE BEFORE SECTION LABEL PERFECTLY ALIGNED */
 .section-label::before {
   content: "";
   position: absolute;
-  left: 0;  /* lines up with container start */
+  left: 0;
   top: 50%;
-  transform: translateY(-50%);
   width: 40px;
   height: 2px;
   background: var(--accent);
+  transform: translateY(-50%);
 }
 
 .mission-title {
@@ -296,6 +320,7 @@ body {
   position: relative;
 }
 
+/* UPDATED underline color for "results" */
 .mission-title .highlight::after {
   content: "";
   position: absolute;
@@ -303,7 +328,7 @@ body {
   bottom: 6px;
   width: 100%;
   height: 0.3em;
-  background: rgba(39,174,96,0.25);
+  background: rgba(75, 163, 255, 0.25); /* MATCH HERO COLOR */
   border-radius: 4px;
 }
 
@@ -333,8 +358,20 @@ body {
   color: #fff;
 }
 
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+/* FIXED HEIGHT FOR RIGHT TAB CONTENT — NO RESIZE WHEN SWITCHING */
+.mission-right {
+  position: relative;
+  min-height: 330px; /* Controls consistent height */
+}
+
+.tab-content {
+  display: none;
+  padding-top: 22px; /* spacing from tabs */
+}
+
+.tab-content.active {
+  display: block;
+}
 
 /* ------------------------------------------------
    WHY CHOOSE US
@@ -350,7 +387,7 @@ body {
   gap: 60px;
 }
 
-/* SAME LEFT-LINE ALIGNMENT */
+/* Align label */
 .choose-left .section-label {
   padding-left: 60px;
 }
@@ -365,10 +402,12 @@ body {
   margin-bottom: 16px;
 }
 
+/* ADD SPACING BEFORE FEATURE SELECTOR */
 .feature-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-top: 20px;
 }
 
 .feature-item {
@@ -458,4 +497,3 @@ body {
     height: auto;
   }
 }
-
