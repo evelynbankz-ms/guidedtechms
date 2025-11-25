@@ -457,33 +457,40 @@
       </p>
 
       <div class="feature-list">
-        <button class="feature-item">
+
+        <button class="feature-item" data-title="Powerful task management"
+                data-text="Organize tasks, assign responsibilities, and streamline operations with ease.">
           <span>Powerful task management</span>
           <span class="arrow">›</span>
         </button>
 
-        <button class="feature-item">
+        <button class="feature-item" data-title="Intuitive project overview"
+                data-text="Get a bird’s-eye view of your projects with simple, visual dashboards.">
           <span>Intuitive project overview</span>
           <span class="arrow">›</span>
         </button>
 
-        <button class="feature-item">
+        <button class="feature-item" data-title="Analyze and track traffic"
+                data-text="Monitor traffic trends and transform insights into opportunities for growth.">
           <span>Analyze and track traffic</span>
           <span class="arrow">›</span>
         </button>
+
       </div>
     </div>
 
-    <!-- RIGHT IMAGE -->
+    <!-- RIGHT DYNAMIC TEXT CARD -->
     <div class="choose-right">
-      <img src="https://images.pexels.com/photos/1181352/pexels-photo-1181352.jpeg"
-           alt="Team working"
-           class="choose-img">
+      <div class="choose-card" id="chooseCard">
+        <h3 id="chooseTitle">Powerful task management</h3>
+        <p id="chooseText">
+          Organize tasks, assign responsibilities, and streamline operations with ease.
+        </p>
+      </div>
     </div>
 
   </div>
 </section>
-
 
 <!-- VALUES SECTION -->
 <!-- VALUES SECTION (matches screenshot: 2 on top, 3 below) -->
