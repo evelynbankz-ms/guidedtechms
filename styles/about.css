@@ -442,6 +442,7 @@ body {
    VALUES SECTION
 ------------------------------------------------- */
 /* VALUES SECTION */
+/* VALUES SECTION */
 .values-section {
   background: #f4f9fc;
   padding: 80px 0 120px;
@@ -458,34 +459,31 @@ body {
   color: #0a2233;
 }
 
-/* GRID — EXACTLY MATCHES SCREENSHOT LAYOUT */
+/* FLEX LAYOUT — EXACTLY LIKE SCREENSHOT */
 .values-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 40px 50px;
-  justify-items: center;
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
 }
 
-/* FIRST ROW SHOULD BE ONLY 2 CARDS */
-.values-grid > .value-card:nth-child(1),
-.values-grid > .value-card:nth-child(2) {
-  grid-column: span 1;
+/* Top row (first 2 cards) */
+.values-grid .value-card:nth-child(1),
+.values-grid .value-card:nth-child(2) {
+  width: calc(50% - 25px); /* Two cards across with spacing */
 }
 
-.values-grid > .value-card:nth-child(1) {
-  grid-column: 1 / 2; /* left */
+/* Bottom row (3 cards) */
+.values-grid .value-card:nth-child(3),
+.values-grid .value-card:nth-child(4),
+.values-grid .value-card:nth-child(5) {
+  width: calc(33.333% - 34px); /* Three cards across with spacing */
 }
 
-.values-grid > .value-card:nth-child(2) {
-  grid-column: 3 / 4; /* right */
-}
-
-/* CARD STYLE — IDENTICAL TO SCREENSHOT */
+/* CARD STYLE — screenshot accurate */
 .value-card {
-  width: 100%;
-  max-width: 380px;
   background: #ffffff;
   border: 1px solid #e6eef2;
   border-radius: 12px;
@@ -498,13 +496,11 @@ body {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* ICON */
 .value-icon {
   font-size: 40px;
   margin-bottom: 14px;
 }
 
-/* TITLE */
 .value-card h3 {
   font-size: 1.3rem;
   font-weight: 700;
@@ -512,7 +508,6 @@ body {
   margin-bottom: 12px;
 }
 
-/* TEXT */
 .value-card p {
   font-size: 0.97rem;
   color: #35505e;
@@ -521,31 +516,19 @@ body {
   margin: 0 auto;
 }
 
-/* HOVER EFFECT */
 .value-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .values-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  /* Keep layout clean: first row = 2 cards still works */
-}
-
-@media (max-width: 768px) {
-  .values-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .value-card {
-    max-width: 440px;
+/* MOBILE */
+@media (max-width: 900px) {
+  .values-grid .value-card {
+    width: 100% !important;
     height: auto;
   }
 }
+
 
 
 /* RESPONSIVE */
@@ -556,8 +539,4 @@ body {
   .choose-grid {
     grid-template-columns: 1fr;
   }
-  /* .value-card {
-    width: 100%;
-    height: auto;
-  } */
 }
