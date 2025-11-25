@@ -1,5 +1,5 @@
 :root{
-  --primary: #1B4F72; /* deep navy */
+  --primary: #1B4F72;
   --accent: #E67E22;
   --muted: #2E4053;
   --bg: #F8F9F9;
@@ -12,7 +12,7 @@
   --shadow-1: 0 6px 20px rgba(16,24,40,0.08);
 }
 
-/* Reset */
+/* RESET */
 * { box-sizing: border-box; margin:0; padding:0; }
 html,body { height:100%; }
 body {
@@ -24,8 +24,11 @@ body {
   line-height:1.5;
 }
 
-/* Container helper (used in your HTML) */
-.container {
+/* GLOBAL UNIVERSAL CONTAINER 
+--------------------------------------------- */
+.container,
+.navbar-container,
+.values-container {
   width: 100%;
   max-width: var(--container);
   margin-left: auto;
@@ -34,24 +37,11 @@ body {
   padding-right: 20px;
 }
 
-/* ✨ New: universal section container rule */
-section > .container,
-.mission > .container,
-.clients > .container,
-.about-hero-content {
-  width: 100%;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
 /* Page wrapper */
 .page-wrapper { min-height:100vh; }
 
-
 /* ------------------------------------------------
-   NAVBAR — Dark theme (matches hero section)
+   NAVBAR
 ------------------------------------------------- */
 .navbar {
   width: 100%;
@@ -66,21 +56,14 @@ section > .container,
 }
 
 .navbar-container {
-  max-width: 1250px;
-  margin: 0 auto;
-  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
   position: relative;
-  overflow: visible;
 }
 
-/* ------------------------------------------------
-   LOGO
-------------------------------------------------- */
+/* LOGO */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -91,33 +74,25 @@ section > .container,
   text-decoration: none;
 }
 
-/* ------------------------------------------------
-   CENTER NAV MENU + ALIGNMENT FIX
-------------------------------------------------- */
+/* CENTER NAV MENU */
 .navbar-menu {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   display: flex;
   gap: 32px;
   align-items: center;
 }
 
-/* ------------------------------------------------
-   NAV LINK ALIGNMENT (ALL LINKS SAME LINE)
-------------------------------------------------- */
+/* NAV LINKS */
 .nav-link {
   color: #cfe4f4;
   font-size: 16px;
   font-weight: 500;
-
-  /* Ensure perfect vertical alignment */
   line-height: 78px;
   display: flex;
   align-items: center;
-
   text-decoration: none;
   transition: color 0.25s ease;
 }
@@ -127,34 +102,27 @@ section > .container,
   color: #ffffff;
 }
 
-/* ------------------------------------------------
-   NAV ITEM (hover container)
-------------------------------------------------- */
+/* NAV ITEM */
 .nav-item {
   position: relative;
 }
 
-/* ------------------------------------------------
-   HOVER BUFFER (prevents dropdown flicker)
-------------------------------------------------- */
+/* HOVER BUFFER */
 .nav-item::after {
   content: "";
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  height: 14px; /* invisible hover bridge */
+  height: 14px;
 }
 
-/* ------------------------------------------------
-   MEGA MENU — Multi-column dropdown
-------------------------------------------------- */
+/* MEGA MENU */
 .mega-dropdown {
   position: absolute;
-  top: calc(100% - 6px); /* attaches directly under item */
+  top: calc(100% - 6px);
   left: 50%;
   transform: translateX(-50%) translateY(12px);
-
   width: 700px;
   display: flex;
   gap: 40px;
@@ -163,7 +131,6 @@ section > .container,
   background: rgba(13, 42, 58, 0.96);
   backdrop-filter: blur(10px);
   border-radius: 18px;
-
   box-shadow: 0 15px 50px rgba(0,0,0,0.28);
 
   opacity: 0;
@@ -176,9 +143,6 @@ section > .container,
   margin-top: -8px;
 }
 
-/* ------------------------------------------------
-   KEEP DROPDOWN OPEN WHILE HOVERED
-------------------------------------------------- */
 .nav-item:hover .mega-dropdown,
 .mega-dropdown:hover {
   opacity: 1;
@@ -187,9 +151,7 @@ section > .container,
   transform: translateX(-50%) translateY(0);
 }
 
-/* ------------------------------------------------
-   MEGA MENU COLUMNS
-------------------------------------------------- */
+/* MEGA MENU COLUMNS */
 .mega-col {
   flex: 1;
   min-width: 180px;
@@ -198,7 +160,6 @@ section > .container,
   gap: 6px;
 }
 
-/* Section headers */
 .mega-col h4 {
   color: #9cc7e1;
   font-size: 13px;
@@ -208,17 +169,14 @@ section > .container,
   text-transform: uppercase;
 }
 
-/* Dropdown item */
 .mega-col a {
   display: flex;
   align-items: center;
   gap: 10px;
-
   color: #e0edf7;
   text-decoration: none;
   font-size: 15px;
   padding: 8px 0;
-
   border-radius: 6px;
   transition: padding-left 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
@@ -229,16 +187,13 @@ section > .container,
   color: #ffffff;
 }
 
-/* ------------------------------------------------
-   ICON PLACEHOLDERS
-------------------------------------------------- */
 .mega-col a .icon {
   width: 18px;
   height: 18px;
   border-radius: 4px;
   background: rgba(255,255,255,0.18);
   flex-shrink: 0;
-  transition: background 0.25s ease, transform 0.25s ease;
+  transition: 0.25s ease;
 }
 
 .mega-col a:hover .icon {
@@ -246,9 +201,7 @@ section > .container,
   transform: translateX(2px);
 }
 
-/* ------------------------------------------------
-   RIGHT ACTION BUTTON
-------------------------------------------------- */
+/* RIGHT BUTTON */
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -271,13 +224,8 @@ section > .container,
   background: #154360;
 }
 
-/* ------------------------------------------------
-   MOBILE MENU TOGGLE
-------------------------------------------------- */
-.menu-toggle {
-  display: none;
-}
-
+/* MOBILE MENU */
+.menu-toggle { display: none; }
 .menu-line {
   width: 18px;
   height: 2px;
@@ -285,65 +233,45 @@ section > .container,
   margin: 3px 0;
 }
 
-
-
-
-/* ---------- ABOUT HERO SECTION ---------- */
-/* ============================================
-   ABOUT PAGE HERO — UPDATED WITH NEW SPACING,
-   BIG TITLE, SMALLER SUBTITLE, BIG GAPS
-============================================ */
-
+/* ------------------------------------------------
+   ABOUT HERO SECTION
+------------------------------------------------- */
 .hero {
-  background: linear-gradient(
-    135deg,
-    #081e2b 0%,
-    #0f3144 100%
-  );
-  position: relative;
+  background: linear-gradient(135deg, #081e2b 0%, #0f3144 100%);
   padding: 120px 0 120px;
-  overflow: hidden;
-  z-index: 1;
+  position: relative;
   text-align: center;
+  overflow: hidden;
 }
 
-/* GRID OVERLAY — opacity reduced to 0.35 */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-
   background-image:
     linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
-
   background-size: 160px 160px;
-  opacity: 0.35;         /* updated as requested */
+  opacity: 0.35;
   pointer-events: none;
-  z-index: 0;
 }
 
-/* CONTENT ABOVE GRID */
 .hero-content {
   position: relative;
   z-index: 2;
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 24px;
-  text-align: center;
 }
 
-/* TOP TITLE (Company Overview) */
 .hero-title p {
-  font-size: 2.6rem;           /* BIG headline */
+  font-size: 2.6rem;
   font-weight: 700;
-  line-height: 1.1;
   color: #ffffff;
   margin-bottom: 40px;
+  line-height: 1.1;
   position: relative;
 }
 
-/* Underline for Company Overview */
 .hero-title p::after {
   content: "";
   position: absolute;
@@ -356,26 +284,18 @@ section > .container,
   border-radius: 6px;
 }
 
-/* highlight blue word */
-.hero-title .highlight {
-  color: #4ba3ff;
-}
-
-/* SUBTITLE BELOW (paragraph) */
 .hero-subtitle {
   font-size: 1.10rem;
   color: #d4e6f1;
   max-width: 720px;
-  margin: 0 auto;
-  margin-bottom: 30px;        /* much more spacing before breadcrumbs */
+  margin: 0 auto 30px;
   line-height: 1.6;
 }
 
-/* BREADCRUMBS — moved further down */
 .breadcrumbs {
+  margin-top: 30px;
   font-size: 1rem;
   color: rgba(255,255,255,0.85);
-  margin-top: 30px;           /* large gap from text */
 }
 
 .breadcrumbs a {
@@ -383,31 +303,15 @@ section > .container,
   text-decoration: none;
   font-weight: 600;
 }
-.breadcrumbs a:hover {
-  color: #4ba3ff;
-}
+
 .breadcrumbs span {
   color: #4ba3ff;
   font-weight: 600;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .hero-title p {
-    font-size: 2.4rem;
-  }
-  .hero-title {
-    font-size: 1.7rem;
-    margin-top: 40px;
-  }
-  .hero-subtitle {
-    margin-bottom: 50px;
-  }
-}
-
-
-
-/* =============== MISSION SECTION =============== */
+/* ------------------------------------------------
+   MISSION SECTION
+------------------------------------------------- */
 .mission {
   padding: 100px 0 80px;
   background: #eaeff3;
@@ -417,18 +321,16 @@ section > .container,
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--gap);
-  align-items: start;
 }
 
 .section-label {
   color: var(--accent);
   font-weight: 600;
   letter-spacing: 1px;
-  font-size: 0.9rem;
   margin-bottom: 20px;
-  display: inline-block;
   position: relative;
 }
+
 .section-label::before {
   content: "";
   position: absolute;
@@ -446,11 +348,7 @@ section > .container,
   line-height: 1.2;
   color: var(--muted);
 }
-.mission-title .highlight {
-  position: relative;
-  color: var(--muted);
-  z-index: 1;
-}
+
 .mission-title .highlight::after {
   content: "";
   position: absolute;
@@ -460,10 +358,8 @@ section > .container,
   height: 0.3em;
   background: rgba(39, 174, 96, 0.25);
   border-radius: 4px;
-  z-index: -1;
 }
 
-/* Tabs */
 .mission-tabs {
   display: flex;
   background: #f1f3f4;
@@ -471,6 +367,7 @@ section > .container,
   overflow: hidden;
   margin-bottom: 25px;
 }
+
 .tab-btn {
   flex: 1;
   padding: 12px 20px;
@@ -480,8 +377,9 @@ section > .container,
   cursor: pointer;
   font-size: 1rem;
   color: var(--muted);
-  transition: background var(--transition), color var(--transition);
+  transition: 0.28s ease;
 }
+
 .tab-btn.active {
   background: var(--primary);
   color: var(--surface);
@@ -492,7 +390,9 @@ section > .container,
   display: none;
   animation: fadeIn 0.4s ease;
 }
+
 .tab-content.active { display: block; }
+
 .tab-content p {
   color: #555;
   line-height: 1.7;
@@ -504,9 +404,9 @@ section > .container,
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================
-   WHY CHOOSE US SECTION
-   ========================= */
+/* ------------------------------------------------
+   WHY CHOOSE US
+------------------------------------------------- */
 .why-choose-us {
   padding: 120px 0;
   background: var(--surface);
@@ -515,28 +415,7 @@ section > .container,
 .choose-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: start;
   gap: 60px;
-}
-
-/* Left side heading */
-.section-label {
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  margin-bottom: 18px;
-  position: relative;
-}
-
-.section-label::before {
-  content: "";
-  position: absolute;
-  left: -50px;
-  top: 50%;
-  width: 40px;
-  height: 2px;
-  background: var(--accent);
-  transform: translateY(-50%);
 }
 
 .choose-title {
@@ -552,7 +431,7 @@ section > .container,
   color: var(--muted);
 }
 
-/* Feature buttons */
+/* Feature Buttons */
 .feature-list {
   display: flex;
   flex-direction: column;
@@ -584,21 +463,16 @@ section > .container,
   background: #ffffff;
   border-radius: 14px;
   padding: 48px 42px;
-
-  /* lifted card like template */
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.04),
     0 4px 12px rgba(0, 0, 0, 0.06);
-
   min-height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;              /* center content horizontally */
-
-  text-align: center;               /* center text */
+  text-align: center;
   max-width: 520px;
-  margin: 0 auto;                   /* keeps card perfectly centered */
+  margin: 0 auto;
 }
 
 .choose-card h3 {
@@ -613,23 +487,15 @@ section > .container,
   line-height: 1.65;
   font-size: 1.03rem;
   max-width: 450px;
+  margin: 0 auto;
 }
 
-
-
-/* ----------------------------------------------
-   VALUES SECTION — BASE STYLES
----------------------------------------------- */
-/* SECTION WRAPPER */
+/* ------------------------------------------------
+   VALUES SECTION
+------------------------------------------------- */
 .values-section {
   background: #f4f9fc;
   padding: 80px 0 120px;
-}
-
-.values-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
 }
 
 .values-heading {
@@ -637,43 +503,35 @@ section > .container,
   font-weight: 700;
   margin-bottom: 60px;
   color: #0a2233;
+  text-align: center;
 }
 
-/* GRID — EXACT TEMPLATE LAYOUT */
 .values-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 40px 50px; /* vertical, horizontal spacing */
+  gap: 40px 50px;
 }
 
-/* CARD STYLE — EXACT MATCH TO TEMPLATE */
 .value-card {
-  width: 480px;         /* EXACT WIDTH from screenshot */
+  width: 480px;
   background: #ffffff;
   border: 1px solid #e6eef2;
   border-radius: 12px;
   padding: 45px 35px;
   text-align: center;
-  box-sizing: border-box;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-/* FIXED HEIGHT so the rows align perfectly like the screenshot */
-.value-card {
   height: 260px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* ICON */
 .value-icon {
   font-size: 40px;
   margin-bottom: 14px;
 }
 
-/* TITLE */
 .value-card h3 {
   font-size: 1.3rem;
   font-weight: 700;
@@ -681,16 +539,14 @@ section > .container,
   margin-bottom: 12px;
 }
 
-/* TEXT */
 .value-card p {
   font-size: 0.97rem;
   color: #35505e;
   line-height: 1.55;
-  margin: 0 auto;
   max-width: 340px;
+  margin: 0 auto;
 }
 
-/* HOVER EFFECT (subtle, template-style) */
 .value-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
@@ -698,34 +554,23 @@ section > .container,
 
 /* RESPONSIVE */
 @media (max-width: 1100px) {
-  .value-card {
-    width: 420px;
-  }
+  .value-card { width: 420px; }
 }
 
 @media (max-width: 768px) {
-  .values-grid {
-    gap: 30px;
-  }
+  .navbar-menu { display: none; }
+  .values-grid { gap: 30px; }
   .value-card {
     width: 100%;
     max-width: 440px;
     height: auto;
   }
-}
-
-@media (max-width: 480px) {
-  .value-card {
-    padding: 35px 22px;
+  .mission-grid,
+  .choose-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-
-
-
-
-
-
-
-
-
+@media (max-width: 480px) {
+  .value-card { padding: 35px 22px; }
+}
