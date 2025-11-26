@@ -440,6 +440,68 @@ body {
 
 
 
+
+/* WHO WE SERVE SECTION (same layout as WHAT WE ARE) */
+
+.who-we-serve {
+  padding: 100px 0 80px;
+  background: #ffffff;
+}
+
+.who-we-serve .mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+  align-items: start;
+}
+
+/* Tabs use the same styling as WHAT WE ARE */
+.who-we-serve .mission-tabs {
+  display: flex;
+  background: #f1f3f4;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.who-we-serve .tab-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--muted);
+  transition: background var(--transition), color var(--transition);
+}
+
+.who-we-serve .tab-btn.active {
+  background: var(--primary);
+  color: var(--surface);
+  border-radius: 50px;
+}
+
+/* Tab content identical to mission layout */
+.who-we-serve .tab-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.who-we-serve .tab-content.active {
+  display: block;
+}
+
+.who-we-serve .tab-content p {
+  color: #555;
+  line-height: 1.7;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+
+
+
 /* ===============================
    VALUES SECTION — CLEAN, NO CARD
 =============================== */
