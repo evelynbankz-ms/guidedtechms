@@ -686,7 +686,7 @@ body {
 /* STATS BAR — MIDDLE BLUE */
 .history-stats {
   margin-top: 35px;
-  background: #0d2a3a;  /* MEDIUM BLUE */
+  background: var(--primary);  /* MEDIUM BLUE */
   border-radius: 30px;
   padding: 18px 25px;
 
