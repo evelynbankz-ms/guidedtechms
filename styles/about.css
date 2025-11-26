@@ -627,8 +627,8 @@ body {
   background: linear-gradient(135deg, #020b16 0%, #031525 100%);
   
   /* Rounded top edges like screenshot */
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 
   /* Thin subtle border */
   border: 1px solid rgba(255, 255, 255, 0.08);
