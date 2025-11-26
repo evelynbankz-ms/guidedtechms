@@ -586,6 +586,7 @@ body {
   color: #35505e;
 }
 
+
 /* MOBILE */
 @media (max-width: 900px) {
   .values-grid {
@@ -601,8 +602,6 @@ body {
 }
 
 
-
-
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
@@ -611,4 +610,16 @@ body {
   .choose-grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+
+/* Footer Bottom */
+.gts-footer-bottom {
+  margin-top: 60px;
+  text-align: center;
+  padding-top: 30px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
