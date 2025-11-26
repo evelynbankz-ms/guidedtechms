@@ -646,12 +646,12 @@ body {
   padding: 0 30px;
 }
 
-/* Title + Subtitle */
+/* Title / Subtitle */
 .history-title {
   text-align: center;
   font-size: 2.4rem;
   font-weight: 700;
-  color: #0a2233; /* your dark text color */
+  color: #0a2233; /* DEEP BLUE ONLY */
   margin-bottom: 12px;
 }
 
@@ -659,12 +659,12 @@ body {
   text-align: center;
   max-width: 850px;
   margin: 0 auto 45px;
-  color: #4a5c66;
+  color: #435561;
   font-size: 1.05rem;
   line-height: 1.6;
 }
 
-/* GRID LAYOUT */
+/* GRID */
 .history-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -672,7 +672,6 @@ body {
   gap: 40px;
 }
 
-/* LEFT SIDE TEXT */
 .history-left p {
   color: #4b5d67;
   line-height: 1.7;
@@ -680,10 +679,10 @@ body {
   font-size: 1rem;
 }
 
-/* STATS BAR (green pill shape) */
+/* STATS BAR — NOW DEEP BLUE NOT GREEN */
 .history-stats {
   margin-top: 35px;
-  background: #0b4f3f; /* your green brand color */
+  background: #0a2233; /* DEEP BLUE BRAND COLOR */
   border-radius: 30px;
   padding: 18px 25px;
 
@@ -692,12 +691,12 @@ body {
   gap: 10px;
 }
 
-/* Each stat box */
+/* EACH STAT */
 .stat-item {
   flex: 1;
   text-align: center;
   color: #ffffff;
-  border-right: 1px solid rgba(255,255,255,0.25);
+  border-right: 1px solid rgba(255,255,255,0.18);
   padding: 6px 0;
 }
 
@@ -742,7 +741,7 @@ body {
 
   .stat-item {
     border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.18);
     padding-bottom: 12px;
   }
 
