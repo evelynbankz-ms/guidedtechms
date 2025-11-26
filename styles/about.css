@@ -293,12 +293,12 @@ body {
   text-decoration: none !important;
   color: #fff;
 }
-.breadcrumbs span page {
+.page {
   color: var(--highlight);
   font-weight: 600;
 }
-.breadcrumbs span subpage {
-  color: var(--primary);
+.subpage {
+  color: #ffff;
   font-weight: 600;
 }
 
