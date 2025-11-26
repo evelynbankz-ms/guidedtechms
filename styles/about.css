@@ -636,83 +636,91 @@ body {
 ============================================ */
 
 .history-section {
-  padding: 100px 0;
+  padding: 90px 0;
   background: #ffffff;
 }
 
-.history-header {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 60px;
+.history-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 30px;
 }
 
+/* Title + Subtitle */
 .history-title {
-  font-size: 2.6rem;
+  text-align: center;
+  font-size: 2.4rem;
   font-weight: 700;
-  color: #0a2233;
+  color: #0a2233; /* your dark text color */
   margin-bottom: 12px;
 }
 
 .history-subtitle {
-  font-size: 1.1rem;
-  color: #56707d;
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 45px;
+  color: #4a5c66;
+  font-size: 1.05rem;
   line-height: 1.6;
 }
 
-/* GRID: text left, image right */
+/* GRID LAYOUT */
 .history-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
+  gap: 40px;
 }
 
-/* Left text */
+/* LEFT SIDE TEXT */
 .history-left p {
-  font-size: 1.03rem;
-  line-height: 1.7;
   color: #4b5d67;
-  margin-bottom: 24px;
+  line-height: 1.7;
+  margin-bottom: 22px;
+  font-size: 1rem;
 }
 
-/* Stats Styling — matches screenshot style */
+/* STATS BAR (green pill shape) */
 .history-stats {
-  margin-top: 30px;
+  margin-top: 35px;
+  background: #0b4f3f; /* your green brand color */
+  border-radius: 30px;
+  padding: 18px 25px;
+
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.history-stat {
-  background: #0b4f3f;                /* brand green */
-  color: #ffffff;
-  padding: 18px 40px;
-  border-radius: 18px;
+/* Each stat box */
+.stat-item {
+  flex: 1;
   text-align: center;
+  color: #ffffff;
+  border-right: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 0;
+}
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  border: 1px solid rgba(255,255,255,0.25); /* subtle border */
+.stat-item:last-child {
+  border-right: none;
 }
 
 .stat-label {
+  opacity: 0.85;
   font-size: 0.9rem;
-  opacity: 0.9;
 }
 
 .stat-value {
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   font-weight: 700;
+  margin-top: 4px;
 }
 
-/* Right image */
+/* IMAGE */
 .history-image {
   width: 100%;
   max-width: 500px;
   height: auto;
-  display: block;
 }
 
 /* RESPONSIVE */
@@ -723,14 +731,25 @@ body {
   }
 
   .history-right {
-    order: -1; /* image on top */
+    order: -1;
   }
 
   .history-stats {
-    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 20px;
+  }
+
+  .stat-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    padding-bottom: 12px;
+  }
+
+  .stat-item:last-child {
+    border-bottom: none;
   }
 }
-
 
 
 
