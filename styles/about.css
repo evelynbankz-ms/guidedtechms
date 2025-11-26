@@ -441,11 +441,17 @@ body {
 
 
 
+
+
+/* ===============================
+   WHO WE SERVE SECTION 
+=============================== */
+
 /* WHO WE SERVE SECTION (same layout as WHAT WE ARE) */
 
 .who-we-serve {
   padding: 100px 0 80px;
-  background: #ffffff;
+  background: #f4f9fc; /* your normal page background */
 }
 
 .who-we-serve .mission-grid {
@@ -509,7 +515,7 @@ body {
 .values-section {
   width: 100%;
   padding: 80px 0;
-  background: #f4f9fc; /* your normal page background */
+  background: #ffffff; 
 }
 
 /* remove the green wrapper entirely */
