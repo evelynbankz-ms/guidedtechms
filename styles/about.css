@@ -81,6 +81,14 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+/* Logo image styling */
+.navbar-logo-img {
+  width: 32px;       /* adjust size here */
+  height: 32px;      /* keeps it square */
+  object-fit: contain;
+  display: block;
+}
+
 /* NAV MENU CENTER */
 .navbar-menu {
   position: absolute;
