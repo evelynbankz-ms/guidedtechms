@@ -635,6 +635,10 @@ body {
    HISTORY SECTION
 ============================================ */
 
+/* ==============================
+   HISTORY SECTION — MEDIUM BLUE
+============================== */
+
 .history-section {
   padding: 90px 0;
   background: #ffffff;
@@ -651,7 +655,7 @@ body {
   text-align: center;
   font-size: 2.4rem;
   font-weight: 700;
-  color: #0a2233; /* DEEP BLUE ONLY */
+  color: #0d2a3a; /* MEDIUM BLUE */
   margin-bottom: 12px;
 }
 
@@ -659,7 +663,7 @@ body {
   text-align: center;
   max-width: 850px;
   margin: 0 auto 45px;
-  color: #435561;
+  color: #526773;
   font-size: 1.05rem;
   line-height: 1.6;
 }
@@ -679,10 +683,10 @@ body {
   font-size: 1rem;
 }
 
-/* STATS BAR — NOW DEEP BLUE NOT GREEN */
+/* STATS BAR — MIDDLE BLUE */
 .history-stats {
   margin-top: 35px;
-  background: #0a2233; /* DEEP BLUE BRAND COLOR */
+  background: #0d2a3a;  /* MEDIUM BLUE */
   border-radius: 30px;
   padding: 18px 25px;
 
