@@ -78,6 +78,14 @@ body {
   text-decoration: none;
 }
 
+/* Logo image styling */
+.navbar-logo-img {
+  width: 32px;       /* adjust size here */
+  height: 32px;      /* keeps it square */
+  object-fit: contain;
+  display: block;
+}
+
 /* ------------------------------------------------
    CENTER NAV MENU + ALIGNMENT FIX
 ------------------------------------------------- */
