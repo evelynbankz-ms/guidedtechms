@@ -1321,7 +1321,7 @@ body {
 
 .slider-arrow {
   border: none;
-  background: #111;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   color: #fff;
   font-size: 1.2rem;
   width: 36px;
@@ -1332,7 +1332,7 @@ body {
 }
 
 .slider-arrow:hover {
-  background: #27AE60; /* Guided Tech accent color */
+  background: #4ba3ff; /* Guided Tech accent color */
 }
 
 
