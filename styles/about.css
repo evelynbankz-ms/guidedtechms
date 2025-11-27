@@ -881,7 +881,7 @@ body {
 ================================ */
 
 .team-members-section {
-  padding: 100px 0;
+  padding: 80px 0;
   background: #eaeff3;
 }
 
@@ -890,13 +890,14 @@ body {
   margin: 0 auto;
 }
 
+/* Header */
 .team-members-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 45px;
 }
 
 .team-members-title {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   font-weight: 800;
   color: #0d2a3a;
 }
@@ -904,28 +905,28 @@ body {
 .team-members-title::after {
   content: "";
   display: block;
-  width: 120px;
+  width: 110px;
   height: 4px;
   background: #4ba3ff;
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   border-radius: 4px;
 }
 
 .team-members-subtitle {
-  margin-top: 12px;
+  margin-top: 10px;
   color: #435361;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
 }
 
 /* =========================================
-   GRID — CENTERED + TIGHT GAP
+   GRID — CARDS CENTERED WITH SMALL GAP
 ========================================= */
 
 .team-members-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
-  gap: 20px;                /* tighter spacing */
-  justify-items: center;    /* center all cards */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 18px; /* SMALL GAP */
+  justify-items: center; /* CENTER CARDS */
   align-items: start;
 }
 
@@ -935,7 +936,7 @@ body {
 
 .team-member-card {
   width: 100%;
-  max-width: 340px;         /* ORIGINAL size restored */
+  max-width: 340px; /* ORIGINAL SIZE RESTORED */
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
@@ -949,20 +950,18 @@ body {
 }
 
 /* =========================================
-   IMAGE AREA
+   IMAGE AREA — ORIGINAL SIZE
 ========================================= */
 
 .team-member-img-area {
   background: #1B4F72;
   text-align: center;
-  padding: 50px 0;
+  padding: 50px 0; /* ORIGINAL */
 }
 
-/* Original circular image size restored */
-
 .team-member-img {
-  width: 110px; 
-  height: 110px;
+  width: 110px;   /* ORIGINAL SIZE */
+  height: 110px;  /* ORIGINAL SIZE */
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid #fff;
@@ -970,31 +969,31 @@ body {
 }
 
 /* =========================================
-   INFO SECTION
+   INFO AREA — ORIGINAL SIZE
 ========================================= */
 
 .team-member-info {
   text-align: center;
-  padding: 28px 20px 32px;
+  padding: 28px 20px 32px; /* ORIGINAL */
   background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
   color: #fff;
 }
 
 .team-member-name {
-  font-size: 1.25rem;
+  font-size: 1.25rem; /* ORIGINAL */
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .team-member-role {
-  font-size: 0.95rem;
+  font-size: 0.95rem; /* ORIGINAL */
   margin-bottom: 18px;
   color: #d4e0ea;
 }
 
-/* LinkedIn icon */
+/* LinkedIn */
 .team-member-linkedin img {
-  width: 20px;
+  width: 20px;  /* ORIGINAL */
   opacity: 0.85;
   transition: opacity 0.2s ease;
 }
@@ -1003,15 +1002,13 @@ body {
   opacity: 1;
 }
 
-/* =========================================
-   RESPONSIVE
-========================================= */
-
+/* Responsive */
 @media (max-width: 600px) {
   .team-members-title {
     font-size: 2.2rem;
   }
 }
+
 
 
 
