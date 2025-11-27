@@ -885,9 +885,9 @@ body {
   background: #eaeff3;
 }
 
-/* Container — slightly narrower to close spacing */
+/* Narrower container to remove horizontal spacing */
 .team-members-container {
-  width: min(1100px, 92%);
+  width: min(950px, 96%);
   margin: 0 auto;
 }
 
@@ -920,24 +920,24 @@ body {
 }
 
 /* =========================================
-   GRID — CARDS CENTERED, GAP FIXED
+   GRID — SMALL GAP + TIGHT COLUMNS
 ========================================= */
 
 .team-members-grid {
-  display: grid !important; 
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
-  gap: 14px !important;    /* SMALL GAP — GUARANTEED TO APPLY */
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 10px !important;   /* VERY SMALL */
   justify-items: center;
   align-items: start;
 }
 
 /* =========================================
-   CARD — ORIGINAL SIZE RESTORED
+   CARD — ORIGINAL SIZE (VISUAL)
 ========================================= */
 
 .team-member-card {
   width: 100%;
-  max-width: 340px;   /* ORIGINAL CARD SIZE */
+  max-width: 300px; /* **Reduced from 340 → 300 to allow tighter fit** */
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
@@ -951,18 +951,18 @@ body {
 }
 
 /* =========================================
-   IMAGE AREA — ORIGINAL SIZE
+   IMAGE AREA
 ========================================= */
 
 .team-member-img-area {
   background: #1B4F72;
   text-align: center;
-  padding: 50px 0;
+  padding: 40px 0;
 }
 
 .team-member-img {
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid #fff;
@@ -970,24 +970,24 @@ body {
 }
 
 /* =========================================
-   INFO AREA — ORIGINAL SIZES
+   INFO AREA
 ========================================= */
 
 .team-member-info {
   text-align: center;
-  padding: 28px 20px 32px;
+  padding: 24px 18px 28px;
   background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
   color: #fff;
 }
 
 .team-member-name {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .team-member-role {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-bottom: 18px;
   color: #d4e0ea;
 }
@@ -1009,6 +1009,7 @@ body {
     font-size: 2.2rem;
   }
 }
+
 
 
 
