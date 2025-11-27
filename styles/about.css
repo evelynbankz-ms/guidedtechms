@@ -1106,6 +1106,7 @@ body {
   width: 22px;
   opacity: 0.8;
   transition: 0.2s;
+  color: #ffffff;
 }
 
 .footer-social img:hover {
