@@ -920,14 +920,14 @@ body {
 .team-members-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* smaller cards */
-  gap: 22px; /* reduced from 40px */
+  gap: 22px !important; /* reduced from 40px */
   justify-items: center;
 }
 
 /* Card — REDUCED SIZE */
 .team-member-card {
   width: 100%;
-  max-width: 280px; /* reduced from 340px */
+  max-width: 305px; /* reduced from 340px */
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
@@ -949,8 +949,8 @@ body {
 
 /* Smaller profile image */
 .team-member-img {
-  width: 95px;  /* reduced from 110px */
-  height: 95px; /* reduced from 110px */
+  width: 110px;  /* reduced from 110px */
+  height: 110px; /* reduced from 110px */
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid #fff;
