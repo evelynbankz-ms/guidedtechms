@@ -875,6 +875,7 @@ body {
 
 
 
+
 /* ===============================
    OTHER TEAM (SEPARATE SECTION)
 ================================ */
@@ -884,18 +885,20 @@ body {
   background: #eaeff3;
 }
 
+/* Container */
 .team-members-container {
-  width: min(1200px, 90%);
+  width: min(1200px, 88%);
   margin: 0 auto;
 }
 
+/* Header */
 .team-members-header {
   text-align: center;
-  margin-bottom: 40px; /* reduced from 60px */
+  margin-bottom: 45px; /* reduced */
 }
 
 .team-members-title {
-  font-size: 2.6rem; /* slightly smaller */
+  font-size: 2.6rem;
   font-weight: 800;
   color: #0d2a3a;
 }
@@ -903,7 +906,7 @@ body {
 .team-members-title::after {
   content: "";
   display: block;
-  width: 110px;
+  width: 100px; /* reduced spacing style */
   height: 4px;
   background: #4ba3ff;
   margin: 10px auto 0;
@@ -911,75 +914,88 @@ body {
 }
 
 .team-members-subtitle {
-  margin-top: 10px;
+  margin-top: 12px;
   color: #435361;
   font-size: 1.02rem;
 }
 
-/* Grid — REDUCED GAP */
+/* =========================================
+   GRID — MATCHED EXACTLY TO SCREENSHOT STYLE
+========================================= */
+
 .team-members-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* smaller cards */
-  gap: 22px !important; /* reduced from 40px */
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); 
+  gap: 18px; /* tighter spacing */
+  align-items: start;
   justify-items: center;
 }
 
-/* Card — REDUCED SIZE */
+/* =========================================
+   CARD — EXACT TEMPLATE DIMENSIONS (SMALLER)
+========================================= */
+
 .team-member-card {
   width: 100%;
-  max-width: 305px; /* reduced from 340px */
+  max-width: 250px; /* reduced for tighter layout */
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.07); /* softer */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
   transition: 0.25s ease;
 }
 
 .team-member-card:hover {
-  transform: translateY(-4px); /* reduced from -6px */
+  transform: translateY(-4px);
   box-shadow: 0 14px 26px rgba(0,0,0,0.1);
 }
 
-/* Image area */
+/* =========================================
+   IMAGE AREA
+========================================= */
+
 .team-member-img-area {
   background: #1B4F72;
   text-align: center;
-  padding: 36px 0; /* reduced from 50px */
+  padding: 34px 0; /* reduced */
 }
 
-/* Smaller profile image */
+/* Smaller circular photo */
 .team-member-img {
-  width: 110px;  /* reduced from 110px */
-  height: 110px; /* reduced from 110px */
+  width: 90px;
+  height: 90px;
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid #fff;
   background: #fff;
 }
 
-/* Info bottom */
+/* =========================================
+   INFO SECTION
+========================================= */
+
 .team-member-info {
   text-align: center;
-  padding: 22px 16px 28px; /* slight reduction */
+  padding: 20px 14px 24px; /* reduced spacing */
   background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
   color: #fff;
 }
 
 .team-member-name {
-  font-size: 1.15rem; /* slightly smaller */
+  font-size: 1.12rem;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .team-member-role {
-  font-size: 0.9rem;
-  margin-bottom: 14px;
+  font-size: 0.88rem;
+  margin-bottom: 12px;
   color: #d4e0ea;
 }
 
-/* LinkedIn icon */
+/* LinkedIn */
 .team-member-linkedin img {
-  width: 18px; /* smaller */
+  width: 18px;
   opacity: 0.85;
   transition: opacity 0.2s ease;
 }
@@ -988,10 +1004,13 @@ body {
   opacity: 1;
 }
 
-/* Responsive */
+/* =========================================
+   RESPONSIVE
+========================================= */
+
 @media (max-width: 600px) {
   .team-members-title {
-    font-size: 2.1rem;
+    font-size: 2.2rem;
   }
 }
 
