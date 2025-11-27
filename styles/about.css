@@ -762,17 +762,24 @@ body {
 ================================ */
 
 .leaders-section {
-  padding: 100px 0;
+  padding: 80px 0;
   background: #f8f9fb;
 }
 
+/* Narrower container for tighter spacing */
+.leaders-container {
+  width: min(950px, 96%);
+  margin: 0 auto;
+}
+
+/* Header */
 .leaders-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 45px;
 }
 
 .leaders-title {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   font-weight: 800;
   color: #0d2a3a;
 }
@@ -780,31 +787,38 @@ body {
 .leaders-title::after {
   content: "";
   display: block;
-  width: 120px;
+  width: 110px;
   height: 4px;
-  background: #4ba3ff; /* your highlight blue */
+  background: #4ba3ff; /* highlight blue */
   margin: 10px auto 0;
   border-radius: 3px;
 }
 
 .leaders-subtitle {
-  margin-top: 15px;
+  margin-top: 12px;
   color: #435361;
-  font-size: 1.04rem;
+  font-size: 1.02rem;
 }
 
-/* GRID */
+/* =========================================
+   GRID — SMALL GAP + TIGHT FIT
+========================================= */
+
 .leaders-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 12px !important;   /* REDUCED GAP */
   justify-items: center;
+  align-items: start;
 }
 
-/* CARD */
+/* =========================================
+   CARD — SAME SIZE, TIGHTER FIT
+========================================= */
+
 .leader-card {
   width: 100%;
-  max-width: 340px;
+  max-width: 300px;  /* reduced from 340px to allow tighter spacing */
   background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
@@ -817,41 +831,46 @@ body {
   box-shadow: 0 18px 32px rgba(0,0,0,0.12);
 }
 
-/* IMAGE TOP HALF */
+/* =========================================
+   IMAGE SECTION
+========================================= */
+
 .leader-image-wrapper {
-  background: #1B4F72;; /* medium deep blue background */
-  padding: 50px 0;
+  background: #1B4F72;
+  padding: 40px 0;
   text-align: center;
   position: relative;
 }
 
-/* PROFILE CIRCLE */
 .leader-image {
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #ffffff;
   background: #ffffff;
 }
 
-/* INFO SECTION (bottom half) */
+/* =========================================
+   INFO SECTION
+========================================= */
+
 .leader-info {
   text-align: center;
-  padding: 28px 20px 32px;
+  padding: 24px 18px 28px;
   background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
   color: white;
 }
 
 .leader-name {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .leader-role {
   color: #d4e0ea;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-bottom: 18px;
 }
 
@@ -866,7 +885,7 @@ body {
   opacity: 1;
 }
 
-/* Responsive */
+/* Mobile */
 @media (max-width: 600px) {
   .leaders-title {
     font-size: 2.2rem;
