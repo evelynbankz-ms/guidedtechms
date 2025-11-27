@@ -819,7 +819,7 @@ body {
 
 /* IMAGE TOP HALF */
 .leader-image-wrapper {
-  background: #0d2a3a; /* medium deep blue background */
+  background: #1B4F72;; /* medium deep blue background */
   padding: 50px 0;
   text-align: center;
   position: relative;
@@ -942,10 +942,11 @@ body {
 
 /* Image area */
 .team-member-img-area {
-  background: #0d2a3a;
+  background: #1B4F72;
   text-align: center;
   padding: 50px 0;
 }
+/* #0d2a3a */
 
 .team-member-img {
   width: 110px;
@@ -960,10 +961,10 @@ body {
 .team-member-info {
   text-align: center;
   padding: 28px 20px 32px;
-  background: #1B4F72;
+  background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
   color: #fff;
 }
-/* linear-gradient(180deg, #0d2a3a 0%, #071a24 100%) */
+
 .team-member-name {
   font-size: 1.25rem;
   font-weight: 700;
