@@ -905,7 +905,7 @@ body {
   display: block;
   width: 120px;
   height: 4px;
-  background: #1B4F72; /* highlight blue */
+  background: #4ba3ff; /* highlight blue */
   margin: 12px auto 0;
   border-radius: 4px;
 }
@@ -960,10 +960,10 @@ body {
 .team-member-info {
   text-align: center;
   padding: 28px 20px 32px;
-  background: linear-gradient(180deg, #0d2a3a 0%, #071a24 100%);
+  background: #1B4F72;
   color: #fff;
 }
-
+/* linear-gradient(180deg, #0d2a3a 0%, #071a24 100%) */
 .team-member-name {
   font-size: 1.25rem;
   font-weight: 700;
