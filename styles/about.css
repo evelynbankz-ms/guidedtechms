@@ -1104,9 +1104,8 @@ body {
 
 .footer-social img {
   width: 22px;
-  height: 22px;
-  opacity: 0.85;
-  transition: 0.2s ease;
+  opacity: 0.8;
+  transition: 0.2s;
   filter: brightness(0) invert(1); /* ← FORCES WHITE ICON */
 }
 
@@ -1114,6 +1113,8 @@ body {
   opacity: 1;
   transform: scale(1.1);
 }
+
+
 
 /* Footer Bottom */
 .gts-footer-bottom {
