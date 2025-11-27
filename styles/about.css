@@ -881,7 +881,7 @@ body {
 
 .team-members-section {
   padding: 100px 0;
-  background: #f8f9fb;
+  background: #eaeff3;
 }
 
 .team-members-container {
@@ -905,7 +905,7 @@ body {
   display: block;
   width: 120px;
   height: 4px;
-  background: #4ba3ff; /* highlight blue */
+  background: #1B4F72; /* highlight blue */
   margin: 12px auto 0;
   border-radius: 4px;
 }
