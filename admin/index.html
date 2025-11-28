@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTS Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- CLOUDINARY UPLOAD WIDGET -->
+  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+
+  <!-- FIREBASE SDKs -->
+  <!-- Replace placeholders in admin.js -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="login-container">
+    <h2>Admin Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button id="loginBtn">Log In</button>
+    <p id="loginError"></p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="adminPanel" class="admin-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3 class="sidebar-title">GTS Admin</h3>
+
+      <button class="nav-btn" data-section="dashboard">Dashboard</button>
+      <button class="nav-btn" data-section="blog">Blog Manager</button>
+      <button class="nav-btn" data-section="team">Team Manager</button>
+      <button class="nav-btn" data-section="leaders">Leaders Manager</button>
+      <button class="nav-btn" data-section="settings">Settings</button>
+
+      <button id="logoutBtn" class="logout-btn">Logout</button>
+    </aside>
+
+    <!-- Main Sections -->
+    <main class="main-area">
+
+      <!-- DASHBOARD HOME -->
+      <section id="dashboard" class="panel-section active">
+        <h2>Dashboard Overview</h2>
+        <p>Welcome, Admin. Manage your website content from here.</p>
+      </section>
+
+      <!-- BLOG MANAGER -->
+      <section id="blog" class="panel-section">
+        <h2>Blog Manager</h2>
+
+        <div class="block">
+          <h3>Create New Blog Post</h3>
+
+          <input type="text" id="blogTitle" placeholder="Blog Title">
+          <textarea id="blogContent" placeholder="Blog Content (basic text for now)"></textarea>
+
+          <!-- Cloudinary preview -->
+          <button id="uploadBlogImage">Upload Thumbnail</button>
+          <p id="blogImgUrl"></p>
+
+          <button id="saveBlogPost" class="primary-btn">Save Post</button>
+        </div>
+
+        <div class="block">
+          <h3>All Blog Posts</h3>
+          <p id="blogList">Posts will load here…</p>
+        </div>
+      </section>
+
+      <!-- TEAM MANAGER -->
+      <section id="team" class="panel-section">
+        <h2>Team Manager</h2>
+
+        <div class="block">
+          <h3>Add Team Member</h3>
+
+          <input type="text" id="teamName" placeholder="Name">
+          <input type="text" id="teamRole" placeholder="Role">
+
+          <button id="uploadTeamImage">Upload Profile Image</button>
+          <p id="teamImgUrl"></p>
+
+          <button id="saveTeamMember" class="primary-btn">Save Team Member</button>
+        </div>
+
+        <div class="block">
+          <h3>Team List</h3>
+          <p id="teamList"></p>
+        </div>
+
+      </section>
+
+      <!-- LEADERS MANAGER -->
+      <section id="leaders" class="panel-section">
+        <h2>Leaders Manager</h2>
+
+        <div class="block">
+          <h3>Add Leader</h3>
+
+          <input type="text" id="leaderName" placeholder="Name">
+          <input type="text" id="leaderRole" placeholder="Role">
+
+          <button id="uploadLeaderImage">Upload Leader Image</button>
+          <p id="leaderImgUrl"></p>
+
+          <button id="saveLeader" class="primary-btn">Save Leader</button>
+        </div>
+
+        <div class="block">
+          <h3>Leaders List</h3>
+          <p id="leadersList"></p>
+        </div>
+
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="panel-section">
+        <h2>Site Settings</h2>
+
+        <div class="block">
+          <h3>Social Links</h3>
+
+          <input type="text" id="facebookLink" placeholder="Facebook URL">
+          <input type="text" id="instagramLink" placeholder="Instagram URL">
+          <input type="text" id="linkedinLink" placeholder="LinkedIn URL">
+          <input type="text" id="skoolLink" placeholder="Skool URL">
+
+          <button id="saveSettings" class="primary-btn">Save Settings</button>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
