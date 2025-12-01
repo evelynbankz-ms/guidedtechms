@@ -266,6 +266,76 @@ body {
 
 
 
+/* ------------------------------------------------
+   HERO SECTION
+------------------------------------------------- */
+.hero {
+  background: linear-gradient(135deg, #081e2b, #0f3144);
+  padding: 120px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 160px 160px;
+  opacity: 0.35;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-title p {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+/* HERO UNDERLINE (HIGHLIGHT) */
+.hero-title p::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 3px;
+  background: var(--highlight);
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  border-radius: 6px;
+}
+
+.hero-subtitle {
+  color: #d4e6f1;
+  max-width: 720px;
+  margin: 0 auto 30px;
+  font-size: 1.1rem;
+}
+
+/* REMOVE UNDERLINE IN BREADCRUMBS */
+.breadcrumbs a {
+  text-decoration: none !important;
+  color: #fff;
+}
+.page {
+  color: var(--highlight);
+  font-weight: 600;
+}
+.subpage {
+  color: #ffff;
+  font-weight: 600;
+}
 
 
 
