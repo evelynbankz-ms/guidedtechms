@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Testimonials</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-topbar">
+      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+      <div class="row">
+        <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
+      </div>
+    </header>
+
+    <div class="admin-grid">
+      <aside class="admin-side">
+        <nav class="side-nav">
+          <a href="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html">Blog</a>
+          <a href="admin-team.html">Team</a>
+          <a href="admin-testimonials.html" class="active">Testimonials</a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Testimonials</div>
+            <div class="page-sub">Add quotes to show on the site</div>
+          </div>
+        </div>
+
+        <form data-collection="testimonials" class="form-row full">
+          <div><label>Client name</label><input name="name" class="input"></div>
+          <div><label>Title / role</label><input name="role" class="input"></div>
+          <div><label>Quote</label><textarea name="quote"></textarea></div>
+          <div><label>Photo (optional)</label><input type="file" name="photo" accept="image/*" class="input"></div>
+          <div class="row"><button class="btn btn-primary" type="submit">Save</button></div>
+        </form>
+
+        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+
+        <div id="testList" class="list"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    function renderTestimonials(){
+      const items = AdminStore.all('testimonials')||[];
+      UI.renderList('#testList', items, it=>{
+        return `<div class="meta"><div><div class="title">${escape(it.name||'(no name)')}</div><div class="small">${escape(it.role||'')}</div><div class="small">${escape(it.quote||'')}</div></div></div>
+                <div class="card-actions"><button class="btn btn-ghost" data-edit="testimonials" data-id="${it.id}">Edit</button>
+                <button class="btn btn-danger" data-remove="testimonials" data-id="${it.id}">Delete</button></div>`;
+      });
+    }
+    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+    window.onAdminDataChanged = function(col){ if(col==='testimonials') renderTestimonials(); }
+    document.addEventListener('DOMContentLoaded', renderTestimonials);
+  </script>
+</body>
+</html>
