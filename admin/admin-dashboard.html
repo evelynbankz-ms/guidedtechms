@@ -1,10 +1,10 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Admin — Dashboard</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Dashboard</title>
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <div class="admin-wrap">
@@ -17,13 +17,14 @@
     </header>
 
     <div class="admin-grid">
+      <!-- consistent sidebar -->
       <aside class="admin-side">
         <nav class="side-nav">
-          <a href="admin-dashboard.html" data-page="admin-dashboard.html" class="active">Dashboard</a>
+          <a href="admin-dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
           <a href="admin-blog.html" data-page="admin-blog.html">Blog Posts</a>
-          <a href="admin-team.html" data-page="admin-team.html">Team</a>
+          <a href="admin-team.html" data-page="admin-team.html">Team Members</a>
           <a href="admin-services.html" data-page="admin-services.html">Services</a>
-          <a href="admin-testimonials.html" data-page="admin-testimonials.html">Testimonials</a>
+          <a href="admin-faq.html" data-page="admin-faq.html">FAQs</a>
           <a href="admin-settings.html" data-page="admin-settings.html">Settings</a>
         </nav>
       </aside>
@@ -31,73 +32,50 @@
       <main class="admin-main">
         <div class="page-head">
           <div>
-            <div class="page-title">Admin Dashboard</div>
-            <div class="page-sub">Manage site content — blog posts, team members, services and testimonials.</div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Overview — quick links to create content</div>
           </div>
           <div class="row">
-            <button class="btn btn-primary" onclick="location.href='admin-blog.html'">Create blog post</button>
-            <button class="btn btn-ghost" onclick="location.href='admin-team.html'">Add team</button>
+            <button class="btn btn-primary" onclick="location.href='admin-blog.html'">New blog</button>
+            <button class="btn btn-ghost" onclick="location.href='admin-team.html'">New team member</button>
           </div>
         </div>
 
-        <section>
+        <section style="margin-bottom:14px">
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-            <div class="card">
-              <div>
-                <div class="kv">Blog posts</div>
-                <div id="dash_blogs" class="page-sub">0</div>
-              </div>
-              <div><button class="btn btn-ghost" onclick="location.href='admin-blog.html'">Manage</button></div>
-            </div>
-
-            <div class="card">
-              <div>
-                <div class="kv">Team members</div>
-                <div id="dash_team" class="page-sub">0</div>
-              </div>
-              <div><button class="btn btn-ghost" onclick="location.href='admin-team.html'">Manage</button></div>
-            </div>
-
-            <div class="card">
-              <div>
-                <div class="kv">Services</div>
-                <div id="dash_services" class="page-sub">0</div>
-              </div>
-              <div><button class="btn btn-ghost" onclick="location.href='admin-services.html'">Manage</button></div>
-            </div>
+            <div class="card"><div><div class="kv">Blog posts</div><div id="dash_blogs" class="page-sub">0</div></div><div><button class="btn btn-ghost" onclick="location.href='admin-blog.html'">Manage</button></div></div>
+            <div class="card"><div><div class="kv">Team</div><div id="dash_team" class="page-sub">0</div></div><div><button class="btn btn-ghost" onclick="location.href='admin-team.html'">Manage</button></div></div>
+            <div class="card"><div><div class="kv">Services</div><div id="dash_services" class="page-sub">0</div></div><div><button class="btn btn-ghost" onclick="location.href='admin-services.html'">Manage</button></div></div>
           </div>
+        </section>
 
-          <div style="margin-top:18px">
-            <h3 style="font-size:16px;margin-bottom:8px">Recent blog drafts</h3>
-            <div id="recentBlogs" class="list"></div>
-          </div>
+        <section>
+          <h3 style="margin-bottom:8px">Recent posts</h3>
+          <div id="recentBlogs" class="list"></div>
         </section>
       </main>
     </div>
   </div>
 
-  <script src="admin.js"></script>
-  <script>
-    // populate dashboard counts & recent list
-    function renderDashboard(){
-      const b = AdminStore.all('blogs')||[];
-      const t = AdminStore.all('team')||[];
-      const s = AdminStore.all('services')||[];
-      document.getElementById('dash_blogs').textContent = b.length;
-      document.getElementById('dash_team').textContent = t.length;
-      document.getElementById('dash_services').textContent = s.length;
+<script src="admin.js"></script>
+<script>
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function renderDashboard(){
+  const b = AdminStore.all('blogs')||[];
+  const t = AdminStore.all('team')||[];
+  const s = AdminStore.all('services')||[];
+  document.getElementById('dash_blogs').textContent = b.length;
+  document.getElementById('dash_team').textContent = t.length;
+  document.getElementById('dash_services').textContent = s.length;
 
-      UI.renderList('#recentBlogs', b.slice(0,5), it=>{
-        return `<div class="meta"><div class="title">${escapeHtml(it.title||'(no title)')}</div><div class="small">${new Date(Number(it.id.split('').slice(0,13).join(''))||Date.now()).toLocaleString()}</div></div>
-                <div class="card-actions"><button class="btn btn-ghost" data-edit="blogs" data-id="${it.id}">Edit</button>
-                <button class="btn btn-danger" data-remove="blogs" data-id="${it.id}">Delete</button></div>`;
-      });
-    }
-
-    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-
-    window.onAdminDataChanged = function(col){ renderDashboard(); }
-    document.addEventListener('DOMContentLoaded', renderDashboard);
-  </script>
+  UI.renderList('#recentBlogs', b.slice(0,6), it=>{
+    return `<div class="meta"><div class="title">${escapeHtml(it.title||'(no title)')}</div><div class="small">${escapeHtml(it.excerpt||'')}</div></div>
+            <div class="card-actions"><button class="btn btn-ghost" data-edit="blogs" data-id="${it.id}">Edit</button>
+            <button class="btn btn-danger" data-remove="blogs" data-id="${it.id}">Delete</button></div>`;
+  });
+}
+window.onAdminDataChanged = function(col){ renderDashboard(); };
+document.addEventListener('DOMContentLoaded', renderDashboard);
+</script>
 </body>
 </html>
