@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Services</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-topbar">
+      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+      <div class="row">
+        <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
+      </div>
+    </header>
+
+    <div class="admin-grid">
+      <aside class="admin-side">
+        <nav class="side-nav">
+          <a href="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html">Blog</a>
+          <a href="admin-team.html">Team</a>
+          <a href="admin-services.html" class="active">Services</a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Services</div>
+            <div class="page-sub">Add items listed under Services/Capabilities</div>
+          </div>
+        </div>
+
+        <form data-collection="services" class="form-row full">
+          <div><label>Title</label><input name="title" class="input" placeholder="Service name"></div>
+          <div class="form-row">
+            <div><label>Short</label><input name="short" class="input" placeholder="Short tagline"></div>
+            <div><label>Slug</label><input name="slug" class="input" placeholder="service-slug"></div>
+          </div>
+          <div><label>Description</label><textarea name="description"></textarea></div>
+          <div><label>Icon (emoji or class)</label><input name="icon" class="input" placeholder="eg. 🔧 or icon-class"></div>
+
+          <div class="row"><button class="btn btn-primary" type="submit">Save service</button></div>
+        </form>
+
+        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+
+        <h3>All services</h3>
+        <div id="servicesList" class="list"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    function renderServices(){
+      const items = AdminStore.all('services')||[];
+      UI.renderList('#servicesList', items, it=>{
+        return `<div class="meta"><div><div class="title">${escape(it.title||'(no title)')}</div><div class="small">${escape(it.short||'')}</div></div></div>
+                <div class="card-actions"><button class="btn btn-ghost" data-edit="services" data-id="${it.id}">Edit</button>
+                <button class="btn btn-danger" data-remove="services" data-id="${it.id}">Delete</button></div>`;
+      });
+    }
+    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+    window.onAdminDataChanged = function(col){ if(col==='services') renderServices(); }
+    document.addEventListener('DOMContentLoaded', renderServices);
+  </script>
+</body>
+</html>
