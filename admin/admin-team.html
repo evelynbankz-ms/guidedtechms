@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Team</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-topbar">
+      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+      <div class="row">
+        <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
+        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=\"team\"]').scrollIntoView({behavior:'smooth'})">New member</button>
+      </div>
+    </header>
+
+    <div class="admin-grid">
+      <aside class="admin-side">
+        <nav class="side-nav">
+          <a href="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html">Blog</a>
+          <a href="admin-team.html" class="active">Team</a>
+          <a href="admin-services.html">Services</a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Team</div>
+            <div class="page-sub">Add team profiles used on the public site.</div>
+          </div>
+        </div>
+
+        <form data-collection="team" class="form-row full">
+          <div>
+            <label>Name</label>
+            <input name="name" class="input" placeholder="Full name">
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label>Role</label>
+              <input name="role" class="input" placeholder="Job title">
+            </div>
+            <div>
+              <label>LinkedIn</label>
+              <input name="linkedin" class="input" placeholder="URL">
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <div>
+              <label>Bio</label>
+              <textarea name="bio" placeholder="Short bio"></textarea>
+            </div>
+          </div>
+
+          <div>
+            <label>Photo</label>
+            <input type="file" name="photo" accept="image/*" class="input">
+          </div>
+
+          <div class="row" style="margin-top:8px">
+            <button class="btn btn-primary" type="submit">Save member</button>
+            <button type="button" class="btn btn-ghost" onclick="document.querySelector('form[data-collection=team]').reset()">Reset</button>
+          </div>
+        </form>
+
+        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+
+        <h3 style="margin-bottom:12px">Team</h3>
+        <div id="teamList" class="list"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    function renderTeam(){
+      const items = AdminStore.all('team') || [];
+      UI.renderList('#teamList', items, it=>{
+        const photo = it.imageData ? `<img src="${it.imageData}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">` : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
+        return `<div class="meta"><div style="display:flex;gap:12px;align-items:center">${photo}<div><div class="title">${escape(it.name||'(no name)')}</div><div class="small">${escape(it.role||'')}</div></div></div></div>
+                <div class="card-actions">
+                  <button class="btn btn-ghost" data-edit="team" data-id="${it.id}">Edit</button>
+                  <button class="btn btn-danger" data-remove="team" data-id="${it.id}">Delete</button>
+                </div>`;
+      });
+    }
+    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+    window.onAdminDataChanged = function(col){
+      if(col==='team') renderTeam();
+    };
+    document.addEventListener('DOMContentLoaded', renderTeam);
+  </script>
+</body>
+</html>
