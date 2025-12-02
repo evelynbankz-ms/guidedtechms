@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — FAQs</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-topbar">
+      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+      <div class="row">
+        <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
+        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=faqs]').scrollIntoView({behavior:'smooth'})">New FAQ</button>
+      </div>
+    </header>
+
+    <div class="admin-grid">
+      <aside class="admin-side">
+        <nav class="side-nav">
+          <a href="admin-dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html" data-page="admin-blog.html">Blog Posts</a>
+          <a href="admin-team.html" data-page="admin-team.html">Team Members</a>
+          <a href="admin-services.html" data-page="admin-services.html">Services</a>
+          <a href="admin-faq.html" data-page="admin-faq.html">FAQs</a>
+          <a href="admin-settings.html" data-page="admin-settings.html">Settings</a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <div class="page-head">
+          <div>
+            <div class="page-title">FAQs</div>
+            <div class="page-sub">Add frequently asked questions shown on the public site.</div>
+          </div>
+        </div>
+
+        <form data-collection="faqs" class="form-row full">
+          <div><label>Question</label><input name="question" class="input" placeholder="Question"></div>
+          <div><label>Answer</label><textarea name="answer" placeholder="Answer (HTML allowed)"></textarea></div>
+          <div class="row"><button class="btn btn-primary" type="submit">Save FAQ</button></div>
+        </form>
+
+        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+
+        <h3>All FAQs</h3>
+        <div id="faqList" class="list"></div>
+      </main>
+    </div>
+  </div>
+
+<script src="admin.js"></script>
+<script>
+function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function renderFaqs(){
+  const items = AdminStore.all('faqs')||[];
+  UI.renderList('#faqList', items, it=>{
+    return `<div class="meta"><div><div class="title">${escape(it.question||'(no question)')}</div><div class="small">${escape(it.answer||'')}</div></div></div>
+            <div class="card-actions"><button class="btn btn-ghost" data-edit="faqs" data-id="${it.id}" data-target="form[data-collection='faqs']">Edit</button>
+            <button class="btn btn-danger" data-remove="faqs" data-id="${it.id}">Delete</button></div>`;
+  });
+}
+window.onAdminDataChanged = function(col){ if(col==='faqs') renderFaqs(); };
+document.addEventListener('DOMContentLoaded', renderFaqs);
+</script>
+</body>
+</html>
