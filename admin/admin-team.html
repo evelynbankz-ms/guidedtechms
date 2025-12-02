@@ -1,10 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Admin — Team</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Team Members</title>
+  
+<!-- Favicon Placeholder -->
+<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+  
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <div class="admin-wrap">
@@ -12,25 +16,27 @@
       <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
       <div class="row">
         <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
-        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=\"team\"]').scrollIntoView({behavior:'smooth'})">New member</button>
+        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=team]').scrollIntoView({behavior:'smooth'})">New member</button>
       </div>
     </header>
 
     <div class="admin-grid">
       <aside class="admin-side">
         <nav class="side-nav">
-          <a href="admin-dashboard.html">Dashboard</a>
-          <a href="admin-blog.html">Blog</a>
-          <a href="admin-team.html" class="active">Team</a>
-          <a href="admin-services.html">Services</a>
+          <a href="admin-dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html" data-page="admin-blog.html">Blog Posts</a>
+          <a href="admin-team.html" data-page="admin-team.html">Team Members</a>
+          <a href="admin-services.html" data-page="admin-services.html">Services</a>
+          <a href="admin-faq.html" data-page="admin-faq.html">FAQs</a>
+          <a href="admin-settings.html" data-page="admin-settings.html">Settings</a>
         </nav>
       </aside>
 
       <main class="admin-main">
         <div class="page-head">
           <div>
-            <div class="page-title">Team</div>
-            <div class="page-sub">Add team profiles used on the public site.</div>
+            <div class="page-title">Team members</div>
+            <div class="page-sub">Upload member photo here (preview shows immediately).</div>
           </div>
         </div>
 
@@ -41,26 +47,24 @@
           </div>
 
           <div class="form-row">
-            <div>
-              <label>Role</label>
-              <input name="role" class="input" placeholder="Job title">
-            </div>
-            <div>
-              <label>LinkedIn</label>
-              <input name="linkedin" class="input" placeholder="URL">
-            </div>
+            <div><label>Role</label><input name="role" class="input" placeholder="Job title"></div>
+            <div><label>LinkedIn</label><input name="linkedin" class="input" placeholder="URL"></div>
           </div>
 
           <div class="form-row full">
             <div>
-              <label>Bio</label>
-              <textarea name="bio" placeholder="Short bio"></textarea>
+              <label>Photo</label>
+              <input type="file" name="photo" accept="image/*" class="input">
+            </div>
+            <div>
+              <label>Preview</label>
+              <div class="preview"><img class="file-preview" alt="photo preview" src=""></div>
             </div>
           </div>
 
           <div>
-            <label>Photo</label>
-            <input type="file" name="photo" accept="image/*" class="input">
+            <label>Bio</label>
+            <textarea name="bio" placeholder="Short bio"></textarea>
           </div>
 
           <div class="row" style="margin-top:8px">
@@ -77,24 +81,20 @@
     </div>
   </div>
 
-  <script src="admin.js"></script>
-  <script>
-    function renderTeam(){
-      const items = AdminStore.all('team') || [];
-      UI.renderList('#teamList', items, it=>{
-        const photo = it.imageData ? `<img src="${it.imageData}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">` : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
-        return `<div class="meta"><div style="display:flex;gap:12px;align-items:center">${photo}<div><div class="title">${escape(it.name||'(no name)')}</div><div class="small">${escape(it.role||'')}</div></div></div></div>
-                <div class="card-actions">
-                  <button class="btn btn-ghost" data-edit="team" data-id="${it.id}">Edit</button>
-                  <button class="btn btn-danger" data-remove="team" data-id="${it.id}">Delete</button>
-                </div>`;
-      });
-    }
-    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-    window.onAdminDataChanged = function(col){
-      if(col==='team') renderTeam();
-    };
-    document.addEventListener('DOMContentLoaded', renderTeam);
-  </script>
+<script src="admin.js"></script>
+<script>
+function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function renderTeam(){
+  const items = AdminStore.all('team')||[];
+  UI.renderList('#teamList', items, it=>{
+    const photo = it.imageData ? `<img src="${it.imageData}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">` : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
+    return `<div class="meta"><div style="display:flex;gap:12px;align-items:center">${photo}<div><div class="title">${escape(it.name||'(no name)')}</div><div class="small">${escape(it.role||'')}</div></div></div></div>
+            <div class="card-actions"><button class="btn btn-ghost" data-edit="team" data-id="${it.id}" data-target="form[data-collection='team']">Edit</button>
+            <button class="btn btn-danger" data-remove="team" data-id="${it.id}">Delete</button></div>`;
+  });
+}
+window.onAdminDataChanged = function(col){ if(col==='team') renderTeam(); };
+document.addEventListener('DOMContentLoaded', renderTeam);
+</script>
 </body>
 </html>
