@@ -1,10 +1,14 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Admin — Blog Posts</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Blog Posts</title>
+  
+<!-- Favicon Placeholder -->
+<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+  
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <div class="admin-wrap">
@@ -12,17 +16,20 @@
       <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
       <div class="row">
         <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
-        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=\"blogs\"]').scrollIntoView({behavior:'smooth'})">New post</button>
+        <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=blogs]').scrollIntoView({behavior:'smooth'})">New post</button>
       </div>
     </header>
 
     <div class="admin-grid">
+      <!-- consistent sidebar -->
       <aside class="admin-side">
         <nav class="side-nav">
           <a href="admin-dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
-          <a href="admin-blog.html" data-page="admin-blog.html" class="active">Blog Posts</a>
-          <a href="admin-team.html" data-page="admin-team.html">Team</a>
+          <a href="admin-blog.html" data-page="admin-blog.html">Blog Posts</a>
+          <a href="admin-team.html" data-page="admin-team.html">Team Members</a>
           <a href="admin-services.html" data-page="admin-services.html">Services</a>
+          <a href="admin-faq.html" data-page="admin-faq.html">FAQs</a>
+          <a href="admin-settings.html" data-page="admin-settings.html">Settings</a>
         </nav>
       </aside>
 
@@ -30,12 +37,11 @@
         <div class="page-head">
           <div>
             <div class="page-title">Blog posts</div>
-            <div class="page-sub">Add and edit blog posts. Saved locally until you wire a backend.</div>
+            <div class="page-sub">Create and edit posts. Upload feature image here (preview shows immediately).</div>
           </div>
-          <div></div>
         </div>
 
-        <form data-collection="blogs" class="form-row full" style="gap:14px 0;">
+        <form data-collection="blogs" class="form-row full" style="gap:14px 0">
           <div class="form-row full">
             <div>
               <label>Title</label>
@@ -43,7 +49,7 @@
             </div>
             <div>
               <label>Author</label>
-              <input name="author" class="input" placeholder="Author name">
+              <input name="author" class="input" placeholder="Author">
             </div>
           </div>
 
@@ -60,19 +66,21 @@
 
           <div class="form-row full">
             <div>
-              <label>Feature image (optional)</label>
+              <label>Feature image (choose to preview immediately)</label>
               <input type="file" name="feature" accept="image/*" class="input">
             </div>
             <div>
-              <label>Slug (optional)</label>
-              <input name="slug" class="input" placeholder="post-slug">
+              <label>Image preview</label>
+              <div class="preview">
+                <img class="file-preview" alt="image preview" src="">
+              </div>
             </div>
           </div>
 
           <div class="form-row full">
-            <div style="width:100%">
+            <div>
               <label>Content (HTML allowed)</label>
-              <textarea name="content" placeholder="<p>Write HTML content or plain text</p>"></textarea>
+              <textarea name="content" placeholder="<p>Write HTML...</p>"></textarea>
             </div>
           </div>
 
@@ -90,39 +98,31 @@
     </div>
   </div>
 
-  <script src="admin.js"></script>
-  <script>
-    function renderBlogs(){
-      const blogs = AdminStore.all('blogs') || [];
-      UI.renderList('#blogList', blogs, it=>{
-        return `<div class="meta">
-                  <div>
-                    <div class="title">${escape(it.title||'(no title)')}</div>
-                    <div class="small">${escape(it.excerpt||'')}</div>
-                  </div>
-                  <div class="small">${escape(it.author||'')}</div>
-                </div>
-                <div class="card-actions">
-                  <button class="btn btn-ghost" data-edit="blogs" data-id="${it.id}">Edit</button>
-                  <button class="btn btn-ghost" onclick="previewPost('${it.id}')">Preview</button>
-                  <button class="btn btn-danger" data-remove="blogs" data-id="${it.id}">Delete</button>
-                </div>`;
-      });
-    }
-    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+<script src="admin.js"></script>
+<script>
+function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    window.onAdminDataChanged = function(col){
-      if(col==='blogs') renderBlogs();
-      // update dashboard too (optional)
-    };
-    document.addEventListener('DOMContentLoaded', renderBlogs);
+function renderBlogs(){
+  const blogs = AdminStore.all('blogs')||[];
+  UI.renderList('#blogList', blogs, it=>{
+    const thumb = it.imageData ? `<img src="${it.imageData}" class="file-preview">` : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
+    return `<div class="meta"><div style="display:flex;gap:12px;align-items:center">${thumb}<div><div class="title">${escape(it.title||'(no title)')}</div><div class="small">${escape(it.excerpt||'')}</div></div></div></div>
+            <div class="card-actions">
+              <button class="btn btn-ghost" data-edit="blogs" data-id="${it.id}" data-target="form[data-collection='blogs']">Edit</button>
+              <button class="btn btn-ghost" onclick="previewPost('${it.id}')">Preview</button>
+              <button class="btn btn-danger" data-remove="blogs" data-id="${it.id}">Delete</button>
+            </div>`;
+  });
+}
+window.onAdminDataChanged = function(col){ if(col==='blogs') renderBlogs(); };
+document.addEventListener('DOMContentLoaded', renderBlogs);
 
-    function previewPost(id){
-      const post = AdminStore.get('blogs', id);
-      const w = window.open('about:blank','_blank');
-      w.document.write(`<html><head><title>${escape(post.title)}</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="font-family:Inter,Arial;padding:24px"><h1>${escape(post.title)}</h1><p><em>${escape(post.excerpt||'')}</em></p><div>${post.content||''}</div></body></html>`);
-      w.document.close();
-    }
-  </script>
+function previewPost(id){
+  const p = AdminStore.get('blogs', id);
+  const w = window.open('about:blank','_blank');
+  w.document.write(`<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(p.title)}</title></head><body style="font-family:Inter,Arial;padding:24px"><h1>${escape(p.title)}</h1><p><em>${escape(p.excerpt||'')}</em></p><div>${p.content||''}</div></body></html>`);
+  w.document.close();
+}
+</script>
 </body>
 </html>
