@@ -1,10 +1,12 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Admin — Settings</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Settings</title>
+<!-- Favicon Placeholder -->
+<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <div class="admin-wrap">
@@ -18,8 +20,12 @@
     <div class="admin-grid">
       <aside class="admin-side">
         <nav class="side-nav">
-          <a href="admin-dashboard.html">Dashboard</a>
-          <a href="admin-settings.html" class="active">Settings</a>
+          <a href="admin-dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
+          <a href="admin-blog.html" data-page="admin-blog.html">Blog Posts</a>
+          <a href="admin-team.html" data-page="admin-team.html">Team Members</a>
+          <a href="admin-services.html" data-page="admin-services.html">Services</a>
+          <a href="admin-faq.html" data-page="admin-faq.html">FAQs</a>
+          <a href="admin-settings.html" data-page="admin-settings.html">Settings</a>
         </nav>
       </aside>
 
@@ -27,36 +33,36 @@
         <div class="page-head">
           <div>
             <div class="page-title">Settings</div>
-            <div class="page-sub">Basic site settings stored locally</div>
+            <div class="page-sub">Site settings stored locally (can be exported later).</div>
           </div>
         </div>
 
         <form data-collection="settings" class="form-row full">
           <div><label>Site title</label><input name="siteTitle" class="input" placeholder="Guided Tech Solutions"></div>
-          <div><label>Primary accent hex</label><input name="primaryHex" class="input" value="#1B4F72"></div>
+          <div><label>Primary color</label><input name="primaryHex" class="input" value="#1B4F72"></div>
           <div><label>Footer text</label><textarea name="footerText"></textarea></div>
 
           <div class="row"><button class="btn btn-primary" type="submit">Save settings</button></div>
         </form>
 
         <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
-        <div class="preview" id="settingsPreview">
-          <div class="kv">Settings preview</div>
-        </div>
+
+        <div class="preview" id="settingsPreview"></div>
       </main>
     </div>
   </div>
 
-  <script src="admin.js"></script>
-  <script>
-    function renderSettings(){
-      const s = AdminStore.all('settings')||[];
-      const latest = s[0]||{};
-      document.getElementById('settingsPreview').innerHTML = `<div><strong>${escape(latest.siteTitle||'Site title')}</strong></div><div class="small">${escape(latest.footerText||'Footer text...')}</div>`;
-    }
-    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-    window.onAdminDataChanged = function(col){ if(col==='settings') renderSettings(); }
-    document.addEventListener('DOMContentLoaded', renderSettings);
-  </script>
+<script src="admin.js"></script>
+<script>
+function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function renderSettings(){
+  const s = AdminStore.all('settings') || [];
+  const latest = s[0] || {};
+  document.getElementById('settingsPreview').innerHTML = `<div><strong>${escape(latest.siteTitle || 'Site title')}</strong></div><div class="small">${escape(latest.footerText || '')}</div>`;
+}
+window.onAdminDataChanged = function(col){ if(col==='settings') renderSettings(); };
+document.addEventListener('DOMContentLoaded', renderSettings);
+</script>
 </body>
 </html>
