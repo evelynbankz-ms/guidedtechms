@@ -1,148 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GTS Admin Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- CLOUDINARY UPLOAD WIDGET -->
-  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — Guided Tech Solutions</title>
 
-  <!-- FIREBASE SDKs -->
-  <!-- Replace placeholders in admin.js -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
-
-  <link rel="stylesheet" href="admin.css">
+<!-- STYLES -->
+<link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
 
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="login-container">
-    <h2>Admin Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <button id="loginBtn">Log In</button>
-    <p id="loginError"></p>
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="brand">
+      <div class="logo-mark">G</div>
+      <div class="brand-name">Guided Tech Solutions</div>
+    </a>
+
+    <nav class="top-nav">
+      <a class="small" href="#">Overview</a>
+      <a class="small" href="#">Reports</a>
+      <a class="small" href="#">Settings</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="search">
+        <input id="adminSearch" type="search" placeholder="Search...">
+        <button class="icon-btn">🔍</button>
+      </div>
+
+      <button id="sidebarToggle" class="icon-btn">☰</button>
+      <a class="btn-cta" href="#">New Project</a>
+    </div>
   </div>
+</header>
 
-  <!-- DASHBOARD -->
-  <div id="adminPanel" class="admin-wrapper">
+<!-- LAYOUT -->
+<main>
+  <div class="app-layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h3 class="sidebar-title">GTS Admin</h3>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="s-title">Navigation</div>
 
-      <button class="nav-btn" data-section="dashboard">Dashboard</button>
-      <button class="nav-btn" data-section="blog">Blog Manager</button>
-      <button class="nav-btn" data-section="team">Team Manager</button>
-      <button class="nav-btn" data-section="leaders">Leaders Manager</button>
-      <button class="nav-btn" data-section="settings">Settings</button>
+      <nav class="s-nav">
+        <a href="#" class="s-link active"><span>🏠</span> Dashboard</a>
+        <a href="#" class="s-link"><span>📁</span> Projects</a>
+        <a href="#" class="s-link"><span>👥</span> Team</a>
+        <a href="#" class="s-link"><span>📰</span> Content</a>
+        <a href="#" class="s-link"><span>⚙️</span> Settings</a>
+      </nav>
 
-      <button id="logoutBtn" class="logout-btn">Logout</button>
+      <hr>
+
+      <div class="s-title">Account</div>
+      <a class="s-link" href="#"><span>👤</span> Profile</a>
+      <a class="s-link" href="#"><span>🔒</span> Logout</a>
     </aside>
 
-    <!-- Main Sections -->
-    <main class="main-area">
+    <!-- MAIN -->
+    <section class="main">
 
-      <!-- DASHBOARD HOME -->
-      <section id="dashboard" class="panel-section active">
-        <h2>Dashboard Overview</h2>
-        <p>Welcome, Admin. Manage your website content from here.</p>
+      <div class="page-header">
+        <div>
+          <h1>Overview</h1>
+          <div class="small">Welcome back — quick summary of recent activity</div>
+        </div>
+
+        <div class="header-actions">
+          <div class="kv"><strong>Plan:</strong> Starter</div>
+          <button class="btn-cta" id="refreshBtn">Refresh</button>
+        </div>
+      </div>
+
+      <!-- STATS CARDS -->
+      <div class="cards-grid">
+        <div class="card">
+          <div class="small">Active Projects</div>
+          <h3>Projects</h3>
+          <div class="stat">12</div>
+        </div>
+
+        <div class="card">
+          <div class="small">Team Members</div>
+          <h3>People</h3>
+          <div class="stat">26</div>
+        </div>
+
+        <div class="card">
+          <div class="small">Monthly Users</div>
+          <h3>Users</h3>
+          <div class="stat">4,820</div>
+        </div>
+      </div>
+
+      <!-- WHY CHOOSE US -->
+      <section class="page-section">
+        <div class="container">
+          <h2 class="section-title">Why choose us</h2>
+
+          <div class="choose-grid">
+
+            <!-- feature list -->
+            <div class="feature-list">
+              <button class="feature-item active" data-feature="f1">Powerful task management <span>›</span></button>
+              <button class="feature-item" data-feature="f2">Intuitive project overview <span>›</span></button>
+              <button class="feature-item" data-feature="f3">Analyze and track traffic <span>›</span></button>
+            </div>
+
+            <!-- right card -->
+            <div class="feature-card" id="featureCard">
+              <div class="feature-content" data-id="f1">
+                <h3>Powerful task management</h3>
+                <p>Organize tasks, assign responsibilities, and streamline operations with ease.</p>
+              </div>
+
+              <div class="feature-content" data-id="f2" style="display:none">
+                <h3>Intuitive project overview</h3>
+                <p>See timelines, milestones, and progress at a glance.</p>
+              </div>
+
+              <div class="feature-content" data-id="f3" style="display:none">
+                <h3>Analyze and track traffic</h3>
+                <p>Understand user activity and performance metrics in real time.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </section>
 
-      <!-- BLOG MANAGER -->
-      <section id="blog" class="panel-section">
-        <h2>Blog Manager</h2>
+      <!-- TABLE -->
+      <section class="page-section">
+        <div class="container">
+          <h2 class="section-title">Recent activity</h2>
 
-        <div class="block">
-          <h3>Create New Blog Post</h3>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Owner</th>
+                  <th>Stage</th>
+                  <th>Last updated</th>
+                  <th style="text-align:right">Status</th>
+                </tr>
+              </thead>
 
-          <input type="text" id="blogTitle" placeholder="Blog Title">
-          <textarea id="blogContent" placeholder="Blog Content (basic text for now)"></textarea>
+              <tbody>
+                <tr>
+                  <td>Website redesign</td>
+                  <td>Sarah</td>
+                  <td>Design</td>
+                  <td>2 days ago</td>
+                  <td style="text-align:right"><span class="pill active">Active</span></td>
+                </tr>
 
-          <!-- Cloudinary preview -->
-          <button id="uploadBlogImage">Upload Thumbnail</button>
-          <p id="blogImgUrl"></p>
+                <tr>
+                  <td>API Integration</td>
+                  <td>Reece</td>
+                  <td>Development</td>
+                  <td>4 days ago</td>
+                  <td style="text-align:right"><span class="pill idle">Staged</span></td>
+                </tr>
 
-          <button id="saveBlogPost" class="primary-btn">Save Post</button>
-        </div>
+                <tr>
+                  <td>Security Audit</td>
+                  <td>Team</td>
+                  <td>QA</td>
+                  <td>1 week ago</td>
+                  <td style="text-align:right"><span class="pill off">Paused</span></td>
+                </tr>
 
-        <div class="block">
-          <h3>All Blog Posts</h3>
-          <p id="blogList">Posts will load here…</p>
+                <tr>
+                  <td>Marketing site</td>
+                  <td>Ola</td>
+                  <td>Launch</td>
+                  <td>3 days ago</td>
+                  <td style="text-align:right"><span class="pill active">Active</span></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <!-- TEAM MANAGER -->
-      <section id="team" class="panel-section">
-        <h2>Team Manager</h2>
-
-        <div class="block">
-          <h3>Add Team Member</h3>
-
-          <input type="text" id="teamName" placeholder="Name">
-          <input type="text" id="teamRole" placeholder="Role">
-
-          <button id="uploadTeamImage">Upload Profile Image</button>
-          <p id="teamImgUrl"></p>
-
-          <button id="saveTeamMember" class="primary-btn">Save Team Member</button>
-        </div>
-
-        <div class="block">
-          <h3>Team List</h3>
-          <p id="teamList"></p>
-        </div>
-
-      </section>
-
-      <!-- LEADERS MANAGER -->
-      <section id="leaders" class="panel-section">
-        <h2>Leaders Manager</h2>
-
-        <div class="block">
-          <h3>Add Leader</h3>
-
-          <input type="text" id="leaderName" placeholder="Name">
-          <input type="text" id="leaderRole" placeholder="Role">
-
-          <button id="uploadLeaderImage">Upload Leader Image</button>
-          <p id="leaderImgUrl"></p>
-
-          <button id="saveLeader" class="primary-btn">Save Leader</button>
-        </div>
-
-        <div class="block">
-          <h3>Leaders List</h3>
-          <p id="leadersList"></p>
-        </div>
-
-      </section>
-
-      <!-- SETTINGS -->
-      <section id="settings" class="panel-section">
-        <h2>Site Settings</h2>
-
-        <div class="block">
-          <h3>Social Links</h3>
-
-          <input type="text" id="facebookLink" placeholder="Facebook URL">
-          <input type="text" id="instagramLink" placeholder="Instagram URL">
-          <input type="text" id="linkedinLink" placeholder="LinkedIn URL">
-          <input type="text" id="skoolLink" placeholder="Skool URL">
-
-          <button id="saveSettings" class="primary-btn">Save Settings</button>
-        </div>
-
-      </section>
-
-    </main>
+    </section>
 
   </div>
+</main>
 
-  <script src="admin.js"></script>
+<!-- SCRIPTS -->
+<script src="admin.js"></script>
+
 </body>
 </html>
