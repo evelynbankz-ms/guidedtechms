@@ -52,7 +52,9 @@
     </div>
   </div>
 
-<script src="admin.js"></script>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script> 
+
 <script>
 function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
