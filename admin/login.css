@@ -1,0 +1,112 @@
+/* --------------------------
+   GLOBAL PAGE STYLE
+--------------------------- */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+
+  /* Guided Tech gradient background */
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
+
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #fff;
+}
+
+/* Center wrapper */
+.login-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+/* --------------------------
+   LOGIN CARD
+--------------------------- */
+.login-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+
+  padding: 40px 34px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+
+  text-align: center;
+}
+
+/* Title */
+.login-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 26px;
+  color: #ffffff;
+}
+
+/* --------------------------
+   INPUT FIELDS
+--------------------------- */
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.28);
+
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+
+  font-size: 15px;
+  outline: none;
+
+  transition: 0.25s ease;
+}
+
+.input-field::placeholder {
+  color: rgba(255,255,255,0.65);
+}
+
+.input-field:focus {
+  border-color: #4ba3ff;
+  background: rgba(255,255,255,0.18);
+}
+
+/* --------------------------
+   BUTTON
+--------------------------- */
+.full-btn {
+  width: 100%;
+}
+
+.btn-primary {
+  background: #1B4F72;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: #154360;
+  transform: translateY(-2px);
+}
+
+/* --------------------------
+   ERROR
+--------------------------- */
+.error-text {
+  margin-top: 14px;
+  color: #ffb3b3;
+  font-size: 0.9rem;
+  min-height: 22px;
+}
