@@ -1,85 +1,91 @@
-/* --------------------------
-   GLOBAL PAGE STYLE
---------------------------- */
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
+/* login.css - updated to prevent input overflow and match site style */
 
-  /* Guided Tech gradient background */
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
-
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: #fff;
+/* reset + box-sizing so inputs size correctly */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* Center wrapper */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* page background (guided tech gradient) */
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px; /* ensures card never touches screen edges on very small screens */
+}
+
+/* wrapper keeps card centered and limits width */
 .login-wrapper {
   width: 100%;
   max-width: 420px;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }
 
-/* --------------------------
-   LOGIN CARD
---------------------------- */
+/* the card */
 .login-card {
+  width: 100%;
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 18px;
-
-  padding: 40px 34px;
+  padding: 36px 28px; /* generous inner padding so inputs sit well inside */
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
-
   text-align: center;
 }
 
-/* Title */
+/* title */
 .login-title {
   font-family: "Poppins", sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 26px;
+  margin: 0 0 22px;
   color: #ffffff;
 }
 
-/* --------------------------
-   INPUT FIELDS
---------------------------- */
+/* input fields - full width and respect card padding thanks to box-sizing */
 .input-field {
   width: 100%;
-  padding: 14px 18px;
-  margin-bottom: 16px;
-
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.28);
-
-  background: rgba(255,255,255,0.12);
+  display: block;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
-
   font-size: 15px;
   outline: none;
-
-  transition: 0.25s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+  -webkit-appearance: none;
 }
 
+/* placeholder color */
 .input-field::placeholder {
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
 }
 
+/* focus state */
 .input-field:focus {
   border-color: #4ba3ff;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
 }
 
-/* --------------------------
-   BUTTON
---------------------------- */
+/* button */
 .full-btn {
   width: 100%;
 }
@@ -87,13 +93,13 @@ body {
 .btn-primary {
   background: #1B4F72;
   color: #fff;
-  padding: 12px 22px;
-  border-radius: 12px;
+  padding: 12px 18px;
+  border-radius: 10px;
   font-weight: 600;
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  transition: 0.25s ease;
+  transition: background 0.22s ease, transform 0.12s ease;
 }
 
 .btn-primary:hover {
@@ -101,12 +107,32 @@ body {
   transform: translateY(-2px);
 }
 
-/* --------------------------
-   ERROR
---------------------------- */
+/* error text */
 .error-text {
-  margin-top: 14px;
+  margin-top: 12px;
   color: #ffb3b3;
   font-size: 0.9rem;
-  min-height: 22px;
+  min-height: 20px;
+}
+
+/* small screens adjustments */
+@media (max-width: 420px) {
+  .login-card {
+    padding: 28px 18px;
+    border-radius: 14px;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+  }
+
+  .input-field {
+    font-size: 14px;
+    padding: 11px 12px;
+  }
+
+  .btn-primary {
+    padding: 11px 14px;
+  }
 }
