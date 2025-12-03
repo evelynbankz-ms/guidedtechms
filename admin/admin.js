@@ -1,3 +1,12 @@
+import { db, storage } from "./firebase.js";
+
+// Example: test Firestore connection
+console.log("Firestore ready:", db);
+
+// Example: test Storage connection
+console.log("Storage ready:", storage);
+
+
 /* admin.js
    - Local-only admin UI storage in localStorage (gts_admin_v2_)
    - Per-section uploads with immediate preview
