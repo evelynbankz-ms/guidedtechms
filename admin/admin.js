@@ -1,167 +1,269 @@
+/* ----------------------------------------------------
+   IMPORT FIREBASE MODULES
+---------------------------------------------------- */
 import { db, storage } from "./firebase.js";
 
-// Example: test Firestore connection
-console.log("Firestore ready:", db);
+import {
+  collection, addDoc, updateDoc, deleteDoc, doc,
+  getDocs, getDoc
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-// Example: test Storage connection
-console.log("Storage ready:", storage);
+import {
+  ref, uploadString, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
 
 
-/* admin.js
-   - Local-only admin UI storage in localStorage (gts_admin_v2_)
-   - Per-section uploads with immediate preview
-   - Consistent sidebar activation across pages
-*/
+/* ----------------------------------------------------
+   REAL FIRESTORE DATA STORE
+---------------------------------------------------- */
+const AdminStore = {
+  async all(col) {
+    const snap = await getDocs(collection(db, col));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
 
-const AdminStore = (function(){
-  const prefix = "gts_admin_v2_";
-  const collections = ["blogs","team","services","faqs","settings"];
-  function read(name){ try { return JSON.parse(localStorage.getItem(prefix+name)) || []; } catch(e){ return []; } }
-  function write(name, data){ localStorage.setItem(prefix+name, JSON.stringify(data)); }
-  function ensure(){ collections.forEach(c => { if(localStorage.getItem(prefix+c)===null) write(c, []); }); }
-  function all(name){ return read(name); }
-  function create(name, item){ const arr = read(name); item.id = Date.now().toString(36) + Math.random().toString(36).slice(2,8); arr.unshift(item); write(name,arr); return item; }
-  function update(name, id, patch){ const arr = read(name).map(x => x.id===id ? {...x,...patch} : x); write(name,arr); return arr.find(x=>x.id===id) || null; }
-  function remove(name, id){ const arr = read(name).filter(x=>x.id!==id); write(name,arr); }
-  function get(name,id){ return read(name).find(x=>x.id===id) || null; }
-  return {ensure,all,create,update,remove,get};
-})();
+  async get(col, id) {
+    const snap = await getDoc(doc(db, col, id));
+    return snap.exists() ? { id, ...snap.data() } : null;
+  },
 
-/* UI helpers */
+  async create(col, data) {
+    // Upload image if attached
+    if (data.imageData) {
+      const path = `${col}/${Date.now()}-${data._imageName || "image"}`;
+      const fileRef = ref(storage, path);
+
+      await uploadString(fileRef, data.imageData, "data_url");
+      const url = await getDownloadURL(fileRef);
+
+      data.imageUrl = url;
+      delete data.imageData;
+      delete data._imageName;
+    }
+
+    const docRef = await addDoc(collection(db, col), data);
+    return { id: docRef.id, ...data };
+  },
+
+  async update(col, id, data) {
+    if (data.imageData) {
+      const path = `${col}/${Date.now()}-${data._imageName || "image"}`;
+      const fileRef = ref(storage, path);
+
+      await uploadString(fileRef, data.imageData, "data_url");
+      const url = await getDownloadURL(fileRef);
+
+      data.imageUrl = url;
+      delete data.imageData;
+      delete data._imageName;
+    }
+
+    await updateDoc(doc(db, col, id), data);
+    return { id, ...data };
+  },
+
+  async remove(col, id) {
+    await deleteDoc(doc(db, col, id));
+  }
+};
+
+window.AdminStore = AdminStore;
+
+
+/* ----------------------------------------------------
+   UI UTILITIES
+---------------------------------------------------- */
 const UI = {
-  el: (s)=>document.querySelector(s),
-  all: (s)=>Array.from(document.querySelectorAll(s)),
-  on: (s,e,fn)=>{ const n = document.querySelector(s); if(n) n.addEventListener(e,fn); },
-  renderList: function(containerSel, items, renderFn){
-    const root = document.querySelector(containerSel); if(!root) return;
-    root.innerHTML = "";
-    items.forEach(it=>{
+  el: sel => document.querySelector(sel),
+  all: sel => Array.from(document.querySelectorAll(sel)),
+
+  renderList(container, items, renderFn) {
+    const el = document.querySelector(container);
+    if (!el) return;
+
+    el.innerHTML = "";
+    items.forEach(item => {
       const card = document.createElement("div");
       card.className = "card";
-      card.innerHTML = renderFn(it);
-      root.appendChild(card);
+      card.innerHTML = renderFn(item);
+      el.appendChild(card);
     });
   }
 };
 
-/* read file helper */
-function readFileAsDataURL(file){ return new Promise((resolve,reject)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
+window.UI = UI;
 
-/* sidebar activation (run on DOMContentLoaded) */
-function activateSidebar(){
-  const path = location.pathname.split("/").pop() || "admin-dashboard.html";
-  document.querySelectorAll(".side-nav a").forEach(a=>{
-    a.classList.toggle("active", (a.getAttribute("data-page")||a.getAttribute("href")) === path);
+
+/* ----------------------------------------------------
+   FILE READER FOR PREVIEW
+---------------------------------------------------- */
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
   });
 }
 
-/* wire file inputs for immediate preview (per-section) */
-function wireFilePreviews(){
-  document.querySelectorAll('input[type="file"]').forEach(inp=>{
-    inp.removeEventListener('change', inp._filePreviewHandler);
-    const handler = async (e)=>{
-      const f = inp.files && inp.files[0];
-      const previewImg = inp.closest('form')?.querySelector('.file-preview') || inp.parentElement.querySelector('.file-preview');
-      if(f && previewImg){
-        const data = await readFileAsDataURL(f);
-        previewImg.src = data;
-        previewImg.dataset.pending = data; // store temporary preview until save
-      } else if(previewImg){
-        previewImg.src = "";
-        delete previewImg.dataset.pending;
+
+/* ----------------------------------------------------
+   SIDEBAR ACTIVE STATE
+---------------------------------------------------- */
+function activateSidebar() {
+  const page = location.pathname.split("/").pop();
+  document.querySelectorAll(".side-nav a").forEach(a => {
+    a.classList.toggle("active",
+      a.getAttribute("href").includes(page)
+    );
+  });
+}
+
+
+/* ----------------------------------------------------
+   IMAGE PREVIEW HANDLING
+---------------------------------------------------- */
+function wireFilePreviews() {
+  document.querySelectorAll("input[type=file]").forEach(input => {
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      const preview = input.closest("form")?.querySelector(".file-preview");
+
+      if (!preview) return;
+
+      if (file) {
+        const data = await readFileAsDataURL(file);
+        preview.src = data;
+        preview.dataset.pending = data; // stored for Firestore upload
+      } else {
+        preview.src = "";
+        delete preview.dataset.pending;
       }
     };
-    inp._filePreviewHandler = handler;
-    inp.addEventListener('change', handler);
+
   });
 }
 
-/* generic form handling: forms must have data-collection attr */
-function wireForms(){
-  document.querySelectorAll('form[data-collection]').forEach(form=>{
-    form.addEventListener('submit', async (ev)=>{
-      ev.preventDefault();
-      const col = form.dataset.collection;
+
+/* ----------------------------------------------------
+   FORM HANDLING (CREATE / EDIT)
+---------------------------------------------------- */
+function wireForms() {
+  document.querySelectorAll("form[data-collection]").forEach(form => {
+
+    form.addEventListener("submit", async evt => {
+      evt.preventDefault();
+
+      const collection = form.dataset.collection;
       const fd = new FormData(form);
-      const obj = {};
-      for(const [k,v] of fd.entries()) obj[k]=v;
-      // attach pending preview image if present (preview element stores data in dataset.pending)
-      const preview = form.querySelector('.file-preview');
-      if(preview && preview.dataset && preview.dataset.pending){
-        obj.imageData = preview.dataset.pending;
-        // optional: store original filename if input exists
-        const finput = form.querySelector('input[type="file"]');
-        if(finput && finput.files && finput.files[0]) obj._imageName = finput.files[0].name;
+      const data = {};
+
+      for (const [key, value] of fd.entries()) {
+        data[key] = value;
       }
-      // editing?
+
+      // Attach preview image if present
+      const preview = form.querySelector(".file-preview");
+      if (preview?.dataset.pending) {
+        data.imageData = preview.dataset.pending;
+        const fileInput = form.querySelector("input[type=file]");
+        if (fileInput?.files[0]) data._imageName = fileInput.files[0].name;
+      }
+
       const editId = form.dataset.editId;
-      if(editId){
-        AdminStore.update(col, editId, obj);
-        form.removeAttribute('data-edit-id');
+
+      if (editId) {
+        await AdminStore.update(collection, editId, data);
+        form.removeAttribute("data-edit-id");
       } else {
-        AdminStore.create(col, obj);
+        await AdminStore.create(collection, data);
       }
+
       form.reset();
-      // clear previews
-      if(preview){ preview.src=""; delete preview.dataset.pending; }
-      if(typeof window.onAdminDataChanged === "function") window.onAdminDataChanged(col);
-      // small visual feedback
-      const saveBtn = form.querySelector('button[type="submit"]');
-      if(saveBtn){ const old = saveBtn.textContent; saveBtn.textContent="Saved"; setTimeout(()=>saveBtn.textContent=old,900); }
+      if (preview) {
+        preview.src = "";
+        delete preview.dataset.pending;
+      }
+
+      if (window.onAdminDataChanged) window.onAdminDataChanged(collection);
+
+      const btn = form.querySelector("button[type=submit]");
+      if (btn) {
+        const old = btn.textContent;
+        btn.textContent = "Saved";
+        setTimeout(() => btn.textContent = old, 900);
+      }
     });
+
   });
 }
 
-/* wire edit & delete buttons using data-edit / data-remove attributes */
-function wireActions(){
-  document.addEventListener('click', (e)=>{
-    const editBtn = e.target.closest('[data-edit]');
-    if(editBtn){
+
+/* ----------------------------------------------------
+   EDIT / DELETE ACTIONS
+---------------------------------------------------- */
+function wireActions() {
+  document.addEventListener("click", async evt => {
+
+    /* ---------- EDIT ---------- */
+    const editBtn = evt.target.closest("[data-edit]");
+    if (editBtn) {
       const col = editBtn.dataset.edit;
       const id = editBtn.dataset.id;
-      const record = AdminStore.get(col,id);
-      if(!record) return;
-      const formSelector = editBtn.dataset.target || `form[data-collection="${col}"]`;
-      const form = document.querySelector(formSelector);
-      if(!form) return;
-      // populate fields
-      for(const k in record){
-        const field = form.querySelector(`[name="${k}"]`);
-        if(field) field.value = record[k];
+
+      const record = await AdminStore.get(col, id);
+      if (!record) return;
+
+      const form = document.querySelector(editBtn.dataset.target);
+      if (!form) return;
+
+      // Populate fields
+      for (const key in record) {
+        if (key === "imageUrl") continue;
+        const field = form.querySelector(`[name="${key}"]`);
+        if (field) field.value = record[key];
       }
-      // show preview if imageData exists
-      const preview = form.querySelector('.file-preview');
-      if(preview){ if(record.imageData) preview.src = record.imageData; else preview.src=""; preview.dataset.pending = record.imageData || ""; }
+
+      // Image preview
+      const preview = form.querySelector(".file-preview");
+      if (preview) {
+        preview.src = record.imageUrl || "";
+        preview.dataset.pending = record.imageUrl || "";
+      }
+
       form.dataset.editId = id;
-      window.scrollTo({top: form.getBoundingClientRect().top + window.scrollY - 80, behavior:"smooth"});
+
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
 
-    const rem = e.target.closest('[data-remove]');
-    if(rem){
-      const col = rem.dataset.remove;
-      const id = rem.dataset.id;
-      if(!confirm("Delete this item?")) return;
-      AdminStore.remove(col,id);
-      if(typeof window.onAdminDataChanged === "function") window.onAdminDataChanged(col);
+
+    /* ---------- DELETE ---------- */
+    const delBtn = evt.target.closest("[data-remove]");
+    if (delBtn) {
+      const col = delBtn.dataset.remove;
+      const id = delBtn.dataset.id;
+
+      if (!confirm("Delete this?")) return;
+
+      await AdminStore.remove(col, id);
+
+      if (window.onAdminDataChanged) window.onAdminDataChanged(col);
     }
+
   });
 }
 
-/* expose helper to other pages */
-window.AdminStore = AdminStore;
-window.UI = UI;
 
-/* initialization */
-document.addEventListener('DOMContentLoaded', ()=>{
-  AdminStore.ensure();
+/* ----------------------------------------------------
+   INITIALIZE EVERYTHING
+---------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
   activateSidebar();
   wireFilePreviews();
   wireForms();
   wireActions();
-  // call page-specific renderers if present
-  if(typeof window.onAdminReady === "function") window.onAdminReady();
-});
 
-/* convenience: re-wire previews after dynamic DOM changes */
-window.rewireFilePreviews = wireFilePreviews;
+  if (window.onAdminReady) window.onAdminReady();
+});
