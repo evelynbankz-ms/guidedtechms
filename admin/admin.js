@@ -1,22 +1,54 @@
 /* ----------------------------------------------------
+   CLOUDINARY CONFIG
+---------------------------------------------------- */
+const CLOUDINARY_CLOUD_NAME = "dst4a3fsd";
+const CLOUDINARY_UPLOAD_PRESET = "guidedtechms";
+const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dst4a3fsd/image/upload";
+const CLOUDINARY_FOLDER = "guided-tech";
+
+
+/* ----------------------------------------------------
    IMPORT FIREBASE MODULES
 ---------------------------------------------------- */
-import { db, storage } from "./firebase.js";
+import { db } from "./firebase.js";
 
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   getDocs, getDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-import {
-  ref, uploadString, getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-storage.js";
+
+
+/* ----------------------------------------------------
+   CLOUDINARY UPLOAD FUNCTION
+---------------------------------------------------- */
+async function uploadToCloudinary(base64, fileName) {
+
+  const formData = new FormData();
+  formData.append("file", base64);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", CLOUDINARY_FOLDER);
+
+  const res = await fetch(CLOUDINARY_UPLOAD_URL, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!res.ok) {
+    throw new Error("Cloudinary upload failed");
+  }
+
+  const json = await res.json();
+  return json.secure_url; // The final image URL
+}
+
 
 
 /* ----------------------------------------------------
    REAL FIRESTORE DATA STORE
 ---------------------------------------------------- */
 const AdminStore = {
+
   async all(col) {
     const snap = await getDocs(collection(db, col));
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -28,13 +60,13 @@ const AdminStore = {
   },
 
   async create(col, data) {
-    // Upload image if attached
-    if (data.imageData) {
-      const path = `${col}/${Date.now()}-${data._imageName || "image"}`;
-      const fileRef = ref(storage, path);
 
-      await uploadString(fileRef, data.imageData, "data_url");
-      const url = await getDownloadURL(fileRef);
+    // If there is image data → upload to Cloudinary first
+    if (data.imageData) {
+      const url = await uploadToCloudinary(
+        data.imageData,
+        data._imageName || "image"
+      );
 
       data.imageUrl = url;
       delete data.imageData;
@@ -46,12 +78,13 @@ const AdminStore = {
   },
 
   async update(col, id, data) {
-    if (data.imageData) {
-      const path = `${col}/${Date.now()}-${data._imageName || "image"}`;
-      const fileRef = ref(storage, path);
 
-      await uploadString(fileRef, data.imageData, "data_url");
-      const url = await getDownloadURL(fileRef);
+    // If image was changed → upload to Cloudinary again
+    if (data.imageData) {
+      const url = await uploadToCloudinary(
+        data.imageData,
+        data._imageName || "image"
+      );
 
       data.imageUrl = url;
       delete data.imageData;
@@ -70,18 +103,18 @@ const AdminStore = {
 window.AdminStore = AdminStore;
 
 
+
 /* ----------------------------------------------------
    UI UTILITIES
 ---------------------------------------------------- */
 const UI = {
   el: sel => document.querySelector(sel),
   all: sel => Array.from(document.querySelectorAll(sel)),
-
   renderList(container, items, renderFn) {
     const el = document.querySelector(container);
     if (!el) return;
-
     el.innerHTML = "";
+
     items.forEach(item => {
       const card = document.createElement("div");
       card.className = "card";
@@ -92,6 +125,7 @@ const UI = {
 };
 
 window.UI = UI;
+
 
 
 /* ----------------------------------------------------
@@ -107,6 +141,7 @@ function readFileAsDataURL(file) {
 }
 
 
+
 /* ----------------------------------------------------
    SIDEBAR ACTIVE STATE
 ---------------------------------------------------- */
@@ -118,6 +153,7 @@ function activateSidebar() {
     );
   });
 }
+
 
 
 /* ----------------------------------------------------
@@ -135,7 +171,8 @@ function wireFilePreviews() {
       if (file) {
         const data = await readFileAsDataURL(file);
         preview.src = data;
-        preview.dataset.pending = data; // stored for Firestore upload
+        preview.dataset.pending = data;
+
       } else {
         preview.src = "";
         delete preview.dataset.pending;
@@ -144,6 +181,7 @@ function wireFilePreviews() {
 
   });
 }
+
 
 
 /* ----------------------------------------------------
@@ -155,7 +193,7 @@ function wireForms() {
     form.addEventListener("submit", async evt => {
       evt.preventDefault();
 
-      const collection = form.dataset.collection;
+      const col = form.dataset.collection;
       const fd = new FormData(form);
       const data = {};
 
@@ -163,7 +201,7 @@ function wireForms() {
         data[key] = value;
       }
 
-      // Attach preview image if present
+      // Attach uploaded image preview if exists
       const preview = form.querySelector(".file-preview");
       if (preview?.dataset.pending) {
         data.imageData = preview.dataset.pending;
@@ -174,10 +212,11 @@ function wireForms() {
       const editId = form.dataset.editId;
 
       if (editId) {
-        await AdminStore.update(collection, editId, data);
+        await AdminStore.update(col, editId, data);
         form.removeAttribute("data-edit-id");
+
       } else {
-        await AdminStore.create(collection, data);
+        await AdminStore.create(col, data);
       }
 
       form.reset();
@@ -186,7 +225,7 @@ function wireForms() {
         delete preview.dataset.pending;
       }
 
-      if (window.onAdminDataChanged) window.onAdminDataChanged(collection);
+      if (window.onAdminDataChanged) window.onAdminDataChanged(col);
 
       const btn = form.querySelector("button[type=submit]");
       if (btn) {
@@ -198,6 +237,7 @@ function wireForms() {
 
   });
 }
+
 
 
 /* ----------------------------------------------------
@@ -225,7 +265,7 @@ function wireActions() {
         if (field) field.value = record[key];
       }
 
-      // Image preview
+      // Show image preview
       const preview = form.querySelector(".file-preview");
       if (preview) {
         preview.src = record.imageUrl || "";
@@ -233,7 +273,6 @@ function wireActions() {
       }
 
       form.dataset.editId = id;
-
       form.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
@@ -254,6 +293,7 @@ function wireActions() {
 
   });
 }
+
 
 
 /* ----------------------------------------------------
