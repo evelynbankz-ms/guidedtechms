@@ -35,7 +35,7 @@
         <a href="team.html">Team Members</a>
         <a href="services.html">Services</a>
         <a href="faq.html">FAQs</a>
-        <a href="testimonials.html" class="active">Testimonials</a>
+        <a href="testimonials.html">Testimonials</a>
         <a href="settings.html">Settings</a>
       </nav>
     </aside>
@@ -59,8 +59,19 @@
             <input name="title" class="input" placeholder="Post title">
           </div>
           <div>
+            <label>Slug (auto generates, editable)</label>
+            <input name="slug" class="input" placeholder="example-post-title">
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div>
             <label>Author</label>
             <input name="author" class="input" placeholder="Author">
+          </div>
+          <div>
+            <label>Category / Tags</label>
+            <input name="category" class="input" placeholder="e.g., AI, Automation">
           </div>
         </div>
 
@@ -68,10 +79,6 @@
           <div>
             <label>Excerpt</label>
             <input name="excerpt" class="input" placeholder="Short description">
-          </div>
-          <div>
-            <label>Category</label>
-            <input name="category" class="input" placeholder="Category">
           </div>
         </div>
 
@@ -126,7 +133,7 @@ import { AdminStore, UI } from "./admin.js";
 /* Escape helper */
 function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+    m => ({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[m])
   );
 }
 
@@ -136,7 +143,7 @@ async function renderBlogs(){
 
   UI.renderList("#blogList", blogs, post => {
     const thumb = post.imageUrl
-      ? `<img src="${post.imageUrl}" class="file-preview">`
+      ? `<img src="${post.imageUrl}" style="width:120px;height:80px;border-radius:8px;object-fit:cover">`
       : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
 
     return `
@@ -146,11 +153,13 @@ async function renderBlogs(){
           <div>
             <div class="title">${escapeHtml(post.title || "(no title)")}</div>
             <div class="small">${escapeHtml(post.excerpt || "")}</div>
+            <div class="small" style="opacity:0.6">/${escapeHtml(post.slug || "")}</div>
           </div>
         </div>
       </div>
 
       <div class="card-actions">
+
         <button class="btn btn-ghost"
           data-edit="blogs"
           data-id="${post.id}"
@@ -167,6 +176,7 @@ async function renderBlogs(){
           data-id="${post.id}">
           Delete
         </button>
+
       </div>
     `;
   });
