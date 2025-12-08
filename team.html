@@ -17,7 +17,7 @@
 <body>
 <div class="page-wrapper">
 
-<!-- NAVBAR (unchanged) -->
+<!-- NAVBAR -->
 <header class="navbar">
   <div class="navbar-container">
     <a href="index.html" class="navbar-logo">
@@ -120,7 +120,6 @@
           </div>
         </div>
       </div>
-
     </nav>
 
     <div class="navbar-actions">
@@ -177,7 +176,7 @@
 </section>
 
 
-<!-- MANAGEMENT TEAM (DYNAMIC) -->
+<!-- MANAGEMENT TEAM -->
 <section id="leaders" class="leaders-section">
   <div class="container">
     <div class="leaders-header">
@@ -190,7 +189,7 @@
 </section>
 
 
-<!-- TEAM MEMBERS (DYNAMIC) -->
+<!-- TEAM MEMBERS -->
 <section id="team-members" class="team-members-section">
   <div class="team-members-container">
 
@@ -204,10 +203,10 @@
   </div>
 </section>
 
-
 </div>
 
-<!-- FOOTER (unchanged) -->
+
+<!-- FOOTER -->
 <footer class="gts-footer">
   <div class="gts-footer-inner">
     <div class="gts-footer-col about-col">
@@ -251,18 +250,17 @@
 </footer>
 
 
+<!-- FIRESTORE TEAM LOADER -->
 <script type="module">
 
 import { db } from "./admin/firebase.js";
 import {
-  collection,
-  getDocs
+  collection, getDocs
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 const leadersGrid = document.getElementById("leadersGrid");
 const teamGrid = document.getElementById("teamGrid");
 
-// Load team from Firestore
 async function loadTeam() {
   const snap = await getDocs(collection(db, "team"));
   const members = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -270,6 +268,7 @@ async function loadTeam() {
   const leaders = members.filter(m => m.isLeader === "on" || m.isLeader === true);
   const others = members.filter(m => !leaders.includes(m));
 
+  // Leaders
   leadersGrid.innerHTML = leaders.map(m => `
     <div class="leader-card">
       <div class="leader-image-wrapper">
@@ -278,11 +277,18 @@ async function loadTeam() {
       <div class="leader-info">
         <h3 class="leader-name">${m.name || ''}</h3>
         <p class="leader-role">${m.role || ''}</p>
-        ${m.linkedin ? `<a href="${m.linkedin}" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"></a>` : ''}
+        ${
+          m.linkedin
+            ? `<a class="leader-linkedin" href="${m.linkedin}" target="_blank">
+                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png">
+               </a>`
+            : ""
+        }
       </div>
     </div>
   `).join("");
 
+  // Team
   teamGrid.innerHTML = others.map(m => `
     <div class="team-member-card">
       <div class="team-member-img-area">
@@ -291,13 +297,20 @@ async function loadTeam() {
       <div class="team-member-info">
         <h3 class="team-member-name">${m.name || ''}</h3>
         <p class="team-member-role">${m.role || ''}</p>
-        ${m.linkedin ? `<a href="${m.linkedin}" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"></a>` : ''}
+        ${
+          m.linkedin
+            ? `<a class="team-member-linkedin" href="${m.linkedin}" target="_blank">
+                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png">
+               </a>`
+            : ""
+        }
       </div>
     </div>
   `).join("");
 }
 
 loadTeam();
+
 </script>
 
 <script>
