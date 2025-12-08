@@ -400,54 +400,17 @@
 <!-- TESTIMONIALS SECTION -->
 <section class="section-testimonials">
   <div class="container">
-    <div class="testimonial-content">
-      <!-- Testimonial 1 -->
-      <div class="testimonial-item active">
-        <p class="testimonial-quote">
-          “Guided Tech Solutions has revolutionized how we handle our digital infrastructure. Their automation tools and support have saved us countless hours every week.”
-        </p>
-        <div class="testimonial-person">
-          <img src="testimonial1.png" alt="Sarah Thompson" class="testimonial-avatar">
-          <div>
-            <h3>Sarah Thompson</h3>
-            <p>Founder, GreenPath Solutions</p>
-          </div>
-        </div>
-      </div>
+    <div class="testimonial-content" id="testimonialWrapper">
 
-      <!-- Testimonial 2 -->
-      <div class="testimonial-item">
-        <p class="testimonial-quote">
-          “The level of visibility and reliability we get from Guided Tech Solutions is unmatched. Our systems are now faster, smarter, and more secure.”
-        </p>
-        <div class="testimonial-person">
-          <img src="testimonial2.png" alt="David Wilson" class="testimonial-avatar">
-          <div>
-            <h3>David Wilson</h3>
-            <p>CFO, Nova Enterprises</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Testimonial 3 -->
-      <div class="testimonial-item">
-        <p class="testimonial-quote">
-          “Guided Tech Solutions delivered the perfect balance of innovation and simplicity. Their team’s expertise has been a major driver of our digital transformation.”
-        </p>
-        <div class="testimonial-person">
-          <img src="testimonial3.png" alt="Emily Harris" class="testimonial-avatar">
-          <div>
-            <h3>Emily Harris</h3>
-            <p>Operations Director, BrightLabs</p>
-          </div>
-        </div>
-      </div>
+      <!-- Dynamic testimonials will be injected here -->
+      <div id="testimonialItems"></div>
 
       <!-- Navigation -->
       <div class="testimonial-nav">
-        <button class="nav-btn prev">&lt;</button>
-        <button class="nav-btn next">&gt;</button>
+        <button class="nav-btn prev" id="testPrev">&lt;</button>
+        <button class="nav-btn next" id="testNext">&gt;</button>
       </div>
+
     </div>
   </div>
 </section>
@@ -662,5 +625,108 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+
+ <script type="module">
+  import { db } from "./firebase.js";
+  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const container = document.getElementById("testimonialItems");
+
+  async function loadTestimonials() {
+    const snap = await getDocs(collection(db, "testimonials"));
+    const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    if (!items.length) {
+      container.innerHTML = "<p>No testimonials available.</p>";
+      return;
+    }
+
+    container.innerHTML = items.map((t, i) => `
+      <div class="testimonial-item ${i === 0 ? "active" : ""}">
+        <p class="testimonial-quote">“${t.quote || ""}”</p>
+        <div class="testimonial-person">
+          <img src="${t.imageUrl || 'asset/avatar1.jpg'}" class="testimonial-avatar">
+          <div>
+            <h3>${t.name || "Unnamed"}</h3>
+            <p>${t.role || ""}</p>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    initializeTestimonialSlider();
+  }
+
+  function initializeTestimonialSlider() {
+    const items = Array.from(document.querySelectorAll(".testimonial-item"));
+    let index = 0;
+
+    const show = i => {
+      items.forEach(el => el.classList.remove("active"));
+      items[i].classList.add("active");
+    };
+
+    document.getElementById("testPrev").onclick = () => {
+      index = (index - 1 + items.length) % items.length;
+      show(index);
+    };
+
+    document.getElementById("testNext").onclick = () => {
+      index = (index + 1) % items.length;
+      show(index);
+    };
+  }
+
+  loadTestimonials();
+</script>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, getDocs, orderBy, limit, query } 
+  from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+async function loadHomepageBlogs() {
+  const container = document.querySelector(".blogs-slider");
+  if (!container) return;
+
+  container.innerHTML = `<p>Loading...</p>`;
+
+  // ORDER BY NEWEST
+  const q = query(
+    collection(db, "blogs"),
+    orderBy("createdAt", "desc"),
+    limit(4)
+  );
+
+  const snap = await getDocs(q);
+  const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  if (posts.length === 0) {
+    container.innerHTML = `<p>No blog posts yet.</p>`;
+    return;
+  }
+
+  container.innerHTML = posts.map(post => `
+    <article class="blog-card">
+      <div class="blog-image"
+        style="background-image:url('${post.imageUrl || ""}')">
+      </div>
+
+      <div class="blog-content">
+        <div class="blog-tags">
+          <span>${post.category || "General"}</span>
+        </div>
+
+        <h3>${post.title || "Untitled Post"}</h3>
+        <p>${post.excerpt || ""}</p>
+      </div>
+    </article>
+  `).join("");
+}
+
+document.addEventListener("DOMContentLoaded", loadHomepageBlogs);
+</script>
+
+
 </body>
 </html>
