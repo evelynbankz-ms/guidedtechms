@@ -17,11 +17,14 @@
     <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
     <div class="row">
       <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
-      <button class="btn btn-primary" onclick="document.querySelector('form[data-collection=blogs]').scrollIntoView({behavior:'smooth'})">New post</button>
+      <button class="btn btn-primary"
+        onclick="document.querySelector('form[data-collection=blogs]').scrollIntoView({behavior:'smooth'})">
+        New post
+      </button>
     </div>
   </header>
 
-  <!-- MAIN LAYOUT -->
+  <!-- MAIN GRID -->
   <div class="admin-grid">
 
     <!-- SIDEBAR -->
@@ -46,8 +49,9 @@
         </div>
       </div>
 
-      <!-- FORM -->
+      <!-- CREATE / EDIT FORM -->
       <form data-collection="blogs" class="form-row full" style="gap:14px 0">
+
         <div class="form-row full">
           <div>
             <label>Title</label>
@@ -72,11 +76,11 @@
 
         <div class="form-row full">
           <div>
-            <label>Feature image (choose to preview immediately)</label>
+            <label>Feature image</label>
             <input type="file" name="feature" accept="image/*" class="input">
           </div>
           <div>
-            <label>Image preview</label>
+            <label>Preview</label>
             <div class="preview">
               <img class="file-preview" alt="image preview">
             </div>
@@ -92,8 +96,12 @@
 
         <div class="row">
           <button class="btn btn-primary" type="submit">Save post</button>
-          <button type="button" class="btn btn-ghost" onclick="document.querySelector('form[data-collection=blogs]').reset()">Reset</button>
+          <button type="button" class="btn btn-ghost"
+            onclick="document.querySelector('form[data-collection=blogs]').reset()">
+            Reset
+          </button>
         </div>
+
       </form>
 
       <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
@@ -110,16 +118,18 @@
 <script type="module" src="firebase.js"></script>
 <script type="module" src="admin.js"></script>
 
-<!-- PAGE LOGIC -->
+<!-- PAGE SCRIPT -->
 <script type="module">
 import { AdminStore, UI } from "./admin.js";
 
 /* Escape helper */
 function escapeHtml(s){
-  return String(s||'').replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+  return String(s||'').replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+  );
 }
 
-/* Render posts from Firestore */
+/* RENDER BLOG POSTS FROM FIRESTORE */
 async function renderBlogs(){
   const blogs = await AdminStore.all("blogs");
 
@@ -147,7 +157,9 @@ async function renderBlogs(){
           Edit
         </button>
 
-        <button class="btn btn-ghost" onclick="previewBlog('${post.id}')">Preview</button>
+        <button class="btn btn-ghost" onclick="previewBlog('${post.id}')">
+          Preview
+        </button>
 
         <button class="btn btn-danger"
           data-remove="blogs"
@@ -159,7 +171,7 @@ async function renderBlogs(){
   });
 }
 
-/* Live preview window */
+/* LIVE PREVIEW WINDOW */
 window.previewBlog = async function(id){
   const post = await AdminStore.get("blogs", id);
   const w = window.open("about:blank","_blank");
@@ -172,7 +184,7 @@ window.previewBlog = async function(id){
     </head>
     <body style="font-family:Inter,Arial;padding:24px">
       <h1>${escapeHtml(post.title)}</h1>
-      <p><em>${escapeHtml(post.excerpt)}</em></p>
+      <p><em>${escapeHtml(post.excerpt || "")}</em></p>
       ${post.content || ""}
     </body>
     </html>
@@ -181,7 +193,7 @@ window.previewBlog = async function(id){
   w.document.close();
 };
 
-/* Firestore re-render hook */
+/* LISTEN FOR FIRESTORE CHANGES */
 window.onAdminDataChanged = col => {
   if(col === "blogs") renderBlogs();
 };
