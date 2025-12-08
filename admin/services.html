@@ -4,86 +4,160 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Admin — Services</title>
-<!-- Favicon Placeholder -->
+
 <link rel="shortcut icon" href="../asset/logo-icon.png" /> 
 <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
-  <div class="admin-wrap">
-    <header class="admin-topbar">
-      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
-      <div class="row">
-        <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="team.html">Team Members</a>
+        <a href="services.html" class="active">Services</a>
+        <a href="faq.html">FAQs</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">Services / Capabilities</div>
+          <div class="page-sub">Upload service icon or image here (preview shows immediately).</div>
+        </div>
       </div>
-    </header>
 
-    <div class="admin-grid">
-      <aside class="admin-side">
-        <nav class="side-nav">
-          <a href="dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
-          <a href="blog.html" data-page="admin-blog.html">Blog Posts</a>
-          <a href="team.html" data-page="admin-team.html">Team Members</a>
-          <a href="services.html" data-page="admin-services.html">Services</a>
-          <a href="faq.html" data-page="admin-faq.html">FAQs</a>
-          <a href="settings.html" data-page="admin-settings.html">Settings</a>
-        </nav>
-      </aside>
+      <!-- SERVICE FORM -->
+      <form data-collection="services" class="form-row full">
 
-      <main class="admin-main">
-        <div class="page-head">
+        <div>
+          <label>Title</label>
+          <input name="title" class="input" placeholder="Service name">
+        </div>
+
+        <div class="form-row">
           <div>
-            <div class="page-title">Services / Capabilities</div>
-            <div class="page-sub">Upload service icon or image here (preview shows immediately).</div>
+            <label>Short tagline</label>
+            <input name="short" class="input" placeholder="Short tagline">
+          </div>
+          <div>
+            <label>Slug</label>
+            <input name="slug" class="input" placeholder="service-slug">
           </div>
         </div>
 
-        <form data-collection="services" class="form-row full">
-          <div><label>Title</label><input name="title" class="input" placeholder="Service name"></div>
-          <div class="form-row">
-            <div><label>Short tagline</label><input name="short" class="input"></div>
-            <div><label>Slug</label><input name="slug" class="input" placeholder="service-slug"></div>
+        <div class="form-row full">
+          <div>
+            <label>Icon or image</label>
+            <input type="file" name="image" accept="image/*" class="input">
           </div>
-
-          <div class="form-row full">
-            <div>
-              <label>Icon or image</label>
-              <input type="file" name="image" accept="image/*" class="input">
-            </div>
-            <div>
-              <label>Preview</label>
-              <div class="preview"><img class="file-preview" alt="preview" src=""></div>
+          <div>
+            <label>Preview</label>
+            <div class="preview">
+              <img class="file-preview" alt="preview">
             </div>
           </div>
+        </div>
 
-          <div><label>Description</label><textarea name="description"></textarea></div>
+        <div>
+          <label>Description</label>
+          <textarea name="description" placeholder="Full description"></textarea>
+        </div>
 
-          <div class="row"><button class="btn btn-primary" type="submit">Save service</button></div>
-        </form>
+        <div class="row">
+          <button class="btn btn-primary" type="submit">Save service</button>
+        </div>
+      </form>
 
-        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+      <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
 
-        <h3>All services</h3>
-        <div id="servicesList" class="list"></div>
-      </main>
-    </div>
+      <h3 style="margin-bottom:12px">All services</h3>
+      <div id="servicesList" class="list"></div>
+
+    </main>
   </div>
 
-<script type="module" src="firebase.js"></script>
-<script type="module" src="admin.js"></script> 
+</div>
 
-<script>
-function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-function renderServices(){
-  const items = AdminStore.all('services')||[];
-  UI.renderList('#servicesList', items, it=>{
-    const img = it.imageData ? `<img src="${it.imageData}" class="file-preview">` : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
-    return `<div class="meta"><div style="display:flex;gap:12px;align-items:center">${img}<div><div class="title">${escape(it.title||'(no title)')}</div><div class="small">${escape(it.short||'')}</div></div></div></div>
-            <div class="card-actions"><button class="btn btn-ghost" data-edit="services" data-id="${it.id}" data-target="form[data-collection='services']">Edit</button>
-            <button class="btn btn-danger" data-remove="services" data-id="${it.id}">Delete</button></div>`;
+<!-- FIREBASE + ADMIN -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+<!-- PAGE SCRIPT -->
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
+
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+  );
+}
+
+/* -------------------------
+   RENDER SERVICES
+-------------------------- */
+async function renderServices(){
+  const services = await AdminStore.all("services");
+
+  UI.renderList("#servicesList", services, svc => {
+    const icon = svc.imageUrl
+      ? `<img src="${svc.imageUrl}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`
+      : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
+
+    return `
+      <div class="meta">
+        <div style="display:flex;gap:12px;align-items:center">
+          ${icon}
+          <div>
+            <div class="title">${escapeHtml(svc.title || "(no title)")}</div>
+            <div class="small">${escapeHtml(svc.short || "")}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-ghost"
+          data-edit="services"
+          data-id="${svc.id}"
+          data-target="form[data-collection='services']">
+          Edit
+        </button>
+
+        <button class="btn btn-danger"
+          data-remove="services"
+          data-id="${svc.id}">
+          Delete
+        </button>
+      </div>
+    `;
   });
 }
-window.onAdminDataChanged = function(col){ if(col==='services') renderServices(); };
-document.addEventListener('DOMContentLoaded', renderServices);
+
+/* Firestore callback hook */
+window.onAdminDataChanged = col => {
+  if(col === "services") renderServices();
+};
+
+document.addEventListener("DOMContentLoaded", renderServices);
 </script>
+
 </body>
 </html>
