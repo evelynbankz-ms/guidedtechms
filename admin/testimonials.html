@@ -1,66 +1,156 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Admin — Testimonials</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="admin.css">
+<meta charset="utf-8">
+<title>Admin — Testimonials</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
-  <div class="admin-wrap">
-    <header class="admin-topbar">
-      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
-      <div class="row">
-        <button class="btn btn-ghost" onclick="location.href='admin-dashboard.html'">Back</button>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+    </div>
+  </header>
+
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="team.html">Team Members</a>
+        <a href="services.html">Services</a>
+        <a href="faq.html">FAQs</a>
+        <a href="testimonials.html" class="active">Testimonials</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">Testimonials</div>
+          <div class="page-sub">Add client quotes that will appear publicly on the site.</div>
+        </div>
       </div>
-    </header>
 
-    <div class="admin-grid">
-      <aside class="admin-side">
-        <nav class="side-nav">
-          <a href="admin-dashboard.html">Dashboard</a>
-          <a href="admin-blog.html">Blog</a>
-          <a href="admin-team.html">Team</a>
-          <a href="admin-testimonials.html" class="active">Testimonials</a>
-        </nav>
-      </aside>
+      <!-- FORM -->
+      <form data-collection="testimonials" class="form-row full">
 
-      <main class="admin-main">
-        <div class="page-head">
+        <div>
+          <label>Client name</label>
+          <input name="name" class="input" placeholder="Client name">
+        </div>
+
+        <div>
+          <label>Title / role</label>
+          <input name="role" class="input" placeholder="Client role">
+        </div>
+
+        <div>
+          <label>Quote</label>
+          <textarea name="quote" placeholder="Client testimonial text"></textarea>
+        </div>
+
+        <div class="form-row full">
           <div>
-            <div class="page-title">Testimonials</div>
-            <div class="page-sub">Add quotes to show on the site</div>
+            <label>Photo (optional)</label>
+            <input type="file" name="photo" accept="image/*" class="input">
+          </div>
+          <div>
+            <label>Preview</label>
+            <div class="preview">
+              <img class="file-preview" alt="Preview" src="">
+            </div>
           </div>
         </div>
 
-        <form data-collection="testimonials" class="form-row full">
-          <div><label>Client name</label><input name="name" class="input"></div>
-          <div><label>Title / role</label><input name="role" class="input"></div>
-          <div><label>Quote</label><textarea name="quote"></textarea></div>
-          <div><label>Photo (optional)</label><input type="file" name="photo" accept="image/*" class="input"></div>
-          <div class="row"><button class="btn btn-primary" type="submit">Save</button></div>
-        </form>
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-primary" type="submit">Save testimonial</button>
+          <button type="button" class="btn btn-ghost" onclick="document.querySelector('form[data-collection=testimonials]').reset()">Reset</button>
+        </div>
+      </form>
 
-        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+      <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.05)">
 
-        <div id="testList" class="list"></div>
-      </main>
-    </div>
+      <h3 style="margin-bottom:12px">All Testimonials</h3>
+      <div id="testList" class="list"></div>
+
+    </main>
   </div>
+</div>
 
-  <script src="admin.js"></script>
-  <script>
-    function renderTestimonials(){
-      const items = AdminStore.all('testimonials')||[];
-      UI.renderList('#testList', items, it=>{
-        return `<div class="meta"><div><div class="title">${escape(it.name||'(no name)')}</div><div class="small">${escape(it.role||'')}</div><div class="small">${escape(it.quote||'')}</div></div></div>
-                <div class="card-actions"><button class="btn btn-ghost" data-edit="testimonials" data-id="${it.id}">Edit</button>
-                <button class="btn btn-danger" data-remove="testimonials" data-id="${it.id}">Delete</button></div>`;
-      });
-    }
-    function escape(s){ return String(s||'').replace(/[&<>"']/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-    window.onAdminDataChanged = function(col){ if(col==='testimonials') renderTestimonials(); }
-    document.addEventListener('DOMContentLoaded', renderTestimonials);
-  </script>
+
+<!-- FIREBASE + ADMIN -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+<!-- PAGE LOGIC -->
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
+
+/* Escape helper */
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;","</":"","\"":"&quot;","'":"&#39;"}[m])
+  );
+}
+
+/* RENDER TESTIMONIALS FROM FIRESTORE */
+async function renderTestimonials(){
+  const items = await AdminStore.all("testimonials");
+
+  UI.renderList("#testList", items, t => {
+    const photo = t.imageUrl
+      ? `<img src="${t.imageUrl}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`
+      : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
+
+    return `
+      <div class="meta">
+        <div style="display:flex;gap:12px;align-items:center">
+          ${photo}
+          <div>
+            <div class="title">${escapeHtml(t.name || "(no name)")}</div>
+            <div class="small">${escapeHtml(t.role || "")}</div>
+            <div class="small" style="opacity:0.8">${escapeHtml(t.quote || "")}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-ghost"
+          data-edit="testimonials"
+          data-id="${t.id}"
+          data-target="form[data-collection='testimonials']">
+          Edit
+        </button>
+
+        <button class="btn btn-danger"
+          data-remove="testimonials"
+          data-id="${t.id}">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* Firestore update hook */
+window.onAdminDataChanged = col => {
+  if (col === "testimonials") renderTestimonials();
+};
+
+document.addEventListener("DOMContentLoaded", renderTestimonials);
+</script>
+
 </body>
 </html>
