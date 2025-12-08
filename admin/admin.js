@@ -216,7 +216,10 @@ function wireForms() {
         form.removeAttribute("data-edit-id");
 
       } else {
-        await AdminStore.create(col, data);
+          // Add timestamp for ordering newest-first
+          data.createdAt = Date.now();
+      
+          await AdminStore.create(col, data);
       }
 
       form.reset();
