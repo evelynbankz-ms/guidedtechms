@@ -4,67 +4,137 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Admin — Settings</title>
-<!-- Favicon Placeholder -->
-<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+
+<link rel="shortcut icon" href="../asset/logo-icon.png" />
 <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
-  <div class="admin-wrap">
-    <header class="admin-topbar">
-      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
-      <div class="row">
-        <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+    </div>
+  </header>
+
+  <!-- LAYOUT GRID -->
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="team.html">Team Members</a>
+        <a href="services.html">Services</a>
+        <a href="faq.html">FAQs</a>
+        <a href="settings.html" class="active">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Settings</div>
+          <div class="page-sub">Global site settings stored in Firestore.</div>
+        </div>
       </div>
-    </header>
 
-    <div class="admin-grid">
-      <aside class="admin-side">
-        <nav class="side-nav">
-          <a href="dashboard.html" data-page="admin-dashboard.html">Dashboard</a>
-          <a href="blog.html" data-page="admin-blog.html">Blog Posts</a>
-          <a href="team.html" data-page="admin-team.html">Team Members</a>
-          <a href="services.html" data-page="admin-services.html">Services</a>
-          <a href="faq.html" data-page="admin-faq.html">FAQs</a>
-          <a href="settings.html" data-page="admin-settings.html">Settings</a>
-        </nav>
-      </aside>
-
-      <main class="admin-main">
-        <div class="page-head">
-          <div>
-            <div class="page-title">Settings</div>
-            <div class="page-sub">Site settings stored locally (can be exported later).</div>
-          </div>
+      <!-- SETTINGS FORM -->
+      <form data-collection="settings" class="form-row full">
+        <div>
+          <label>Site title</label>
+          <input name="siteTitle" class="input" placeholder="Guided Tech Solutions">
         </div>
 
-        <form data-collection="settings" class="form-row full">
-          <div><label>Site title</label><input name="siteTitle" class="input" placeholder="Guided Tech Solutions"></div>
-          <div><label>Primary color</label><input name="primaryHex" class="input" value="#1B4F72"></div>
-          <div><label>Footer text</label><textarea name="footerText"></textarea></div>
+        <div>
+          <label>Primary color (hex)</label>
+          <input name="primaryHex" class="input" placeholder="#1B4F72">
+        </div>
 
-          <div class="row"><button class="btn btn-primary" type="submit">Save settings</button></div>
-        </form>
+        <div>
+          <label>Footer text</label>
+          <textarea name="footerText" placeholder="Footer notes or information"></textarea>
+        </div>
 
-        <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-primary" type="submit">Save settings</button>
+        </div>
+      </form>
 
-        <div class="preview" id="settingsPreview"></div>
-      </main>
-    </div>
+      <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.05)">
+
+      <!-- LIVE PREVIEW -->
+      <h3 style="margin-bottom:10px">Preview</h3>
+      <div id="settingsPreview" class="preview"></div>
+
+    </main>
   </div>
+</div>
 
+
+<!-- FIREBASE + ADMIN LOGIC -->
 <script type="module" src="firebase.js"></script>
-<script type="module" src="admin.js"></script> 
+<script type="module" src="admin.js"></script>
 
-<script>
-function escape(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+<!-- PAGE SCRIPT -->
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
 
-function renderSettings(){
-  const s = AdminStore.all('settings') || [];
-  const latest = s[0] || {};
-  document.getElementById('settingsPreview').innerHTML = `<div><strong>${escape(latest.siteTitle || 'Site title')}</strong></div><div class="small">${escape(latest.footerText || '')}</div>`;
+/* Escape helper */
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;","</":"","\"":"&quot;","'":"&#39;"}[m])
+  );
 }
-window.onAdminDataChanged = function(col){ if(col==='settings') renderSettings(); };
-document.addEventListener('DOMContentLoaded', renderSettings);
+
+/* LOAD LATEST SETTINGS */
+async function loadSettingsIntoForm(){
+  const settings = await AdminStore.all("settings");
+  const latest = settings[0];
+
+  if (!latest) return;
+
+  const form = document.querySelector('form[data-collection="settings"]');
+  form.dataset.editId = latest.id;
+
+  for (const key in latest){
+    const field = form.querySelector(`[name="${key}"]`);
+    if (field) field.value = latest[key];
+  }
+
+  renderSettingsPreview();
+}
+
+/* RENDER SETTINGS PREVIEW */
+async function renderSettingsPreview(){
+  const settings = await AdminStore.all("settings");
+  const latest = settings[0] || {};
+
+  document.getElementById("settingsPreview").innerHTML = `
+    <div><strong>${escapeHtml(latest.siteTitle || "Site title")}</strong></div>
+    <div class="small">${escapeHtml(latest.footerText || "")}</div>
+    <div style="margin-top:8px;">Primary color: <span style="font-weight:600">${escapeHtml(latest.primaryHex || "")}</span></div>
+  `;
+}
+
+/* Respond to Firestore updates */
+window.onAdminDataChanged = col => {
+  if (col === "settings") {
+    loadSettingsIntoForm();
+    renderSettingsPreview();
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadSettingsIntoForm();
+  renderSettingsPreview();
+});
 </script>
+
 </body>
 </html>
