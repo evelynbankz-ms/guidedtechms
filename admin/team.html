@@ -35,7 +35,7 @@
         <a href="team.html" class="active">Team Members</a>
         <a href="services.html">Services</a>
         <a href="faq.html">FAQs</a>
-        <a href="testimonials.html" class="active">Testimonials</a>
+        <a href="testimonials.html">Testimonials</a>
         <a href="settings.html">Settings</a>
       </nav>
     </aside>
@@ -87,6 +87,14 @@
           <textarea name="bio" placeholder="Short bio"></textarea>
         </div>
 
+        <!-- NEW: LEADER CHECKBOX -->
+        <div style="margin:10px 0;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" name="isLeader" style="width:16px;height:16px;">
+            <span>Mark as leader (shows in leadership section)</span>
+          </label>
+        </div>
+
         <div class="row" style="margin-top:8px">
           <button class="btn btn-primary" type="submit">Save member</button>
           <button type="button" class="btn btn-ghost"
@@ -118,7 +126,7 @@ import { AdminStore, UI } from "./admin.js";
 
 function escapeHtml(s){
   return String(s||"").replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+    m => ({"&":"&amp;","<":"&lt;","&gt;":">","\"":"&quot;","'":"&#39;"}[m])
   );
 }
 
@@ -129,16 +137,21 @@ async function renderTeam(){
   const team = await AdminStore.all("team");
 
   UI.renderList("#teamList", team, member => {
+
     const photo = member.imageUrl
       ? `<img src="${member.imageUrl}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`
       : `<div style="width:56px;height:56px;border-radius:8px;background:#f0f6f8"></div>`;
+
+    const badge = member.isLeader
+      ? `<span style="background:#1b4f72;color:white;padding:2px 6px;border-radius:4px;font-size:11px;margin-left:6px;">Leader</span>`
+      : "";
 
     return `
       <div class="meta">
         <div style="display:flex;gap:12px;align-items:center">
           ${photo}
           <div>
-            <div class="title">${escapeHtml(member.name || "(no name)")}</div>
+            <div class="title">${escapeHtml(member.name || "(no name)")} ${badge}</div>
             <div class="small">${escapeHtml(member.role || "")}</div>
           </div>
         </div>
@@ -162,7 +175,9 @@ async function renderTeam(){
   });
 }
 
-/* Firestore change listener */
+
+
+/* HANDLE FIRESTORE CHANGES */
 window.onAdminDataChanged = col => {
   if(col === "team") renderTeam();
 };
