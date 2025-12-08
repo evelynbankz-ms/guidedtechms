@@ -165,4 +165,112 @@
 
       </div>
     </header>
+
+     <main class="container content">
+      <div class="blogs-top">
+        <div class="blogs-heading">
+          <h1>Latest insights and trends</h1>
+          <div class="controls">
+            <input id="searchInput" placeholder="Search titles..." aria-label="Search posts">
+            <select id="categoryFilter">
+              <option value="">All categories</option>
+              <!-- categories populated at runtime -->
+            </select>
+            <button id="clearFilters" class="btn-small">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="postsGrid" class="blogs-grid" aria-live="polite"></div>
+
+      <div class="pagination">
+        <button id="prevPage" class="btn-small" disabled>&larr; Prev</button>
+        <div id="pageInfo" class="page-info">Page 1</div>
+        <button id="nextPage" class="btn-small" disabled>Next &rarr;</button>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+<footer class="gts-footer">
+
+  <div class="gts-footer-inner">
+
+    <!-- LEFT COLUMN -->
+    <div class="gts-footer-col about-col">
+      <h2 class="footer-logo">Guided Tech Solutions</h2>
+
+      <p class="footer-desc">
+        Empowering organizations with intelligent automation, 
+        scalable technology, and modern digital transformation solutions.
+      </p>
+
+      <h4 class="footer-heading">CONTACT US</h4>
+      <p>contact@guidedtechms.com</p>
+
+      <!-- Social Icons -->
+      <div class="footer-social">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+        </a>
+      
+        <a href="https://www.instagram.com" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+        </a>
+      
+        <a href="https://www.linkedin.com/company/guided-tech-solutions-of-mississippi/" target="_blank" rel="noopener">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
+        </a>
+      
+        <!-- FIXED: Working Skool icon -->
+        <a href="https://www.skool.com" target="_blank" rel="noopener">
+          <img src="asset/skool-logo.png" alt="Skool">
+        </a>
+      </div>
+    </div>
+
+    <!-- SOLUTIONS -->
+    <div class="gts-footer-col">
+      <h4 class="footer-heading">SOLUTIONS</h4>
+      <a href="#">Automation Workflows</a>
+      <a href="#">AI Assistants</a>
+      <a href="#">Integrations</a>
+      <a href="#">Tech Consulting</a>
+      <a href="#">Data Processing</a>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="gts-footer-col">
+      <h4 class="footer-heading">SERVICES</h4>
+      <a href="#">AI Automation</a>
+      <a href="#">Process Optimization</a>
+      <a href="#">Employee Onboarding</a>
+      <a href="#">Tech Support</a>
+      <a href="#">Custom Development</a>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="gts-footer-col">
+      <h4 class="footer-heading">RESOURCES</h4>
+      <a href="blog.html">Blog</a>
+      <a href="#">Case Studies</a>
+      <a href="#">Videos</a>
+
+      <h4 class="footer-heading mt20">ABOUT</h4>
+      <a href="about.html">Company</a>
+      <a href="contact.html">Contact</a>
+      <a href="#">Partners</a>
+    </div>
+
+  </div>
+
+  <div class="gts-footer-bottom">
+    © <span id="year"></span> Guided Tech Solutions — All rights reserved.
+  </div>
+
+</footer>
     
+<!-- Firebase + page script -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="blog.js"></script>
+
+  
