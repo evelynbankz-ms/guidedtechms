@@ -395,12 +395,27 @@ body {
   height: 220px;
   background-size: cover;
   background-position: center;
-  border-bottom: 1px solid #e5e9ee;
+  background-color: #e5e9ee;
 }
 
 /* Content section */
 .card-body {
   padding: 22px 22px 26px;
+}
+
+/* Tags row */
+.blog-tags {
+  margin-bottom: 10px;
+}
+
+.blog-tags span {
+  background: #eef4ff;
+  color: #1b4f72;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 /* Title */
@@ -420,36 +435,13 @@ body {
   line-height: 1.55;
 }
 
-/* Category pill */
-.category {
-  background: #eef4ff;
-  color: #1b4f72;
-  padding: 6px 14px;
-  border-radius: 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
-/* Meta section */
-.meta-bottom {
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #6f7a85;
-  font-size: 0.9rem;
-}
-
 /* Read more */
 .read-more {
   display: inline-block;
-  margin-top: 14px;
+  margin-top: 20px;
   color: #1b4f72;
   font-weight: 600;
   text-decoration: none;
-  padding-top: 4px;
 }
 
 .read-more:hover {
