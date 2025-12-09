@@ -108,22 +108,26 @@ async function loadCategories() {
 }
 
 /* ==========================================
-   FIRESTORE QUERY BUILDER
+   FIRESTORE QUERY BUILDER (CASE-INSENSITIVE)
 ========================================== */
 function buildQuery(startAfterSnapshot = null) {
   const colRef = collection(db, "blogs");
   let constraints = [];
 
+  /* Category filter */
   if (activeCategory) {
     constraints.push(where("category", "==", activeCategory));
   }
 
+  /* Case-insensitive title search */
   if (activeSearch) {
-    const term = activeSearch.trim();
+    const term = activeSearch.trim().toLowerCase();
     const end = term + "\uf8ff";
-    constraints.push(where("title", ">=", term));
-    constraints.push(where("title", "<=", end));
-    constraints.push(orderBy("title"));
+
+    constraints.push(where("titleLower", ">=", term));
+    constraints.push(where("titleLower", "<=", end));
+
+    constraints.push(orderBy("titleLower"));
     constraints.push(orderBy("createdAt", "desc"));
   } else {
     constraints.push(orderBy("createdAt", "desc"));
