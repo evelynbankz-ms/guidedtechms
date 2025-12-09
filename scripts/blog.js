@@ -60,7 +60,7 @@ function renderCard(post) {
     : "";
 
   const excerpt = post.excerpt
-    ? escapeHtml(post.excerpt).slice(0, 180)
+    ? escapeHtml(post.excerpt).slice(0, 150)
     : "";
 
   const url = `/blog/post.html?slug=${encodeURIComponent(post.slug || "")}`;
@@ -78,13 +78,9 @@ function renderCard(post) {
 
         <div class="excerpt">${excerpt}</div>
 
-        <div class="card-footer">
-          <a class="read-more" href="${url}">Read →</a>
-          <div class="meta-right">${fmtDate(post.createdAt)}</div>
-        </div>
+        <a class="read-more" href="${url}">Read →</a>
 
       </div>
-
     </article>
   `;
 }
