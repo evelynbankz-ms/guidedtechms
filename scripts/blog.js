@@ -1,4 +1,4 @@
-// blog.jsimport { db } from "../admin/firebase.js";
+// blog.js
 
 import { db } from "../admin/firebase.js";
 import {
@@ -25,7 +25,7 @@ const pageInfo = document.getElementById("pageInfo");
 
 let currentPage = 1;
 let lastVisible = null;
-let prevSnapshots = []; // stack of previous-page cursors
+let prevSnapshots = [];
 
 let activeCategory = "";
 let activeSearch = "";
@@ -42,41 +42,51 @@ function escapeHtml(s) {
 function fmtDate(ms) {
   try {
     return new Date(ms).toLocaleDateString();
-  } catch (e) {
+  } catch {
     return "";
   }
 }
 
 /* ==========================================
-   CARD RENDERER
+   CARD RENDERER (Homepage Layout)
 ========================================== */
 function renderCard(post) {
-  const image = post.imageUrl
-    ? `<img src="${post.imageUrl}" class="blog-image" loading="lazy" alt="${escapeHtml(post.title)}">`
-    : `<div class="blog-image"></div>`;
-
-  const excerpt = post.excerpt
-    ? escapeHtml(post.excerpt).slice(0, 140)
+  const img = post.imageUrl
+    ? `background-image:url('${post.imageUrl}')`
     : "";
 
-  const slug = post.slug || "";
-  const url = `/blog/post.html?slug=${encodeURIComponent(slug)}`;
+  const tagsHtml = post.category
+    ? `<span class="blog-tag">${escapeHtml(post.category)}</span>`
+    : "";
+
+  const excerpt = post.excerpt
+    ? escapeHtml(post.excerpt).slice(0, 180)
+    : "";
+
+  const url = `/blog/post.html?slug=${encodeURIComponent(post.slug || "")}`;
 
   return `
-  <article class="blog-card">
-      ${image}
+    <article class="blog-card">
+
+      <div class="blog-image" style="${img}"></div>
+
       <div class="card-body">
-          <div class="title">${escapeHtml(post.title)}</div>
-          <div class="excerpt">${excerpt}</div>
 
-          <div class="meta-bottom">
-              ${post.category ? `<div class="category">${escapeHtml(post.category)}</div>` : ""}
-              <div style="font-size:13px;color:#6f7a84">${fmtDate(post.createdAt)}</div>
-          </div>
+        <div class="blog-tags">${tagsHtml}</div>
 
+        <div class="title">${escapeHtml(post.title || "")}</div>
+
+        <div class="excerpt">${excerpt}</div>
+
+        <div class="card-footer">
           <a class="read-more" href="${url}">Read →</a>
+          <div class="meta-right">${fmtDate(post.createdAt)}</div>
+        </div>
+
       </div>
-  </article>`;
+
+    </article>
+  `;
 }
 
 /* ==========================================
@@ -104,45 +114,38 @@ async function loadCategories() {
 /* ==========================================
    FIRESTORE QUERY BUILDER
 ========================================== */
-function renderCard(post) {
-  const img = post.imageUrl
-    ? `background-image:url('${post.imageUrl}')`
-    : "";
+function buildQuery(startAfterSnapshot = null) {
+  const colRef = collection(db, "blogs");
+  let constraints = [];
 
-  const tagsHtml = post.category
-    ? `<div class="blog-tags"><span>${escapeHtml(post.category)}</span></div>`
-    : `<div class="blog-tags"></div>`;
+  if (activeCategory) {
+    constraints.push(where("category", "==", activeCategory));
+  }
 
-  const excerpt = post.excerpt
-    ? escapeHtml(post.excerpt).slice(0, 180)
-    : "";
+  if (activeSearch) {
+    const term = activeSearch.trim();
+    const end = term + "\uf8ff";
+    constraints.push(where("title", ">=", term));
+    constraints.push(where("title", "<=", end));
+    constraints.push(orderBy("title"));
+    constraints.push(orderBy("createdAt", "desc"));
+  } else {
+    constraints.push(orderBy("createdAt", "desc"));
+  }
 
-  const url = `/blog/post.html?slug=${encodeURIComponent(post.slug || "")}`;
+  constraints.push(limit(PAGE_SIZE));
 
-  return `
-    <article class="blog-card">
-      <div class="blog-image" style="${img}"></div>
+  let q = query(colRef, ...constraints);
 
-      <div class="card-body">
+  if (startAfterSnapshot) {
+    q = query(colRef, ...constraints, startAfter(startAfterSnapshot));
+  }
 
-        ${tagsHtml}
-
-        <div class="title">${escapeHtml(post.title || "")}</div>
-
-        <div class="excerpt">${excerpt}</div>
-
-        <div class="card-footer">
-          <a class="read-more" href="${url}">Read →</a>
-          <div class="meta-right">${fmtDate(post.createdAt)}</div>
-        </div>
-
-      </div>
-    </article>
-  `;
+  return q;
 }
 
 /* ==========================================
-   LOAD PAGE (FORWARD OR RESET)
+   LOAD PAGE
 ========================================== */
 async function loadPage(isNext = true) {
   postsGrid.innerHTML = `<div class="empty">Loading…</div>`;
@@ -153,7 +156,7 @@ async function loadPage(isNext = true) {
     if (lastVisible) prevSnapshots.push(lastVisible);
     startCursor = lastVisible;
   } else {
-    prevSnapshots.pop(); // drop current page
+    prevSnapshots.pop();
     startCursor = prevSnapshots.length ? prevSnapshots[prevSnapshots.length - 1] : null;
   }
 
@@ -165,15 +168,12 @@ async function loadPage(isNext = true) {
     return;
   }
 
-  // Update cursor for next page
   lastVisible = snap.docs[snap.docs.length - 1];
 
-  // Render posts
   postsGrid.innerHTML = snap.docs
     .map((doc) => renderCard({ id: doc.id, ...doc.data() }))
     .join("");
 
-  // Update pagination buttons
   prevBtn.disabled = prevSnapshots.length === 0;
   nextBtn.disabled = snap.docs.length < PAGE_SIZE;
 
@@ -181,7 +181,7 @@ async function loadPage(isNext = true) {
 }
 
 /* ==========================================
-   RESET + RELOAD FIRST PAGE
+   RESET
 ========================================== */
 function resetPagination() {
   currentPage = 1;
@@ -194,8 +194,8 @@ function resetPagination() {
    CONTROL WIRING
 ========================================== */
 function wireControls() {
-  /* Search (debounced) */
   let debounce;
+
   searchInput.addEventListener("input", () => {
     clearTimeout(debounce);
     debounce = setTimeout(() => {
@@ -204,13 +204,11 @@ function wireControls() {
     }, 300);
   });
 
-  /* Category filter */
   categoryFilter.addEventListener("change", () => {
     activeCategory = categoryFilter.value;
     resetPagination();
   });
 
-  /* Clear filters */
   document.getElementById("clearFilters").addEventListener("click", () => {
     searchInput.value = "";
     categoryFilter.value = "";
@@ -219,7 +217,6 @@ function wireControls() {
     resetPagination();
   });
 
-  /* Next page */
   nextBtn.addEventListener("click", () => {
     if (!nextBtn.disabled) {
       currentPage++;
@@ -227,9 +224,8 @@ function wireControls() {
     }
   });
 
-  /* Previous page */
   prevBtn.addEventListener("click", () => {
-    if (!prevBtn.disabled && prevSnapshots.length > 0) {
+    if (!prevBtn.disabled) {
       currentPage = Math.max(1, currentPage - 1);
       loadPage(false);
     }
