@@ -349,38 +349,105 @@ body {
   cursor: default;
 }
 
-/* --------------------------------------------
-   BLOG GRID
---------------------------------------------- */
-.blogs-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
-  margin-top: 25px;
+:root{
+  --primary: #1B4F72;
+  --accent: #E67E22;
+  --muted: #2E4053;
+  --bg: #F8F9F9;
+  --surface: #ffffff;
+  --radius-lg: 16px;
+  --container: 1200px;
+  --gap: 24px;
+  --nav-height: 78px;
+  --transition: 0.28s ease;
+  --shadow-1: 0 6px 20px rgba(16,24,40,0.08);
+}
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--muted);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Container */
+.content {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
 }
 
 /* --------------------------------------------
-   BLOG CARD (Homepage-matching upgrade)
+   HEADER + CONTROLS
 --------------------------------------------- */
-/* ============================================
-   OVERRIDE BLOG CARD STYLES TO MATCH HOMEPAGE
-   (Screenshot 1 layout)
-=========================================== */
+.blogs-top {
+  margin-bottom: 30px;
+}
 
-/* Blog grid spacing */
+.blogs-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px;
+}
+
+.blogs-heading h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #081e2b;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.controls input,
+.controls select {
+  padding: 12px 14px;
+  border: 1px solid #d9e2e8;
+  border-radius: 12px;
+  background: #fff;
+  min-width: 200px;
+}
+
+.btn-small {
+  padding: 10px 16px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* --------------------------------------------
+   BLOG GRID — FIXED & CONSISTENT
+--------------------------------------------- */
 .blogs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 26px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Clean rectangular card */
+/* --------------------------------------------
+   BLOG CARD — HOMEPAGE STYLE
+--------------------------------------------- */
 .blog-card {
   background: #ffffff;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: 0.25s ease;
   cursor: pointer;
 }
 
@@ -389,7 +456,7 @@ body {
   box-shadow: 0 14px 36px rgba(0,0,0,0.10);
 }
 
-/* Top image */
+/* IMAGE (same as homepage) */
 .blog-image {
   width: 100%;
   height: 220px;
@@ -398,14 +465,14 @@ body {
   background-color: #e5e9ee;
 }
 
-/* Content section */
+/* CARD BODY */
 .card-body {
   padding: 22px 22px 26px;
 }
 
-/* Tags row */
+/* TAGS */
 .blog-tags {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .blog-tags span {
@@ -415,99 +482,86 @@ body {
   border-radius: 18px;
   font-size: 0.85rem;
   font-weight: 600;
-  display: inline-block;
 }
 
-/* Title */
+/* TITLE */
 .title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #0d1b2a;
-  margin-top: 10px;
   line-height: 1.4;
+  margin-bottom: 10px;
 }
 
-/* Excerpt */
+/* EXCERPT */
 .excerpt {
-  color: #4c5b66;
   font-size: 1rem;
-  margin-top: 10px;
+  color: #4c5b66;
   line-height: 1.55;
+  margin-bottom: 20px;
 }
 
-/* Read more */
+/* READ MORE */
 .read-more {
   display: inline-block;
-  margin-top: 20px;
+  font-weight: 700;
   color: #1b4f72;
-  font-weight: 600;
   text-decoration: none;
+  font-size: 1rem;
 }
 
 .read-more:hover {
   text-decoration: underline;
 }
 
+/* HIDE DATE (requested) */
+.meta-right {
+  display: none !important;
+}
 
 /* --------------------------------------------
    EMPTY STATE
 --------------------------------------------- */
 .empty {
   text-align: center;
-  padding: 40px 0;
+  padding: 40px;
   color: #677684;
-  font-size: 1rem;
 }
 
 /* --------------------------------------------
    PAGINATION
 --------------------------------------------- */
 .pagination {
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
-  margin-top: 30px;
+  gap: 16px;
 }
 
 .page-info {
-  font-size: 1rem;
   font-weight: 600;
-  color: #0b2940;
+  font-size: 1rem;
 }
 
 /* --------------------------------------------
-   RESPONSIVE GRID
+   RESPONSIVE
 --------------------------------------------- */
-@media (max-width: 1200px) {
-  .blogs-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 880px) {
-  .blogs-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .controls input {
-    min-width: 150px;
-  }
-}
-
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .blogs-grid {
     grid-template-columns: 1fr;
   }
+
   .controls {
     flex-direction: column;
-    align-items: stretch;
+    width: 100%;
   }
+
   .controls input,
   .controls select {
     width: 100%;
   }
 }
-
 
 
 /* ---------- FOOTER ---------- */
