@@ -84,7 +84,9 @@ async function ensureUniqueSlug(colName, baseSlug, excludeId = null) {
 
 
 /* ----------------------------------------------------
-   FIRESTORE DATA STORE
+   FIRESTORE DATA STORE (AdminStore)
+   - Adds lowercase helper fields for case-insensitive search
+     (titleLower, excerptLower)
 ---------------------------------------------------- */
 const AdminStore = {
 
@@ -101,7 +103,16 @@ const AdminStore = {
   },
 
   async create(col, data) {
-    if (data.title) data.title = String(data.title).trim();
+    // normalize title
+    if (data.title) {
+      data.title = String(data.title).trim();
+      data.titleLower = data.title.toLowerCase();
+    }
+
+    // optional excerpt lower for potential search use
+    if (data.excerpt) {
+      data.excerptLower = String(data.excerpt).trim().toLowerCase();
+    }
 
     const baseSlug = makeSlug(data.slug || data.title || "");
     data.slug = await ensureUniqueSlug(col, baseSlug);
@@ -129,7 +140,14 @@ const AdminStore = {
     if (!existingSnap.exists()) throw new Error("Document not found");
     const existing = existingSnap.data();
 
-    if (data.title) data.title = String(data.title).trim();
+    if (data.title) {
+      data.title = String(data.title).trim();
+      data.titleLower = data.title.toLowerCase();
+    }
+
+    if (data.excerpt) {
+      data.excerptLower = String(data.excerpt).trim().toLowerCase();
+    }
 
     if ("slug" in data) {
       const provided = (data.slug || "").trim();
@@ -233,6 +251,8 @@ function wireFilePreviews() {
 
 /* ----------------------------------------------------
    FORM HANDLING (WITH FILE FIX)
+   - Excludes raw File objects from form data
+   - Uses preview.dataset.pending (base64) for uploads
 ---------------------------------------------------- */
 function wireForms() {
   document.querySelectorAll("form[data-collection]").forEach(form => {
@@ -254,7 +274,7 @@ function wireForms() {
       const fd = new FormData(form);
       const data = {};
 
-      /* 🔥 FIX: Remove raw File objects */
+      /* Remove raw File objects from FormData */
       for (const [key, value] of fd.entries()) {
         if (value instanceof File) continue;
         data[key] = value;
