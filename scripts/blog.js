@@ -104,39 +104,41 @@ async function loadCategories() {
 /* ==========================================
    FIRESTORE QUERY BUILDER
 ========================================== */
-function buildQuery(startAfterSnapshot = null) {
-  const colRef = collection(db, "blogs");
-  let constraints = [];
+function renderCard(post) {
+  const img = post.imageUrl
+    ? `background-image:url('${post.imageUrl}')`
+    : "";
 
-  /* Category filter */
-  if (activeCategory) {
-    constraints.push(where("category", "==", activeCategory));
-  }
+  const tagsHtml = post.category
+    ? `<div class="blog-tags"><span>${escapeHtml(post.category)}</span></div>`
+    : `<div class="blog-tags"></div>`;
 
-  /* Title search */
-  if (activeSearch) {
-    const term = activeSearch.trim();
-    const end = term + "\uf8ff";
-    constraints.push(where("title", ">=", term));
-    constraints.push(where("title", "<=", end));
+  const excerpt = post.excerpt
+    ? escapeHtml(post.excerpt).slice(0, 180)
+    : "";
 
-    // Required ordering when using range queries on 'title'
-    constraints.push(orderBy("title"));
-    constraints.push(orderBy("createdAt", "desc"));
-  } else {
-    // Default: newest first
-    constraints.push(orderBy("createdAt", "desc"));
-  }
+  const url = `/blog/post.html?slug=${encodeURIComponent(post.slug || "")}`;
 
-  constraints.push(limit(PAGE_SIZE));
+  return `
+    <article class="blog-card">
+      <div class="blog-image" style="${img}"></div>
 
-  let q = query(colRef, ...constraints);
+      <div class="card-body">
 
-  if (startAfterSnapshot) {
-    q = query(colRef, ...constraints, startAfter(startAfterSnapshot));
-  }
+        ${tagsHtml}
 
-  return q;
+        <div class="title">${escapeHtml(post.title || "")}</div>
+
+        <div class="excerpt">${excerpt}</div>
+
+        <div class="card-footer">
+          <a class="read-more" href="${url}">Read →</a>
+          <div class="meta-right">${fmtDate(post.createdAt)}</div>
+        </div>
+
+      </div>
+    </article>
+  `;
 }
 
 /* ==========================================
