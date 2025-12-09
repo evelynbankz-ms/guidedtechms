@@ -1,5 +1,6 @@
-// blog.js
-import { db } from "./admin/firebase.js";
+// blog.jsimport { db } from "../admin/firebase.js";
+
+import { db } from "../admin/firebase.js";
 import {
   collection,
   query,
