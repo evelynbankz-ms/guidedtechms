@@ -120,18 +120,19 @@ function buildQuery(startAfterSnapshot = null) {
   }
 
   /* Case-insensitive title search */
-  if (activeSearch) {
+if (activeSearch) {
     const term = activeSearch.trim().toLowerCase();
     const end = term + "\uf8ff";
 
     constraints.push(where("titleLower", ">=", term));
     constraints.push(where("titleLower", "<=", end));
 
+    // Only one orderBy allowed for this type of range search
     constraints.push(orderBy("titleLower"));
+} else {
     constraints.push(orderBy("createdAt", "desc"));
-  } else {
-    constraints.push(orderBy("createdAt", "desc"));
-  }
+}
+
 
   constraints.push(limit(PAGE_SIZE));
 
