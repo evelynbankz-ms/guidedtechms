@@ -63,7 +63,7 @@ function renderCard(post) {
     ? escapeHtml(post.excerpt).slice(0, 150)
     : "";
 
-  const url = `/blog/post.html?slug=${encodeURIComponent(post.slug || "")}`;
+  const url = `post.html?slug=${encodeURIComponent(post.slug || "")}`;
 
   return `
     <article class="blog-card">
