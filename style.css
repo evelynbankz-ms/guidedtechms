@@ -262,6 +262,90 @@ body {
   margin: 3px 0;
 }
 
+/* =================================================
+   MOBILE / TABLET NAVBAR
+================================================= */
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+}
+
+/* Tablet & Mobile */
+@media (max-width: 1024px) {
+
+  /* Show hamburger */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  /* Hide desktop-centered menu */
+  .navbar-menu {
+    position: fixed;
+    top: 78px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 78px);
+    background: linear-gradient(180deg, #071a24, #0d2a3a);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 0;
+    transform: translateY(-110%);
+    transition: transform 0.35s ease;
+    overflow-y: auto;
+    z-index: 3000;
+  }
+
+  .navbar-menu.open {
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 18px;
+    line-height: normal;
+  }
+
+  /* Disable hover */
+  .nav-item:hover .mega-dropdown {
+    display: none;
+  }
+
+  /* Mobile dropdown behavior */
+  .mega-dropdown {
+    position: static;
+    width: 100%;
+    background: transparent;
+    padding: 12px 0 0;
+    display: none;
+  }
+
+  .nav-item.open .mega-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .mega-col {
+    width: 100%;
+  }
+
+  .mega-col h4 {
+    margin-top: 14px;
+    font-size: 12px;
+  }
+}
+
+
+
+
+
 
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
