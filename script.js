@@ -276,3 +276,17 @@ document.addEventListener("click", (e) => {
   }
 });
 
+
+const menuToggle = document.getElementById("menuToggle");
+const navbarMenu = document.getElementById("navbarMenu");
+
+menuToggle.addEventListener("click", () => {
+  navbarMenu.classList.toggle("open");
+});
+
+document.querySelectorAll(".nav-item > .nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    link.parentElement.classList.toggle("open");
+  });
+});
+
