@@ -302,6 +302,111 @@ body {
   font-weight: 600;
 }
 
+
+
+
+
+/* ================================
+   SERVICE EDITORIAL SECTIONS
+================================ */
+
+.service-section {
+  padding: 90px 0;
+  background: #ffffff;
+}
+
+.service-section.alt {
+  background: #f8fafc;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.service-text h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #0b1f2a;
+  margin-bottom: 18px;
+}
+
+.service-text p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #4a5f6d;
+  margin-bottom: 16px;
+}
+
+.service-emphasis {
+  margin-top: 24px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.service-emphasis li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  color: #1B4F72;
+  font-weight: 600;
+}
+
+.service-emphasis li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1B4F72;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* VISUAL BLOCK (IMAGE / CANVAS IMAGE) */
+.service-visual {
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d2a3a, #081e2b);
+  box-shadow: 0 20px 50px rgba(16,24,40,0.18);
+}
+
+.service-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ALTERNATING LAYOUT */
+.service-section.reverse .service-grid {
+  grid-template-columns: 1fr 1.1fr;
+}
+
+.service-section.reverse .service-text {
+  order: 2;
+}
+
+.service-section.reverse .service-visual {
+  order: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .service-section.reverse .service-text,
+  .service-section.reverse .service-visual {
+    order: unset;
+  }
+}
+
+
+
+
 /* FOOTER BOTTOM */
 .gts-footer {
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
