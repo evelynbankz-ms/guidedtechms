@@ -304,7 +304,150 @@ body {
 
 
 
+.capability {
+  background: #f8f9fb;
+}
 
+/* HERO */
+.cap-hero {
+  background: linear-gradient(135deg, #0d2a3a, #1B4F72);
+  color: #fff;
+  padding: 120px 0 90px;
+  text-align: center;
+}
+
+.cap-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 14px;
+}
+
+.hero-sub {
+  max-width: 720px;
+  margin: 0 auto;
+  color: #d6eaf8;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+}
+
+/* SECTIONS */
+.cap-section {
+  padding: 80px 0;
+}
+
+.cap-band {
+  background: #ffffff;
+  padding: 90px 0;
+}
+
+.cap-band.light {
+  background: #f1f5f9;
+}
+
+.section-title {
+  font-size: 2.1rem;
+  margin-bottom: 40px;
+  text-align: center;
+  color: #1B4F72;
+}
+
+/* GRID */
+.cap-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.cap-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.cap-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* CARDS */
+.cap-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.cap-card.highlight {
+  background: #1B4F72;
+  color: #fff;
+}
+
+.cap-card.outline {
+  border: 2px solid #1B4F72;
+}
+
+.cap-card h3,
+.cap-card h4 {
+  margin-bottom: 10px;
+}
+
+/* LIST */
+.cap-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cap-list li {
+  padding-left: 24px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.cap-list li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #1B4F72;
+  font-weight: bold;
+}
+
+/* TAGS */
+.tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.tag-grid span {
+  background: #eaf2f8;
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+/* CTA */
+.cap-cta {
+  background: #0d2a3a;
+  color: #fff;
+  padding: 90px 0;
+  text-align: center;
+}
+
+.cap-cta p {
+  margin-bottom: 24px;
+  color: #d6eaf8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .cap-grid.two,
+  .cap-grid.three {
+    grid-template-columns: 1fr;
+  }
+}
 
 
 
