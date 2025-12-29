@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Careers</title>
+
+<link rel="shortcut icon" href="../asset/logo-icon.png" />
+<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+      <button class="btn btn-primary"
+        onclick="document.querySelector('form[data-collection=careers]').scrollIntoView({behavior:'smooth'})">
+        New Opening
+      </button>
+    </div>
+  </header>
+
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="team.html">Team Members</a>
+        <a href="faq.html">FAQs</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="careers.html" class="active">Careers</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">Career Openings</div>
+          <div class="page-sub">Manage job openings displayed on the public careers page.</div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <form data-collection="careers" class="form-row full">
+
+        <div>
+          <label>Job Title</label>
+          <input name="title" class="input" placeholder="e.g. Cloud Engineer">
+        </div>
+
+        <div class="form-row full">
+          <div>
+            <label>Location</label>
+            <input name="location" class="input" placeholder="Remote / Clinton, MS">
+          </div>
+
+          <div>
+            <label>Employment Type</label>
+            <input name="type" class="input" placeholder="Full-time, Contract, Hybrid">
+          </div>
+        </div>
+
+        <div>
+          <label>Job Description (HTML allowed)</label>
+          <textarea name="description" placeholder="<p>Role overview...</p>"></textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-primary" type="submit">Save Job</button>
+          <button type="button" class="btn btn-ghost"
+            onclick="document.querySelector('form[data-collection=careers]').reset()">
+            Reset
+          </button>
+        </div>
+
+      </form>
+
+      <hr>
+
+      <h3>All Openings</h3>
+      <div id="careerList" class="list"></div>
+
+    </main>
+  </div>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+  );
+}
+
+async function renderCareers(){
+  const jobs = await AdminStore.all("careers");
+
+  UI.renderList("#careerList", jobs, job => `
+    <div class="meta">
+      <div>
+        <div class="title">${escapeHtml(job.title)}</div>
+        <div class="small">${escapeHtml(job.location)} • ${escapeHtml(job.type)}</div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn btn-ghost"
+        data-edit="careers"
+        data-id="${job.id}"
+        data-target="form[data-collection='careers']">
+        Edit
+      </button>
+
+      <button class="btn btn-danger"
+        data-remove="careers"
+        data-id="${job.id}">
+        Delete
+      </button>
+    </div>
+  `);
+}
+
+window.onAdminDataChanged = col => {
+  if(col === "careers") renderCareers();
+};
+
+document.addEventListener("DOMContentLoaded", renderCareers);
+</script>
+
+</body>
+</html>
