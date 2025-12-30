@@ -60,7 +60,7 @@
 
               <div class="mega-col">
                 <h4>More About Us</h4>
-                <a href="career.html"><span class="icon"></span>Careers</a>
+                <a href="careers.html"><span class="icon"></span>Careers</a>
                 <a href="#"><span class="icon"></span>Press</a>
                 <a href="#"><span class="icon"></span>Awards</a>
               </div>
@@ -173,6 +173,18 @@
     </section>
 
 
+<main class="container careers-page">
+  <h1>Careers at Guided Tech Solutions</h1>
+  <p class="careers-intro">
+    Join a team focused on real-world engineering, automation, and scalable systems.
+  </p>
+
+  <div id="careersGrid">
+    <div class="empty">
+      Loading openings…
+    </div>
+  </div>
+</main>
 
 
 
@@ -259,6 +271,8 @@
 
   
 <script src="scripts/about.js"></script> 
+<script type="module" src="admin/firebase.js"></script>
+<script type="module" src="scripts/careers.js"></script>    
   
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
