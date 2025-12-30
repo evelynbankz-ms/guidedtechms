@@ -1030,6 +1030,50 @@ body {
 }
 
 
+/* =========================================
+   CAREERS PAGE
+========================================= */
+
+.careers-page {
+  padding: 80px 0;
+}
+
+.careers-intro {
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.career-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.career-card h3 {
+  color: #1B4F72;
+  margin-bottom: 6px;
+}
+
+.career-meta {
+  font-size: 0.9rem;
+  color: #6b7780;
+  margin-bottom: 14px;
+}
+
+.career-desc p {
+  margin-bottom: 12px;
+}
+
+.empty {
+  padding: 60px;
+  background: #f1f5f9;
+  border-radius: 14px;
+  text-align: center;
+  color: #6b7780;
+}
+
 
 
 
