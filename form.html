@@ -177,49 +177,61 @@
 
 
 
-<section class="contact-form-section">
-  <div class="contact-form-wrap">
+<section class="contact-split-section">
+  <div class="contact-split container">
 
-    <h2 class="contact-form-title">Send Us a Message</h2>
+    <!-- LEFT CONTENT -->
+    <div class="contact-info">
+      <h2>Need Help or Want to Talk?</h2>
+      <p class="contact-intro">
+        Submit a message and our team will review it promptly.
+        This is the fastest way to reach us.
+      </p>
 
-    <form id="contactForm" class="contact-form">
+      <ul class="contact-points">
+        <li>
+          <span class="dot"></span>
+          <div>
+            <strong>Support & Complaints</strong>
+            <p>Report issues, request help, or escalate concerns.</p>
+          </div>
+        </li>
 
-      <input
-        type="text"
-        name="name"
-        placeholder="Your Name"
-        required
-      />
+        <li>
+          <span class="dot"></span>
+          <div>
+            <strong>Talk to Our Team</strong>
+            <p>Ask questions, request consultations, or discuss solutions.</p>
+          </div>
+        </li>
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        required
-      />
+        <li>
+          <span class="dot"></span>
+          <div>
+            <strong>Tracked & Responded</strong>
+            <p>Your message is reviewed and routed to the right team.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone (optional)"
-      />
+    <!-- RIGHT FORM -->
+    <div class="contact-form-wrap">
+      <h3 class="contact-form-title">Send Us a Message</h3>
 
-      <textarea
-        name="message"
-        placeholder="Your Message"
-        required
-      ></textarea>
+      <form id="contactForm" class="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Email Address" required />
+        <input type="tel" name="phone" placeholder="Phone (optional)" />
+        <textarea name="message" placeholder="Your Message" required></textarea>
 
-      <button type="submit" class="contact-submit">
-        Send
-      </button>
+        <button type="submit" class="contact-submit">Send</button>
+        <p id="contactStatus" class="contact-status"></p>
+      </form>
+    </div>
 
-      <p id="contactStatus" class="contact-status"></p>
-
-    </form>
   </div>
 </section>
-
 
 
     
