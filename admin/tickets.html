@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Support Tickets</title>
+
+<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+    </div>
+  </header>
+
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="faq.html">FAQs</a>
+        <a href="careers.html">Careers</a>
+        <a href="tickets.html" class="active">Tickets</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">Support Tickets</div>
+          <div class="page-sub">Incoming messages from the contact form</div>
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="row" style="gap:12px;margin-bottom:16px">
+        <select id="statusFilter" class="input" style="max-width:200px">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="open">Open</option>
+          <option value="resolved">Resolved</option>
+        </select>
+      </div>
+
+      <!-- LIST -->
+      <div id="ticketList" class="list"></div>
+
+    </main>
+  </div>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
+
+/* Escape helper */
+const esc = s => String(s||"").replace(/[&<>"']/g,
+  m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+);
+
+let activeStatus = "";
+
+async function renderTickets(){
+  let tickets = await AdminStore.all("tickets");
+
+  if (activeStatus) {
+    tickets = tickets.filter(t => t.status === activeStatus);
+  }
+
+  if (!tickets.length) {
+    document.querySelector("#ticketList").innerHTML =
+      `<div class="empty">No tickets found.</div>`;
+    return;
+  }
+
+  UI.renderList("#ticketList", tickets, t => `
+    <div class="meta">
+      <div>
+        <div class="title">${esc(t.subject || "No subject")}</div>
+        <div class="small">
+          ${esc(t.name)} • ${esc(t.email)}
+        </div>
+        <div class="small" style="opacity:.7">
+          ${esc(t.category || "General")} • ${new Date(t.createdAt).toLocaleString()}
+        </div>
+        <div class="small" style="margin-top:8px">
+          ${esc(t.message)}
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <select class="input"
+        data-status="${t.id}"
+        style="max-width:130px">
+        <option value="new" ${t.status==="new"?"selected":""}>New</option>
+        <option value="open" ${t.status==="open"?"selected":""}>Open</option>
+        <option value="resolved" ${t.status==="resolved"?"selected":""}>Resolved</option>
+      </select>
+    </div>
+  `);
+}
+
+/* STATUS CHANGE */
+document.addEventListener("change", async e => {
+  const sel = e.target.closest("[data-status]");
+  if (!sel) return;
+
+  await AdminStore.update("tickets", sel.dataset.status, {
+    status: sel.value,
+    updatedAt: Date.now()
+  });
+
+  renderTickets();
+});
+
+/* FILTER */
+document.getElementById("statusFilter").addEventListener("change", e => {
+  activeStatus = e.target.value;
+  renderTickets();
+});
+
+document.addEventListener("DOMContentLoaded", renderTickets);
+</script>
+</body>
+</html>
