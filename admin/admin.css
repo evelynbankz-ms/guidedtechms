@@ -78,6 +78,72 @@ textarea{min-height:110px;resize:vertical;padding-top:10px}
 .card .meta .title{font-weight:700;color:#0b2b3b}
 .card-actions{display:flex;gap:8px;align-items:center}
 
+/*tickets*/
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:20px;
+}
+.stat-card {
+  background:#fff;
+  padding:18px;
+  border-radius:12px;
+  text-align:center;
+}
+.stat-card span {
+  font-size:28px;
+  font-weight:700;
+  color:#1B4F72;
+}
+
+.filters {
+  display:flex;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.tickets-layout {
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:20px;
+}
+
+.ticket-list {
+  background:#fff;
+  border-radius:12px;
+  overflow:auto;
+  max-height:70vh;
+}
+
+.ticket-item {
+  padding:14px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+}
+.ticket-item:hover {
+  background:#f4f7fa;
+}
+.ticket-item .subject {
+  font-weight:600;
+}
+
+.ticket-detail {
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+}
+.reply-box textarea {
+  width:100%;
+  height:120px;
+}
+.reply-box button {
+  margin-top:10px;
+}
+
+
+
+
 /* File preview */
 .file-preview{width:120px;height:80px;object-fit:cover;border-radius:8px;border:1px solid rgba(16,24,40,0.04)}
 .preview{background:#fbfdfe;border-radius:10px;padding:18px;border:1px solid rgba(16,24,40,0.03);min-height:160px;display:flex;flex-direction:column;gap:12px;justify-content:center}
