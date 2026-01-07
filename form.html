@@ -219,16 +219,17 @@
     <div class="contact-form-box">
       <h3>SEND US A MESSAGE</h3>
 
-      <form class="contact-form">
-        <input type="text" placeholder="Your Name" required />
-        <input type="email" placeholder="E-mail" required />
-        <input type="tel" placeholder="Phone" />
-        <textarea placeholder="Your Message" required></textarea>
-
+      <form id="contactForm" class="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="tel" name="phone" placeholder="Phone" />
+        <textarea name="message" placeholder="Your Message" required></textarea>
+      
         <button type="submit">
           <span>Send</span>
         </button>
       </form>
+
     </div>
 
   </div>
@@ -318,7 +319,9 @@
 
  
   
-<script src="scripts/about.js"></script>  
+<script type="module" src="admin/firebase.js"></script>
+<script type="module" src="scripts/form.js"></script>
+ 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
