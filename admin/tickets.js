@@ -11,20 +11,34 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 /* -----------------------------
-   DOM ELEMENTS
+   DOM
 ----------------------------- */
 const ticketList = document.getElementById("ticketList");
 const detail = document.getElementById("ticketDetail");
 
+const statusFilter = document.getElementById("statusFilter");
+const dateFilter = document.getElementById("dateFilter");
+
 let currentTicketId = null;
 
 /* -----------------------------
-   LOAD ALL TICKETS
+   LOAD TICKETS
 ----------------------------- */
 async function loadTickets() {
-  const snap = await getDocs(
-    query(collection(db, "tickets"), orderBy("createdAt", "desc"))
+  let q = query(
+    collection(db, "tickets"),
+    orderBy("createdAt", "desc")
   );
+
+  if (statusFilter?.value) {
+    q = query(
+      collection(db, "tickets"),
+      where("status", "==", statusFilter.value),
+      orderBy("createdAt", "desc")
+    );
+  }
+
+  const snap = await getDocs(q);
 
   let stats = { total: 0, open: 0, pending: 0, closed: 0 };
   ticketList.innerHTML = "";
@@ -32,33 +46,31 @@ async function loadTickets() {
   snap.forEach(docu => {
     const t = docu.data();
 
-    // ✅ DEFENSIVE DEFAULTS (CRITICAL)
     const status = t.status || "open";
     const subject = t.subject || "Website Contact";
-    const email = t.email || "No email provided";
+    const email = t.email || "No email";
+
+    // DATE FILTER (CLIENT SIDE)
+    if (dateFilter?.value) {
+      const selected = new Date(dateFilter.value).setHours(0, 0, 0, 0);
+      const created = new Date(t.createdAt).setHours(0, 0, 0, 0);
+      if (created !== selected) return;
+    }
 
     stats.total++;
-    stats[status] = (stats[status] || 0) + 1;
+    stats[status]++;
 
-    const div = document.createElement("div");
-    div.className = "ticket-item";
-    div.innerHTML = `
+    const item = document.createElement("div");
+    item.className = "ticket-item";
+    item.innerHTML = `
       <div class="subject">${subject}</div>
       <div class="small">${email}</div>
     `;
 
-    div.onclick = () =>
-      openTicket(docu.id, {
-        ...t,
-        status,
-        subject,
-        email
-      });
-
-    ticketList.appendChild(div);
+    item.onclick = () => openTicket(docu.id, t);
+    ticketList.appendChild(item);
   });
 
-  // UPDATE ANALYTICS
   document.getElementById("statTotal").textContent = stats.total;
   document.getElementById("statOpen").textContent = stats.open;
   document.getElementById("statPending").textContent = stats.pending;
@@ -66,25 +78,19 @@ async function loadTickets() {
 }
 
 /* -----------------------------
-   OPEN SINGLE TICKET
+   OPEN TICKET
 ----------------------------- */
-async function openTicket(id, data) {
+async function openTicket(id, t) {
   currentTicketId = id;
-
-  const name = data.name || "Anonymous";
-  const email = data.email || "No email";
-  const message = data.message || "";
-  const subject = data.subject || "Website Contact";
-  const status = data.status || "open";
 
   const repliesSnap = await getDocs(
     query(collection(db, "ticket_replies"), where("ticketId", "==", id))
   );
 
   detail.innerHTML = `
-    <h3>${subject}</h3>
-    <p><b>${name}</b> (${email})</p>
-    <p>${message}</p>
+    <h3>Website Contact</h3>
+    <p><b>${t.name || "Anonymous"}</b> (${t.email || "No email"})</p>
+    <p>${t.message || ""}</p>
 
     <label>Status</label>
     <select id="statusUpdate">
@@ -102,9 +108,8 @@ async function openTicket(id, data) {
     <div id="replies"></div>
   `;
 
-  // SET STATUS
   const statusSelect = document.getElementById("statusUpdate");
-  statusSelect.value = status;
+  statusSelect.value = t.status || "open";
 
   statusSelect.onchange = async e => {
     await updateDoc(doc(db, "tickets", id), {
@@ -114,14 +119,11 @@ async function openTicket(id, data) {
     loadTickets();
   };
 
-  // RENDER REPLIES
   const repliesDiv = document.getElementById("replies");
   repliesDiv.innerHTML = "";
 
   repliesSnap.forEach(r => {
-    repliesDiv.innerHTML += `
-      <p><b>Admin:</b> ${r.data().message}</p>
-    `;
+    repliesDiv.innerHTML += `<p><b>Admin:</b> ${r.data().message}</p>`;
   });
 
   document.getElementById("replyBtn").onclick = sendReply;
@@ -143,15 +145,14 @@ async function sendReply() {
   });
 
   textarea.value = "";
-
-  // RELOAD CURRENT TICKET
-  const ticketSnap = await getDocs(
-    query(collection(db, "tickets"))
-  );
-
-  const docu = ticketSnap.docs.find(d => d.id === currentTicketId);
-  if (docu) openTicket(currentTicketId, docu.data());
+  loadTickets();
 }
+
+/* -----------------------------
+   FILTER EVENTS
+----------------------------- */
+statusFilter?.addEventListener("change", loadTickets);
+dateFilter?.addEventListener("change", loadTickets);
 
 /* -----------------------------
    INIT
