@@ -1,3 +1,4 @@
+// scripts/contact.js
 import { db } from "../admin/firebase.js";
 import {
   collection,
@@ -7,10 +8,15 @@ import {
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("contactForm");
-  if (!form) return;
+
+  if (!form) {
+    console.error("❌ contactForm not found in DOM");
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("✅ Contact form submit triggered");
 
     const btn = form.querySelector("button[type=submit]");
     const originalText = btn.textContent;
@@ -19,28 +25,29 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = "Submitting…";
 
     try {
-      const data = {
+      const ticket = {
         name: form.name.value.trim(),
         email: form.email.value.trim(),
         subject: form.subject.value.trim(),
         category: form.category?.value || "General",
         message: form.message.value.trim(),
 
-        status: "new",              // new | open | resolved
+        status: "new",
         source: "contact-form",
 
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       };
 
-      await addDoc(collection(db, "tickets"), data);
+      console.log("📨 Saving ticket:", ticket);
 
-      form.reset();
+      await addDoc(collection(db, "tickets"), ticket);
 
       alert("Your message has been sent. Our team will get back to you shortly.");
+      form.reset();
 
     } catch (err) {
-      console.error(err);
+      console.error("❌ Ticket submission failed:", err);
       alert("Something went wrong. Please try again.");
     } finally {
       btn.disabled = false;
