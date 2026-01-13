@@ -378,3 +378,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 export { AdminStore, UI };
+
+export { AdminStore, UI };
+
+
+/* ----------------------------------------------------
+   QUILL BLOG EDITOR SUPPORT (APPEND ONLY)
+---------------------------------------------------- */
+function initQuillEditor() {
+  const editorEl = document.querySelector("#editor");
+  if (!editorEl || typeof Quill === "undefined") return;
+
+  window.__quillInstance = new Quill(editorEl, {
+    theme: "snow",
+    placeholder: "Write blog content here..."
+  });
+}
