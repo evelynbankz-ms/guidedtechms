@@ -7,6 +7,9 @@
 
 <link rel="shortcut icon" href="../asset/logo-icon.png" />
 <link rel="stylesheet" href="admin.css">
+
+<!-- Quill editor CSS (GLOBAL) -->
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 </head>
 
 <body>
@@ -14,9 +17,14 @@
 
   <!-- TOP BAR -->
   <header class="admin-topbar">
-    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+    <div class="brand">
+      <div class="logo">G</div>
+      Guided Tech Admin
+    </div>
     <div class="row">
-      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">
+        Back
+      </button>
       <button class="btn btn-primary"
         onclick="document.querySelector('form[data-collection=careers]').scrollIntoView({behavior:'smooth'})">
         New Opening
@@ -35,7 +43,7 @@
         <a href="faq.html">FAQs</a>
         <a href="testimonials.html">Testimonials</a>
         <a href="careers.html" class="active">Careers</a>
-        <a href="tickets.html" class="active">Tickets</a>
+        <a href="tickets.html">Tickets</a>
       </nav>
     </aside>
 
@@ -45,12 +53,14 @@
       <div class="page-head">
         <div>
           <div class="page-title">Career Openings</div>
-          <div class="page-sub">Manage job openings displayed on the public careers page.</div>
+          <div class="page-sub">
+            Manage job openings displayed on the public careers page.
+          </div>
         </div>
       </div>
 
-      <!-- FORM -->
-      <form data-collection="careers" class="form-row full">
+      <!-- CREATE / EDIT FORM -->
+      <form data-collection="careers" class="form-row full" style="gap:14px 0">
 
         <div>
           <label>Job Title</label>
@@ -60,23 +70,34 @@
         <div class="form-row full">
           <div>
             <label>Location</label>
-            <input name="location" class="input" placeholder="Remote / Clinton, MS">
+            <input name="location" class="input" placeholder="Remote / Lagos">
           </div>
 
           <div>
             <label>Employment Type</label>
-            <input name="type" class="input" placeholder="Full-time, Contract, Hybrid">
+            <input name="type" class="input" placeholder="Full-time, Contract">
           </div>
         </div>
 
+        <!-- RICH TEXT DESCRIPTION -->
         <div>
-          <label>Job Description (HTML allowed)</label>
-          <textarea name="description" placeholder="<p>Role overview...</p>"></textarea>
+          <label>Job Description</label>
+          <textarea
+            name="description"
+            class="rich-text"
+            placeholder="Describe responsibilities, requirements, benefits…"
+            style="min-height:220px"
+          ></textarea>
         </div>
 
         <div class="row">
-          <button class="btn btn-primary" type="submit">Save Job</button>
-          <button type="button" class="btn btn-ghost"
+          <button class="btn btn-primary" type="submit">
+            Save Job
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-ghost"
             onclick="document.querySelector('form[data-collection=careers]').reset()">
             Reset
           </button>
@@ -84,7 +105,7 @@
 
       </form>
 
-      <hr>
+      <hr style="margin:18px 0">
 
       <h3>All Openings</h3>
       <div id="careerList" class="list"></div>
@@ -93,26 +114,35 @@
   </div>
 </div>
 
+<!-- CORE -->
 <script type="module" src="firebase.js"></script>
 <script type="module" src="admin.js"></script>
+
+<!-- Quill editor JS (GLOBAL) -->
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 
 <script type="module">
 import { AdminStore, UI } from "./admin.js";
 
+/* Escape helper */
 function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
   );
 }
 
+/* RENDER CAREERS */
 async function renderCareers(){
   const jobs = await AdminStore.all("careers");
 
   UI.renderList("#careerList", jobs, job => `
     <div class="meta">
       <div>
-        <div class="title">${escapeHtml(job.title)}</div>
-        <div class="small">${escapeHtml(job.location)} • ${escapeHtml(job.type)}</div>
+        <div class="title">${escapeHtml(job.title || "(no title)")}</div>
+        <div class="small">
+          ${escapeHtml(job.location || "")}
+          ${job.type ? " • " + escapeHtml(job.type) : ""}
+        </div>
       </div>
     </div>
 
@@ -133,8 +163,9 @@ async function renderCareers(){
   `);
 }
 
+/* LIVE UPDATE */
 window.onAdminDataChanged = col => {
-  if(col === "careers") renderCareers();
+  if (col === "careers") renderCareers();
 };
 
 document.addEventListener("DOMContentLoaded", renderCareers);
