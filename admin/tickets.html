@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Admin — Support Tickets</title>
 
-<link rel="stylesheet" href="admin.css">
 <link rel="shortcut icon" href="../asset/logo-icon.png">
+<link rel="stylesheet" href="admin.css">
 
 <!-- Quill editor CSS (GLOBAL) -->
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
@@ -15,97 +15,106 @@
 <body>
 <div class="admin-wrap">
 
-<header class="admin-topbar">
-  <div class="brand">
-    <div class="logo">G</div>
-    Guided Tech Admin
-  </div>
-</header>
-
-<div class="admin-grid">
-
-  <!-- SIDEBAR -->
-  <aside class="admin-side">
-    <nav class="side-nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="blog.html">Blog Posts</a>
-      <a href="team.html">Team Members</a>
-      <a href="faq.html">FAQs</a>
-      <a href="testimonials.html">Testimonials</a>
-      <a href="careers.html">Careers</a>
-      <a href="tickets.html" class="active">Tickets</a>
-    </nav>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="admin-main">
-
-    <!-- ANALYTICS -->
-    <div class="stats-grid">
-      <div class="stat-card"><h4>Total</h4><span id="statTotal">0</span></div>
-      <div class="stat-card"><h4>Open</h4><span id="statOpen">0</span></div>
-      <div class="stat-card"><h4>Pending</h4><span id="statPending">0</span></div>
-      <div class="stat-card"><h4>Closed</h4><span id="statClosed">0</span></div>
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand">
+      <div class="logo">G</div>
+      Guided Tech Admin
     </div>
+  </header>
 
-    <!-- FILTERS -->
-    <div class="filters">
-      <select id="statusFilter">
-        <option value="">All Status</option>
-        <option value="open">Open</option>
-        <option value="pending">Pending</option>
-        <option value="closed">Closed</option>
-      </select>
+  <div class="admin-grid">
 
-      <input type="date" id="dateFilter">
-    </div>
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="team.html">Team Members</a>
+        <a href="faq.html">FAQs</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="careers.html">Careers</a>
+        <a href="tickets.html" class="active">Tickets</a>
+      </nav>
+    </aside>
 
-    <div class="tickets-layout">
+    <!-- MAIN -->
+    <main class="admin-main">
 
-      <!-- TICKET LIST -->
-      <div class="ticket-list" id="ticketList"></div>
+      <!-- ANALYTICS -->
+      <div class="stats-grid">
+        <div class="stat-card"><h4>Total</h4><span id="statTotal">0</span></div>
+        <div class="stat-card"><h4>Open</h4><span id="statOpen">0</span></div>
+        <div class="stat-card"><h4>Pending</h4><span id="statPending">0</span></div>
+        <div class="stat-card"><h4>Closed</h4><span id="statClosed">0</span></div>
+      </div>
 
-      <!-- TICKET DETAIL -->
-      <div class="ticket-detail" id="ticketDetail">
+      <!-- FILTERS -->
+      <div class="filters">
+        <select id="statusFilter">
+          <option value="">All Status</option>
+          <option value="open">Open</option>
+          <option value="pending">Pending</option>
+          <option value="closed">Closed</option>
+        </select>
 
-        <div class="empty">Select a ticket to view</div>
+        <input type="date" id="dateFilter">
+      </div>
 
-        <!-- ADMIN RESPONSE (RICH TEXT) -->
-        <form
-          id="ticketReplyForm"
-          data-collection="tickets"
-          style="display:none; margin-top:16px"
-        >
+      <div class="tickets-layout">
 
-          <label style="margin-bottom:6px;display:block">
-            Admin response
-          </label>
+        <!-- TICKET LIST -->
+        <div class="ticket-list" id="ticketList"></div>
 
-          <textarea
-            name="adminReply"
-            class="rich-text"
-            placeholder="Write your response to the customer..."
-            style="min-height:180px"
-          ></textarea>
+        <!-- TICKET DETAIL -->
+        <div class="ticket-detail" id="ticketDetail">
 
-          <div class="row" style="margin-top:12px">
-            <button type="submit" class="btn btn-primary">
-              Send reply
-            </button>
-
-            <button type="button" class="btn btn-ghost" id="closeTicketBtn">
-              Close ticket
-            </button>
+          <div class="empty">
+            Select a ticket to view
           </div>
 
-        </form>
+          <!-- THREAD -->
+          <div id="ticketThread" class="ticket-thread" style="display:none"></div>
+
+          <!-- ADMIN REPLY -->
+          <form
+            id="ticketReplyForm"
+            data-collection="tickets"
+            style="display:none; margin-top:16px"
+          >
+
+            <label style="margin-bottom:6px;display:block">
+              Admin response
+            </label>
+
+            <!-- Hidden input saved to Firestore -->
+            <input type="hidden" name="adminReply" id="adminReplyInput">
+
+            <!-- Quill editor -->
+            <div
+              id="ticketReplyEditor"
+              class="rich-editor"
+              style="height:180px;background:#fff;border-radius:8px"
+            ></div>
+
+            <div class="row" style="margin-top:12px">
+              <button type="submit" class="btn btn-primary">
+                Send reply
+              </button>
+
+              <button type="button" class="btn btn-ghost" id="closeTicketBtn">
+                Close ticket
+              </button>
+            </div>
+
+          </form>
+
+        </div>
 
       </div>
 
-    </div>
-
-  </main>
-</div>
+    </main>
+  </div>
 </div>
 
 <!-- CORE -->
@@ -113,8 +122,46 @@
 <script type="module" src="admin.js"></script>
 <script type="module" src="tickets.js"></script>
 
-<!-- Quill JS (GLOBAL) -->
+<!-- Quill JS -->
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+
+<script>
+/* ----------------------------------------------------
+   GLOBAL QUILL FOR TICKETS
+---------------------------------------------------- */
+
+let ticketReplyQuill = null;
+
+function initTicketReplyEditor() {
+  const el = document.getElementById("ticketReplyEditor");
+  if (!el || typeof Quill === "undefined") return;
+  if (ticketReplyQuill) return;
+
+  ticketReplyQuill = new Quill(el, {
+    theme: "snow",
+    placeholder: "Write your response to the customer...",
+    modules: {
+      toolbar: [
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link"],
+        ["clean"]
+      ]
+    }
+  });
+}
+
+/* Copy editor HTML into hidden input before submit */
+document.addEventListener("submit", e => {
+  if (e.target.id === "ticketReplyForm" && ticketReplyQuill) {
+    document.getElementById("adminReplyInput").value =
+      ticketReplyQuill.root.innerHTML;
+  }
+});
+
+/* Expose for tickets.js */
+window.initTicketReplyEditor = initTicketReplyEditor;
+</script>
 
 </body>
 </html>
