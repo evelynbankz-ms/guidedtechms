@@ -372,6 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wireFilePreviews();
   wireForms();
   wireActions();
+  initGlobalQuillEditors(); 
 
   if (window.onAdminReady) window.onAdminReady();
 });
@@ -379,18 +380,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export { AdminStore, UI };
 
-export { AdminStore, UI };
 
 
 /* ----------------------------------------------------
-   QUILL BLOG EDITOR SUPPORT (APPEND ONLY)
+   GLOBAL QUILL SUPPORT
+   - Automatically converts any textarea.rich-text
+   - Works across ALL admin pages
 ---------------------------------------------------- */
-function initQuillEditor() {
-  const editorEl = document.querySelector("#editor");
-  if (!editorEl || typeof Quill === "undefined") return;
+const __quillEditors = new Map();
 
-  window.__quillInstance = new Quill(editorEl, {
-    theme: "snow",
-    placeholder: "Write blog content here..."
+function initGlobalQuillEditors() {
+  if (typeof Quill === "undefined") return;
+
+  document.querySelectorAll("textarea.rich-text").forEach(textarea => {
+    if (__quillEditors.has(textarea)) return;
+
+    /* Hide textarea */
+    textarea.style.display = "none";
+
+    /* Create editor container */
+    const editor = document.createElement("div");
+    editor.className = "quill-editor";
+    editor.style.minHeight = "220px";
+    editor.style.background = "#fff";
+    editor.style.borderRadius = "10px";
+
+    textarea.after(editor);
+
+    const quill = new Quill(editor, {
+      theme: "snow",
+      placeholder: textarea.placeholder || "Write here...",
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+          ["clean"]
+        ]
+      }
+    });
+
+    /* Load existing value (edit mode) */
+    quill.root.innerHTML = textarea.value || "";
+
+    /* Sync back to textarea */
+    quill.on("text-change", () => {
+      textarea.value = quill.root.innerHTML;
+    });
+
+    __quillEditors.set(textarea, quill);
   });
 }
+
