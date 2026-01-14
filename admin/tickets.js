@@ -10,25 +10,49 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-/* -----------------------------
+/* ----------------------------------------------------
    DOM
------------------------------ */
+---------------------------------------------------- */
 const ticketList = document.getElementById("ticketList");
-const detail = document.getElementById("ticketDetail");
+const ticketThread = document.getElementById("ticketThread");
+const ticketDetail = document.getElementById("ticketDetail");
+const replyForm = document.getElementById("ticketReplyForm");
+const closeBtn = document.getElementById("closeTicketBtn");
 
 const statusFilter = document.getElementById("statusFilter");
 const dateFilter = document.getElementById("dateFilter");
 
-let currentTicketId = null;
+const statTotal = document.getElementById("statTotal");
+const statOpen = document.getElementById("statOpen");
+const statPending = document.getElementById("statPending");
+const statClosed = document.getElementById("statClosed");
 
-/* -----------------------------
+let currentTicketId = null;
+let currentTicketData = null;
+
+/* ----------------------------------------------------
+   HELPERS
+---------------------------------------------------- */
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  }[m]));
+}
+
+function formatDate(ts) {
+  if (!ts) return "";
+  return new Date(ts).toLocaleString();
+}
+
+/* ----------------------------------------------------
    LOAD TICKETS
------------------------------ */
+---------------------------------------------------- */
 async function loadTickets() {
-  let q = query(
-    collection(db, "tickets"),
-    orderBy("createdAt", "desc")
-  );
+  let q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
 
   if (statusFilter?.value) {
     q = query(
@@ -45,13 +69,10 @@ async function loadTickets() {
 
   snap.forEach(docu => {
     const t = docu.data();
-
     const status = t.status || "open";
-    const subject = t.subject || "Website Contact";
-    const email = t.email || "No email";
 
-    // DATE FILTER (CLIENT SIDE)
-    if (dateFilter?.value) {
+    // Date filter (client-side)
+    if (dateFilter?.value && t.createdAt) {
       const selected = new Date(dateFilter.value).setHours(0, 0, 0, 0);
       const created = new Date(t.createdAt).setHours(0, 0, 0, 0);
       if (created !== selected) return;
@@ -63,98 +84,126 @@ async function loadTickets() {
     const item = document.createElement("div");
     item.className = "ticket-item";
     item.innerHTML = `
-      <div class="subject">${subject}</div>
-      <div class="small">${email}</div>
+      <div class="subject">${escapeHtml(t.subject || "Website Contact")}</div>
+      <div class="small">${escapeHtml(t.email || "No email")}</div>
+      <span class="badge ${status}">${status}</span>
     `;
 
     item.onclick = () => openTicket(docu.id, t);
     ticketList.appendChild(item);
   });
 
-  document.getElementById("statTotal").textContent = stats.total;
-  document.getElementById("statOpen").textContent = stats.open;
-  document.getElementById("statPending").textContent = stats.pending;
-  document.getElementById("statClosed").textContent = stats.closed;
+  statTotal.textContent = stats.total;
+  statOpen.textContent = stats.open;
+  statPending.textContent = stats.pending;
+  statClosed.textContent = stats.closed;
 }
 
-/* -----------------------------
+/* ----------------------------------------------------
    OPEN TICKET
------------------------------ */
+---------------------------------------------------- */
 async function openTicket(id, t) {
   currentTicketId = id;
+  currentTicketData = t;
 
-  const repliesSnap = await getDocs(
-    query(collection(db, "ticket_replies"), where("ticketId", "==", id))
-  );
+  ticketThread.style.display = "block";
+  replyForm.style.display = "block";
+  ticketThread.innerHTML = "";
 
-  detail.innerHTML = `
-    <h3>Website Contact</h3>
-    <p><b>${t.name || "Anonymous"}</b> (${t.email || "No email"})</p>
-    <p>${t.message || ""}</p>
+  // Init Quill (from tickets.html)
+  if (window.initTicketReplyEditor) {
+    window.initTicketReplyEditor();
+  }
 
-    <label>Status</label>
-    <select id="statusUpdate">
-      <option value="open">Open</option>
-      <option value="pending">Pending</option>
-      <option value="closed">Closed</option>
-    </select>
-
-    <div class="reply-box">
-      <textarea id="replyText" placeholder="Reply to user..."></textarea>
-      <button class="btn btn-primary" id="replyBtn">Send Reply</button>
+  /* USER MESSAGE */
+  ticketThread.innerHTML += `
+    <div class="thread-message user">
+      <div class="meta">
+        <strong>${escapeHtml(t.name || "Anonymous")}</strong>
+        <span>${formatDate(t.createdAt)}</span>
+      </div>
+      <div class="bubble">
+        ${t.message || ""}
+      </div>
     </div>
-
-    <hr>
-    <div id="replies"></div>
   `;
 
-  const statusSelect = document.getElementById("statusUpdate");
-  statusSelect.value = t.status || "open";
-
-  statusSelect.onchange = async e => {
-    await updateDoc(doc(db, "tickets", id), {
-      status: e.target.value,
-      updatedAt: Date.now()
-    });
-    loadTickets();
-  };
-
-  const repliesDiv = document.getElementById("replies");
-  repliesDiv.innerHTML = "";
+  /* ADMIN REPLIES */
+  const repliesSnap = await getDocs(
+    query(
+      collection(db, "ticket_replies"),
+      where("ticketId", "==", id),
+      orderBy("createdAt", "asc")
+    )
+  );
 
   repliesSnap.forEach(r => {
-    repliesDiv.innerHTML += `<p><b>Admin:</b> ${r.data().message}</p>`;
+    const reply = r.data();
+    ticketThread.innerHTML += `
+      <div class="thread-message admin">
+        <div class="meta">
+          <strong>Admin</strong>
+          <span>${formatDate(reply.createdAt)}</span>
+        </div>
+        <div class="bubble">
+          ${reply.message}
+        </div>
+      </div>
+    `;
   });
 
-  document.getElementById("replyBtn").onclick = sendReply;
+  ticketThread.scrollTop = ticketThread.scrollHeight;
 }
 
-/* -----------------------------
-   SEND REPLY
------------------------------ */
-async function sendReply() {
-  const textarea = document.getElementById("replyText");
-  const msg = textarea.value.trim();
-  if (!msg || !currentTicketId) return;
+/* ----------------------------------------------------
+   SEND ADMIN REPLY
+---------------------------------------------------- */
+replyForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!currentTicketId) return;
+
+  const html = document.getElementById("adminReplyInput").value;
+  if (!html || html === "<p><br></p>") return;
 
   await addDoc(collection(db, "ticket_replies"), {
     ticketId: currentTicketId,
-    message: msg,
+    message: html,
     sentBy: "admin",
     createdAt: Date.now()
   });
 
-  textarea.value = "";
-  loadTickets();
-}
+  await updateDoc(doc(db, "tickets", currentTicketId), {
+    status: "pending",
+    updatedAt: Date.now()
+  });
 
-/* -----------------------------
+  replyForm.reset();
+  loadTickets();
+  openTicket(currentTicketId, currentTicketData);
+});
+
+/* ----------------------------------------------------
+   CLOSE TICKET
+---------------------------------------------------- */
+closeBtn.addEventListener("click", async () => {
+  if (!currentTicketId) return;
+
+  await updateDoc(doc(db, "tickets", currentTicketId), {
+    status: "closed",
+    updatedAt: Date.now()
+  });
+
+  replyForm.style.display = "none";
+  loadTickets();
+});
+
+/* ----------------------------------------------------
    FILTER EVENTS
------------------------------ */
+---------------------------------------------------- */
 statusFilter?.addEventListener("change", loadTickets);
 dateFilter?.addEventListener("change", loadTickets);
 
-/* -----------------------------
+/* ----------------------------------------------------
    INIT
------------------------------ */
+---------------------------------------------------- */
 loadTickets();
