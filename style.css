@@ -781,12 +781,12 @@ body {
 
 /* --- Variants --- */
 .stat-card {
-  background: #000;
+  background: #eaeff3;
   color: #fff;
 }
 
 .highlight-card {
-  background: var(--bright-cyan, #17A2B8);
+  background: #eaeff3;
   color: #fff;
 }
 
@@ -1103,7 +1103,7 @@ body {
 
 /* ---------- Testimonials ---------- */
 .section-testimonials {
-  background: #eaeff3;
+  background: #ffff;
   text-align: center;
   padding: 100px 0 80px;
   position: relative;
