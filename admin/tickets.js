@@ -7,7 +7,8 @@ import {
   getDocs,
   addDoc,
   updateDoc,
-  doc
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 /* ----------------------------------------------------
@@ -15,7 +16,6 @@ import {
 ---------------------------------------------------- */
 const ticketList = document.getElementById("ticketList");
 const ticketThread = document.getElementById("ticketThread");
-const ticketDetail = document.getElementById("ticketDetail");
 const replyForm = document.getElementById("ticketReplyForm");
 const closeBtn = document.getElementById("closeTicketBtn");
 
@@ -33,8 +33,8 @@ let currentTicketData = null;
 /* ----------------------------------------------------
    HELPERS
 ---------------------------------------------------- */
-function escapeHtml(s) {
-  return String(s || "").replace(/[&<>"']/g, m => ({
+function escapeHtml(str) {
+  return String(str || "").replace(/[&<>"']/g, m => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -49,7 +49,7 @@ function formatDate(ts) {
 }
 
 /* ----------------------------------------------------
-   LOAD TICKETS
+   LOAD TICKETS LIST
 ---------------------------------------------------- */
 async function loadTickets() {
   let q = query(collection(db, "tickets"), orderBy("createdAt", "desc"));
@@ -71,7 +71,6 @@ async function loadTickets() {
     const t = d.data();
     const status = t.status || "open";
 
-    // Date filter (client-side)
     if (dateFilter?.value && t.createdAt) {
       const selected = new Date(dateFilter.value).setHours(0, 0, 0, 0);
       const created = new Date(t.createdAt).setHours(0, 0, 0, 0);
@@ -100,18 +99,17 @@ async function loadTickets() {
 }
 
 /* ----------------------------------------------------
-   OPEN TICKET
+   OPEN TICKET (THREAD VIEW)
 ---------------------------------------------------- */
-async function openTicket(id) {
-  currentTicketId = id;
+async function openTicket(ticketId) {
+  currentTicketId = ticketId;
 
-  const ticketSnap = await getDocs(
-    query(collection(db, "tickets"), where("__name__", "==", id))
-  );
+  const ticketRef = doc(db, "tickets", ticketId);
+  const ticketSnap = await getDoc(ticketRef);
 
-  if (ticketSnap.empty) return;
+  if (!ticketSnap.exists()) return;
 
-  ticketSnap.forEach(d => (currentTicketData = d.data()));
+  currentTicketData = ticketSnap.data();
 
   ticketThread.innerHTML = "";
   ticketThread.style.display = "block";
@@ -121,7 +119,7 @@ async function openTicket(id) {
     window.initTicketReplyEditor();
   }
 
-  /* USER MESSAGE */
+  /* USER ORIGINAL MESSAGE */
   ticketThread.innerHTML += `
     <div class="thread-message user">
       <div class="meta">
@@ -134,25 +132,25 @@ async function openTicket(id) {
     </div>
   `;
 
-  /* ADMIN + USER THREAD */
-  const msgSnap = await getDocs(
+  /* ADMIN REPLIES */
+  const repliesSnap = await getDocs(
     query(
-      collection(db, "ticket_messages"),
-      where("ticketId", "==", id),
+      collection(db, "ticket_replies"),
+      where("ticketId", "==", ticketId),
       orderBy("createdAt", "asc")
     )
   );
 
-  msgSnap.forEach(d => {
-    const m = d.data();
+  repliesSnap.forEach(d => {
+    const r = d.data();
     ticketThread.innerHTML += `
-      <div class="thread-message ${m.sender}">
+      <div class="thread-message admin">
         <div class="meta">
-          <strong>${m.sender === "admin" ? "Admin" : escapeHtml(currentTicketData.name)}</strong>
-          <span>${formatDate(m.createdAt)}</span>
+          <strong>Admin</strong>
+          <span>${formatDate(r.createdAt)}</span>
         </div>
         <div class="bubble">
-          ${m.body}
+          ${r.message}
         </div>
       </div>
     `;
@@ -168,14 +166,13 @@ replyForm.addEventListener("submit", async e => {
   e.preventDefault();
   if (!currentTicketId) return;
 
-  const html = window.getTicketReplyHTML?.();
+  const html = document.getElementById("adminReplyInput").value;
   if (!html || html === "<p><br></p>") return;
 
-  await addDoc(collection(db, "ticket_messages"), {
+  await addDoc(collection(db, "ticket_replies"), {
     ticketId: currentTicketId,
-    body: html,
-    sender: "admin",
-    internal: false,
+    message: html,
+    sentBy: "admin",
     createdAt: Date.now()
   });
 
@@ -184,7 +181,7 @@ replyForm.addEventListener("submit", async e => {
     updatedAt: Date.now()
   });
 
-  window.clearTicketReply?.();
+  replyForm.reset();
   await loadTickets();
   await openTicket(currentTicketId);
 });
