@@ -64,11 +64,11 @@ async function loadTickets() {
 
   const snap = await getDocs(q);
 
-  let stats = { total: 0, open: 0, pending: 0, closed: 0 };
   ticketList.innerHTML = "";
+  let stats = { total: 0, open: 0, pending: 0, closed: 0 };
 
-  snap.forEach(docu => {
-    const t = docu.data();
+  snap.forEach(d => {
+    const t = d.data();
     const status = t.status || "open";
 
     // Date filter (client-side)
@@ -89,7 +89,7 @@ async function loadTickets() {
       <span class="badge ${status}">${status}</span>
     `;
 
-    item.onclick = () => openTicket(docu.id, t);
+    item.onclick = () => openTicket(d.id);
     ticketList.appendChild(item);
   });
 
@@ -102,15 +102,21 @@ async function loadTickets() {
 /* ----------------------------------------------------
    OPEN TICKET
 ---------------------------------------------------- */
-async function openTicket(id, t) {
+async function openTicket(id) {
   currentTicketId = id;
-  currentTicketData = t;
 
+  const ticketSnap = await getDocs(
+    query(collection(db, "tickets"), where("__name__", "==", id))
+  );
+
+  if (ticketSnap.empty) return;
+
+  ticketSnap.forEach(d => (currentTicketData = d.data()));
+
+  ticketThread.innerHTML = "";
   ticketThread.style.display = "block";
   replyForm.style.display = "block";
-  ticketThread.innerHTML = "";
 
-  // Init Quill (from tickets.html)
   if (window.initTicketReplyEditor) {
     window.initTicketReplyEditor();
   }
@@ -119,34 +125,34 @@ async function openTicket(id, t) {
   ticketThread.innerHTML += `
     <div class="thread-message user">
       <div class="meta">
-        <strong>${escapeHtml(t.name || "Anonymous")}</strong>
-        <span>${formatDate(t.createdAt)}</span>
+        <strong>${escapeHtml(currentTicketData.name || "Anonymous")}</strong>
+        <span>${formatDate(currentTicketData.createdAt)}</span>
       </div>
       <div class="bubble">
-        ${t.message || ""}
+        ${currentTicketData.message || ""}
       </div>
     </div>
   `;
 
-  /* ADMIN REPLIES */
-  const repliesSnap = await getDocs(
+  /* ADMIN + USER THREAD */
+  const msgSnap = await getDocs(
     query(
-      collection(db, "ticket_replies"),
+      collection(db, "ticket_messages"),
       where("ticketId", "==", id),
       orderBy("createdAt", "asc")
     )
   );
 
-  repliesSnap.forEach(r => {
-    const reply = r.data();
+  msgSnap.forEach(d => {
+    const m = d.data();
     ticketThread.innerHTML += `
-      <div class="thread-message admin">
+      <div class="thread-message ${m.sender}">
         <div class="meta">
-          <strong>Admin</strong>
-          <span>${formatDate(reply.createdAt)}</span>
+          <strong>${m.sender === "admin" ? "Admin" : escapeHtml(currentTicketData.name)}</strong>
+          <span>${formatDate(m.createdAt)}</span>
         </div>
         <div class="bubble">
-          ${reply.message}
+          ${m.body}
         </div>
       </div>
     `;
@@ -162,13 +168,14 @@ replyForm.addEventListener("submit", async e => {
   e.preventDefault();
   if (!currentTicketId) return;
 
-  const html = document.getElementById("adminReplyInput").value;
+  const html = window.getTicketReplyHTML?.();
   if (!html || html === "<p><br></p>") return;
 
-  await addDoc(collection(db, "ticket_replies"), {
+  await addDoc(collection(db, "ticket_messages"), {
     ticketId: currentTicketId,
-    message: html,
-    sentBy: "admin",
+    body: html,
+    sender: "admin",
+    internal: false,
     createdAt: Date.now()
   });
 
@@ -177,9 +184,9 @@ replyForm.addEventListener("submit", async e => {
     updatedAt: Date.now()
   });
 
-  replyForm.reset();
-  loadTickets();
-  openTicket(currentTicketId, currentTicketData);
+  window.clearTicketReply?.();
+  await loadTickets();
+  await openTicket(currentTicketId);
 });
 
 /* ----------------------------------------------------
@@ -194,7 +201,7 @@ closeBtn.addEventListener("click", async () => {
   });
 
   replyForm.style.display = "none";
-  loadTickets();
+  await loadTickets();
 });
 
 /* ----------------------------------------------------
