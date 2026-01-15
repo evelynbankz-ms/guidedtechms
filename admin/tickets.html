@@ -8,8 +8,11 @@
 <link rel="shortcut icon" href="../asset/logo-icon.png">
 <link rel="stylesheet" href="admin.css">
 
-<!-- Quill editor CSS (GLOBAL) -->
-<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+<!-- Quill CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css"
+  rel="stylesheet"
+/>
 </head>
 
 <body>
@@ -57,8 +60,6 @@
           <option value="pending">Pending</option>
           <option value="closed">Closed</option>
         </select>
-
-        <input type="date" id="dateFilter">
       </div>
 
       <div class="tickets-layout">
@@ -69,45 +70,51 @@
         <!-- TICKET DETAIL -->
         <div class="ticket-detail" id="ticketDetail">
 
-          <div class="empty">
+          <!-- EMPTY STATE -->
+          <div class="empty" id="ticketEmpty">
             Select a ticket to view
+          </div>
+
+          <!-- HEADER -->
+          <div id="ticketHeader" style="display:none">
+            <h3 id="ticketSubject"></h3>
+            <p id="ticketMeta"></p>
+
+            <label>Status</label>
+            <select id="ticketStatus">
+              <option value="open">Open</option>
+              <option value="pending">Pending</option>
+              <option value="closed">Closed</option>
+            </select>
           </div>
 
           <!-- THREAD -->
           <div id="ticketThread" class="ticket-thread" style="display:none"></div>
 
           <!-- ADMIN REPLY -->
-          <form
-            id="ticketReplyForm"
-            data-collection="tickets"
-            style="display:none; margin-top:16px"
-          >
+          <div id="ticketReplyBox" style="display:none; margin-top:16px">
 
             <label style="margin-bottom:6px;display:block">
-              Admin response
+              Reply to customer
             </label>
-
-            <!-- Hidden input saved to Firestore -->
-            <input type="hidden" name="adminReply" id="adminReplyInput">
 
             <!-- Quill editor -->
             <div
               id="ticketReplyEditor"
-              class="rich-editor"
-              style="height:180px;background:#fff;border-radius:8px"
+              style="height:160px;background:#fff;border-radius:8px"
             ></div>
 
             <div class="row" style="margin-top:12px">
-              <button type="submit" class="btn btn-primary">
-                Send reply
+              <button class="btn btn-primary" id="sendReplyBtn">
+                Send Reply
               </button>
 
-              <button type="button" class="btn btn-ghost" id="closeTicketBtn">
-                Close ticket
+              <button class="btn btn-ghost" id="closeTicketBtn">
+                Close Ticket
               </button>
             </div>
 
-          </form>
+          </div>
 
         </div>
 
@@ -119,7 +126,6 @@
 
 <!-- CORE -->
 <script type="module" src="firebase.js"></script>
-<script type="module" src="admin.js"></script>
 <script type="module" src="tickets.js"></script>
 
 <!-- Quill JS -->
@@ -127,19 +133,23 @@
 
 <script>
 /* ----------------------------------------------------
-   GLOBAL QUILL FOR TICKETS
+   QUILL (TICKETS ONLY)
 ---------------------------------------------------- */
 
-let ticketReplyQuill = null;
+let ticketQuill = null;
 
-function initTicketReplyEditor() {
+window.initTicketQuill = function () {
   const el = document.getElementById("ticketReplyEditor");
   if (!el || typeof Quill === "undefined") return;
-  if (ticketReplyQuill) return;
 
-  ticketReplyQuill = new Quill(el, {
+  if (ticketQuill) {
+    ticketQuill.setContents([]);
+    return;
+  }
+
+  ticketQuill = new Quill(el, {
     theme: "snow",
-    placeholder: "Write your response to the customer...",
+    placeholder: "Write your response…",
     modules: {
       toolbar: [
         ["bold", "italic", "underline"],
@@ -149,18 +159,15 @@ function initTicketReplyEditor() {
       ]
     }
   });
-}
+};
 
-/* Copy editor HTML into hidden input before submit */
-document.addEventListener("submit", e => {
-  if (e.target.id === "ticketReplyForm" && ticketReplyQuill) {
-    document.getElementById("adminReplyInput").value =
-      ticketReplyQuill.root.innerHTML;
-  }
-});
+window.getTicketReplyHTML = function () {
+  return ticketQuill ? ticketQuill.root.innerHTML : "";
+};
 
-/* Expose for tickets.js */
-window.initTicketReplyEditor = initTicketReplyEditor;
+window.clearTicketReply = function () {
+  if (ticketQuill) ticketQuill.setContents([]);
+};
 </script>
 
 </body>
