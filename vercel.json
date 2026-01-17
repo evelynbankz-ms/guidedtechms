@@ -23,6 +23,7 @@
     { "source": "/admin/testimonials", "destination": "/admin/testimonial.html" },
     { "source": "/admin/tickets", "destination": "/admin/tickets.html" },
     { "source": "/admin/dashboard", "destination": "/admin/dashboard.html" }
+    { "source": "/admin/login", "destination": "/admin/login.html" }
   ],
   
   "redirects": [
@@ -49,5 +50,6 @@
     { "source": "/admin/testimonial.html", "destination": "/admin/testimonials", "permanent": true },
     { "source": "/admin/tickets.html", "destination": "/admin/tickets", "permanent": true },
     { "source": "/admin/dashboard.html", "destination": "/admin/dashboard", "permanent": true }
+    { "source": "/admin/login.html", "destination": "/admin/login", "permanent": true }
   ]
 }
