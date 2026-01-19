@@ -677,16 +677,20 @@
 
 <script type="module">
 import { db } from "./admin/firebase.js";
-import { collection, getDocs, orderBy, limit, query } 
-  from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  limit,
+  query
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 async function loadHomepageBlogs() {
   const container = document.querySelector(".blogs-slider");
   if (!container) return;
 
-  container.innerHTML = `<p>Loading...</p>`;
+  container.innerHTML = "<p>Loading...</p>";
 
-  // ORDER BY NEWEST
   const q = query(
     collection(db, "blogs"),
     orderBy("createdAt", "desc"),
@@ -694,18 +698,26 @@ async function loadHomepageBlogs() {
   );
 
   const snap = await getDocs(q);
-  const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const posts = snap.docs.map(d => ({
+    id: d.id,
+    ...d.data()
+  }));
 
-  if (posts.length === 0) {
-    container.innerHTML = `<p>No blog posts yet.</p>`;
+  if (!posts.length) {
+    container.innerHTML = "<p>No blog posts yet.</p>";
     return;
   }
 
   container.innerHTML = posts.map(post => `
-    <article class="blog-card">
-      <div class="blog-image"
-        style="background-image:url('${post.imageUrl || ""}')">
-      </div>
+    <article
+      class="blog-card"
+      style="cursor:pointer"
+      onclick="location.href='post.html?slug=${post.slug}'"
+    >
+      <div
+        class="blog-image"
+        style="background-image:url('${post.imageUrl || ""}')"
+      ></div>
 
       <div class="blog-content">
         <div class="blog-tags">
@@ -714,6 +726,8 @@ async function loadHomepageBlogs() {
 
         <h3>${post.title || "Untitled Post"}</h3>
         <p>${post.excerpt || ""}</p>
+
+        <span class="read-more">Read more →</span>
       </div>
     </article>
   `).join("");
