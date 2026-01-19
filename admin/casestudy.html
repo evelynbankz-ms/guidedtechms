@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — Case Studies</title>
+
+<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+<link rel="stylesheet" href="admin.css">
+
+<!-- Quill editor CSS -->
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="admin-wrap">
+
+  <!-- TOP BAR -->
+  <header class="admin-topbar">
+    <div class="brand">
+      <div class="logo">G</div>
+      Guided Tech Admin
+    </div>
+    <div class="row">
+      <button class="btn btn-ghost" onclick="location.href='dashboard.html'">Back</button>
+      <button class="btn btn-primary"
+        onclick="document.querySelector('form[data-collection=caseStudies]').scrollIntoView({behavior:'smooth'})">
+        New case study
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <div class="admin-grid">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-side">
+      <nav class="side-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="blog.html">Blog Posts</a>
+        <a href="casestudy.html" class="active">Case Studies</a>
+        <a href="team.html">Team Members</a>
+        <a href="faq.html">FAQs</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="careers.html">Careers</a>
+        <a href="tickets.html">Tickets</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <div class="page-head">
+        <div>
+          <div class="page-title">Case studies</div>
+          <div class="page-sub">
+            Create and edit case studies. Upload feature image here (preview shows immediately).
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <form data-collection="caseStudies" class="form-row full" style="gap:14px 0">
+
+        <div class="form-row full">
+          <div>
+            <label>Title</label>
+            <input name="title" class="input" placeholder="Case study title">
+          </div>
+          <div>
+            <label>Slug (auto generates, editable)</label>
+            <input name="slug" class="input" placeholder="example-case-study">
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div>
+            <label>Client</label>
+            <input name="client" class="input" placeholder="Client name">
+          </div>
+          <div>
+            <label>Industry / Services</label>
+            <input name="industry" class="input" placeholder="e.g., Government, Cloud, Security">
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div>
+            <label>Excerpt</label>
+            <input name="excerpt" class="input" placeholder="Short summary">
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div>
+            <label>Feature image</label>
+            <input type="file" name="feature" accept="image/*" class="input">
+          </div>
+          <div>
+            <label>Preview</label>
+            <div class="preview">
+              <img class="file-preview" alt="image preview">
+            </div>
+          </div>
+        </div>
+
+        <!-- RICH TEXT -->
+        <div class="form-row full">
+          <div>
+            <label>Content</label>
+            <textarea
+              name="content"
+              class="rich-text"
+              placeholder="Write your case study content here..."
+              style="min-height:320px"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-primary" type="submit">Save case study</button>
+          <button type="button" class="btn btn-ghost"
+            onclick="document.querySelector('form[data-collection=caseStudies]').reset()">
+            Reset
+          </button>
+        </div>
+
+      </form>
+
+      <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
+
+      <h3 style="margin-bottom:12px">All case studies</h3>
+      <div id="caseStudyList" class="list"></div>
+
+    </main>
+  </div>
+</div>
+
+<!-- CORE -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="admin.js"></script>
+
+<!-- Quill JS -->
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+
+<script type="module">
+import { AdminStore, UI } from "./admin.js";
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g,
+    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+  );
+}
+
+/* RENDER CASE STUDIES */
+async function renderCaseStudies(){
+  const items = await AdminStore.all("caseStudies");
+
+  UI.renderList("#caseStudyList", items, cs => {
+    const thumb = cs.imageUrl
+      ? `<img src="${cs.imageUrl}" style="width:120px;height:80px;border-radius:8px;object-fit:cover">`
+      : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
+
+    return `
+      <div class="meta">
+        <div style="display:flex;gap:12px;align-items:center">
+          ${thumb}
+          <div>
+            <div class="title">${escapeHtml(cs.title || "(no title)")}</div>
+            <div class="small">${escapeHtml(cs.excerpt || "")}</div>
+            <div class="small" style="opacity:0.6">/${escapeHtml(cs.slug || "")}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn btn-ghost"
+          data-edit="caseStudies"
+          data-id="${cs.id}"
+          data-target="form[data-collection='caseStudies']">
+          Edit
+        </button>
+
+        <button class="btn btn-ghost" onclick="previewCaseStudy('${cs.id}')">
+          Preview
+        </button>
+
+        <button class="btn btn-danger"
+          data-remove="caseStudies"
+          data-id="${cs.id}">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* PREVIEW */
+window.previewCaseStudy = async function(id){
+  const cs = await AdminStore.get("caseStudies", id);
+  const w = window.open("about:blank","_blank");
+
+  w.document.write(`
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>${escapeHtml(cs.title)}</title>
+    </head>
+    <body style="font-family:Inter,Arial;padding:24px">
+      <h1>${escapeHtml(cs.title)}</h1>
+      <p><em>${escapeHtml(cs.excerpt || "")}</em></p>
+      ${cs.content || ""}
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+};
+
+/* LIVE UPDATE */
+window.onAdminDataChanged = col => {
+  if(col === "caseStudies") renderCaseStudies();
+};
+
+document.addEventListener("DOMContentLoaded", renderCaseStudies);
+</script>
+
+</body>
+</html>
