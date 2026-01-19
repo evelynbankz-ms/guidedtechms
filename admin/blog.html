@@ -8,7 +8,7 @@
 <link rel="shortcut icon" href="../asset/logo-icon.png" /> 
 <link rel="stylesheet" href="admin.css">
 
-<!-- Quill editor CSS -->
+<!-- Quill editor CSS (GLOBAL, OK TO KEEP) -->
 <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 </head>
 
@@ -30,6 +30,7 @@
     </div>
   </header>
 
+  <!-- MAIN GRID -->
   <div class="admin-grid">
 
     <!-- SIDEBAR -->
@@ -64,28 +65,30 @@
         <div class="form-row full">
           <div>
             <label>Title</label>
-            <input name="title" class="input">
+            <input name="title" class="input" placeholder="Post title">
           </div>
           <div>
-            <label>Slug</label>
-            <input name="slug" class="input">
+            <label>Slug (auto generates, editable)</label>
+            <input name="slug" class="input" placeholder="example-post-title">
           </div>
         </div>
 
         <div class="form-row full">
           <div>
             <label>Author</label>
-            <input name="author" class="input">
+            <input name="author" class="input" placeholder="Author">
           </div>
           <div>
-            <label>Category</label>
-            <input name="category" class="input">
+            <label>Category / Tags</label>
+            <input name="category" class="input" placeholder="e.g., AI, Automation">
           </div>
         </div>
 
         <div class="form-row full">
-          <label>Excerpt</label>
-          <input name="excerpt" class="input">
+          <div>
+            <label>Excerpt</label>
+            <input name="excerpt" class="input" placeholder="Short description">
+          </div>
         </div>
 
         <div class="form-row full">
@@ -96,19 +99,22 @@
           <div>
             <label>Preview</label>
             <div class="preview">
-              <img class="file-preview">
+              <img class="file-preview" alt="image preview">
             </div>
           </div>
         </div>
 
         <!-- RICH TEXT -->
         <div class="form-row full">
-          <label>Content</label>
-          <textarea
-            name="content"
-            class="rich-text"
-            style="min-height:320px"
-          ></textarea>
+          <div>
+            <label>Content</label>
+            <textarea
+              name="content"
+              class="rich-text"
+              placeholder="Write your post content here..."
+              style="min-height:320px"
+            ></textarea>
+          </div>
         </div>
 
         <div class="row">
@@ -121,9 +127,9 @@
 
       </form>
 
-      <hr>
+      <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
 
-      <h3>All posts</h3>
+      <h3 style="margin-bottom:12px">All posts</h3>
       <div id="blogList" class="list"></div>
 
     </main>
@@ -134,71 +140,107 @@
 <script type="module" src="firebase.js"></script>
 <script type="module" src="admin.js"></script>
 
-<!-- Quill -->
+<!-- Quill JS -->
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 
 <script type="module">
 import { AdminStore, UI } from "./admin.js";
 
-/* -------------------------------
-   QUILL INIT + SYNC FIX
--------------------------------- */
-const textarea = document.querySelector("textarea.rich-text");
-
-const quill = new Quill(textarea, {
-  theme: "snow",
-  placeholder: "Write your post content here..."
-});
-
-/* Sync quill → textarea before save */
-document.querySelector("form[data-collection='blogs']")
-  .addEventListener("submit", () => {
-    textarea.value = quill.root.innerHTML;
-  });
-
-/* Sync textarea → quill when editing */
-window.onAdminFormFill = data => {
-  if (data.content) {
-    quill.root.innerHTML = data.content;
-  }
-};
-
-/* -------------------------------
-   LIST RENDER
--------------------------------- */
+/* Escape helper */
 function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g,
     m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
   );
 }
 
+/* RENDER BLOG LIST */
 async function renderBlogs(){
   const blogs = await AdminStore.all("blogs");
 
-  UI.renderList("#blogList", blogs, post => `
-    <div class="meta">
-      <div class="title">${escapeHtml(post.title)}</div>
-      <div class="small">${escapeHtml(post.excerpt || "")}</div>
-    </div>
+  UI.renderList("#blogList", blogs, post => {
+    const thumb = post.imageUrl
+      ? `<img src="${post.imageUrl}" style="width:120px;height:80px;border-radius:8px;object-fit:cover">`
+      : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
 
-    <div class="card-actions">
-      <button class="btn btn-ghost"
-        data-edit="blogs"
-        data-id="${post.id}"
-        data-target="form[data-collection='blogs']">Edit</button>
+    return `
+      <div class="meta">
+        <div style="display:flex;gap:12px;align-items:center">
+          ${thumb}
+          <div>
+            <div class="title">${escapeHtml(post.title || "(no title)")}</div>
+            <div class="small">${escapeHtml(post.excerpt || "")}</div>
+            <div class="small" style="opacity:0.6">/${escapeHtml(post.slug || "")}</div>
+          </div>
+        </div>
+      </div>
 
-      <button class="btn btn-danger"
-        data-remove="blogs"
-        data-id="${post.id}">Delete</button>
-    </div>
-  `);
+      <div class="card-actions">
+        <button class="btn btn-ghost"
+          data-edit="blogs"
+          data-id="${post.id}"
+          data-target="form[data-collection='blogs']">
+          Edit
+        </button>
+
+        <button class="btn btn-ghost" onclick="previewBlog('${post.id}')">
+          Preview
+        </button>
+
+        <button class="btn btn-danger"
+          data-remove="blogs"
+          data-id="${post.id}">
+          Delete
+        </button>
+      </div>
+    `;
+  });
 }
 
-window.onAdminDataChanged = col => {
-  if (col === "blogs") renderBlogs();
+/* PREVIEW */
+window.previewBlog = async function(id){
+  const post = await AdminStore.get("blogs", id);
+  const w = window.open("about:blank","_blank");
+
+  w.document.write(`
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>${escapeHtml(post.title)}</title>
+    </head>
+    <body style="font-family:Inter,Arial;padding:24px">
+      <h1>${escapeHtml(post.title)}</h1>
+      <p><em>${escapeHtml(post.excerpt || "")}</em></p>
+      ${post.content || ""}
+    </body>
+    </html>
+  `);
+
+  w.document.close();
 };
 
-document.addEventListener("DOMContentLoaded", renderBlogs);
+/* LIVE UPDATE */
+window.onAdminDataChanged = col => {
+  if(col === "blogs") renderBlogs();
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  renderBlogs();
+
+  /* ================================
+     ✅ ONLY ADDITION: QUILL SAVE FIX
+     ================================ */
+  const textarea = document.querySelector("textarea.rich-text");
+  if (textarea) {
+    const quill = new Quill(textarea, { theme: "snow" });
+    const form = textarea.closest("form");
+
+    form.addEventListener("submit", () => {
+      textarea.value = quill.root.innerHTML;
+    });
+  }
+
+});
 </script>
 
 </body>
