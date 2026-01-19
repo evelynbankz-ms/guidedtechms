@@ -143,12 +143,12 @@ import { AdminStore, UI } from "./admin.js";
 /* -------------------------------
    QUILL INIT + SYNC FIX
 -------------------------------- */
-const textarea = document.querySelector("textarea.rich-text");
+// const textarea = document.querySelector("textarea.rich-text");
 
-const quill = new Quill(textarea, {
-  theme: "snow",
-  placeholder: "Write your post content here..."
-});
+// const quill = new Quill(textarea, {
+//   theme: "snow",
+//   placeholder: "Write your post content here..."
+// });
 
 /* Sync quill → textarea before save */
 document.querySelector("form[data-collection='blogs']")
