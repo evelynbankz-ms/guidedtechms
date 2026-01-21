@@ -156,7 +156,7 @@ function escapeHtml(s){
 
   
 /* Sync quill → textarea before save */
-document.querySelector("form[data-collection='blogs']")
+document.querySelector("form[data-collection='caseStudies']")
   .addEventListener("submit", () => {
     textarea.value = quill.root.innerHTML;
   });
