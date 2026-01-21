@@ -155,18 +155,18 @@ function escapeHtml(s){
 }
 
   
-// /* Sync quill → textarea before save */
-// document.querySelector("form[data-collection='blogs']")
-//   .addEventListener("submit", () => {
-//     textarea.value = quill.root.innerHTML;
-//   });
+/* Sync quill → textarea before save */
+document.querySelector("form[data-collection='blogs']")
+  .addEventListener("submit", () => {
+    textarea.value = quill.root.innerHTML;
+  });
 
-// /* Sync textarea → quill when editing */
-// window.onAdminFormFill = data => {
-//   if (data.content) {
-//     quill.root.innerHTML = data.content;
-//   }
-// };
+/* Sync textarea → quill when editing */
+window.onAdminFormFill = data => {
+  if (data.content) {
+    quill.root.innerHTML = data.content;
+  }
+};
   
 
 /* RENDER CASE STUDIES */
