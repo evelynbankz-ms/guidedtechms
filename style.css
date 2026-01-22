@@ -252,8 +252,25 @@ body {
 }
 
 /* =================================================
-   MOBILE / TABLET NAVBAR (ONLY MOBILE CHANGES)
+   MOBILE / TABLET NAVBAR
 ================================================= */
+
+/* Overlay (works only when JS adds .show) */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 2500;
+}
+.nav-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Tablet & Mobile */
 @media (max-width: 1024px) {
 
   /* Show hamburger */
@@ -261,58 +278,41 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
   }
 
-  /* Smaller Get Started button */
-  .btn-primary{
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
-
-  .logo-text {
-    font-size: 14px;
-  }
-
-  /* Overlay behind the open menu */
-  .nav-overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-    z-index: 2500;
-  }
-
-  .nav-overlay.show{
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Mobile menu panel */
+  /* Make menu a real fixed panel (not affected by desktop centering) */
   .navbar-menu {
     position: fixed;
     top: 78px;
     left: 0;
+    right: 0;
+    bottom: 0;                 /* better than height: calc(...) */
     width: 100%;
-    height: calc(100vh - 78px);
+
     background: linear-gradient(180deg, #071a24, #0d2a3a);
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     padding: 24px;
     gap: 0;
-    transform: translateY(-110%);
+
+    transform: translateY(-120%);  /* fully hidden */
     transition: transform 0.35s ease;
+    will-change: transform;
+
     overflow-y: auto;
-    z-index: 3000;
+    z-index: 3000;                 /* above overlay */
   }
 
+  /* ✅ When JS adds .open */
   .navbar-menu.open {
-    transform: translateY(0);
+    transform: translateY(0) !important;
   }
 
-  /* Links become stacked */
   .nav-link {
     width: 100%;
     padding: 14px 0;
@@ -320,31 +320,23 @@ body {
     line-height: normal;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* gives space for arrow */
+    justify-content: space-between;
   }
 
-  /* Disable desktop hover dropdown on mobile */
+  /* Disable hover dropdown on mobile */
   .nav-item:hover .mega-dropdown {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    display: none;
   }
 
-  /* Mobile dropdown behavior: collapsed by default */
+  /* Mobile dropdown behavior */
   .mega-dropdown {
     position: static;
     width: 100%;
     background: transparent;
     padding: 12px 0 0;
-    display: none;         /* collapsed */
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: none;
-    border-radius: 0;
+    display: none;
   }
 
-  /* When opened from JS */
   .nav-item.open .mega-dropdown {
     display: flex;
     flex-direction: column;
@@ -360,31 +352,29 @@ body {
     font-size: 12px;
   }
 
-  /* Add arrow to ONLY items that have dropdown */
-  .nav-item > .nav-link::after{
-    content: "›";
-    transform: rotate(90deg);
-    transition: transform 0.25s ease;
-    opacity: 0.9;
+  /* Reduce Get Started on mobile */
+  .btn-primary {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 10px;
   }
 
-  .nav-item.open > .nav-link::after{
-    transform: rotate(-90deg);
+  .logo-text {
+    font-size: 14px;
   }
 }
 
-/* Extra small phones */
 @media (max-width: 420px) {
   .btn-primary {
     padding: 7px 10px;
     font-size: 13px;
   }
-
   .navbar-logo-img {
     width: 28px;
     height: 28px;
   }
 }
+
 
 
 
