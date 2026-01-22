@@ -263,73 +263,79 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================================================
      MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
   ========================================================= */
-  const menuToggleBtn = safeQuery(".menu-toggle");
+ document.addEventListener("DOMContentLoaded", () => {
+  const menuToggleBtn = document.getElementById("menuToggle");
+  const navbarMenuEl = document.getElementById("navbarMenu");
   const overlayEl = document.getElementById("navOverlay");
 
   const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
 
-  if (menuToggleBtn && navbarMenuEl) {
+  if (!menuToggleBtn || !navbarMenuEl || !overlayEl) return;
 
-    function openMenu() {
-      navbarMenuEl.classList.add("open");
-      overlayEl?.classList.add("show");
-      menuToggleBtn.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeMenu() {
-      navbarMenuEl.classList.remove("open");
-      overlayEl?.classList.remove("show");
-      menuToggleBtn.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      safeQueryAll(".navbar-menu .nav-item.open").forEach(item => item.classList.remove("open"));
-    }
-
-    menuToggleBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (!isMobile()) return;
-      navbarMenuEl.classList.contains("open") ? closeMenu() : openMenu();
-    });
-
-    overlayEl?.addEventListener("click", () => {
-      if (!isMobile()) return;
-      closeMenu();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (!isMobile()) return;
-      if (e.key === "Escape" && navbarMenuEl.classList.contains("open")) closeMenu();
-    });
-
-    // Accordion for dropdown parents (mobile only)
-    safeQueryAll(".navbar-menu .nav-item").forEach((item) => {
-      const topLink = item.querySelector(":scope > .nav-link");
-      const dropdown = item.querySelector(":scope > .mega-dropdown");
-      if (!topLink || !dropdown) return;
-
-      topLink.addEventListener("click", (e) => {
-        if (!isMobile()) return;
-        e.preventDefault();
-
-        // close others (accordion)
-        safeQueryAll(".navbar-menu .nav-item.open").forEach(openItem => {
-          if (openItem !== item) openItem.classList.remove("open");
-        });
-
-        item.classList.toggle("open");
-      });
-    });
-
-    // Close menu after clicking any real link
-    safeQueryAll(".navbar-menu a[href]").forEach((link) => {
-      link.addEventListener("click", () => {
-        if (isMobile() && navbarMenuEl.classList.contains("open")) closeMenu();
-      });
-    });
-
-    window.addEventListener("resize", () => {
-      if (!isMobile()) closeMenu();
-    });
+  function openMenu() {
+    navbarMenuEl.classList.add("open");
+    overlayEl.classList.add("show");
+    menuToggleBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
   }
 
+  function closeMenu() {
+    navbarMenuEl.classList.remove("open");
+    overlayEl.classList.remove("show");
+    menuToggleBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+
+    // close dropdowns
+    navbarMenuEl.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+  }
+
+  menuToggleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!isMobile()) return;
+
+    if (navbarMenuEl.classList.contains("open")) closeMenu();
+    else openMenu();
+  });
+
+  overlayEl.addEventListener("click", () => {
+    if (!isMobile()) return;
+    closeMenu();
+  });
+
+  // accordion dropdown parents
+  navbarMenuEl.querySelectorAll(".nav-item").forEach((item) => {
+    const parentLink = item.querySelector(".nav-parent");
+    const dropdown = item.querySelector(".mega-dropdown");
+    if (!parentLink || !dropdown) return;
+
+    parentLink.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+      e.preventDefault();
+
+      // close others
+      navbarMenuEl.querySelectorAll(".nav-item.open").forEach(openItem => {
+        if (openItem !== item) openItem.classList.remove("open");
+      });
+
+      item.classList.toggle("open");
+    });
+  });
+
+  // close menu when clicking a real link
+  navbarMenuEl.querySelectorAll("a[href]").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (!isMobile()) return;
+
+      // don't close when it's a parent (#)
+      if (link.classList.contains("nav-parent")) return;
+
+      closeMenu();
+    });
+  });
+
+  // reset on desktop resize
+  window.addEventListener("resize", () => {
+    if (!isMobile()) closeMenu();
+  });
 });
+
