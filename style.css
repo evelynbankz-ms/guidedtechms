@@ -251,29 +251,11 @@ body {
   margin: 3px 0;
 }
 
-/* ------------------------------------------------
-   OVERLAY (Mobile menu background dim)
-------------------------------------------------- */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 2500;
-}
-
-.nav-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* =================================================
-   MOBILE / TABLET NAVBAR
+   MOBILE / TABLET NAVBAR (ONLY MOBILE CHANGES)
 ================================================= */
 @media (max-width: 1024px) {
+
   /* Show hamburger */
   .menu-toggle {
     display: flex;
@@ -281,7 +263,34 @@ body {
     justify-content: center;
   }
 
-  /* Turn desktop menu into full screen overlay menu */
+  /* Smaller Get Started button */
+  .btn-primary{
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .logo-text {
+    font-size: 14px;
+  }
+
+  /* Overlay behind the open menu */
+  .nav-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 2500;
+  }
+
+  .nav-overlay.show{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Mobile menu panel */
   .navbar-menu {
     position: fixed;
     top: 78px;
@@ -309,40 +318,25 @@ body {
     padding: 14px 0;
     font-size: 18px;
     line-height: normal;
-  }
-
-  /* Style dropdown toggle button same as link */
-  .nav-toggle {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: #cfe4f4;
-    font-size: 18px;
-    font-weight: 500;
-    padding: 14px 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .nav-toggle:hover {
-    color: #ffffff;
+    justify-content: space-between; /* gives space for arrow */
   }
 
   /* Disable desktop hover dropdown on mobile */
   .nav-item:hover .mega-dropdown {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
-  /* Dropdown becomes collapsible */
+  /* Mobile dropdown behavior: collapsed by default */
   .mega-dropdown {
     position: static;
     width: 100%;
     background: transparent;
     padding: 12px 0 0;
-    display: none;
+    display: none;         /* collapsed */
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -366,28 +360,16 @@ body {
     font-size: 12px;
   }
 
-  /* Chevron indicator */
-  .chev {
-    display: inline-block;
+  /* Add arrow to ONLY items that have dropdown */
+  .nav-item > .nav-link::after{
+    content: "›";
     transform: rotate(90deg);
     transition: transform 0.25s ease;
     opacity: 0.9;
   }
 
-  .nav-item.open .chev {
+  .nav-item.open > .nav-link::after{
     transform: rotate(-90deg);
-  }
-
-  /* Reduce Get Started button */
-  .btn-primary {
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
-
-  /* Reduce logo text */
-  .logo-text {
-    font-size: 14px;
   }
 }
 
@@ -403,7 +385,6 @@ body {
     height: 28px;
   }
 }
-
 
 
 
