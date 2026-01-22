@@ -27,37 +27,6 @@ const safeQueryAll = (sel) => {
 
 
 /* =========================================================
-   MOBILE MENU TOGGLE
-========================================================= */
-const menuToggleBtn = safeQuery(".menu-toggle");
-const navbarMenuEl = safeQuery(".navbar-menu");
-const navbarEl = safeQuery(".navbar");
-
-if (menuToggleBtn && navbarMenuEl) {
-  menuToggleBtn.addEventListener("click", () => {
-    navbarMenuEl.classList.toggle("active");
-    menuToggleBtn.classList.toggle("open");
-
-    if (navbarMenuEl.classList.contains("active")) {
-      Object.assign(navbarMenuEl.style, {
-        display: "flex",
-        flexDirection: "column",
-        position: "absolute",
-        top: "78px",
-        left: "0",
-        right: "0",
-        background: "#fff",
-        padding: "18px 24px",
-        boxShadow: "var(--shadow-1)"
-      });
-    } else {
-      navbarMenuEl.removeAttribute("style");
-    }
-  });
-}
-
-
-/* =========================================================
    HERO FADE-IN
 ========================================================= */
 const fadeEls = safeQueryAll(".fade-in");
@@ -270,21 +239,94 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
 /* =========================================================
-   DROPDOWN NAV LOGIC (FINAL)
+   MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
+   - Keeps desktop hover dropdown intact
+   - Adds overlay on mobile
+   - Accordion expand/collapse on mobile
 ========================================================= */
-safeQueryAll(".dropdown-toggle").forEach(toggle => {
-  toggle.addEventListener("click", e => {
-    e.preventDefault();
-    e.stopPropagation();
 
-    const parent = toggle.closest(".nav-item");
-    safeQueryAll(".nav-item.open").forEach(i => i !== parent && i.classList.remove("open"));
-    parent.classList.toggle("open");
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggleBtn = safeQuery(".menu-toggle");
+  const navbarMenuEl = safeQuery(".navbar-menu");
+  const overlayEl = document.getElementById("navOverlay");
+
+  const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
+
+  if (!menuToggleBtn || !navbarMenuEl || !overlayEl) return;
+
+  function openMenu() {
+    navbarMenuEl.classList.add("open");
+    overlayEl.classList.add("show");
+    menuToggleBtn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    navbarMenuEl.classList.remove("open");
+    overlayEl.classList.remove("show");
+    menuToggleBtn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+
+    // Close any open dropdowns
+    safeQueryAll(".navbar-menu .nav-item.open").forEach(item => item.classList.remove("open"));
+  }
+
+  // Hamburger toggle
+  menuToggleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!isMobile()) return; // desktop untouched
+    navbarMenuEl.classList.contains("open") ? closeMenu() : openMenu();
+  });
+
+  // Clicking overlay closes menu
+  overlayEl.addEventListener("click", () => {
+    if (!isMobile()) return;
+    closeMenu();
+  });
+
+  // ESC closes menu
+  document.addEventListener("keydown", (e) => {
+    if (!isMobile()) return;
+    if (e.key === "Escape" && navbarMenuEl.classList.contains("open")) closeMenu();
+  });
+
+  // Accordion behavior for items that have mega dropdown (mobile only)
+  safeQueryAll(".navbar-menu .nav-item").forEach((item) => {
+    const topLink = item.querySelector(":scope > .nav-link");
+    const dropdown = item.querySelector(":scope > .mega-dropdown");
+
+    // Only attach accordion logic if it actually has a dropdown
+    if (!topLink || !dropdown) return;
+
+    topLink.addEventListener("click", (e) => {
+      if (!isMobile()) return; // desktop hover remains
+      e.preventDefault();
+
+      // Close other open dropdowns (accordion)
+      safeQueryAll(".navbar-menu .nav-item.open").forEach(openItem => {
+        if (openItem !== item) openItem.classList.remove("open");
+      });
+
+      // Toggle current
+      item.classList.toggle("open");
+    });
+  });
+
+  // Close mobile menu when clicking any real link inside dropdown
+  safeQueryAll(".navbar-menu a[href]").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (!isMobile()) return;
+      // Only close if menu is open (so it doesn't affect desktop)
+      if (navbarMenuEl.classList.contains("open")) closeMenu();
+    });
+  });
+
+  // If user resizes to desktop, reset mobile state
+  window.addEventListener("resize", () => {
+    if (!isMobile()) {
+      closeMenu();
+    }
   });
 });
 
-document.addEventListener("click", e => {
-  if (!e.target.closest(".nav-item")) {
-    safeQueryAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-  }
-});
+
