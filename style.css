@@ -37,10 +37,10 @@ body {
 /* Page wrapper */
 .page-wrapper { min-height:100vh; }
 
-/* ------------------------------------------------
+/* /* ------------------------------------------------
    NAVBAR — Dark theme (matches hero section)
 ------------------------------------------------- */
-.navbar {
+/* .navbar {
   width: 100%;
   position: sticky;
   top: 0;
@@ -63,12 +63,12 @@ body {
   padding: 0 24px;
   position: relative;
   overflow: visible;
-}
+} */
 
 /* ------------------------------------------------
    LOGO
 ------------------------------------------------- */
-.navbar-logo {
+/* .navbar-logo {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -76,20 +76,20 @@ body {
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   text-decoration: none;
-}
+} */
 
 /* Logo image styling */
-.navbar-logo-img {
+/* .navbar-logo-img {
   width: 32px;
   height: 32px;
   object-fit: contain;
   display: block;
-}
+} */
 
 /* ------------------------------------------------
    CENTER NAV MENU + ALIGNMENT FIX (DESKTOP)
 ------------------------------------------------- */
-.navbar-menu {
+/* .navbar-menu {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -97,12 +97,12 @@ body {
   display: flex;
   gap: 32px;
   align-items: center;
-}
+} */
 
 /* ------------------------------------------------
    NAV LINKS
 ------------------------------------------------- */
-.nav-link {
+/* .nav-link {
   color: #cfe4f4;
   font-size: 16px;
   font-weight: 500;
@@ -116,29 +116,29 @@ body {
 .nav-link:hover,
 .nav-link.active {
   color: #ffffff;
-}
+} */
 
 /* ------------------------------------------------
    NAV ITEM (dropdown container)
 ------------------------------------------------- */
-.nav-item {
+/* .nav-item {
   position: relative;
-}
+} */
 
 /* Hover buffer prevents dropdown flicker (desktop only) */
-.nav-item::after {
+/* .nav-item::after {
   content: "";
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   height: 14px;
-}
+} */
 
 /* ------------------------------------------------
    MEGA DROPDOWN (DESKTOP)
 ------------------------------------------------- */
-.mega-dropdown {
+/* .mega-dropdown {
   position: absolute;
   top: calc(100% - 6px);
   left: 50%;
@@ -163,10 +163,10 @@ body {
   visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
-}
+} */
 
 /* Mega menu columns */
-.mega-col {
+/* .mega-col {
   flex: 1;
   min-width: 180px;
 }
@@ -176,10 +176,10 @@ body {
   font-size: 13px;
   margin-bottom: 10px;
   text-transform: uppercase;
-}
+} */
 
 /* Mega menu links */
-.mega-col a {
+/* .mega-col a {
   color: #e0edf7;
   display: flex;
   gap: 10px;
@@ -207,12 +207,12 @@ body {
 .mega-col a:hover .icon {
   background: rgba(255, 255, 255, 0.35);
   transform: translateX(2px);
-}
+} */
 
 /* ------------------------------------------------
    RIGHT ACTIONS
 ------------------------------------------------- */
-.navbar-actions {
+/* .navbar-actions {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -232,12 +232,12 @@ body {
 .btn-primary:hover {
   transform: translateY(-2px);
   background: #154360;
-}
+} */
 
 /* ------------------------------------------------
    MOBILE MENU TOGGLE (Hamburger)
 ------------------------------------------------- */
-.menu-toggle {
+/* .menu-toggle {
   display: none;
   background: none;
   border: none;
@@ -249,14 +249,14 @@ body {
   height: 2px;
   background: #ffffff;
   margin: 3px 0;
-}
+} */
 
 /* =================================================
    MOBILE / TABLET NAVBAR
 ================================================= */
 
 /* Overlay (works only when JS adds .show) */
-.nav-overlay {
+/* .nav-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
@@ -268,29 +268,29 @@ body {
 .nav-overlay.show {
   opacity: 1;
   pointer-events: auto;
-}
+} */
 
 /* Tablet & Mobile */
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) { */
 
   /* Show hamburger */
-  .menu-toggle {
+  /* .menu-toggle {
     display: flex;
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
     background: none;
     border: none;
-  }
+  } */
 
   /* Make menu a real fixed panel (not affected by desktop centering) */
-  .navbar-menu {
+  /* .navbar-menu {
     position: fixed;
     top: 78px;
     left: 0;
     right: 0;
-    bottom: 0;                 /* better than height: calc(...) */
-    width: 100%;
+    bottom: 0;                 /* better than height: calc(...) */ 
+    /* width: 100%;
 
     background: linear-gradient(180deg, #071a24, #0d2a3a);
     display: flex;
@@ -300,16 +300,16 @@ body {
     padding: 24px;
     gap: 0;
 
-    transform: translateY(-120%);  /* fully hidden */
-    transition: transform 0.35s ease;
+    transform: translateY(-120%);  /* fully hidden */ 
+    /* transition: transform 0.35s ease;
     will-change: transform;
 
     overflow-y: auto;
-    z-index: 3000;                 /* above overlay */
-  }
+    z-index: 3000;                 /* above overlay */ 
+  /* } */
 
   /* ✅ When JS adds .open */
-  .navbar-menu.open {
+  /* .navbar-menu.open {
     transform: translateY(0) !important;
   }
 
@@ -321,15 +321,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
+  } */
 
   /* Disable hover dropdown on mobile */
-  .nav-item:hover .mega-dropdown {
+  /* .nav-item:hover .mega-dropdown {
     display: none;
-  }
+  } */
 
   /* Mobile dropdown behavior */
-  .mega-dropdown {
+  /* .mega-dropdown {
     position: static;
     width: 100%;
     background: transparent;
@@ -350,10 +350,10 @@ body {
   .mega-col h4 {
     margin-top: 14px;
     font-size: 12px;
-  }
+  } */
 
   /* Reduce Get Started on mobile */
-  .btn-primary {
+  /* .btn-primary {
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 10px;
@@ -373,7 +373,268 @@ body {
     width: 28px;
     height: 28px;
   }
+}  */
+
+
+
+/* ------------------------------------------------
+   NAVBAR — Dark theme
+------------------------------------------------- */
+.navbar {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
+  z-index: 2000;
 }
+
+.navbar-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: relative;
+}
+
+/* Logo */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navbar-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Desktop menu */
+.navbar-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-link {
+  color: #cfe4f4;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 78px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff;
+}
+
+.nav-item {
+  position: relative;
+}
+
+/* Mega dropdown desktop */
+.mega-dropdown {
+  position: absolute;
+  top: calc(100% - 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  width: 700px;
+  background: rgba(13, 42, 58, 0.96);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 28px 32px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: 0.25s ease;
+  display: flex;
+  gap: 40px;
+  z-index: 4000;
+}
+
+.nav-item:hover .mega-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mega-col a {
+  color: #e0edf7;
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* Right actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-primary {
+  background: #1b4f72;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Hamburger */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-line {
+  width: 18px;
+  height: 2px;
+  background: #ffffff;
+  margin: 3px 0;
+}
+
+/* Overlay */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 2500;
+}
+
+.nav-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* -------------------------
+   MOBILE NAV
+-------------------------- */
+@media (max-width: 1024px) {
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 78px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+
+    background: linear-gradient(180deg, #071a24, #0d2a3a);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 24px;
+    gap: 0;
+
+    transform: translateY(-120%);
+    transition: transform 0.35s ease;
+    overflow-y: auto;
+    z-index: 3000;
+  }
+
+  .navbar-menu.open {
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 14px 0;
+    font-size: 18px;
+    line-height: normal;
+    justify-content: space-between;
+  }
+
+  /* Mobile dropdown (accordion) */
+  .mega-dropdown {
+    position: static;
+    width: 100%;
+    background: transparent;
+    padding: 12px 0 0;
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .nav-item.open .mega-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* Arrow indicator on mobile parent items */
+  .nav-parent::after {
+    content: "›";
+    transform: rotate(90deg);
+    transition: transform 0.25s ease;
+  }
+
+  .nav-item.open .nav-parent::after {
+    transform: rotate(-90deg);
+  }
+
+  /* Disable hover behavior on mobile */
+  .nav-item:hover .mega-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .btn-primary {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .navbar-logo-img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+
 
 
 
