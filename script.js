@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================================================
      MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
   ========================================================= */
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const menuToggleBtn = document.getElementById("menuToggle");
   const navbarMenuEl = document.getElementById("navbarMenu");
   const overlayEl = document.getElementById("navOverlay");
@@ -338,4 +338,5 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isMobile()) closeMenu();
   });
 });
+
 
