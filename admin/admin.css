@@ -160,6 +160,21 @@ textarea{min-height:110px;resize:vertical;padding-top:10px}
   margin-top: 20px;
 }
 
+.side-logout {
+  margin-top: 16px;
+  padding: 10px 12px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c63636;
+  font: inherit;
+}
+
+.side-logout:hover {
+  background: rgba(198, 54, 54, 0.08);
+}
 
 
 /* File preview */
