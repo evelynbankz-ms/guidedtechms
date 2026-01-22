@@ -263,57 +263,68 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================================================
      MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
   ========================================================= */
+/* =========================================================
+   NAVBAR MOBILE MENU (FIXED)
+   - Fixes "Unexpected end of input" by giving you a complete, closed block
+   - Works with your current HTML:
+     .menu-toggle, .navbar-menu, #navOverlay
+========================================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
-  const menuToggleBtn = document.getElementById("menuToggle");
-  const navbarMenuEl = document.getElementById("navbarMenu");
-  const overlayEl = document.getElementById("navOverlay");
+  const btn = document.querySelector(".menu-toggle");
+  const menu = document.querySelector(".navbar-menu");
+  const overlay = document.getElementById("navOverlay");
 
   const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
 
-  if (!menuToggleBtn || !navbarMenuEl || !overlayEl) return;
+  if (!btn || !menu || !overlay) return;
 
   function openMenu() {
-    navbarMenuEl.classList.add("open");
-    overlayEl.classList.add("show");
-    menuToggleBtn.setAttribute("aria-expanded", "true");
+    menu.classList.add("open");
+    overlay.classList.add("show");
+    btn.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
   }
 
   function closeMenu() {
-    navbarMenuEl.classList.remove("open");
-    overlayEl.classList.remove("show");
-    menuToggleBtn.setAttribute("aria-expanded", "false");
+    menu.classList.remove("open");
+    overlay.classList.remove("show");
+    btn.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
-
-    // close dropdowns
-    navbarMenuEl.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+    menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
   }
 
-  menuToggleBtn.addEventListener("click", (e) => {
+  // Hamburger toggle
+  btn.addEventListener("click", (e) => {
     e.preventDefault();
     if (!isMobile()) return;
-
-    if (navbarMenuEl.classList.contains("open")) closeMenu();
-    else openMenu();
+    menu.classList.contains("open") ? closeMenu() : openMenu();
   });
 
-  overlayEl.addEventListener("click", () => {
+  // Overlay closes menu
+  overlay.addEventListener("click", () => {
     if (!isMobile()) return;
     closeMenu();
   });
 
-  // accordion dropdown parents
-  navbarMenuEl.querySelectorAll(".nav-item").forEach((item) => {
-    const parentLink = item.querySelector(".nav-parent");
-    const dropdown = item.querySelector(".mega-dropdown");
-    if (!parentLink || !dropdown) return;
+  // ESC closes
+  document.addEventListener("keydown", (e) => {
+    if (!isMobile()) return;
+    if (e.key === "Escape") closeMenu();
+  });
 
-    parentLink.addEventListener("click", (e) => {
+  // Accordion dropdown (mobile only)
+  menu.querySelectorAll(".nav-item").forEach((item) => {
+    const trigger = item.querySelector(":scope > .nav-link");
+    const dropdown = item.querySelector(":scope > .mega-dropdown");
+    if (!trigger || !dropdown) return;
+
+    trigger.addEventListener("click", (e) => {
       if (!isMobile()) return;
       e.preventDefault();
 
       // close others
-      navbarMenuEl.querySelectorAll(".nav-item.open").forEach(openItem => {
+      menu.querySelectorAll(".nav-item.open").forEach(openItem => {
         if (openItem !== item) openItem.classList.remove("open");
       });
 
@@ -321,22 +332,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // close menu when clicking a real link
-  navbarMenuEl.querySelectorAll("a[href]").forEach((link) => {
-    link.addEventListener("click", () => {
-      if (!isMobile()) return;
-
-      // don't close when it's a parent (#)
-      if (link.classList.contains("nav-parent")) return;
-
-      closeMenu();
-    });
-  });
-
-  // reset on desktop resize
+  // If you resize back to desktop, reset mobile state
   window.addEventListener("resize", () => {
     if (!isMobile()) closeMenu();
   });
 });
+
 
 
