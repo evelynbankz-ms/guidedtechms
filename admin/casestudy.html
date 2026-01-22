@@ -62,72 +62,73 @@
       <!-- FORM -->
       <form data-collection="caseStudies" class="form-row full" style="gap:14px 0">
 
-        <div class="form-row full">
-          <div>
-            <label>Title</label>
-            <input name="title" class="input" placeholder="Case study title">
-          </div>
-          <div>
-            <label>Slug (auto generates, editable)</label>
-            <input name="slug" class="input" placeholder="example-case-study">
-          </div>
-        </div>
+  <div class="form-row full">
+    <div>
+      <label>Title</label>
+      <input name="title" class="input" placeholder="Case study title">
+    </div>
+    <div>
+      <label>Slug (auto generates, editable)</label>
+      <input name="slug" class="input" placeholder="example-case-study">
+    </div>
+  </div>
 
-        <div class="form-row full">
-          <div>
-            <label>Client</label>
-            <input name="client" class="input" placeholder="Client name">
-          </div>
-          <div>
-            <label>Industry / Services</label>
-            <input name="industry" class="input" placeholder="e.g., Government, Cloud, Security">
-          </div>
-        </div>
+  <div class="form-row full">
+    <div>
+      <label>Client</label>
+      <input name="client" class="input" placeholder="Client name">
+    </div>
+    <div>
+      <label>Industry / Services</label>
+      <input name="industry" class="input" placeholder="e.g., Government, Cloud, Security">
+    </div>
+  </div>
 
-        <div class="form-row full">
-          <div>
-            <label>Excerpt</label>
-            <input name="excerpt" class="input" placeholder="Short summary">
-          </div>
-        </div>
+  <div class="form-row full">
+    <div>
+      <label>Excerpt</label>
+      <input name="excerpt" class="input" placeholder="Short summary">
+    </div>
+  </div>
 
-        <div class="form-row full">
-          <div>
-            <label>Feature image</label>
-            <input type="file" name="feature" accept="image/*" class="input">
-          </div>
-          <div>
-            <label>Preview</label>
-            <div class="preview">
-              <img class="file-preview" alt="image preview">
-            </div>
-          </div>
-        </div>
-
-        <!-- RICH TEXT -->
-        <div class="form-row full">
-          <div>
-            <label>Content</label>
-            <textarea
-              name="content"
-              class="rich-text"
-              placeholder="Write your case study content here..."
-              style="min-height:320px"
-            ></textarea>
-          </div>
-        </div>
-
-       <div class="form-actions">
-        <button class="btn btn-primary" type="submit">
-          Save case study
-        </button>
-      
-        <button type="reset" class="btn btn-ghost">
-          Reset
-        </button>
+  <div class="form-row full">
+    <div>
+      <label>Feature image</label>
+      <input type="file" name="feature" accept="image/*" class="input">
+    </div>
+    <div>
+      <label>Preview</label>
+      <div class="preview">
+        <img class="file-preview" alt="image preview">
       </div>
+    </div>
+  </div>
 
-      </form>
+  <!-- RICH TEXT -->
+  <div class="form-row full">
+    <div>
+      <label>Content</label>
+      <textarea
+        name="content"
+        class="rich-text"
+        placeholder="Write your case study content here..."
+        style="min-height:320px"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- ✅ ACTIONS (INSIDE FORM, BELOW EDITOR) -->
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit">
+      Save case study
+    </button>
+
+    <button type="reset" class="btn btn-ghost">
+      Reset
+    </button>
+  </div>
+
+</form>
 
       <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
 
