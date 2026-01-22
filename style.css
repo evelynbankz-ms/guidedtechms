@@ -80,87 +80,71 @@ body {
 
 /* Logo image styling */
 .navbar-logo-img {
-  width: 32px;       /* adjust size here */
-  height: 32px;      /* keeps it square */
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   display: block;
 }
 
 /* ------------------------------------------------
-   CENTER NAV MENU + ALIGNMENT FIX
+   CENTER NAV MENU + ALIGNMENT FIX (DESKTOP)
 ------------------------------------------------- */
 .navbar-menu {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   display: flex;
   gap: 32px;
   align-items: center;
 }
 
 /* ------------------------------------------------
-   NAV LINK ALIGNMENT (ALL LINKS SAME LINE)
+   NAV LINKS
 ------------------------------------------------- */
 .nav-link {
   color: #cfe4f4;
   font-size: 16px;
   font-weight: 500;
-
-  /* Ensure perfect vertical alignment */
   line-height: 78px;
   display: flex;
   align-items: center;
-
   text-decoration: none;
   transition: color 0.25s ease;
 }
 
 .nav-link:hover,
-.nav-link.active {color: #ffffff;}
+.nav-link.active {
+  color: #ffffff;
+}
 
 /* ------------------------------------------------
-   NAV ITEM (hover container)
+   NAV ITEM (dropdown container)
 ------------------------------------------------- */
 .nav-item {
   position: relative;
 }
 
-/* ------------------------------------------------
-   HOVER BUFFER (prevents dropdown flicker)
-------------------------------------------------- */
+/* Hover buffer prevents dropdown flicker (desktop only) */
 .nav-item::after {
   content: "";
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  height: 14px; /* invisible hover bridge */
-}
-
-/* ------------------------------------------------
-   MEGA MENU — Multi-column dropdown
-------------------------------------------------- */
-/* DROPDOWN STRUCTURE */
-.nav-item { position: relative; }
-
-.nav-item::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  width: 100%;
   height: 14px;
 }
 
-/* MEGA MENU */
+/* ------------------------------------------------
+   MEGA DROPDOWN (DESKTOP)
+------------------------------------------------- */
 .mega-dropdown {
   position: absolute;
   top: calc(100% - 6px);
   left: 50%;
   transform: translateX(-50%) translateY(12px);
   width: 700px;
-  background: rgba(13,42,58,0.96);
+  background: rgba(13, 42, 58, 0.96);
   backdrop-filter: blur(10px);
   border-radius: 18px;
   padding: 28px 32px;
@@ -181,8 +165,12 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* MEGA MENU COLUMNS */
-.mega-col { flex: 1; min-width: 180px; }
+/* Mega menu columns */
+.mega-col {
+  flex: 1;
+  min-width: 180px;
+}
+
 .mega-col h4 {
   color: #9cc7e1;
   font-size: 13px;
@@ -190,7 +178,7 @@ body {
   text-transform: uppercase;
 }
 
-/* RESTORED ICON STYLING */
+/* Mega menu links */
 .mega-col a {
   color: #e0edf7;
   display: flex;
@@ -203,7 +191,7 @@ body {
 }
 
 .mega-col a:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
   padding-left: 12px;
 }
@@ -212,19 +200,17 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 4px;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   transition: 0.25s ease;
 }
 
 .mega-col a:hover .icon {
-  background: rgba(255,255,255,0.35);
+  background: rgba(255, 255, 255, 0.35);
   transform: translateX(2px);
 }
 
-
-
 /* ------------------------------------------------
-   RIGHT ACTION BUTTON
+   RIGHT ACTIONS
 ------------------------------------------------- */
 .navbar-actions {
   display: flex;
@@ -234,7 +220,7 @@ body {
 
 .btn-primary {
   display: inline-block;
-  background: #1B4F72;
+  background: #1b4f72;
   color: #fff;
   padding: 10px 18px;
   border-radius: 10px;
@@ -249,10 +235,13 @@ body {
 }
 
 /* ------------------------------------------------
-   MOBILE MENU TOGGLE
+   MOBILE MENU TOGGLE (Hamburger)
 ------------------------------------------------- */
 .menu-toggle {
   display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .menu-line {
@@ -262,28 +251,37 @@ body {
   margin: 3px 0;
 }
 
+/* ------------------------------------------------
+   OVERLAY (Mobile menu background dim)
+------------------------------------------------- */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 2500;
+}
+
+.nav-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 /* =================================================
    MOBILE / TABLET NAVBAR
 ================================================= */
-
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-}
-
-/* Tablet & Mobile */
 @media (max-width: 1024px) {
-
   /* Show hamburger */
   .menu-toggle {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    cursor: pointer;
   }
 
-  /* Hide desktop-centered menu */
+  /* Turn desktop menu into full screen overlay menu */
   .navbar-menu {
     position: fixed;
     top: 78px;
@@ -305,6 +303,7 @@ body {
     transform: translateY(0);
   }
 
+  /* Links become stacked */
   .nav-link {
     width: 100%;
     padding: 14px 0;
@@ -312,20 +311,46 @@ body {
     line-height: normal;
   }
 
-  /* Disable hover */
+  /* Style dropdown toggle button same as link */
+  .nav-toggle {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #cfe4f4;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .nav-toggle:hover {
+    color: #ffffff;
+  }
+
+  /* Disable desktop hover dropdown on mobile */
   .nav-item:hover .mega-dropdown {
     display: none;
   }
 
-  /* Mobile dropdown behavior */
+  /* Dropdown becomes collapsible */
   .mega-dropdown {
     position: static;
     width: 100%;
     background: transparent;
     padding: 12px 0 0;
     display: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    border-radius: 0;
   }
 
+  /* When opened from JS */
   .nav-item.open .mega-dropdown {
     display: flex;
     flex-direction: column;
@@ -340,8 +365,44 @@ body {
     margin-top: 14px;
     font-size: 12px;
   }
+
+  /* Chevron indicator */
+  .chev {
+    display: inline-block;
+    transform: rotate(90deg);
+    transition: transform 0.25s ease;
+    opacity: 0.9;
+  }
+
+  .nav-item.open .chev {
+    transform: rotate(-90deg);
+  }
+
+  /* Reduce Get Started button */
+  .btn-primary {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  /* Reduce logo text */
+  .logo-text {
+    font-size: 14px;
+  }
 }
 
+/* Extra small phones */
+@media (max-width: 420px) {
+  .btn-primary {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .navbar-logo-img {
+    width: 28px;
+    height: 28px;
+  }
+}
 
 
 
