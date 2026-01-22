@@ -127,15 +127,16 @@ onAuthStateChanged(auth, user => {
 
   
 /*LOG OUT */
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-  try {
+import { signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
     await signOut(auth);
     location.href = "login.html";
-  } catch (err) {
-    console.error("Logout failed", err);
-    alert("Failed to log out");
-  }
-});
+  });
+}
+
  
 
 /* Escape helper */
