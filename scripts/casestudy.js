@@ -1,19 +1,14 @@
-// scripts/casestudy.js
-
 import { db } from "../admin/firebase.js";
 import {
   collection,
   query,
+  where,
   orderBy,
   limit,
   startAfter,
-  getDocs,
-  where
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-/* ==========================================
-   CONFIG
-========================================== */
 const PAGE_SIZE = 12;
 
 const grid = document.getElementById("caseGrid");
@@ -25,27 +20,20 @@ const pageInfo = document.getElementById("pageInfo");
 let currentPage = 1;
 let lastVisible = null;
 let prevSnapshots = [];
-
 let activeSearch = "";
 
-/* ==========================================
-   HELPERS
-========================================== */
 function escapeHtml(s) {
   return String(s || "").replace(/[&<>"']/g, (m) => (
     { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
   ));
 }
 
-/* Reuse blog card HTML + classes so blog.css styles it perfectly */
 function renderCard(cs) {
   const img = cs.imageUrl ? `background-image:url('${cs.imageUrl}')` : "";
   const excerpt = cs.excerpt ? escapeHtml(cs.excerpt).slice(0, 150) : "";
 
-  // Single page url
   const url = `case.html?slug=${encodeURIComponent(cs.slug || "")}`;
 
-  // Add small tags line using your existing tag style
   const tags = [];
   if (cs.client) tags.push(cs.client);
   if (cs.industry) tags.push(cs.industry);
@@ -60,36 +48,26 @@ function renderCard(cs) {
 
       <div class="card-body">
         <div class="blog-tags">${tagsHtml}</div>
-
         <div class="title">${escapeHtml(cs.title || "")}</div>
-
         <div class="excerpt">${excerpt}</div>
-
         <a class="read-more" href="${url}">Read →</a>
       </div>
     </article>
   `;
 }
 
-/* ==========================================
-   QUERY BUILDER (supports prefix title search)
-========================================== */
 function buildQuery(startAfterSnapshot = null) {
   const colRef = collection(db, "caseStudies");
   let constraints = [];
 
-  // If your admin saves a createdAt, this sorts newest first.
-  // If not, we fallback to title sorting.
   if (activeSearch) {
     const term = activeSearch.trim().toLowerCase();
     const end = term + "\uf8ff";
 
-    // ✅ Requires you to store titleLower in Firestore (same as blog)
     constraints.push(where("titleLower", ">=", term));
     constraints.push(where("titleLower", "<=", end));
     constraints.push(orderBy("titleLower"));
   } else {
-    // ✅ Best: orderBy createdAt desc (if you store it)
     constraints.push(orderBy("createdAt", "desc"));
   }
 
@@ -104,9 +82,6 @@ function buildQuery(startAfterSnapshot = null) {
   return q;
 }
 
-/* ==========================================
-   LOAD PAGE
-========================================== */
 async function loadPage(isNext = true) {
   grid.innerHTML = `<div class="empty">Loading…</div>`;
 
@@ -130,9 +105,9 @@ async function loadPage(isNext = true) {
 
   lastVisible = snap.docs[snap.docs.length - 1];
 
-  grid.innerHTML = snap.docs
-    .map((doc) => renderCard({ id: doc.id, ...doc.data() }))
-    .join("");
+  grid.innerHTML = snap.docs.map((doc) =>
+    renderCard({ id: doc.id, ...doc.data() })
+  ).join("");
 
   prevBtn.disabled = prevSnapshots.length === 0;
   nextBtn.disabled = snap.docs.length < PAGE_SIZE;
@@ -140,9 +115,6 @@ async function loadPage(isNext = true) {
   pageInfo.textContent = `Page ${currentPage}`;
 }
 
-/* ==========================================
-   RESET
-========================================== */
 function resetPagination() {
   currentPage = 1;
   lastVisible = null;
@@ -150,9 +122,6 @@ function resetPagination() {
   loadPage(true);
 }
 
-/* ==========================================
-   CONTROL WIRING
-========================================== */
 function wireControls() {
   let debounce;
 
@@ -185,12 +154,7 @@ function wireControls() {
   });
 }
 
-/* ==========================================
-   INIT
-========================================== */
-function init() {
+document.addEventListener("DOMContentLoaded", () => {
   wireControls();
   loadPage(true);
-}
-
-document.addEventListener("DOMContentLoaded", init);
+});
