@@ -5,29 +5,19 @@ admin.initializeApp();
 
 /**
  * ================================
- * 🔧 PLACEHOLDERS YOU MUST SET
+ * 🔧 REQUIRED CONFIG (placeholders)
  * ================================
+ * Set these with:
  *
- * 1) SENDGRID_API_KEY:
- *    - Create in SendGrid
- *    - Put it in Firebase Functions config (or environment variables).
+ * firebase functions:config:set \
+ *   sendgrid.key="SENDGRID_API_KEY" \
+ *   sendgrid.from="info@guidedtechms.com" \
+ *   sendgrid.inbound_domain="inbound.guidedtechms.com" \
+ *   sendgrid.inbound_secret="PUT_A_RANDOM_LONG_SECRET_HERE"
  *
- * 2) FROM_EMAIL:
- *    - Your verified sender like: support@guidedtechms.com
- *
- * 3) INBOUND_DOMAIN:
- *    - A domain configured for SendGrid Inbound Parse
- *    - Example: inbound.guidedtechms.com
- *
- * 4) INBOUND_SECRET:
- *    - A random secret string used to protect your inbound webhook
- *    - We'll check it on inbound endpoint
- *
- * ✅ You will set these using:
- * firebase functions:config:set sendgrid.key="..." sendgrid.from="..." sendgrid.inbound_domain="..." sendgrid.inbound_secret="..."
+ * Then deploy:
+ * firebase deploy --only functions
  */
-
-// Helper: read function config safely
 function cfg(path, fallback = "") {
   const parts = path.split(".");
   let cur = functions.config();
@@ -35,70 +25,49 @@ function cfg(path, fallback = "") {
   return cur ?? fallback;
 }
 
+/* ----------------------------
+   Helpers
+---------------------------- */
+function escapeTextToHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\n/g, "<br>");
+}
+
+function stripHtml(s) {
+  return String(s || "").replace(/<[^>]*>/g, "").trim();
+}
+
 /**
- * ================================
- * ✅ 1) SEND OUTBOUND EMAIL
- * ================================
- * Called by your admin portal when admin replies.
- * - Saves message to Firestore (admin thread)
- * - Sends email to customer via SendGrid Web API
- * - Sets Reply-To to ticket+<ticketId>@<INBOUND_DOMAIN>
+ * ======================================
+ * ✅ 1) Outbound Email Sender (ONLY EMAIL)
+ * ======================================
+ * Called by admin portal after it already saved the message to Firestore.
+ *
+ * This function ONLY sends the email via SendGrid Web API.
+ * It does NOT create Firestore documents (no duplicates).
+ *
+ * Security:
+ * - Uses a shared secret in header: x-admin-secret
  */
-exports.sendAdminTicketReply = functions.https.onRequest(async (req, res) => {
+exports.sendAdminTicketEmail = functions.https.onRequest(async (req, res) => {
   try {
-    // ✅ Allow only POST
     if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
 
-    // ✅ Basic security: shared secret header (you will set it in admin portal request)
+    // ✅ Protect endpoint (simple shared secret)
     const expected = cfg("sendgrid.inbound_secret");
     const got = req.get("x-admin-secret") || "";
     if (!expected || got !== expected) return res.status(401).send("Unauthorized");
 
     const { ticketId, bodyHtml } = req.body || {};
-
     if (!ticketId || !bodyHtml) {
       return res.status(400).json({ ok: false, error: "Missing ticketId/bodyHtml" });
     }
 
-    const db = admin.firestore();
-
-    // Load ticket
-    const ticketRef = db.collection("tickets").doc(ticketId);
-    const snap = await ticketRef.get();
-    if (!snap.exists) return res.status(404).json({ ok: false, error: "Ticket not found" });
-
-    const ticket = snap.data();
-    const toEmail = ticket.email;
-
-    if (!toEmail) return res.status(400).json({ ok: false, error: "Ticket has no email" });
-
-    const now = Date.now();
-
-    // 1) Save admin message into thread
-    await db.collection("ticket_messages").add({
-      ticketId,
-      sender: "admin",
-      senderName: "Admin",
-      senderEmail: cfg("sendgrid.from") || "support@example.com", // placeholder
-      bodyHtml,
-      createdAt: now
-    });
-
-    // 2) Update ticket metadata
-    const preview = String(bodyHtml).replace(/<[^>]*>/g, "").trim().slice(0, 120);
-
-    await ticketRef.update({
-      status: "pending",
-      updatedAt: now,
-      lastMessageAt: now,
-      lastMessagePreview: preview,
-      // user should have unread? optional field if you later build user portal
-      // unreadUser: true
-    });
-
-    // 3) Send email to customer (SendGrid Web API)
     const SENDGRID_API_KEY = cfg("sendgrid.key");
-    const FROM_EMAIL = cfg("sendgrid.from");
+    const FROM_EMAIL = cfg("sendgrid.from"); // info@guidedtechms.com
     const INBOUND_DOMAIN = cfg("sendgrid.inbound_domain");
 
     if (!SENDGRID_API_KEY || !FROM_EMAIL || !INBOUND_DOMAIN) {
@@ -108,20 +77,30 @@ exports.sendAdminTicketReply = functions.https.onRequest(async (req, res) => {
       });
     }
 
-    // ✅ Zendesk-style reply tracking via Reply-To tokenized address:
-    // Example: ticket+AbC123@inbound.guidedtechms.com
+    const db = admin.firestore();
+
+    // Load ticket so we can email the correct user
+    const ticketRef = db.collection("tickets").doc(ticketId);
+    const snap = await ticketRef.get();
+    if (!snap.exists) return res.status(404).json({ ok: false, error: "Ticket not found" });
+
+    const ticket = snap.data() || {};
+    const toEmail = ticket.email;
+    if (!toEmail) return res.status(400).json({ ok: false, error: "Ticket has no email" });
+
+    // ✅ Zendesk-style: Reply-To contains the ticketId
+    // User replies → SendGrid inbound parse receives → we extract ticketId
     const replyTo = `ticket+${ticketId}@${INBOUND_DOMAIN}`;
 
     const subject = `Re: ${ticket.subject || "Support Ticket"} [Ticket #${ticketId}]`;
 
+    // SendGrid v3 payload
     const payload = {
       personalizations: [{ to: [{ email: toEmail }] }],
-      from: { email: FROM_EMAIL, name: "Guided Tech Support" }, // placeholder name
+      from: { email: FROM_EMAIL, name: "Guided Tech Support" }, // you can change name later
       reply_to: { email: replyTo, name: "Guided Tech Support" },
       subject,
-      content: [
-        { type: "text/html", value: bodyHtml }
-      ]
+      content: [{ type: "text/html", value: bodyHtml }]
     };
 
     const sgRes = await fetch("https://api.sendgrid.com/v3/mail/send", {
@@ -146,42 +125,35 @@ exports.sendAdminTicketReply = functions.https.onRequest(async (req, res) => {
   }
 });
 
-
 /**
- * ================================
- * ✅ 2) INBOUND EMAIL WEBHOOK
- * ================================
- * This endpoint is called by SendGrid Inbound Parse when a customer replies by email.
+ * ======================================
+ * ✅ 2) Inbound Parse Webhook (EMAIL → THREAD)
+ * ======================================
+ * SendGrid Inbound Parse posts here when user replies by email.
  *
- * We expect:
- *  - to: contains "ticket+<ticketId>@<INBOUND_DOMAIN>"
- *  - from: customer email address
- *  - subject: email subject
- *  - html or text: email body (SendGrid provides these)
+ * Protect with:
+ * /inboundEmail?secret=YOUR_SECRET
  *
- * ✅ Protect with a secret query param:
- *  /inboundEmail?secret=YOUR_SECRET
+ * We extract ticketId from recipient:
+ * ticket+<ticketId>@inbound.guidedtechms.com
  *
- * NOTE:
- * - SendGrid inbound can include a lot of extra fields.
- * - We'll use html if provided else convert text to simple HTML.
+ * Then we write it into Firestore:
+ * - ticket_messages (sender=user)
+ * - update tickets (status=open, unreadAdmin=true)
  */
 exports.inboundEmail = functions.https.onRequest(async (req, res) => {
   try {
-    // SendGrid posts form-encoded fields
-    // Make sure Firebase Functions is able to parse it (it is for typical cases)
-    const secret = req.query.secret || "";
+    const secret = String(req.query.secret || "");
     const expected = cfg("sendgrid.inbound_secret");
-
     if (!expected || secret !== expected) return res.status(401).send("Unauthorized");
 
+    // SendGrid inbound parse posts form fields
     const to = String(req.body.to || "");
     const from = String(req.body.from || "");
-    const subject = String(req.body.subject || "");
     const html = String(req.body.html || "");
     const text = String(req.body.text || "");
 
-    // Extract ticketId from the inbound address: ticket+<ticketId>@domain
+    // Extract ticketId from: ticket+<ticketId>@...
     const match = to.match(/ticket\+([A-Za-z0-9_-]+)/);
     const ticketId = match?.[1];
 
@@ -190,30 +162,26 @@ exports.inboundEmail = functions.https.onRequest(async (req, res) => {
       return res.status(200).send("No ticket token");
     }
 
-    // Extract sender email from "from"
-    // Often "Name <email@domain.com>"
+    // Extract sender email from "Name <email@domain.com>"
     const emailMatch = from.match(/<([^>]+)>/) || from.match(/([^\s]+@[^\s]+)/);
     const senderEmail = (emailMatch && emailMatch[1]) ? emailMatch[1] : from;
 
-    const bodyHtml = html
-      ? html
-      : `<p>${escapeTextToHtml(text)}</p>`;
-
+    const bodyHtml = html ? html : `<p>${escapeTextToHtml(text)}</p>`;
     const now = Date.now();
-    const db = admin.firestore();
 
-    // Ensure ticket exists
+    const db = admin.firestore();
     const ticketRef = db.collection("tickets").doc(ticketId);
-    const snap = await ticketRef.get();
-    if (!snap.exists) {
+    const ticketSnap = await ticketRef.get();
+
+    if (!ticketSnap.exists) {
       console.warn("Inbound email for missing ticket:", ticketId);
       return res.status(200).send("Ticket not found");
     }
 
-    const ticket = snap.data() || {};
+    const ticket = ticketSnap.data() || {};
     const senderName = ticket.name || "Customer";
 
-    // Save user message into thread
+    // ✅ Save customer reply into thread
     await db.collection("ticket_messages").add({
       ticketId,
       sender: "user",
@@ -223,37 +191,20 @@ exports.inboundEmail = functions.https.onRequest(async (req, res) => {
       createdAt: now
     });
 
-    // Update ticket to open + unread for admin
-    const preview = stripHtml(bodyHtml).slice(0, 120);
-
+    // ✅ Update ticket metadata (Zendesk-like)
     await ticketRef.update({
       status: "open",
       updatedAt: now,
       lastMessageAt: now,
-      lastMessagePreview: preview,
+      lastMessagePreview: stripHtml(bodyHtml).slice(0, 120),
       unreadAdmin: true
     });
 
-    // ✅ SendGrid expects 2xx quickly
+    // SendGrid expects quick 2xx
     return res.status(200).send("OK");
   } catch (err) {
     console.error(err);
-    // Still return 2xx to avoid retries storms (optional)
+    // still return 200 to avoid retries storms
     return res.status(200).send("OK");
   }
 });
-
-/* ----------------------------
-   Small helpers
----------------------------- */
-function escapeTextToHtml(s) {
-  return String(s || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\n/g, "<br>");
-}
-
-function stripHtml(s) {
-  return String(s || "").replace(/<[^>]*>/g, "").trim();
-}
