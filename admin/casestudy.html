@@ -1,15 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Admin — Case Studies</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Case Studies</title>
 
-<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
-<link rel="stylesheet" href="admin.css">
+  <link rel="shortcut icon" href="../asset/logo-icon.png" />
+  <link rel="stylesheet" href="admin.css">
 
-<!-- Quill editor CSS -->
-<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+  <!-- Quill editor CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+
+  <style>
+    /* ✅ Prevent flash: hide editor + buttons until Quill is ready */
+    .quill-shell,
+    .form-actions {
+      visibility: hidden;
+    }
+
+    /* ✅ When ready, show them */
+    .quill-ready .quill-shell,
+    .quill-ready .form-actions {
+      visibility: visible;
+    }
+
+    /* ✅ Ensure form action buttons always display properly */
+    .form-actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+  </style>
 </head>
 
 <body>
@@ -60,75 +83,79 @@
       </div>
 
       <!-- FORM -->
-      <form data-collection="caseStudies" class="form-row full" style="gap:14px 0">
+      <form id="caseStudyForm" data-collection="caseStudies" class="form-row full" style="gap:14px 0">
 
-  <div class="form-row full">
-    <div>
-      <label>Title</label>
-      <input name="title" class="input" placeholder="Case study title">
-    </div>
-    <div>
-      <label>Slug (auto generates, editable)</label>
-      <input name="slug" class="input" placeholder="example-case-study">
-    </div>
-  </div>
+        <div class="form-row full">
+          <div>
+            <label>Title</label>
+            <input name="title" class="input" placeholder="Case study title">
+          </div>
+          <div>
+            <label>Slug (auto generates, editable)</label>
+            <input name="slug" class="input" placeholder="example-case-study">
+          </div>
+        </div>
 
-  <div class="form-row full">
-    <div>
-      <label>Client</label>
-      <input name="client" class="input" placeholder="Client name">
-    </div>
-    <div>
-      <label>Industry / Services</label>
-      <input name="industry" class="input" placeholder="e.g., Government, Cloud, Security">
-    </div>
-  </div>
+        <div class="form-row full">
+          <div>
+            <label>Client</label>
+            <input name="client" class="input" placeholder="Client name">
+          </div>
+          <div>
+            <label>Industry / Services</label>
+            <input name="industry" class="input" placeholder="e.g., Government, Cloud, Security">
+          </div>
+        </div>
 
-  <div class="form-row full">
-    <div>
-      <label>Excerpt</label>
-      <input name="excerpt" class="input" placeholder="Short summary">
-    </div>
-  </div>
+        <div class="form-row full">
+          <div>
+            <label>Excerpt</label>
+            <input name="excerpt" class="input" placeholder="Short summary">
+          </div>
+        </div>
 
-  <div class="form-row full">
-    <div>
-      <label>Feature image</label>
-      <input type="file" name="feature" accept="image/*" class="input">
-    </div>
-    <div>
-      <label>Preview</label>
-      <div class="preview">
-        <img class="file-preview" alt="image preview">
-      </div>
-    </div>
-  </div>
+        <div class="form-row full">
+          <div>
+            <label>Feature image</label>
+            <input type="file" name="feature" accept="image/*" class="input">
+          </div>
+          <div>
+            <label>Preview</label>
+            <div class="preview">
+              <img class="file-preview" alt="image preview">
+            </div>
+          </div>
+        </div>
 
-  <!-- RICH TEXT -->
-  <div class="form-row full">
-    <div>
-      <label>Content</label>
-      <textarea
-        name="content"
-        class="rich-text"
-        placeholder="Write your case study content here..."
-        style="min-height:320px"
-      ></textarea>
-    </div>
-  </div>
+        <!-- RICH TEXT -->
+        <div class="form-row full">
+          <div>
+            <label>Content</label>
 
-  <!-- ✅ ACTIONS (INSIDE FORM, BELOW EDITOR) -->
-  <div class="form-actions">
-    <button class="btn btn-primary" type="submit">
-      Save case study
-    </button>
+            <!-- ✅ admin.js will convert this textarea into Quill -->
+            <textarea
+              name="content"
+              class="rich-text"
+              placeholder="Write your case study content here..."
+              style="min-height:320px"
+            ></textarea>
 
-    <button type="reset" class="btn btn-ghost">
-      Reset
-    </button>
-  </div>
+            <!-- ✅ Wrapper used to hide/show Quill output smoothly -->
+            <div class="quill-shell"></div>
+          </div>
+        </div>
 
-</form>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">
+            Save case study
+          </button>
+
+          <button id="resetCaseStudyForm" type="button" class="btn btn-ghost">
+            Reset
+          </button>
+        </div>
+
+      </form>
 
       <hr style="margin:18px 0;border:none;border-top:1px solid rgba(16,24,40,0.03)">
 
@@ -140,8 +167,6 @@
 </div>
 
 <!-- CORE -->
-
-<!-- CORE -->
 <script type="module" src="firebase.js"></script>
 <script type="module" src="admin.js"></script>
 
@@ -149,107 +174,132 @@
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 
 <script type="module">
-import { AdminStore, UI } from "./admin.js";
+  import { AdminStore, UI } from "./admin.js";
 
-function escapeHtml(s){
-  return String(s||'').replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
-  );
-}
-
-  
-/* Sync quill → textarea before save */
-document.querySelector("form[data-collection='caseStudies']")
-  .addEventListener("submit", () => {
-    textarea.value = quill.root.innerHTML;
-  });
-
-/* Sync textarea → quill when editing */
-window.onAdminFormFill = data => {
-  if (data.content) {
-    quill.root.innerHTML = data.content;
+  function escapeHtml(s){
+    return String(s||'').replace(/[&<>"']/g,
+      m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+    );
   }
-};
-  
 
-/* RENDER CASE STUDIES */
-async function renderCaseStudies(){
-  const items = await AdminStore.all("caseStudies");
+  /* ✅ Wait until admin.js creates Quill, then show editor + buttons */
+  function waitForQuillReady(){
+    const textarea = document.querySelector("textarea.rich-text");
+    if (!textarea) return;
 
-  UI.renderList("#caseStudyList", items, cs => {
-    const thumb = cs.imageUrl
-      ? `<img src="${cs.imageUrl}" style="width:120px;height:80px;border-radius:8px;object-fit:cover">`
-      : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
+    // Quill inserts .ql-container after it is initialized
+    const quillContainer =
+      textarea.parentElement?.querySelector(".ql-container") ||
+      document.querySelector(".ql-container");
 
-    return `
-      <div class="meta">
-        <div style="display:flex;gap:12px;align-items:center">
-          ${thumb}
-          <div>
-            <div class="title">${escapeHtml(cs.title || "(no title)")}</div>
-            <div class="small">${escapeHtml(cs.excerpt || "")}</div>
-            <div class="small" style="opacity:0.6">/${escapeHtml(cs.slug || "")}</div>
+    if (quillContainer) {
+      // Move Quill container into our .quill-shell to control visibility cleanly
+      const shell = textarea.parentElement.querySelector(".quill-shell");
+      if (shell && !shell.contains(quillContainer)) {
+        shell.appendChild(quillContainer);
+      }
+
+      document.documentElement.classList.add("quill-ready");
+      return;
+    }
+
+    requestAnimationFrame(waitForQuillReady);
+  }
+
+  /* RENDER CASE STUDIES */
+  async function renderCaseStudies(){
+    const items = await AdminStore.all("caseStudies");
+
+    UI.renderList("#caseStudyList", items, cs => {
+      const thumb = cs.imageUrl
+        ? `<img src="${cs.imageUrl}" style="width:120px;height:80px;border-radius:8px;object-fit:cover">`
+        : `<div style="width:120px;height:80px;border-radius:8px;background:#f0f6f8"></div>`;
+
+      return `
+        <div class="meta">
+          <div style="display:flex;gap:12px;align-items:center">
+            ${thumb}
+            <div>
+              <div class="title">${escapeHtml(cs.title || "(no title)")}</div>
+              <div class="small">${escapeHtml(cs.excerpt || "")}</div>
+              <div class="small" style="opacity:0.6">/${escapeHtml(cs.slug || "")}</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card-actions">
-        <button class="btn btn-ghost"
-          data-edit="caseStudies"
-          data-id="${cs.id}"
-          data-target="form[data-collection='caseStudies']">
-          Edit
-        </button>
+        <div class="card-actions">
+          <button class="btn btn-ghost"
+            data-edit="caseStudies"
+            data-id="${cs.id}"
+            data-target="form[data-collection='caseStudies']">
+            Edit
+          </button>
 
-        <button class="btn btn-ghost" onclick="previewCaseStudy('${cs.id}')">
-          Preview
-        </button>
+          <button class="btn btn-ghost" onclick="previewCaseStudy('${cs.id}')">
+            Preview
+          </button>
 
-        <button class="btn btn-danger"
-          data-remove="caseStudies"
-          data-id="${cs.id}">
-          Delete
-        </button>
-      </div>
-    `;
+          <button class="btn btn-danger"
+            data-remove="caseStudies"
+            data-id="${cs.id}">
+            Delete
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  /* PREVIEW */
+  window.previewCaseStudy = async function(id){
+    const cs = await AdminStore.get("caseStudies", id);
+    const w = window.open("about:blank","_blank");
+
+    w.document.write(`
+      <html>
+      <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>${escapeHtml(cs.title)}</title>
+      </head>
+      <body style="font-family:Inter,Arial;padding:24px">
+        <h1>${escapeHtml(cs.title)}</h1>
+        <p><em>${escapeHtml(cs.excerpt || "")}</em></p>
+        ${cs.content || ""}
+      </body>
+      </html>
+    `);
+
+    w.document.close();
+  };
+
+  /* LIVE UPDATE */
+  window.onAdminDataChanged = col => {
+    if(col === "caseStudies") renderCaseStudies();
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCaseStudies();
+    waitForQuillReady();
+
+    // ✅ Reset: reset form + clear Quill if admin.js exposes it globally
+    const form = document.getElementById("caseStudyForm");
+    const resetBtn = document.getElementById("resetCaseStudyForm");
+
+    resetBtn?.addEventListener("click", () => {
+      form?.reset();
+
+      // Try global references (safe)
+      const q =
+        window.quill ||
+        window.caseStudyQuill ||
+        window.__quill ||
+        null;
+
+      if (q && typeof q.setText === "function") {
+        q.setText("");
+      }
+    });
   });
-}
-
-/* PREVIEW */
-window.previewCaseStudy = async function(id){
-  const cs = await AdminStore.get("caseStudies", id);
-  const w = window.open("about:blank","_blank");
-
-  w.document.write(`
-    <html>
-    <head>
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      <title>${escapeHtml(cs.title)}</title>
-    </head>
-    <body style="font-family:Inter,Arial;padding:24px">
-      <h1>${escapeHtml(cs.title)}</h1>
-      <p><em>${escapeHtml(cs.excerpt || "")}</em></p>
-      ${cs.content || ""}
-    </body>
-    </html>
-  `);
-
-  w.document.close();
-};
-
-/* LIVE UPDATE */
-window.onAdminDataChanged = col => {
-  if(col === "caseStudies") renderCaseStudies();
-};
-
-document.addEventListener("DOMContentLoaded", renderCaseStudies);
 </script>
 
-<script>
-  console.log("FORM:", document.querySelector("form[data-collection='caseStudies']"));
-  console.log("SUBMIT BTN:", document.querySelector("button[type='submit']"));
-</script>
-  
-  
 </body>
 </html>
