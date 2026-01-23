@@ -4,8 +4,6 @@ import {
   query,
   where,
   orderBy,
-  limit,
-  startAfter,
   getDocs,
   addDoc,
   updateDoc,
@@ -14,10 +12,20 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 /* ----------------------------------------------------
+   🔧 PLACEHOLDERS YOU WILL FILL LATER
+---------------------------------------------------- */
+// 1) Your deployed function URL for sendAdminTicketReply
+// Example: https://us-central1-YOUR_PROJECT.cloudfunctions.net/sendAdminTicketReply
+const SEND_REPLY_FUNCTION_URL = "PASTE_YOUR_sendAdminTicketReply_FUNCTION_URL_HERE";
+
+// 2) Must match sendgrid.inbound_secret in functions config
+// (Used as a shared admin secret header)
+const ADMIN_SECRET = "PASTE_THE_SAME_RANDOM_SECRET_HERE";
+
+/* ----------------------------------------------------
    DOM
 ---------------------------------------------------- */
 const ticketList = document.getElementById("ticketList");
-
 const ticketEmpty = document.getElementById("ticketEmpty");
 
 const ticketHeader = document.getElementById("ticketHeader");
@@ -68,6 +76,10 @@ function isQuillEmpty(html) {
   return !v || v === "<p><br></p>" || v === "<div><br></div>";
 }
 
+function stripHtml(s) {
+  return String(s || "").replace(/<[^>]*>/g, "").trim();
+}
+
 function showEmptyState() {
   ticketEmpty.style.display = "block";
   ticketHeader.style.display = "none";
@@ -106,18 +118,13 @@ async function loadTickets() {
     item.dataset.id = d.id;
 
     const unreadDot = t.unreadAdmin
-      ? `<span style="width:8px;height:8px;background:#e67e22;border-radius:50%;display:inline-block"></span>`
+      ? `<span style="width:8px;height:8px;background:#e67e22;border-radius:50%;display:inline-block;margin-right:8px"></span>`
       : "";
 
     item.innerHTML = `
-      <div class="subject">
-        ${unreadDot}
-        ${escapeHtml(t.subject || "Support Ticket")}
-      </div>
+      <div class="subject">${unreadDot}${escapeHtml(t.subject || "Support Ticket")}</div>
       <div class="small">${escapeHtml(t.email || "No email")}</div>
-      <div class="small" style="opacity:0.8">
-        ${escapeHtml(t.lastMessagePreview || "")}
-      </div>
+      <div class="small" style="opacity:0.8">${escapeHtml(t.lastMessagePreview || "")}</div>
       <span class="badge ${status}">${escapeHtml(status)}</span>
     `;
 
@@ -134,7 +141,7 @@ async function loadTickets() {
 }
 
 /* ----------------------------------------------------
-   LOAD THREAD MESSAGES (Zendesk style)
+   LOAD THREAD
 ---------------------------------------------------- */
 async function loadThread(ticketId) {
   ticketThread.innerHTML = "";
@@ -192,7 +199,6 @@ async function openTicket(ticketId) {
 
   currentTicketData = snap.data();
 
-  // Show UI
   ticketEmpty.style.display = "none";
   ticketHeader.style.display = "block";
   ticketThread.style.display = "block";
@@ -201,7 +207,6 @@ async function openTicket(ticketId) {
   // Init Quill (matches your HTML)
   if (window.initTicketQuill) window.initTicketQuill();
 
-  // Header
   ticketSubject.textContent = currentTicketData.subject || "Support Ticket";
   ticketMeta.textContent = `${currentTicketData.name || "Anonymous"} • ${currentTicketData.email || "No email"} • ${formatDate(currentTicketData.createdAt)}`;
 
@@ -212,13 +217,11 @@ async function openTicket(ticketId) {
     unreadAdmin: false
   });
 
-  // Load thread
   await loadThread(ticketId);
 
-  // Clear editor
   if (window.clearTicketReply) window.clearTicketReply();
 
-  // Refresh list (so unread dot disappears)
+  // Refresh list to remove unread dot
   await loadTickets();
 }
 
@@ -237,7 +240,10 @@ ticketStatus?.addEventListener("change", async () => {
 });
 
 /* ----------------------------------------------------
-   SEND ADMIN REPLY (Zendesk style)
+   SEND ADMIN REPLY:
+   ✅ Save to Firestore thread
+   ✅ Update ticket metadata
+   ✅ Send email to customer (SendGrid via Function)
 ---------------------------------------------------- */
 sendReplyBtn?.addEventListener("click", async () => {
   if (!currentTicketId) return;
@@ -247,23 +253,51 @@ sendReplyBtn?.addEventListener("click", async () => {
 
   const now = Date.now();
 
-  // Add message to thread
+  // ✅ Save admin message into thread
   await addDoc(collection(db, "ticket_messages"), {
     ticketId: currentTicketId,
     sender: "admin",
     senderName: "Admin",
-    senderEmail: "admin@guidedtechms.com",
+    senderEmail: "support@guidedtechms.com", // placeholder display, real sending happens in function
     bodyHtml: html,
     createdAt: now
   });
 
-  // Update ticket metadata (Zendesk style)
+  // ✅ Update ticket metadata
   await updateDoc(doc(db, "tickets", currentTicketId), {
     status: "pending",
     updatedAt: now,
     lastMessageAt: now,
-    lastMessagePreview: html.replace(/<[^>]*>/g, "").slice(0, 120)
+    lastMessagePreview: stripHtml(html).slice(0, 120)
   });
+
+  // ✅ Send email via Cloud Function (so user can reply from email)
+  // NOTE: If you haven't pasted the function URL & secret yet,
+  // this will fail but Firestore will still save your message.
+  try {
+    if (SEND_REPLY_FUNCTION_URL.startsWith("http") && ADMIN_SECRET.length > 10) {
+      const resp = await fetch(SEND_REPLY_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-secret": ADMIN_SECRET
+        },
+        body: JSON.stringify({
+          ticketId: currentTicketId,
+          bodyHtml: html
+        })
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text().catch(() => "");
+        console.error("Email send failed:", resp.status, txt);
+      }
+    } else {
+      console.warn("Email send skipped: set SEND_REPLY_FUNCTION_URL and ADMIN_SECRET in admin/tickets.js");
+    }
+  } catch (err) {
+    console.error("Email send exception:", err);
+  }
 
   if (window.clearTicketReply) window.clearTicketReply();
 
@@ -286,7 +320,7 @@ closeBtn?.addEventListener("click", async () => {
 });
 
 /* ----------------------------------------------------
-   FILTER EVENTS
+   FILTER
 ---------------------------------------------------- */
 statusFilter?.addEventListener("change", () => {
   currentTicketId = null;
