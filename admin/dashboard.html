@@ -1,199 +1,224 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Admin — Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Dashboard</title>
 
-<link rel="stylesheet" href="admin.css">
-<link rel="shortcut icon" href="../asset/logo-icon.png" /> 
+  <link rel="stylesheet" href="admin.css">
+  <link rel="shortcut icon" href="../asset/logo-icon.png" />
 </head>
 
 <body>
-<div class="admin-wrap">
+  <div class="admin-wrap">
 
-  <!-- TOP BAR -->
-  <header class="admin-topbar">
-    <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
-    <div class="row">
-      <div class="kv">Signed in as</div>
-      <div class="small" id="adminEmail">Loading...</div>
-      <!-- LOGOUT -->
-     <button id="logoutBtn" class="side-logout">Logout</button>
-    </div>
-  </header>
+    <!-- TOP BAR -->
+    <header class="admin-topbar">
+      <div class="brand"><div class="logo">G</div> Guided Tech Admin</div>
+      <div class="row">
+        <div class="kv">Signed in as</div>
+        <div class="small" id="adminEmail">Loading...</div>
 
-  <!-- GRID LAYOUT -->
-  <div class="admin-grid">
-
-    <!-- SIDEBAR -->
-    <aside class="admin-side">
-      <nav class="side-nav">
-        <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="blog.html">Blog Posts</a>
-        <a href="casestudy.html">Case Study</a>
-        <a href="team.html">Team Members</a>
-        <a href="faq.html">FAQs</a>
-        <a href="testimonials.html">Testimonials</a>
-        <a href="careers.html">Careers</a>
-        <a href="tickets.html">Tickets</a>
-      </nav>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="admin-main">
-
-      <div class="page-head">
-        <div>
-          <div class="page-title">Dashboard</div>
-          <div class="page-sub">Quick overview of your website data</div>
-        </div>
-
-        <div class="row">
-          <button class="btn btn-primary" onclick="location.href='blog.html'">New blog</button>
-          <button class="btn btn-ghost" onclick="location.href='team.html'">New team member</button>
-        </div>
+        <!-- LOGOUT -->
+        <button id="logoutBtn" class="side-logout">Logout</button>
       </div>
+    </header>
 
-      <!-- STAT CARDS -->
-      <section style="margin-bottom:18px">
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+    <!-- GRID LAYOUT -->
+    <div class="admin-grid">
 
-          <div class="card">
-            <div>
-              <div class="kv">Blog posts</div>
-              <div id="dash_blogs" class="page-sub">0</div>
-            </div>
-            <div><button class="btn btn-ghost" onclick="location.href='blog.html'">Manage</button></div>
+      <!-- SIDEBAR -->
+      <aside class="admin-side">
+        <nav class="side-nav">
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="blog.html">Blog Posts</a>
+          <a href="casestudy.html">Case Study</a>
+          <a href="team.html">Team Members</a>
+          <a href="faq.html">FAQs</a>
+          <a href="testimonials.html">Testimonials</a>
+          <a href="careers.html">Careers</a>
+          <a href="tickets.html">Tickets</a>
+        </nav>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="admin-main">
+
+        <div class="page-head">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Quick overview of your website data</div>
           </div>
 
-          <div class="card">
-            <div>
-              <div class="kv">Team members</div>
-              <div id="dash_team" class="page-sub">0</div>
-            </div>
-            <div><button class="btn btn-ghost" onclick="location.href='team.html'">Manage</button></div>
+          <div class="row">
+            <button class="btn btn-primary" onclick="location.href='blog.html'">New blog</button>
+            <button class="btn btn-ghost" onclick="location.href='team.html'">New team member</button>
           </div>
-
-          <div class="card">
-            <div>
-              <div class="kv">FAQs</div>
-              <div id="dash_faqs" class="page-sub">0</div>
-            </div>
-            <div><button class="btn btn-ghost" onclick="location.href='faq.html'">Manage</button></div>
-          </div>
-
-          <div class="card">
-            <div>
-              <div class="kv">Testimonials</div>
-              <div id="dash_testimonials" class="page-sub">0</div>
-            </div>
-            <div><button class="btn btn-ghost" onclick="location.href='testimonials.html'">Manage</button></div>
-          </div>
-
         </div>
-      </section>
 
-      <!-- RECENT POSTS -->
-      <section>
-        <h3 style="margin-bottom:10px">Recent blog posts</h3>
-        <div id="recentBlogs" class="list"></div>
-      </section>
+        <!-- STAT CARDS -->
+        <section style="margin-bottom:18px">
+          <!-- Back to 4 columns since Services is commented out -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
 
-    </main>
+            <div class="card">
+              <div>
+                <div class="kv">Blog posts</div>
+                <div id="dash_blogs" class="page-sub">0</div>
+              </div>
+              <div><button class="btn btn-ghost" onclick="location.href='blog.html'">Manage</button></div>
+            </div>
+
+            <div class="card">
+              <div>
+                <div class="kv">Team members</div>
+                <div id="dash_team" class="page-sub">0</div>
+              </div>
+              <div><button class="btn btn-ghost" onclick="location.href='team.html'">Manage</button></div>
+            </div>
+
+            <!-- ✅ SERVICES CARD (COMMENTED OUT FOR NOW)
+            <div class="card">
+              <div>
+                <div class="kv">Services</div>
+                <div id="dash_services" class="page-sub">0</div>
+              </div>
+              <div><button class="btn btn-ghost" onclick="location.href='services.html'">Manage</button></div>
+            </div>
+            -->
+
+            <div class="card">
+              <div>
+                <div class="kv">FAQs</div>
+                <div id="dash_faqs" class="page-sub">0</div>
+              </div>
+              <div><button class="btn btn-ghost" onclick="location.href='faq.html'">Manage</button></div>
+            </div>
+
+            <div class="card">
+              <div>
+                <div class="kv">Testimonials</div>
+                <div id="dash_testimonials" class="page-sub">0</div>
+              </div>
+              <div><button class="btn btn-ghost" onclick="location.href='testimonials.html'">Manage</button></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- RECENT POSTS -->
+        <section>
+          <h3 style="margin-bottom:10px">Recent blog posts</h3>
+          <div id="recentBlogs" class="list"></div>
+        </section>
+
+      </main>
+    </div>
+
   </div>
 
-</div>
+  <!-- FIREBASE + ADMIN -->
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="admin.js"></script>
 
+  <!-- DASHBOARD LOGIC -->
+  <script type="module">
+    import { AdminStore, UI } from "./admin.js";
+    import { auth } from "./firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-<!-- FIREBASE + ADMIN -->
-<script type="module" src="firebase.js"></script>
-<script type="module" src="admin.js"></script>
+    /* SHOW LOGGED-IN ADMIN EMAIL */
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        location.href = "login.html";
+        return;
+      }
+      const adminEmailEl = document.getElementById("adminEmail");
+      if (adminEmailEl) adminEmailEl.textContent = user.email || "";
+    });
 
-<!-- DASHBOARD LOGIC -->
-<script type="module">
-import { AdminStore, UI } from "./admin.js";
-import { auth } from "./firebase.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    /* LOG OUT */
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn?.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        location.href = "login.html";
+      } catch (err) {
+        console.error("Logout failed", err);
+      }
+    });
 
-/* SHOW LOGGED-IN ADMIN EMAIL */
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    location.href = "login.html";
-    return;
-  }
-  document.getElementById("adminEmail").textContent = user.email;
-});
+    /* Escape helper */
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, m => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[m]));
+    }
 
-  
-/*LOG OUT */
-import { signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    /* LOAD ALL COUNTS + RECENT POSTS */
+    async function loadDashboard() {
+      const [blogs, team, faqs, testimonials] = await Promise.all([
+        AdminStore.all("blogs"),
+        AdminStore.all("team"),
+        // ✅ SERVICES (COMMENTED OUT FOR NOW)
+        // AdminStore.all("services"),
+        AdminStore.all("faqs"),
+        AdminStore.all("testimonials")
+      ]);
 
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    location.href = "login.html";
-  });
-}
+      // Safe assignments (won't crash if an element is missing)
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = String(value);
+      };
 
- 
+      setText("dash_blogs", blogs.length);
+      setText("dash_team", team.length);
 
-/* Escape helper */
-function escapeHtml(s){
-  return String(s||"").replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;","</":"","\"":"&quot;","'":"&#39;"}[m])
-  );
-}
+      // ✅ SERVICES (COMMENTED OUT FOR NOW)
+      // setText("dash_services", services.length);
 
-/* LOAD ALL COUNTS + RECENT POSTS */
-async function loadDashboard(){
-  const [blogs, team, services, faqs, testimonials] = await Promise.all([
-    AdminStore.all("blogs"),
-    AdminStore.all("team"),
-    AdminStore.all("services"),
-    AdminStore.all("faqs"),
-    AdminStore.all("testimonials")
-  ]);
+      setText("dash_faqs", faqs.length);
+      setText("dash_testimonials", testimonials.length);
 
-  document.getElementById("dash_blogs").textContent = blogs.length;
-  document.getElementById("dash_team").textContent = team.length;
-  document.getElementById("dash_services").textContent = services.length;
-  document.getElementById("dash_faqs").textContent = faqs.length;
-  document.getElementById("dash_testimonials").textContent = testimonials.length;
+      const recent = [...blogs]
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+        .slice(0, 6);
 
-  const recent = [...blogs].sort((a,b)=> (b.createdAt||0) - (a.createdAt||0)).slice(0,6);
+      UI.renderList("#recentBlogs", recent, p => {
+        return `
+          <div class="meta">
+            <div class="title">${escapeHtml(p.title || "(no title)")}</div>
+            <div class="small">${escapeHtml(p.excerpt || "")}</div>
+          </div>
 
-  UI.renderList("#recentBlogs", recent, p => {
-    return `
-      <div class="meta">
-        <div class="title">${escapeHtml(p.title || "(no title)")}</div>
-        <div class="small">${escapeHtml(p.excerpt || "")}</div>
-      </div>
+          <div class="card-actions">
+            <button class="btn btn-ghost"
+              data-edit="blogs"
+              data-id="${p.id}">
+              Edit
+            </button>
 
-      <div class="card-actions">
-        <button class="btn btn-ghost"
-          data-edit="blogs"
-          data-id="${p.id}">
-          Edit
-        </button>
+            <button class="btn btn-danger"
+              data-remove="blogs"
+              data-id="${p.id}">
+              Delete
+            </button>
+          </div>
+        `;
+      });
+    }
 
-        <button class="btn btn-danger"
-          data-remove="blogs"
-          data-id="${p.id}">
-          Delete
-        </button>
-      </div>
-    `;
-  });
-}
+    /* RELOAD WHEN DATA CHANGES */
+    window.onAdminDataChanged = () => loadDashboard();
 
-/* RELOAD WHEN DATA CHANGES */
-window.onAdminDataChanged = () => loadDashboard();
-
-/* INITIAL LOAD */
-document.addEventListener("DOMContentLoaded", loadDashboard);
-</script>
+    /* INITIAL LOAD */
+    document.addEventListener("DOMContentLoaded", loadDashboard);
+  </script>
 
 </body>
 </html>
