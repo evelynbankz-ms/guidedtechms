@@ -1,3 +1,4 @@
+// admin/tickets.js
 import { db } from "./firebase.js";
 import {
   collection,
@@ -12,22 +13,27 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 /* ----------------------------------------------------
-   🔧 PLACEHOLDERS YOU WILL FILL LATER
+   🔧 REQUIRED PLACEHOLDERS (FILL THESE IN)
 ---------------------------------------------------- */
-// 1) Your deployed function URL for sendAdminTicketReply
-// Example: https://us-central1-YOUR_PROJECT.cloudfunctions.net/sendAdminTicketReply
-const SEND_REPLY_FUNCTION_URL = "PASTE_YOUR_sendAdminTicketReply_FUNCTION_URL_HERE";
+/**
+ * After you deploy Firebase Functions, you’ll get a URL like:
+ * https://us-central1-YOUR_PROJECT.cloudfunctions.net/sendAdminTicketEmail
+ */
+const SEND_REPLY_FUNCTION_URL =
+  "PASTE_YOUR_sendAdminTicketEmail_FUNCTION_URL_HERE";
 
-// 2) Must match sendgrid.inbound_secret in functions config
-// (Used as a shared admin secret header)
+/**
+ * Must match: firebase functions:config:set sendgrid.inbound_secret="..."
+ * This protects the function from random public calls.
+ */
 const ADMIN_SECRET = "PASTE_THE_SAME_RANDOM_SECRET_HERE";
 
 /* ----------------------------------------------------
    DOM
 ---------------------------------------------------- */
 const ticketList = document.getElementById("ticketList");
-const ticketEmpty = document.getElementById("ticketEmpty");
 
+const ticketEmpty = document.getElementById("ticketEmpty");
 const ticketHeader = document.getElementById("ticketHeader");
 const ticketSubject = document.getElementById("ticketSubject");
 const ticketMeta = document.getElementById("ticketMeta");
@@ -62,6 +68,10 @@ function escapeHtml(str) {
   }[m]));
 }
 
+function stripHtml(s) {
+  return String(s || "").replace(/<[^>]*>/g, "").trim();
+}
+
 function formatDate(ts) {
   if (!ts) return "";
   try {
@@ -76,15 +86,11 @@ function isQuillEmpty(html) {
   return !v || v === "<p><br></p>" || v === "<div><br></div>";
 }
 
-function stripHtml(s) {
-  return String(s || "").replace(/<[^>]*>/g, "").trim();
-}
-
 function showEmptyState() {
-  ticketEmpty.style.display = "block";
-  ticketHeader.style.display = "none";
-  ticketThread.style.display = "none";
-  ticketReplyBox.style.display = "none";
+  if (ticketEmpty) ticketEmpty.style.display = "block";
+  if (ticketHeader) ticketHeader.style.display = "none";
+  if (ticketThread) ticketThread.style.display = "none";
+  if (ticketReplyBox) ticketReplyBox.style.display = "none";
 }
 
 /* ----------------------------------------------------
@@ -103,11 +109,11 @@ async function loadTickets() {
 
   const snap = await getDocs(q);
 
-  ticketList.innerHTML = "";
+  if (ticketList) ticketList.innerHTML = "";
   const stats = { total: 0, open: 0, pending: 0, closed: 0 };
 
   snap.forEach((d) => {
-    const t = d.data();
+    const t = d.data() || {};
     const status = (t.status || "open").toLowerCase();
 
     stats.total++;
@@ -129,21 +135,22 @@ async function loadTickets() {
     `;
 
     item.addEventListener("click", () => openTicket(d.id));
-    ticketList.appendChild(item);
+    ticketList?.appendChild(item);
   });
 
-  statTotal.textContent = stats.total;
-  statOpen.textContent = stats.open;
-  statPending.textContent = stats.pending;
-  statClosed.textContent = stats.closed;
+  if (statTotal) statTotal.textContent = stats.total;
+  if (statOpen) statOpen.textContent = stats.open;
+  if (statPending) statPending.textContent = stats.pending;
+  if (statClosed) statClosed.textContent = stats.closed;
 
   if (!currentTicketId) showEmptyState();
 }
 
 /* ----------------------------------------------------
-   LOAD THREAD
+   LOAD THREAD (Zendesk-style: unified messages)
 ---------------------------------------------------- */
 async function loadThread(ticketId) {
+  if (!ticketThread) return;
   ticketThread.innerHTML = "";
 
   const snap = await getDocs(
@@ -160,7 +167,7 @@ async function loadThread(ticketId) {
   }
 
   snap.forEach((d) => {
-    const m = d.data();
+    const m = d.data() || {};
     const sender = m.sender === "admin" ? "admin" : "user";
 
     ticketThread.innerHTML += `
@@ -185,6 +192,7 @@ async function loadThread(ticketId) {
 async function openTicket(ticketId) {
   currentTicketId = ticketId;
 
+  // Highlight selected ticket
   document.querySelectorAll(".ticket-item").forEach((el) => {
     el.classList.toggle("active", el.dataset.id === ticketId);
   });
@@ -197,36 +205,44 @@ async function openTicket(ticketId) {
     return;
   }
 
-  currentTicketData = snap.data();
+  currentTicketData = snap.data() || {};
 
-  ticketEmpty.style.display = "none";
-  ticketHeader.style.display = "block";
-  ticketThread.style.display = "block";
-  ticketReplyBox.style.display = "block";
+  // Show ticket UI
+  if (ticketEmpty) ticketEmpty.style.display = "none";
+  if (ticketHeader) ticketHeader.style.display = "block";
+  if (ticketThread) ticketThread.style.display = "block";
+  if (ticketReplyBox) ticketReplyBox.style.display = "block";
 
-  // Init Quill (matches your HTML)
+  // Init Quill editor (your tickets.html defines window.initTicketQuill)
   if (window.initTicketQuill) window.initTicketQuill();
 
-  ticketSubject.textContent = currentTicketData.subject || "Support Ticket";
-  ticketMeta.textContent = `${currentTicketData.name || "Anonymous"} • ${currentTicketData.email || "No email"} • ${formatDate(currentTicketData.createdAt)}`;
+  // Fill header
+  if (ticketSubject) ticketSubject.textContent = currentTicketData.subject || "Support Ticket";
+  if (ticketMeta) {
+    ticketMeta.textContent = `${currentTicketData.name || "Anonymous"} • ${
+      currentTicketData.email || "No email"
+    } • ${formatDate(currentTicketData.createdAt)}`;
+  }
 
-  ticketStatus.value = (currentTicketData.status || "open").toLowerCase();
+  if (ticketStatus) ticketStatus.value = (currentTicketData.status || "open").toLowerCase();
 
   // Mark as read in admin
   await updateDoc(doc(db, "tickets", ticketId), {
     unreadAdmin: false
   });
 
+  // Load full thread
   await loadThread(ticketId);
 
+  // Clear editor
   if (window.clearTicketReply) window.clearTicketReply();
 
-  // Refresh list to remove unread dot
+  // Refresh list (unread dot disappears)
   await loadTickets();
 }
 
 /* ----------------------------------------------------
-   STATUS CHANGE
+   STATUS CHANGE (manual status update)
 ---------------------------------------------------- */
 ticketStatus?.addEventListener("change", async () => {
   if (!currentTicketId) return;
@@ -241,9 +257,9 @@ ticketStatus?.addEventListener("change", async () => {
 
 /* ----------------------------------------------------
    SEND ADMIN REPLY:
-   ✅ Save to Firestore thread
-   ✅ Update ticket metadata
-   ✅ Send email to customer (SendGrid via Function)
+   ✅ Save to Firestore thread (ticket_messages)
+   ✅ Update ticket metadata (tickets)
+   ✅ Call Cloud Function to send EMAIL only
 ---------------------------------------------------- */
 sendReplyBtn?.addEventListener("click", async () => {
   if (!currentTicketId) return;
@@ -253,17 +269,17 @@ sendReplyBtn?.addEventListener("click", async () => {
 
   const now = Date.now();
 
-  // ✅ Save admin message into thread
+  // 1) Save admin message into unified thread
   await addDoc(collection(db, "ticket_messages"), {
     ticketId: currentTicketId,
     sender: "admin",
     senderName: "Admin",
-    senderEmail: "support@guidedtechms.com", // placeholder display, real sending happens in function
+    senderEmail: "info@guidedtechms.com", // the actual sending happens in the function
     bodyHtml: html,
     createdAt: now
   });
 
-  // ✅ Update ticket metadata
+  // 2) Update ticket metadata (Zendesk-like)
   await updateDoc(doc(db, "tickets", currentTicketId), {
     status: "pending",
     updatedAt: now,
@@ -271,9 +287,8 @@ sendReplyBtn?.addEventListener("click", async () => {
     lastMessagePreview: stripHtml(html).slice(0, 120)
   });
 
-  // ✅ Send email via Cloud Function (so user can reply from email)
-  // NOTE: If you haven't pasted the function URL & secret yet,
-  // this will fail but Firestore will still save your message.
+  // 3) Send email via Cloud Function (ONLY EMAIL)
+  // If placeholders aren't filled yet, it will skip safely.
   try {
     if (SEND_REPLY_FUNCTION_URL.startsWith("http") && ADMIN_SECRET.length > 10) {
       const resp = await fetch(SEND_REPLY_FUNCTION_URL, {
@@ -293,12 +308,15 @@ sendReplyBtn?.addEventListener("click", async () => {
         console.error("Email send failed:", resp.status, txt);
       }
     } else {
-      console.warn("Email send skipped: set SEND_REPLY_FUNCTION_URL and ADMIN_SECRET in admin/tickets.js");
+      console.warn(
+        "Email send skipped: set SEND_REPLY_FUNCTION_URL and ADMIN_SECRET in admin/tickets.js"
+      );
     }
   } catch (err) {
     console.error("Email send exception:", err);
   }
 
+  // 4) Clear editor + refresh UI
   if (window.clearTicketReply) window.clearTicketReply();
 
   await loadTickets();
