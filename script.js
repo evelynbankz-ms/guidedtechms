@@ -271,20 +271,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
 
   if (btn && menu && overlay) {
-    function openMenu() {
-      menu.classList.add("open");
-      overlay.classList.add("show");
-      btn.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeMenu() {
-      menu.classList.remove("open");
-      overlay.classList.remove("show");
-      btn.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-    }
+      function openMenu() {
+        menu.classList.add("open");
+        overlay.classList.add("show");
+        btn.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+        document.body.classList.add("menu-open"); // ← NEW LINE
+      }
+      
+      function closeMenu() {
+        menu.classList.remove("open");
+        overlay.classList.remove("show");
+        btn.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        document.body.classList.remove("menu-open"); // ← NEW LINE
+        menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+      }
 
     // Hamburger toggle
     btn.addEventListener("click", (e) => {
