@@ -78,25 +78,11 @@ body {
   text-decoration: none;
 }
 
-/* Logo image styling */
 .navbar-logo-img {
   width: 32px;
   height: 32px;
   object-fit: contain;
   display: block;
-}
-
-/* ------------------------------------------------
-   CENTER NAV MENU + ALIGNMENT FIX (DESKTOP)
-------------------------------------------------- */
-.navbar-menu {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  gap: 32px;
-  align-items: center;
 }
 
 /* ------------------------------------------------
@@ -106,9 +92,6 @@ body {
   color: #cfe4f4;
   font-size: 16px;
   font-weight: 500;
-  line-height: 78px;
-  display: flex;
-  align-items: center;
   text-decoration: none;
   transition: color 0.25s ease;
 }
@@ -123,90 +106,6 @@ body {
 ------------------------------------------------- */
 .nav-item {
   position: relative;
-} 
-
-/* Hover buffer prevents dropdown flicker (desktop only) */
-.nav-item::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 14px;
-}
-
-/* ------------------------------------------------
-   MEGA DROPDOWN (DESKTOP)
-------------------------------------------------- */
-.mega-dropdown {
-  position: absolute;
-  top: calc(100% - 6px);
-  left: 50%;
-  transform: translateX(-50%) translateY(12px);
-  width: 700px;
-  background: rgba(13, 42, 58, 0.96);
-  backdrop-filter: blur(10px);
-  border-radius: 18px;
-  padding: 28px 32px;
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-  transition: 0.25s ease;
-  display: flex;
-  gap: 40px;
-  z-index: 4000;
-}
-
-.nav-item:hover .mega-dropdown,
-.mega-dropdown:hover {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Mega menu columns */
-.mega-col {
-  flex: 1;
-  min-width: 180px;
-}
-
-.mega-col h4 {
-  color: #9cc7e1;
-  font-size: 13px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-/* Mega menu links */
-.mega-col a {
-  color: #e0edf7;
-  display: flex;
-  gap: 10px;
-  text-decoration: none;
-  padding: 8px 0;
-  border-radius: 6px;
-  font-size: 15px;
-  transition: 0.25s ease;
-}
-
-.mega-col a:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  padding-left: 12px;
-}
-
-.mega-col a .icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.18);
-  transition: 0.25s ease;
-}
-
-.mega-col a:hover .icon {
-  background: rgba(255, 255, 255, 0.35);
-  transform: translateX(2px);
 }
 
 /* ------------------------------------------------
@@ -256,9 +155,9 @@ body {
   transition: all 0.3s ease;
 }
 
-/* =================================================
+/* ------------------------------------------------
    OVERLAY
-================================================= */
+------------------------------------------------- */
 .nav-overlay {
   position: fixed;
   inset: 0;
@@ -276,7 +175,112 @@ body {
 }
 
 /* =================================================
-   MOBILE / TABLET NAVBAR - FIXED VERSION
+   DESKTOP STYLES (1025px and above)
+================================================= */
+@media (min-width: 1025px) {
+  
+  /* Center nav menu on desktop */
+  .navbar-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-link {
+    line-height: 78px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Hover buffer prevents dropdown flicker */
+  .nav-item::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 14px;
+  }
+
+  /* Mega dropdown (desktop) */
+  .mega-dropdown {
+    position: absolute;
+    top: calc(100% - 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    width: 700px;
+    background: rgba(13, 42, 58, 0.96);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 28px 32px;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: 0.25s ease;
+    display: flex;
+    gap: 40px;
+    z-index: 4000;
+  }
+
+  .nav-item:hover .mega-dropdown,
+  .mega-dropdown:hover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Mega menu columns */
+  .mega-col {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .mega-col h4 {
+    color: #9cc7e1;
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  /* Mega menu links */
+  .mega-col a {
+    color: #e0edf7;
+    display: flex;
+    gap: 10px;
+    text-decoration: none;
+    padding: 8px 0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: 0.25s ease;
+  }
+
+  .mega-col a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    padding-left: 12px;
+  }
+
+  .mega-col a .icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.18);
+    transition: 0.25s ease;
+  }
+
+  .mega-col a:hover .icon {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateX(2px);
+  }
+}
+
+/* =================================================
+   MOBILE / TABLET (1024px and below)
 ================================================= */
 @media (max-width: 1024px) {
   
@@ -287,45 +291,27 @@ body {
     justify-content: center;
   }
 
-  /* Hamburger animation when menu is open */
-  .menu-toggle .menu-line:nth-child(1) {
-    transition: all 0.3s ease;
-  }
-  
-  .menu-toggle .menu-line:nth-child(2) {
-    transition: all 0.3s ease;
-  }
-  
-  .menu-toggle .menu-line:nth-child(3) {
-    transition: all 0.3s ease;
-  }
-
   /* Transform hamburger to X when open */
-  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(1) {
+  body.menu-open .menu-toggle .menu-line:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
   }
 
-  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(2) {
+  body.menu-open .menu-toggle .menu-line:nth-child(2) {
     opacity: 0;
   }
 
-  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(3) {
+  body.menu-open .menu-toggle .menu-line:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
   }
 
-  /* Transform menu into slide-in panel from right */
+  /* Mobile menu panel */
   .navbar-menu {
-    /* CRITICAL FIX: Remove all absolute/transform positioning */
     position: fixed;
     top: 0;
-    right: 0;
+    right: -100%;
     bottom: 0;
-    left: auto;
     width: 85%;
     max-width: 380px;
-    
-    /* Reset desktop centering */
-    transform: translateX(100%);  /* Start off-screen to the right */
     
     background: linear-gradient(180deg, #071a24 0%, #0d2a3a 100%);
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
@@ -337,15 +323,19 @@ body {
     padding: 80px 28px 28px;
     gap: 0;
     
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 3000;
   }
 
-  /* Close button using ::before pseudo-element */
+  /* When menu is open */
+  .navbar-menu.open {
+    right: 0;
+  }
+
+  /* Close button */
   .navbar-menu::before {
     content: '✕';
     position: absolute;
@@ -362,7 +352,7 @@ body {
     color: #ffffff;
     cursor: pointer;
     transition: all 0.25s ease;
-    z-index: 3100;
+    z-index: 1;
     font-weight: 300;
     line-height: 1;
   }
@@ -372,12 +362,7 @@ body {
     transform: rotate(90deg);
   }
 
-  /* When JS adds .open class - slide into view */
-  .navbar-menu.open {
-    transform: translateX(0) !important;  /* Override everything */
-  }
-
-  /* Reset nav link styling for mobile */
+  /* Nav links on mobile */
   .nav-link {
     width: 100%;
     padding: 16px 0;
@@ -388,15 +373,13 @@ body {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.25s ease;
   }
 
   .nav-link:hover {
-    color: #ffffff;
     padding-left: 8px;
   }
 
-  /* Add dropdown indicator arrow */
+  /* Dropdown indicator */
   .nav-parent::after {
     content: '›';
     font-size: 28px;
@@ -411,37 +394,32 @@ body {
     color: #ffffff;
   }
 
-  /* Disable desktop hover behaviors */
-  .nav-item:hover .mega-dropdown {
-    display: none !important;
-    opacity: 0;
-    visibility: hidden;
-  }
-
+  /* Disable desktop hover */
   .nav-item::after {
     display: none;
   }
 
-  /* Mobile dropdown accordion styling */
+  .nav-item:hover .mega-dropdown {
+    display: none;
+  }
+
+  /* Mobile dropdowns */
   .mega-dropdown {
     position: static;
     width: 100%;
     background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: none;
     border-radius: 10px;
     padding: 0;
     margin: 0;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: none;
     display: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                padding 0.4s ease,
-                margin 0.4s ease;
+    transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .nav-item.open .mega-dropdown {
@@ -489,7 +467,6 @@ body {
     height: 16px;
   }
 
-  /* Adjust right actions */
   .btn-primary {
     padding: 8px 14px;
     font-size: 14px;
@@ -500,28 +477,10 @@ body {
   }
 }
 
-/* Smaller tablets */
-@media (max-width: 768px) {
-  .navbar-menu {
-    width: 90%;
-    max-width: 340px;
-  }
-}
-
-/* Mobile phones */
 @media (max-width: 420px) {
   .navbar-menu {
     width: 100%;
     max-width: none;
-    padding: 70px 20px 20px;
-  }
-
-  .navbar-menu::before {
-    right: 20px;
-    top: 16px;
-    width: 40px;
-    height: 40px;
-    font-size: 22px;
   }
 
   .btn-primary {
@@ -532,15 +491,6 @@ body {
   .navbar-logo-img {
     width: 28px;
     height: 28px;
-  }
-
-  .logo-text {
-    font-size: 13px;
-  }
-
-  .nav-link {
-    font-size: 16px;
-    padding: 14px 0;
   }
 }
 
