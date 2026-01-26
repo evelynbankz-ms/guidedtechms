@@ -494,6 +494,23 @@ body {
   }
 }
 
+/* DEBUGGING - REMOVE LATER */
+@media (max-width: 1024px) {
+  .navbar-menu {
+    background: red !important;
+    right: 0 !important;
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 300px !important;
+    z-index: 9999 !important;
+  }
+  
+  .navbar-menu * {
+    color: yellow !important;
+    display: block !important;
+  }
+}
 
 /* ----------------------------------------------------
    HERO SECTION — FINAL, FULLY CORRECTED VERSION
