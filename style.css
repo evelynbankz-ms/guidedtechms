@@ -256,19 +256,6 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Hamburger animation when menu is open */
-.navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(2) {
-  opacity: 0;
-}
-
-.navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
 /* =================================================
    OVERLAY
 ================================================= */
@@ -289,7 +276,7 @@ body {
 }
 
 /* =================================================
-   MOBILE / TABLET NAVBAR
+   MOBILE / TABLET NAVBAR - PROPERLY OPENED NOW!
 ================================================= */
 @media (max-width: 1024px) {
   
@@ -298,6 +285,32 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  /* Hamburger animation when menu is open */
+  .menu-toggle .menu-line:nth-child(1) {
+    transition: all 0.3s ease;
+  }
+  
+  .menu-toggle .menu-line:nth-child(2) {
+    transition: all 0.3s ease;
+  }
+  
+  .menu-toggle .menu-line:nth-child(3) {
+    transition: all 0.3s ease;
+  }
+
+  /* Transform hamburger to X when open */
+  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar-menu.open ~ .navbar-actions .menu-toggle .menu-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   /* Transform menu into slide-in panel from right */
@@ -482,11 +495,6 @@ body {
   .logo-text {
     font-size: 14px;
   }
-
-  /* Prevent body scroll when menu is open */
-  body.menu-open {
-    overflow: hidden;
-  }
 }
 
 /* Smaller tablets */
@@ -532,7 +540,6 @@ body {
     padding: 14px 0;
   }
 }
-
 
 
 
