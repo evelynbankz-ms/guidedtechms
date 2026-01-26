@@ -276,7 +276,7 @@ body {
 }
 
 /* =================================================
-   MOBILE / TABLET NAVBAR - PROPERLY OPENED NOW!
+   MOBILE / TABLET NAVBAR - FIXED VERSION
 ================================================= */
 @media (max-width: 1024px) {
   
@@ -315,6 +315,7 @@ body {
 
   /* Transform menu into slide-in panel from right */
   .navbar-menu {
+    /* CRITICAL FIX: Remove all absolute/transform positioning */
     position: fixed;
     top: 0;
     right: 0;
@@ -322,6 +323,9 @@ body {
     left: auto;
     width: 85%;
     max-width: 380px;
+    
+    /* Reset desktop centering */
+    transform: translateX(100%);  /* Start off-screen to the right */
     
     background: linear-gradient(180deg, #071a24 0%, #0d2a3a 100%);
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
@@ -333,7 +337,6 @@ body {
     padding: 80px 28px 28px;
     gap: 0;
     
-    transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
     
@@ -345,7 +348,7 @@ body {
   /* Close button using ::before pseudo-element */
   .navbar-menu::before {
     content: '✕';
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 24px;
     width: 44px;
@@ -369,9 +372,9 @@ body {
     transform: rotate(90deg);
   }
 
-  /* When JS adds .open class */
+  /* When JS adds .open class - slide into view */
   .navbar-menu.open {
-    transform: translateX(0);
+    transform: translateX(0) !important;  /* Override everything */
   }
 
   /* Reset nav link styling for mobile */
@@ -410,7 +413,7 @@ body {
 
   /* Disable desktop hover behaviors */
   .nav-item:hover .mega-dropdown {
-    display: none;
+    display: none !important;
     opacity: 0;
     visibility: hidden;
   }
@@ -540,7 +543,6 @@ body {
     padding: 14px 0;
   }
 }
-
 
 
 /* ----------------------------------------------------
