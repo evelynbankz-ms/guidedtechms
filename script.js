@@ -262,81 +262,75 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
+     - NOW INSIDE THE MAIN DOMContentLoaded!
   ========================================================= */
-/* =========================================================
-   NAVBAR MOBILE MENU (FIXED)
-   - Fixes "Unexpected end of input" by giving you a complete, closed block
-   - Works with your current HTML:
-     .menu-toggle, .navbar-menu, #navOverlay
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
   const btn = document.querySelector(".menu-toggle");
   const menu = document.querySelector(".navbar-menu");
   const overlay = document.getElementById("navOverlay");
 
   const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
 
-  if (!btn || !menu || !overlay) return;
+  if (btn && menu && overlay) {
+    function openMenu() {
+      menu.classList.add("open");
+      overlay.classList.add("show");
+      btn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
 
-  function openMenu() {
-    menu.classList.add("open");
-    overlay.classList.add("show");
-    btn.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
-  }
+    function closeMenu() {
+      menu.classList.remove("open");
+      overlay.classList.remove("show");
+      btn.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+    }
 
-  function closeMenu() {
-    menu.classList.remove("open");
-    overlay.classList.remove("show");
-    btn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-    menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-  }
-
-  // Hamburger toggle
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (!isMobile()) return;
-    menu.classList.contains("open") ? closeMenu() : openMenu();
-  });
-
-  // Overlay closes menu
-  overlay.addEventListener("click", () => {
-    if (!isMobile()) return;
-    closeMenu();
-  });
-
-  // ESC closes
-  document.addEventListener("keydown", (e) => {
-    if (!isMobile()) return;
-    if (e.key === "Escape") closeMenu();
-  });
-
-  // Accordion dropdown (mobile only)
-  menu.querySelectorAll(".nav-item").forEach((item) => {
-    const trigger = item.querySelector(":scope > .nav-link");
-    const dropdown = item.querySelector(":scope > .mega-dropdown");
-    if (!trigger || !dropdown) return;
-
-    trigger.addEventListener("click", (e) => {
-      if (!isMobile()) return;
+    // Hamburger toggle
+    btn.addEventListener("click", (e) => {
       e.preventDefault();
-
-      // close others
-      menu.querySelectorAll(".nav-item.open").forEach(openItem => {
-        if (openItem !== item) openItem.classList.remove("open");
-      });
-
-      item.classList.toggle("open");
+      if (!isMobile()) return;
+      menu.classList.contains("open") ? closeMenu() : openMenu();
     });
-  });
 
-  // If you resize back to desktop, reset mobile state
-  window.addEventListener("resize", () => {
-    if (!isMobile()) closeMenu();
-  });
-});
+    // Overlay closes menu
+    overlay.addEventListener("click", () => {
+      if (!isMobile()) return;
+      closeMenu();
+    });
+
+    // ESC closes
+    document.addEventListener("keydown", (e) => {
+      if (!isMobile()) return;
+      if (e.key === "Escape") closeMenu();
+    });
+
+    // Accordion dropdown (mobile only)
+    menu.querySelectorAll(".nav-item").forEach((item) => {
+      const trigger = item.querySelector(":scope > .nav-link");
+      const dropdown = item.querySelector(":scope > .mega-dropdown");
+      if (!trigger || !dropdown) return;
+
+      trigger.addEventListener("click", (e) => {
+        if (!isMobile()) return;
+        e.preventDefault();
+
+        // close others
+        menu.querySelectorAll(".nav-item.open").forEach(openItem => {
+          if (openItem !== item) openItem.classList.remove("open");
+        });
+
+        item.classList.toggle("open");
+      });
+    });
+
+    // If you resize back to desktop, reset mobile state
+    window.addEventListener("resize", () => {
+      if (!isMobile()) closeMenu();
+    });
+  }
+
+}); // ← THIS WAS MISSING! Closes the main DOMContentLoaded
 
 
 
