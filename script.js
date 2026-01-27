@@ -260,9 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* =========================================================
+   
+ /* =========================================================
    MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
-   - NOW INSIDE THE MAIN DOMContentLoaded!
 ========================================================= */
 const btn = document.querySelector(".menu-toggle");
 const menu = document.querySelector(".navbar-menu");
@@ -282,26 +282,27 @@ if (btn && menu && overlay) {
     overlay.classList.remove("show");
   });
 
-  // Click close button (::before pseudo-element) to close
+  // Click close button to close (only in top-right corner)
   menu.addEventListener("click", (e) => {
-    // Check if click is in top-right area where close button is
     const rect = menu.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
     
-    // Close button is at top: 20px, right: 20px, size: 44px
+    // Only close if clicking the X button area (top-right)
     if (clickX > rect.width - 70 && clickY < 70) {
       menu.classList.remove("open");
       overlay.classList.remove("show");
+      e.stopPropagation(); // Prevent other clicks
     }
   });
 
-  // Accordion dropdowns
+  // Accordion dropdowns - FIXED
   document.querySelectorAll(".nav-item").forEach(item => {
     const link = item.querySelector(".nav-parent");
     if (link) {
       link.addEventListener("click", (e) => {
         e.preventDefault();
+        e.stopPropagation(); // IMPORTANT: Stop click from bubbling
         
         // Close other open dropdowns
         document.querySelectorAll(".nav-item.open").forEach(openItem => {
