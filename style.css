@@ -1499,12 +1499,6 @@ body {
   .floating-card { left: -22px; bottom: -30px; width: 200px; }
 }
 
-@media (max-width: 860px) {
-  .navbar-menu { display:none; } /* mobile: hide centered nav */
-  .menu-toggle { display:flex; position:relative; z-index:1400; }
-  .navbar-actions { display:flex; gap:8px; align-items:center; }
-  .navbar-container { padding: 0 16px; }
-
   .hero-wrapper {
     flex-direction: column-reverse;
     align-items:center;
