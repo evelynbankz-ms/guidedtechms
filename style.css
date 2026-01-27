@@ -201,7 +201,7 @@ body {
 }
 
 /* ================================================
-   MOBILE ONLY - IMPROVED STYLING
+   MOBILE ONLY - FIXED VERSION
 ================================================ */
 @media (max-width: 1024px) {
   .menu-toggle {
@@ -259,9 +259,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #e0edf7;
+    color: #ffffff;  /* ← WHITE TEXT */
     padding: 16px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     text-decoration: none;
     font-size: 17px;
     font-weight: 500;
@@ -275,6 +275,7 @@ body {
 
   .nav-link.active {
     color: #ffffff;
+    font-weight: 600;
   }
 
   .nav-item {
@@ -282,18 +283,22 @@ body {
   }
 
   /* Dropdown arrow indicator */
+  .nav-parent {
+    cursor: pointer;
+    user-select: none;
+  }
+
   .nav-parent::after {
     content: '›';
     font-size: 28px;
     font-weight: 300;
     line-height: 1;
     transition: transform 0.3s ease;
-    color: #9cc7e1;
+    color: #ffffff;  /* ← WHITE ARROW */
   }
 
   .nav-item.open .nav-parent::after {
     transform: rotate(90deg);
-    color: #ffffff;
   }
 
   /* Dropdown container */
@@ -301,12 +306,12 @@ body {
     display: none;
     max-height: 0;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 0;
     margin: 0;
     transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .nav-item.open .mega-dropdown {
@@ -322,12 +327,13 @@ body {
   }
 
   .mega-col h4 {
-    color: #9cc7e1;
-    font-size: 11px;
+    color: #ffffff;  /* ← WHITE HEADINGS */
+    font-size: 12px;
     margin: 12px 0 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
+    opacity: 0.8;
   }
 
   .mega-col:first-child h4 {
@@ -338,17 +344,18 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #e0edf7;
+    color: #ffffff;  /* ← WHITE LINKS */
     padding: 10px 8px;
     text-decoration: none;
     font-size: 15px;
     border-radius: 6px;
     transition: all 0.25s ease;
+    opacity: 0.9;
   }
 
   .mega-col a:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 1;
     padding-left: 16px;
   }
 
@@ -356,14 +363,14 @@ body {
     display: inline-block;
     width: 16px;
     height: 16px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     flex-shrink: 0;
     transition: all 0.25s ease;
   }
 
   .mega-col a:hover .icon {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.5);
   }
 
   .btn-primary {
@@ -376,7 +383,6 @@ body {
   }
 }
 
-/* Smaller phones */
 @media (max-width: 420px) {
   .navbar-menu {
     width: 100%;
