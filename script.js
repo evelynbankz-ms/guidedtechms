@@ -169,27 +169,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })();
 
-  /* =========================================================
-     SMOOTH SCROLL (only for # links)
-     - Updated to close .open (not .active)
-  ========================================================= */
-  const navbarMenuEl = safeQuery(".navbar-menu");
+/* =========================================================
+   SMOOTH SCROLL (only for # links)
+   - FIXED: Exclude nav-parent dropdown triggers
+========================================================= */
+const navbarMenuEl = safeQuery(".navbar-menu");
 
-  safeQueryAll(".nav-link").forEach(link => {
-    link.addEventListener("click", e => {
-      const href = link.getAttribute("href");
-      if (!href || !href.startsWith("#")) return;
+safeQueryAll(".nav-link:not(.nav-parent)").forEach(link => {  // ← ADDED :not(.nav-parent)
+  link.addEventListener("click", e => {
+    const href = link.getAttribute("href");
+    if (!href || !href.startsWith("#") || href === "#") return;  // ← ALSO CHECK href === "#"
 
-      e.preventDefault();
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    e.preventDefault();
+    const target = safeQuery(href);  // ← USE safeQuery instead of querySelector
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
 
-      // close mobile menu if open
-      navbarMenuEl?.classList.remove("open");
-      document.getElementById("navOverlay")?.classList.remove("show");
-      document.body.style.overflow = "";
-    });
+    // close mobile menu if open
+    navbarMenuEl?.classList.remove("open");
+    document.getElementById("navOverlay")?.classList.remove("show");
+    document.body.style.overflow = "";
   });
-
+});
+   
   /* =========================================================
      SCROLL REVEAL
   ========================================================= */
