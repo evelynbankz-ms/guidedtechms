@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
    
- /* =========================================================
+/* =========================================================
    MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
 ========================================================= */
 const btn = document.querySelector(".menu-toggle");
@@ -270,58 +270,90 @@ const overlay = document.getElementById("navOverlay");
 
 if (btn && menu && overlay) {
   
+  // Prevent any clicks inside the menu from closing it
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
   // Open/close toggle
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
     menu.classList.toggle("open");
     overlay.classList.toggle("show");
+    document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
   });
 
-  // Click overlay to close
-  overlay.addEventListener("click", () => {
+  // Click overlay to close ONLY
+  overlay.addEventListener("click", (e) => {
+    e.stopPropagation();
     menu.classList.remove("open");
     overlay.classList.remove("show");
+    document.body.style.overflow = "";
+    // Close all dropdowns
+    document.querySelectorAll(".nav-item.open").forEach(item => {
+      item.classList.remove("open");
+    });
   });
 
-  // Click close button to close (only in top-right corner)
+  // Detect close button click (top-right corner of menu)
   menu.addEventListener("click", (e) => {
     const rect = menu.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
     
-    // Only close if clicking the X button area (top-right)
+    // Close button area: top 70px, right 70px
     if (clickX > rect.width - 70 && clickY < 70) {
       menu.classList.remove("open");
       overlay.classList.remove("show");
-      e.stopPropagation(); // Prevent other clicks
-    }
-  });
-
-  // Accordion dropdowns - FIXED
-  document.querySelectorAll(".nav-item").forEach(item => {
-    const link = item.querySelector(".nav-parent");
-    if (link) {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation(); // IMPORTANT: Stop click from bubbling
-        
-        // Close other open dropdowns
-        document.querySelectorAll(".nav-item.open").forEach(openItem => {
-          if (openItem !== item) {
-            openItem.classList.remove("open");
-          }
-        });
-        
-        // Toggle current dropdown
-        item.classList.toggle("open");
+      document.body.style.overflow = "";
+      // Close all dropdowns
+      document.querySelectorAll(".nav-item.open").forEach(item => {
+        item.classList.remove("open");
       });
     }
   });
 
-  // ESC key to close menu
+  // Accordion dropdowns
+  document.querySelectorAll(".nav-parent").forEach(parentLink => {
+    parentLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const navItem = parentLink.closest(".nav-item");
+      
+      if (navItem) {
+        // Close other dropdowns
+        document.querySelectorAll(".nav-item").forEach(item => {
+          if (item !== navItem && item.classList.contains("open")) {
+            item.classList.remove("open");
+          }
+        });
+        
+        // Toggle current dropdown
+        navItem.classList.toggle("open");
+      }
+    });
+  });
+
+  // Regular nav links (non-dropdown) should work normally
+  document.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
+    link.addEventListener("click", () => {
+      // Close menu when clicking regular links
+      menu.classList.remove("open");
+      overlay.classList.remove("show");
+      document.body.style.overflow = "";
+    });
+  });
+
+  // ESC key to close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && menu.classList.contains("open")) {
       menu.classList.remove("open");
       overlay.classList.remove("show");
+      document.body.style.overflow = "";
+      document.querySelectorAll(".nav-item.open").forEach(item => {
+        item.classList.remove("open");
+      });
     }
   });
 }
