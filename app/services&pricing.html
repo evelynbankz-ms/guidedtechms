@@ -1,0 +1,131 @@
+<!-- =========================
+     SERVICES & PRICING (HTML)
+     ========================= -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Services & Pricing | GuidedTech</title>
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="services-pricing.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <div class="brand">
+          <div class="brand__mark" aria-hidden="true">G</div>
+          <div class="brand__text">
+            <div class="brand__name">GuidedTech</div>
+            <div class="brand__sub">Admin</div>
+          </div>
+        </div>
+
+        <nav class="topbar__actions" aria-label="Top actions">
+          <button class="btn btn--ghost" id="btnLogin">Log In</button>
+          <button class="btn btn--primary" id="btnGetStarted">Get Started</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container app">
+      <!-- Sidebar (stacks on mobile) -->
+      <aside class="sidebar" aria-label="Sidebar navigation">
+        <div class="sidebar__group">
+          <a class="sidebar__item is-active" href="#" aria-current="page">
+            <span class="sidebar__icon" aria-hidden="true">☰</span>
+            <span>Services & Pricing</span>
+          </a>
+          <a class="sidebar__item" href="#" id="navMySubscriptions">
+            <span class="sidebar__icon" aria-hidden="true">👤</span>
+            <span>My Subscriptions</span>
+          </a>
+          <a class="sidebar__item" href="#" id="navDashboard">
+            <span class="sidebar__icon" aria-hidden="true">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="sidebar__footer">
+          <div class="userpill" id="userPill" hidden>
+            <div class="userpill__avatar" id="userAvatar">U</div>
+            <div class="userpill__meta">
+              <div class="userpill__name" id="userName">User</div>
+              <div class="userpill__email" id="userEmail">email@example.com</div>
+            </div>
+            <button class="btn btn--ghost btn--sm" id="btnLogout" title="Sign out">Sign out</button>
+          </div>
+
+          <div class="hint" id="authHint">
+            Log in to subscribe and activate services.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <section class="content" aria-label="Page content">
+        <header class="pagehead">
+          <h1>Services &amp; Pricing</h1>
+          <p class="pagehead__sub">
+            Choose a service to activate or pick a plan that fits your business.
+          </p>
+        </header>
+
+        <!-- Status row -->
+        <div class="statusbar" role="status" aria-live="polite">
+          <div class="statusbar__left">
+            <span class="dot" id="authDot" aria-hidden="true"></span>
+            <span id="authStatusText">Not signed in</span>
+          </div>
+          <div class="statusbar__right" id="loadingText">Loading…</div>
+        </div>
+
+        <!-- Services -->
+        <section class="block">
+          <div class="block__head">
+            <h2>Services</h2>
+            <p>Activate standalone services or bundle them in a plan.</p>
+          </div>
+
+          <div class="grid services" id="servicesGrid" aria-busy="true">
+            <!-- Cards injected by JS -->
+          </div>
+
+          <div class="empty" id="servicesEmpty" hidden>
+            No services found. Add docs in Firestore collection <code>services</code>.
+          </div>
+        </section>
+
+        <!-- Plans -->
+        <section class="block">
+          <div class="block__head">
+            <h2>Subscription Plans</h2>
+            <p>Simple plans with predictable monthly pricing.</p>
+          </div>
+
+          <div class="grid plans" id="plansGrid" aria-busy="true">
+            <!-- Plan cards injected by JS -->
+          </div>
+
+          <div class="empty" id="plansEmpty" hidden>
+            No plans found. Add docs in Firestore collection <code>plans</code>.
+          </div>
+        </section>
+
+        <footer class="footnote">
+          <span>Need help choosing? Contact support.</span>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="services-pricing.js"></script>
+</body>
+</html>
