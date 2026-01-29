@@ -1,149 +1,103 @@
-// =========================
-// SERVICES & PRICING (JS)
-// Firebase Auth + Firestore
-// =========================
+/* ==============================
+   FILE: app/services-pricing.js
+   ============================== */
 
-// IMPORTANT: This file uses Firebase v10+ modular SDK from CDN.
-// If your site already bundles Firebase via your build system,
-// replace these imports with your installed Firebase imports.
+import { db, auth } from "../admin/firebase.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import {
-  getFirestore,
   collection,
   getDocs,
   addDoc,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-/* =========================
-   1) CONFIG
-   ========================= */
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-// TODO: INSERT YOUR FIREBASE CONFIG HERE (FROM FIREBASE CONSOLE)
-const firebaseConfig = {
-  // apiKey: "....",
-  // authDomain: "....",
-  // projectId: "....",
-  // storageBucket: "....",
-  // messagingSenderId: "....",
-  // appId: "...."
+/* ------------------------------
+   Defensive helpers (like your homepage)
+-------------------------------- */
+const safeQuery = (sel) => {
+  try { return document.querySelector(sel); } catch { return null; }
 };
 
-/* =========================
-   2) INIT
-   ========================= */
+/* ------------------------------
+   DOM Refs
+-------------------------------- */
+const servicesGrid = safeQuery("#servicesGrid");
+const plansGrid = safeQuery("#plansGrid");
+const servicesEmpty = safeQuery("#servicesEmpty");
+const plansEmpty = safeQuery("#plansEmpty");
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const authDot = safeQuery("#authDot");
+const authText = safeQuery("#authText");
+const loadText = safeQuery("#loadText");
 
-/* =========================
-   3) ELEMENTS
-   ========================= */
+const btnLogin = safeQuery("#btnLogin");
+const btnLogout = safeQuery("#btnLogout");
 
-const servicesGrid = document.getElementById("servicesGrid");
-const plansGrid = document.getElementById("plansGrid");
-const servicesEmpty = document.getElementById("servicesEmpty");
-const plansEmpty = document.getElementById("plansEmpty");
-
-const btnLogin = document.getElementById("btnLogin");
-const btnGetStarted = document.getElementById("btnGetStarted");
-const btnLogout = document.getElementById("btnLogout");
-
-const authDot = document.getElementById("authDot");
-const authStatusText = document.getElementById("authStatusText");
-const loadingText = document.getElementById("loadingText");
-
-const userPill = document.getElementById("userPill");
-const userAvatar = document.getElementById("userAvatar");
-const userName = document.getElementById("userName");
-const userEmail = document.getElementById("userEmail");
-const authHint = document.getElementById("authHint");
-
-const navMySubscriptions = document.getElementById("navMySubscriptions");
-const navDashboard = document.getElementById("navDashboard");
-
-/* =========================
-   4) UTILITIES
-   ========================= */
-
-function setLoading(isLoading, label = "Loading…") {
-  loadingText.textContent = isLoading ? label : "";
+/* ------------------------------
+   Utils
+-------------------------------- */
+function setLoading(msg) {
+  if (loadText) loadText.textContent = msg || "";
 }
 
-function setAuthUI(user) {
-  if (user) {
-    authDot.style.background = "#16a34a"; // green
-    authStatusText.textContent = "Signed in";
-    btnLogin.hidden = true;
-
-    userPill.hidden = false;
-    authHint.hidden = true;
-
-    const displayName = user.displayName || "Account";
-    const email = user.email || "";
-    userName.textContent = displayName;
-    userEmail.textContent = email;
-
-    const initial = (displayName || email || "U").trim().charAt(0).toUpperCase();
-    userAvatar.textContent = initial;
-  } else {
-    authDot.style.background = "#d1d5db"; // gray
-    authStatusText.textContent = "Not signed in";
-    btnLogin.hidden = false;
-
-    userPill.hidden = true;
-    authHint.hidden = false;
-  }
+function money(cents) {
+  if (typeof cents !== "number") return "$—";
+  return (cents / 100).toLocaleString(undefined, { style: "currency", currency: "USD" });
 }
 
-function money(amountCents) {
-  if (typeof amountCents !== "number") return "$—";
-  const dollars = amountCents / 100;
-  return dollars.toLocaleString(undefined, { style: "currency", currency: "USD" });
-}
-
-function safeText(str) {
+function esc(str) {
   return String(str ?? "").replace(/[<>&"]/g, (ch) => {
     const map = { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" };
     return map[ch] || ch;
   });
 }
 
-/* =========================
-   5) RENDER
-   ========================= */
+function setAuthUI(user) {
+  if (user) {
+    if (authDot) authDot.style.background = "#16a34a";
+    if (authText) authText.textContent = `Signed in as ${user.email || "user"}`;
+    if (btnLogin) btnLogin.style.display = "none";
+    if (btnLogout) btnLogout.style.display = "inline-flex";
+  } else {
+    if (authDot) authDot.style.background = "#d1d5db";
+    if (authText) authText.textContent = "Not signed in";
+    if (btnLogin) btnLogin.style.display = "inline-flex";
+    if (btnLogout) btnLogout.style.display = "none";
+  }
+}
 
+/* ------------------------------
+   Render
+-------------------------------- */
 function renderServiceCard(service, user) {
-  const title = safeText(service.name || "Service");
-  const desc = safeText(service.description || "Brief description of the service.");
-  const fromPrice = money(service.fromPriceCents ?? null);
-  const icon = safeText(service.icon || "🛠️");
+  const icon = esc(service.icon || "🛠️");
+  const title = esc(service.name || "Service");
+  const desc = esc(service.description || "Brief service description.");
+  const price = money(service.fromPriceCents);
 
-  const disabled = !user ? "disabled" : "";
-  const ctaText = user ? "Subscribe to Activate" : "Log in to Subscribe";
+  const disabled = user ? "" : "disabled";
+  const label = user ? "Subscribe to Activate" : "Log in to Subscribe";
 
   return `
-    <article class="card">
-      <div class="card__icon" aria-hidden="true">${icon}</div>
-      <div class="card__title">${title}</div>
-      <div class="card__desc">${desc}</div>
+    <article class="sp-card">
+      <div class="sp-icon" aria-hidden="true">${icon}</div>
+      <div class="sp-card-title">${title}</div>
+      <div class="sp-card-desc">${desc}</div>
 
-      <div class="card__pricebox">
+      <div class="sp-pricebox">
         <div>
-          <div class="mini">From</div>
-          <div class="price">${fromPrice}</div>
+          <div class="sp-mini">From</div>
+          <div class="sp-price">${price}</div>
         </div>
-        <button class="btn btn--accent js-subscribe-service" data-service-id="${safeText(service.id)}" ${disabled}>
-          ${ctaText}
+        <button class="sp-action js-subscribe-service" data-id="${esc(service.id)}" ${disabled}>
+          ${label}
         </button>
       </div>
     </article>
@@ -151,214 +105,152 @@ function renderServiceCard(service, user) {
 }
 
 function renderPlanCard(plan, user) {
-  const name = safeText(plan.name || "Plan");
-  const price = money(plan.priceCents ?? null);
-  const interval = safeText(plan.interval || "month");
-  const icon = safeText(plan.icon || "📦");
+  const icon = esc(plan.icon || "📦");
+  const name = esc(plan.name || "Plan");
+  const price = money(plan.priceCents);
+  const interval = esc(plan.interval || "month");
 
   const features = Array.isArray(plan.features) ? plan.features : [];
-  const featuresHtml = features.slice(0, 4).map((f) => `
-    <div class="feature">
-      <div class="feature__check" aria-hidden="true">✓</div>
-      <div>${safeText(f)}</div>
+  const featuresHtml = features.slice(0, 6).map(f => `
+    <div class="sp-feature">
+      <div class="sp-check" aria-hidden="true">✓</div>
+      <div>${esc(f)}</div>
     </div>
   `).join("");
 
-  const disabled = !user ? "disabled" : "";
-  const ctaText = user ? "Get Started" : "Log in to Get Started";
+  const disabled = user ? "" : "disabled";
+  const label = user ? "Get Started" : "Log in to Get Started";
 
   return `
-    <article class="card">
-      <div class="card__icon" aria-hidden="true">${icon}</div>
-      <div class="card__title plan__name">${name}</div>
+    <article class="sp-card">
+      <div class="sp-icon" aria-hidden="true">${icon}</div>
+      <div class="sp-card-title">${name}</div>
+
       <div>
-        <span class="plan__price">${price}</span>
-        <span class="plan__interval"> / ${interval}</span>
+        <span class="sp-plan-price">${price}</span>
+        <span class="sp-plan-interval"> / ${interval}</span>
       </div>
 
-      <div class="card__desc">Plan description</div>
-      ${featuresHtml || `<div class="badge">Add features in Firestore</div>`}
+      <div class="sp-card-desc">${esc(plan.description || "Plan description")}</div>
+
+      <div class="sp-features">
+        ${featuresHtml || `<div class="sp-mini">Add features[] in Firestore</div>`}
+      </div>
 
       <div style="margin-top:auto;">
-        <button class="btn btn--primary js-subscribe-plan" data-plan-id="${safeText(plan.id)}" ${disabled}>
-          ${ctaText}
+        <button class="sp-action sp-plan-btn js-subscribe-plan" data-id="${esc(plan.id)}" ${disabled}>
+          ${label}
         </button>
       </div>
     </article>
   `;
 }
 
-/* =========================
-   6) DATA LOADERS
-   ========================= */
-
+/* ------------------------------
+   Firestore loaders
+-------------------------------- */
 async function loadServices(user) {
+  if (!servicesGrid) return;
+
   servicesGrid.setAttribute("aria-busy", "true");
   servicesGrid.innerHTML = "";
-  servicesEmpty.hidden = true;
+  if (servicesEmpty) servicesEmpty.style.display = "none";
 
-  try {
-    const snap = await getDocs(collection(db, "services"));
-    const items = [];
-    snap.forEach((doc) => items.push({ id: doc.id, ...doc.data() }));
+  const snap = await getDocs(collection(db, "services"));
+  const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    if (!items.length) {
-      servicesEmpty.hidden = false;
-      return;
-    }
-
-    servicesGrid.innerHTML = items.map((s) => renderServiceCard(s, user)).join("");
-  } catch (err) {
-    console.error("Failed to load services:", err);
-    servicesGrid.innerHTML = `
-      <div class="empty">
-        Could not load services. Check Firestore rules and collection name <code>services</code>.
-      </div>
-    `;
-  } finally {
-    servicesGrid.setAttribute("aria-busy", "false");
+  if (!items.length) {
+    if (servicesEmpty) servicesEmpty.style.display = "block";
+  } else {
+    servicesGrid.innerHTML = items.map(s => renderServiceCard(s, user)).join("");
   }
+
+  servicesGrid.setAttribute("aria-busy", "false");
 }
 
 async function loadPlans(user) {
+  if (!plansGrid) return;
+
   plansGrid.setAttribute("aria-busy", "true");
   plansGrid.innerHTML = "";
-  plansEmpty.hidden = true;
+  if (plansEmpty) plansEmpty.style.display = "none";
 
-  try {
-    const snap = await getDocs(collection(db, "plans"));
-    const items = [];
-    snap.forEach((doc) => items.push({ id: doc.id, ...doc.data() }));
+  const snap = await getDocs(collection(db, "plans"));
+  const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    if (!items.length) {
-      plansEmpty.hidden = false;
-      return;
-    }
-
-    // Optional: highlight one plan if you want, e.g. "Professional"
-    plansGrid.innerHTML = items.map((p) => renderPlanCard(p, user)).join("");
-  } catch (err) {
-    console.error("Failed to load plans:", err);
-    plansGrid.innerHTML = `
-      <div class="empty">
-        Could not load plans. Check Firestore rules and collection name <code>plans</code>.
-      </div>
-    `;
-  } finally {
-    plansGrid.setAttribute("aria-busy", "false");
+  if (!items.length) {
+    if (plansEmpty) plansEmpty.style.display = "block";
+  } else {
+    plansGrid.innerHTML = items.map(p => renderPlanCard(p, user)).join("");
   }
+
+  plansGrid.setAttribute("aria-busy", "false");
 }
 
-/* =========================
-   7) SUBSCRIPTION ACTIONS
-   ========================= */
-
-/**
- * This creates a "checkout session request" doc in Firestore.
- * Your backend (Cloud Function) should watch this collection and create the real checkout URL.
- */
+/* ------------------------------
+   Subscription request
+-------------------------------- */
 async function createCheckoutRequest({ type, refId }) {
   const user = auth.currentUser;
-  if (!user) throw new Error("Not authenticated");
+  if (!user) throw new Error("Please log in first.");
 
-  // IMPORTANT: You need Firestore security rules to allow:
-  // - Authenticated users can create docs in "checkoutSessions" with their uid
-  // - Users can only read their own docs
-  // - Cloud Function can update the doc with the checkout URL
-  const docRef = await addDoc(collection(db, "checkoutSessions"), {
+  await addDoc(collection(db, "checkoutSessions"), {
     uid: user.uid,
-    type, // "service" or "plan"
-    refId, // serviceId or planId
+    email: user.email || "",
+    type,      // "service" or "plan"
+    refId,     // doc id from services/plans
     status: "created",
     createdAt: serverTimestamp(),
 
-    // TODO: IF YOU USE STRIPE, YOU MAY ADD: successUrl, cancelUrl, priceId, etc.
-    // successUrl: window.location.origin + "/app/dashboard",
+    // PLACEHOLDER (CAPS):
+    // IF YOU USE STRIPE OR ANY PAYMENT PROVIDER, ADD PRICE IDS + SUCCESS/CANCEL URLS HERE,
+    // THEN USE A CLOUD FUNCTION TO CREATE A REAL CHECKOUT SESSION URL.
+    // priceId: "STRIPE_PRICE_ID_HERE",
+    // successUrl: window.location.origin + "/app/dashboard.html",
     // cancelUrl: window.location.href
   });
 
-  // PLACEHOLDER: Redirect flow
-  // YOU NEED A CLOUD FUNCTION TO TURN THIS DOC INTO A REAL CHECKOUT SESSION (E.G., STRIPE) AND WRITE BACK A URL.
-  // THEN YOU CAN LISTEN TO THAT DOC CHANGES AND REDIRECT TO docData.url
-  alert(
-    `Checkout request created (${docRef.id}).\n` +
-    `NEXT: ADD CLOUD FUNCTION TO CREATE CHECKOUT URL AND REDIRECT.`
-  );
+  alert("Subscription request created. NEXT: Connect a checkout system (e.g., Stripe + Cloud Function).");
 }
 
-/* =========================
-   8) EVENTS
-   ========================= */
-
-btnLogin.addEventListener("click", async () => {
+/* ------------------------------
+   Events
+-------------------------------- */
+btnLogin?.addEventListener("click", async () => {
   try {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
-  } catch (err) {
-    console.error("Login failed:", err);
-    alert("Login failed. Check Firebase Auth settings and allowed domains.");
+  } catch (e) {
+    console.error(e);
+    alert("Login failed. Check Firebase Auth provider + allowed domains.");
   }
 });
 
-btnLogout.addEventListener("click", async () => {
+btnLogout?.addEventListener("click", async () => {
   try {
     await signOut(auth);
-  } catch (err) {
-    console.error("Logout failed:", err);
+  } catch (e) {
+    console.error(e);
+    alert("Logout failed.");
   }
 });
 
-btnGetStarted.addEventListener("click", () => {
-  // If signed in, you may scroll to plans, else prompt login
-  if (!auth.currentUser) {
-    alert("Please log in to get started.");
-    btnLogin.click();
-    return;
-  }
-  document.getElementById("plansGrid").scrollIntoView({ behavior: "smooth", block: "start" });
-});
-
-navMySubscriptions.addEventListener("click", (e) => {
-  e.preventDefault();
-  // PLACEHOLDER: LINK TO YOUR ROUTE
-  // INSERT YOUR REAL URL PATH FOR SUBSCRIPTIONS PAGE HERE.
-  alert("NAV PLACEHOLDER: LINK THIS TO /app/subscriptions");
-});
-
-navDashboard.addEventListener("click", (e) => {
-  e.preventDefault();
-  // PLACEHOLDER: LINK TO YOUR ROUTE
-  // INSERT YOUR REAL URL PATH FOR DASHBOARD PAGE HERE.
-  alert("NAV PLACEHOLDER: LINK THIS TO /app/dashboard");
-});
-
-// Delegate clicks for dynamic buttons
 document.addEventListener("click", async (e) => {
-  const serviceBtn = e.target.closest(".js-subscribe-service");
-  const planBtn = e.target.closest(".js-subscribe-plan");
+  const serviceBtn = e.target.closest?.(".js-subscribe-service");
+  const planBtn = e.target.closest?.(".js-subscribe-plan");
 
   try {
     if (serviceBtn) {
-      const serviceId = serviceBtn.getAttribute("data-service-id");
-      if (!auth.currentUser) {
-        alert("Please log in to subscribe.");
-        btnLogin.click();
-        return;
-      }
+      const id = serviceBtn.getAttribute("data-id");
       serviceBtn.disabled = true;
-      await createCheckoutRequest({ type: "service", refId: serviceId });
+      await createCheckoutRequest({ type: "service", refId: id });
       serviceBtn.disabled = false;
     }
 
     if (planBtn) {
-      const planId = planBtn.getAttribute("data-plan-id");
-      if (!auth.currentUser) {
-        alert("Please log in to subscribe.");
-        btnLogin.click();
-        return;
-      }
+      const id = planBtn.getAttribute("data-id");
       planBtn.disabled = true;
-      await createCheckoutRequest({ type: "plan", refId: planId });
+      await createCheckoutRequest({ type: "plan", refId: id });
       planBtn.disabled = false;
     }
   } catch (err) {
@@ -369,49 +261,25 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-/* =========================
-   9) AUTH STATE + INITIAL LOAD
-   ========================= */
-
-async function initialLoad(user) {
-  setLoading(true, "Loading services and plans…");
-  await Promise.all([loadServices(user), loadPlans(user)]);
-  setLoading(false);
+/* ------------------------------
+   Init
+-------------------------------- */
+async function refresh(user) {
+  setLoading("Loading services and plans…");
+  try {
+    await Promise.all([loadServices(user), loadPlans(user)]);
+    setLoading("");
+  } catch (e) {
+    console.error(e);
+    setLoading("Failed to load data. Check Firestore rules.");
+  }
 }
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   setAuthUI(user);
-  await initialLoad(user);
+  refresh(user);
 });
 
-// First paint (if auth takes time)
+// First paint
 setAuthUI(null);
-setLoading(true, "Initializing…");
-
-/* =========================
-   10) FIRESTORE DATA SHAPE (REFERENCE)
-   =========================
-
-  Collection: services
-    Doc fields:
-      name: "Lead Generation"
-      description: "Generates leads through multi-channel campaigns"
-      fromPriceCents: 19900
-      icon: "🎯"
-
-  Collection: plans
-    Doc fields:
-      name: "Basic"
-      priceCents: 9900
-      interval: "month"
-      icon: "📦"
-      features: ["Plan description", "Feature 2", "Feature 3"]
-
-  Collection: checkoutSessions (created by this page)
-    Doc fields:
-      uid, type, refId, status, createdAt
-      // Cloud Function should update:
-      // status: "ready"
-      // url: "https://checkout.stripe.com/..."
-
-*/
+setLoading("Loading…");
