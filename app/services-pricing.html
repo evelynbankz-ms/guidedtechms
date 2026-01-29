@@ -1,3 +1,6 @@
+<!-- ==============================
+     FILE: app/services-pricing.html
+     ============================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +14,7 @@
 
   <link rel="shortcut icon" href="../asset/logo-icon.png" />
 
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Global site CSS -->
@@ -28,14 +31,17 @@
     <header class="navbar">
       <div class="navbar-container">
 
+        <!-- LOGO -->
         <a href="../index.html" class="navbar-logo">
           <img src="../asset/logo-icon.png" alt="Guided Tech Solutions Logo" class="navbar-logo-img">
           <span class="logo-text">Guided Tech Solutions</span>
         </a>
 
+        <!-- NAV MENU -->
         <nav class="navbar-menu" id="navbarMenu">
           <a href="../index.html" class="nav-link">Home</a>
 
+          <!-- ABOUT -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">About</a>
             <div class="mega-dropdown">
@@ -58,6 +64,7 @@
             </div>
           </div>
 
+          <!-- SERVICES -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent active">Services</a>
             <div class="mega-dropdown">
@@ -84,8 +91,10 @@
             </div>
           </div>
 
+          <!-- CAPABILITY -->
           <a href="../capability.html" class="nav-link">Capability</a>
 
+          <!-- RESOURCES -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">Resources</a>
             <div class="mega-dropdown">
@@ -103,6 +112,7 @@
             </div>
           </div>
 
+          <!-- CONTACT -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">Contact</a>
             <div class="mega-dropdown">
@@ -120,13 +130,16 @@
           </div>
         </nav>
 
+        <!-- RIGHT ACTIONS -->
         <div class="navbar-actions">
+          <!-- Auth buttons for portal -->
           <button class="btn-primary sp-btn" id="btnLogin" type="button">Log In</button>
           <button class="btn-primary sp-btn" id="btnLogout" type="button" style="display:none;">Log Out</button>
 
-          <!-- Keep your existing Get Started behavior -->
+          <!-- Your existing CTA -->
           <a href="../form.html" class="btn-primary sp-btn" id="btnGetStarted">Get Started</a>
 
+          <!-- Mobile toggle -->
           <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
             <span class="menu-line"></span>
             <span class="menu-line"></span>
@@ -137,8 +150,10 @@
       </div>
     </header>
 
+    <!-- Overlay -->
     <div class="nav-overlay" id="navOverlay"></div>
 
+    <!-- CONTENT -->
     <main class="sp-main">
       <div class="container">
 
@@ -156,6 +171,7 @@
           </div>
         </header>
 
+        <!-- SERVICES -->
         <section class="sp-section">
           <div class="sp-section-head">
             <h2>Services</h2>
@@ -163,11 +179,13 @@
           </div>
 
           <div class="sp-grid" id="servicesGrid" aria-busy="true"></div>
+
           <div class="sp-empty" id="servicesEmpty" style="display:none;">
             No services found. Create docs in Firestore collection <code>services</code>.
           </div>
         </section>
 
+        <!-- PLANS -->
         <section class="sp-section">
           <div class="sp-section-head">
             <h2>Subscription Plans</h2>
@@ -175,17 +193,29 @@
           </div>
 
           <div class="sp-grid sp-grid-plans" id="plansGrid" aria-busy="true"></div>
+
           <div class="sp-empty" id="plansEmpty" style="display:none;">
             No plans found. Create docs in Firestore collection <code>plans</code>.
           </div>
         </section>
 
+        <div class="sp-note">
+          <strong>Checkout note:</strong> Clicking subscribe creates a Firestore request in <code>checkoutSessions</code>.
+          <br />
+          <!-- Placeholder instruction -->
+          <span class="sp-mini">
+            <!-- IMPORTANT PLACEHOLDER -->
+            YOU MUST ADD A BACKEND CHECKOUT PROCESS (E.G. CLOUD FUNCTION + STRIPE) TO TURN THAT REQUEST INTO A REAL PAYMENT FLOW.
+          </span>
+        </div>
+
       </div>
     </main>
 
-    <!-- FOOTER (same as homepage) -->
+    <!-- FOOTER (same structure as homepage) -->
     <footer class="gts-footer">
       <div class="gts-footer-inner">
+
         <div class="gts-footer-col about-col">
           <h2 class="footer-logo">Guided Tech Solutions</h2>
           <p class="footer-desc">
@@ -243,22 +273,17 @@
         © <span id="year"></span> Guided Tech Solutions — All rights reserved.
       </div>
     </footer>
-
   </div>
 
-  <!-- Firebase compat (same versions as homepage to prevent mismatch) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-  <!-- Your existing UI script (menu toggle etc.) -->
+  <!-- Your existing site JS (menu, overlay, etc.) -->
   <script src="../script.js"></script>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
   </script>
 
-  <!-- Page JS -->
-  <script src="./services-pricing.js"></script>
+  <!-- Page module -->
+  <script type="module" src="./services-pricing.js"></script>
 </body>
 </html>
