@@ -1,3 +1,7 @@
+/* ==============================
+   FILE: app/services-pricing.css
+   ============================== */
+
 :root{
   --primary: #1B4F72;
   --accent: #E67E22;
@@ -15,8 +19,11 @@
   padding: 44px 0 60px;
 }
 
-.sp-btn{ margin-left: 8px; }
+.sp-btn{
+  margin-left: 8px;
+}
 
+/* Head block */
 .sp-head{
   background: var(--surface);
   border-radius: var(--radius-lg);
@@ -26,7 +33,7 @@
 }
 
 .sp-title{
-  font-family: "Poppins","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   color: #0f172a;
   font-size: clamp(22px, 2.6vw, 38px);
   letter-spacing: -0.02em;
@@ -58,9 +65,15 @@
   border-radius: 999px;
   background: #d1d5db;
 }
-.sp-sep{ opacity: 0.5; }
 
-.sp-section{ margin-top: 24px; }
+.sp-sep{
+  opacity: 0.55;
+}
+
+/* Sections */
+.sp-section{
+  margin-top: 24px;
+}
 
 .sp-section-head{
   display:flex;
@@ -71,7 +84,7 @@
 }
 
 .sp-section-head h2{
-  font-family: "Poppins","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   font-size: 18px;
   color: #0f172a;
 }
@@ -83,6 +96,7 @@
   text-align: right;
 }
 
+/* Grid */
 .sp-grid{
   margin-top: 14px;
   display:grid;
@@ -94,6 +108,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Cards */
 .sp-card{
   background: #fff;
   border-radius: 16px;
@@ -154,6 +169,7 @@
   color: #0f172a;
 }
 
+/* Actions */
 .sp-action{
   border: none;
   cursor: pointer;
@@ -163,23 +179,26 @@
   background: var(--accent);
   color: #fff;
   transition: transform var(--transition), opacity var(--transition);
-  white-space: nowrap;
 }
-
 .sp-action:hover{ transform: translateY(-1px); }
-.sp-action:disabled{ opacity: 0.55; cursor: not-allowed; transform:none; }
+.sp-action:disabled{ opacity: 0.55; cursor: not-allowed; transform: none; }
 
 .sp-plan-price{
   font-size: 22px;
   font-weight: 900;
   color: #0f172a;
 }
+
 .sp-plan-interval{
   font-size: 12px;
   opacity: 0.8;
 }
-.sp-plan-btn{ background: var(--primary); }
 
+.sp-plan-btn{
+  background: var(--primary);
+}
+
+/* Features */
 .sp-features{
   margin-top: 6px;
   display:flex;
@@ -204,6 +223,7 @@
   font-size: 12px;
 }
 
+/* Empty + note */
 .sp-empty{
   margin-top: 12px;
   padding: 12px;
@@ -221,22 +241,28 @@
   background: rgba(230,126,34,0.06);
   font-size: 13px;
 }
-.sp-note-small{ opacity: 0.85; }
 
 /* Responsive */
 @media (max-width: 1100px){
   .sp-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sp-grid-plans{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
 @media (max-width: 640px){
   .sp-main{ padding: 26px 0 40px; }
   .sp-head{ padding: 18px; }
+
   .sp-grid{ grid-template-columns: 1fr; }
   .sp-grid-plans{ grid-template-columns: 1fr; }
+
   .sp-section-head{
     flex-direction: column;
     align-items:flex-start;
   }
   .sp-section-head p{ text-align:left; }
-  .sp-pricebox{ flex-direction: column; align-items:flex-start; }
+
+  .sp-pricebox{
+    flex-direction: column;
+    align-items:flex-start;
+  }
 }
