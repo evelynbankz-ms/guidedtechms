@@ -1,9 +1,3 @@
-/* ==========================================================
-   SERVICES & PRICING (PAGE CSS)
-   - Uses your global style.css for navbar/footer/etc.
-   - Only adds page-specific layout + cards + mobile responsiveness
-   ========================================================== */
-
 :root{
   --primary: #1B4F72;
   --accent: #E67E22;
@@ -17,17 +11,12 @@
   --shadow-1: 0 6px 20px rgba(16,24,40,0.08);
 }
 
-/* Main wrapper for this page */
 .sp-main{
   padding: 44px 0 60px;
 }
 
-/* Ensure your navbar actions look consistent */
-.sp-btn{
-  margin-left: 8px;
-}
+.sp-btn{ margin-left: 8px; }
 
-/* Header */
 .sp-head{
   background: var(--surface);
   border-radius: var(--radius-lg);
@@ -35,17 +24,20 @@
   padding: 26px;
   border: 1px solid rgba(46,64,83,0.08);
 }
+
 .sp-title{
-  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family: "Poppins","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
   color: #0f172a;
   font-size: clamp(22px, 2.6vw, 38px);
   letter-spacing: -0.02em;
 }
+
 .sp-subtitle{
   margin-top: 8px;
   max-width: 900px;
   opacity: 0.9;
 }
+
 .sp-status{
   margin-top: 14px;
   display:flex;
@@ -59,20 +51,17 @@
   padding: 10px 12px;
   border-radius: 12px;
 }
+
 .sp-dot{
   width: 10px;
   height: 10px;
   border-radius: 999px;
   background: #d1d5db;
 }
-.sp-sep{
-  opacity: 0.5;
-}
+.sp-sep{ opacity: 0.5; }
 
-/* Sections */
-.sp-section{
-  margin-top: 24px;
-}
+.sp-section{ margin-top: 24px; }
+
 .sp-section-head{
   display:flex;
   align-items:flex-end;
@@ -80,11 +69,13 @@
   gap: 16px;
   padding: 0 6px;
 }
+
 .sp-section-head h2{
-  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-family: "Poppins","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
   font-size: 18px;
   color: #0f172a;
 }
+
 .sp-section-head p{
   font-size: 13px;
   opacity: 0.85;
@@ -92,18 +83,17 @@
   text-align: right;
 }
 
-/* Grid */
 .sp-grid{
   margin-top: 14px;
   display:grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
+
 .sp-grid-plans{
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-/* Cards */
 .sp-card{
   background: #fff;
   border-radius: 16px;
@@ -115,11 +105,13 @@
   gap: 10px;
   transition: transform var(--transition), box-shadow var(--transition), border var(--transition);
 }
+
 .sp-card:hover{
   transform: translateY(-2px);
   border-color: rgba(27,79,114,0.18);
   box-shadow: var(--shadow-1);
 }
+
 .sp-icon{
   width: 46px;
   height: 46px;
@@ -129,15 +121,18 @@
   background: rgba(27,79,114,0.10);
   font-size: 20px;
 }
+
 .sp-card-title{
   font-weight: 800;
   color: #0f172a;
 }
+
 .sp-card-desc{
   font-size: 13px;
   opacity: 0.88;
   min-height: 40px;
 }
+
 .sp-pricebox{
   margin-top: auto;
   display:flex;
@@ -148,10 +143,12 @@
   border-radius: 12px;
   padding: 10px;
 }
+
 .sp-mini{
   font-size: 12px;
   opacity: 0.75;
 }
+
 .sp-price{
   font-weight: 900;
   color: #0f172a;
@@ -166,9 +163,11 @@
   background: var(--accent);
   color: #fff;
   transition: transform var(--transition), opacity var(--transition);
+  white-space: nowrap;
 }
+
 .sp-action:hover{ transform: translateY(-1px); }
-.sp-action:disabled{ opacity: 0.55; cursor: not-allowed; transform: none; }
+.sp-action:disabled{ opacity: 0.55; cursor: not-allowed; transform:none; }
 
 .sp-plan-price{
   font-size: 22px;
@@ -179,22 +178,21 @@
   font-size: 12px;
   opacity: 0.8;
 }
-.sp-plan-btn{
-  background: var(--primary);
-}
+.sp-plan-btn{ background: var(--primary); }
 
-/* Features list */
 .sp-features{
   margin-top: 6px;
   display:flex;
   flex-direction:column;
   gap: 6px;
 }
+
 .sp-feature{
   display:flex;
   gap: 8px;
   font-size: 13px;
 }
+
 .sp-check{
   width: 18px;
   height: 18px;
@@ -206,7 +204,6 @@
   font-size: 12px;
 }
 
-/* Empty + note */
 .sp-empty{
   margin-top: 12px;
   padding: 12px;
@@ -215,6 +212,7 @@
   background: rgba(46,64,83,0.03);
   font-size: 13px;
 }
+
 .sp-note{
   margin-top: 18px;
   padding: 12px 14px;
@@ -223,6 +221,7 @@
   background: rgba(230,126,34,0.06);
   font-size: 13px;
 }
+.sp-note-small{ opacity: 0.85; }
 
 /* Responsive */
 @media (max-width: 1100px){
