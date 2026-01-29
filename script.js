@@ -31,7 +31,6 @@ let db = null;
 
 try {
   if (window.firebase) {
-    // avoid double-init
     if (firebase.apps && !firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -171,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      SMOOTH SCROLL (only for # links)
-     - FIXED: Exclude nav-parent dropdown triggers
   ========================================================= */
   const navbarMenuEl = safeQuery(".navbar-menu");
 
@@ -186,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         target.scrollIntoView({ behavior: "smooth" });
       }
 
-      // close mobile menu if open
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
       document.body.style.overflow = "";
@@ -263,9 +260,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-   
-/* =========================================================
-     MOBILE MENU - FINAL WORKING VERSION
+  /* =========================================================
+     MOBILE MENU
   ========================================================= */
   const btn = document.querySelector(".menu-toggle");
   const menu = document.querySelector(".navbar-menu");
@@ -273,9 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btn && menu && overlay) {
 
-    // Toggle menu
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
+    btn.addEventListener("click", () => {
       const isOpen = menu.classList.contains("open");
       
       if (isOpen) {
@@ -289,7 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Close on overlay click
     overlay.addEventListener("click", () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
@@ -297,13 +290,11 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
     });
 
-    // Close button (click on ::after pseudo-element area)
     menu.addEventListener("click", (e) => {
       const rect = menu.getBoundingClientRect();
       const clickX = e.clientX;
       const clickY = e.clientY;
       
-      // Top-right corner detection (where ::after button is)
       const isCloseButton = clickX > rect.right - 80 && clickY < rect.top + 80;
       
       if (isCloseButton) {
@@ -314,7 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Dropdown toggles
     menu.querySelectorAll(".nav-parent").forEach(link => {
       link.addEventListener("click", function(e) {
         e.preventDefault();
@@ -323,12 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const item = this.closest(".nav-item");
         const wasOpen = item.classList.contains("open");
         
-        // Close all others
         menu.querySelectorAll(".nav-item.open").forEach(i => {
           if (i !== item) i.classList.remove("open");
         });
         
-        // Toggle this one
         if (wasOpen) {
           item.classList.remove("open");
         } else {
@@ -337,7 +325,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Regular links close menu
     menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
       link.addEventListener("click", () => {
         menu.classList.remove("open");
@@ -346,7 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // ESC key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) {
         menu.classList.remove("open");
@@ -355,3 +341,5 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+}); // ← THIS WAS MISSING
