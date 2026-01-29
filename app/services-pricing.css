@@ -313,3 +313,32 @@
     backdrop-filter: none;
   }
 }
+
+/* =========================================
+   Navbar Buttons - Small Screen Sizing
+========================================= */
+@media (max-width: 520px){
+  .navbar-actions{
+    gap: 8px;
+  }
+
+  .navbar-actions .btn-primary{
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* Optional: reduce the "Get Started" slightly more */
+  #btnGetStarted{
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 380px){
+  .navbar-actions .btn-primary{
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+}
