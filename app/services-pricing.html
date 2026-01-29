@@ -1,131 +1,274 @@
-<!-- =========================
-     SERVICES & PRICING (HTML)
-     ========================= -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Services & Pricing | GuidedTech</title>
+  <meta name="description" content="Browse services and pricing plans from Guided Tech Solutions." />
+  <meta name="keywords" content="Guided Tech Solutions, services, pricing, subscriptions" />
+  <meta name="author" content="Guided Tech Solutions" />
 
-  <!-- Inter font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Services & Pricing — Guided Tech Solutions</title>
 
-  <link rel="stylesheet" href="app/services-pricing.css" />
+  <link rel="shortcut icon" href="../asset/logo-icon.png" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Your global site CSS -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- Page CSS -->
+  <link rel="stylesheet" href="./services-pricing.css" />
 </head>
+
 <body>
   <div class="page-wrapper">
-    <!-- Top Bar -->
-    <header class="topbar">
-      <div class="container topbar__inner">
-        <div class="brand">
-          <div class="brand__mark" aria-hidden="true">G</div>
-          <div class="brand__text">
-            <div class="brand__name">GuidedTech</div>
-            <div class="brand__sub">Admin</div>
+
+    <!-- NAVBAR (copied from homepage to keep styling consistent) -->
+    <header class="navbar">
+      <div class="navbar-container">
+
+        <!-- LOGO -->
+        <a href="../index.html" class="navbar-logo">
+          <img src="../asset/logo-icon.png" alt="Guided Tech Solutions Logo" class="navbar-logo-img">
+          <span class="logo-text">Guided Tech Solutions</span>
+        </a>
+
+        <!-- NAV MENU -->
+        <nav class="navbar-menu" id="navbarMenu">
+          <a href="../index.html" class="nav-link">Home</a>
+
+          <!-- ABOUT -->
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">About</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Company</h4>
+                <a href="../about.html"><span class="icon"></span>Company Overview</a>
+                <a href="../about.html#mission"><span class="icon"></span>Mission & Vision</a>
+                <a href="../about.html#history"><span class="icon"></span>History</a>
+              </div>
+              <div class="mega-col">
+                <h4>Team</h4>
+                <a href="../team.html"><span class="icon"></span>Our Team</a>
+                <a href="../team.html#leaders"><span class="icon"></span>Leadership</a>
+                <a href="../team.html#values"><span class="icon"></span>Our Values</a>
+              </div>
+              <div class="mega-col">
+                <h4>More About Us</h4>
+                <a href="../careers.html"><span class="icon"></span>Careers</a>
+              </div>
+            </div>
           </div>
+
+          <!-- SERVICES -->
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent active">Services</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>AI Solutions</h4>
+                <a href="../ai.html"><span class="icon"></span>AI Consulting</a>
+                <a href="../ai.html#machinelearning"><span class="icon"></span>Machine Learning</a>
+                <a href="../ai.html#aiautomation"><span class="icon"></span>Automation AI</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>By Tool</h4>
+                <a href="../automation.html"><span class="icon"></span>Automation</a>
+                <a href="../automation.html#rpa"><span class="icon"></span>RPA Setup</a>
+                <a href="../automation.html#integration"><span class="icon"></span>Integration Tools</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Connector Development</h4>
+                <a href="../services.html"><span class="icon"></span>All Services</a>
+                <a href="../services.html#consulting"><span class="icon"></span>Consulting</a>
+                <a href="../services.html#custom"><span class="icon"></span>Custom Connector</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAPABILITY -->
+          <a href="../capability.html" class="nav-link">Capability</a>
+
+          <!-- RESOURCES -->
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">Resources</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Articles</h4>
+                <a href="../blog.html"><span class="icon"></span>Blogs</a>
+                <a href="../faq.html"><span class="icon"></span>Faqs</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Others</h4>
+                <a href="../casestudy.html"><span class="icon"></span>Case Study</a>
+                <a href="../videos.html"><span class="icon"></span>Videos</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTACT -->
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">Contact</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Get in Touch</h4>
+                <a href="../contact.html"><span class="icon"></span>Contact Form</a>
+                <a href="../contact.html#partnership"><span class="icon"></span>Partnership</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>More</h4>
+                <a href="../contact.html#support"><span class="icon"></span>Support</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- RIGHT ACTIONS -->
+        <div class="navbar-actions">
+          <!-- These are portal actions for this page -->
+          <button class="btn-primary sp-btn" id="btnLogin">Log In</button>
+          <button class="btn-primary sp-btn" id="btnLogout" style="display:none;">Log Out</button>
+          <a href="../form.html" class="btn-primary sp-btn" id="btnGetStarted">Get Started</a>
+
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+          </button>
         </div>
 
-        <nav class="topbar__actions" aria-label="Top actions">
-          <button class="btn btn--ghost" id="btnLogin">Log In</button>
-          <button class="btn btn--primary" id="btnGetStarted">Get Started</button>
-        </nav>
       </div>
     </header>
 
-    <main class="container app">
-      <!-- Sidebar (stacks on mobile) -->
-      <aside class="sidebar" aria-label="Sidebar navigation">
-        <div class="sidebar__group">
-          <a class="sidebar__item is-active" href="#" aria-current="page">
-            <span class="sidebar__icon" aria-hidden="true">☰</span>
-            <span>Services & Pricing</span>
-          </a>
-          <a class="sidebar__item" href="#" id="navMySubscriptions">
-            <span class="sidebar__icon" aria-hidden="true">👤</span>
-            <span>My Subscriptions</span>
-          </a>
-          <a class="sidebar__item" href="#" id="navDashboard">
-            <span class="sidebar__icon" aria-hidden="true">📊</span>
-            <span>Dashboard</span>
-          </a>
-        </div>
+    <!-- Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
 
-        <div class="sidebar__footer">
-          <div class="userpill" id="userPill" hidden>
-            <div class="userpill__avatar" id="userAvatar">U</div>
-            <div class="userpill__meta">
-              <div class="userpill__name" id="userName">User</div>
-              <div class="userpill__email" id="userEmail">email@example.com</div>
-            </div>
-            <button class="btn btn--ghost btn--sm" id="btnLogout" title="Sign out">Sign out</button>
-          </div>
+    <!-- PAGE CONTENT -->
+    <main class="sp-main">
+      <div class="container">
 
-          <div class="hint" id="authHint">
-            Log in to subscribe and activate services.
-          </div>
-        </div>
-      </aside>
-
-      <!-- Content -->
-      <section class="content" aria-label="Page content">
-        <header class="pagehead">
-          <h1>Services &amp; Pricing</h1>
-          <p class="pagehead__sub">
-            Choose a service to activate or pick a plan that fits your business.
+        <header class="sp-head">
+          <h1 class="sp-title">Services & Pricing</h1>
+          <p class="sp-subtitle">
+            Pick a service to activate or subscribe to a plan. After subscribing, your dashboard will show progress and KPIs.
           </p>
+
+          <div class="sp-status" aria-live="polite">
+            <span class="sp-dot" id="authDot"></span>
+            <span id="authText">Checking sign-in…</span>
+            <span class="sp-sep">•</span>
+            <span id="loadText">Loading services and plans…</span>
+          </div>
         </header>
 
-        <!-- Status row -->
-        <div class="statusbar" role="status" aria-live="polite">
-          <div class="statusbar__left">
-            <span class="dot" id="authDot" aria-hidden="true"></span>
-            <span id="authStatusText">Not signed in</span>
+        <!-- SERVICES -->
+        <section class="sp-section">
+          <div class="sp-section-head">
+            <h2>Services</h2>
+            <p>Standalone services you can activate immediately.</p>
           </div>
-          <div class="statusbar__right" id="loadingText">Loading…</div>
+
+          <div class="sp-grid" id="servicesGrid" aria-busy="true"></div>
+          <div class="sp-empty" id="servicesEmpty" style="display:none;">
+            No services found. Create docs in Firestore collection <code>services</code>.
+          </div>
+        </section>
+
+        <!-- PLANS -->
+        <section class="sp-section">
+          <div class="sp-section-head">
+            <h2>Subscription Plans</h2>
+            <p>Bundle services with predictable monthly pricing.</p>
+          </div>
+
+          <div class="sp-grid sp-grid-plans" id="plansGrid" aria-busy="true"></div>
+          <div class="sp-empty" id="plansEmpty" style="display:none;">
+            No plans found. Create docs in Firestore collection <code>plans</code>.
+          </div>
+        </section>
+
+        <div class="sp-note">
+          <strong>Note:</strong> “Subscribe” creates a checkout request in Firestore.
+          Your backend should convert it into a real checkout URL (Stripe, etc.).
         </div>
 
-        <!-- Services -->
-        <section class="block">
-          <div class="block__head">
-            <h2>Services</h2>
-            <p>Activate standalone services or bundle them in a plan.</p>
-          </div>
-
-          <div class="grid services" id="servicesGrid" aria-busy="true">
-            <!-- Cards injected by JS -->
-          </div>
-
-          <div class="empty" id="servicesEmpty" hidden>
-            No services found. Add docs in Firestore collection <code>services</code>.
-          </div>
-        </section>
-
-        <!-- Plans -->
-        <section class="block">
-          <div class="block__head">
-            <h2>Subscription Plans</h2>
-            <p>Simple plans with predictable monthly pricing.</p>
-          </div>
-
-          <div class="grid plans" id="plansGrid" aria-busy="true">
-            <!-- Plan cards injected by JS -->
-          </div>
-
-          <div class="empty" id="plansEmpty" hidden>
-            No plans found. Add docs in Firestore collection <code>plans</code>.
-          </div>
-        </section>
-
-        <footer class="footnote">
-          <span>Need help choosing? Contact support.</span>
-        </footer>
-      </section>
+      </div>
     </main>
+
+    <!-- FOOTER (copied from homepage for consistency) -->
+    <footer class="gts-footer">
+      <div class="gts-footer-inner">
+        <div class="gts-footer-col about-col">
+          <h2 class="footer-logo">Guided Tech Solutions</h2>
+          <p class="footer-desc">
+            Empowering organizations with intelligent,
+            scalable technology, and modern digital transformation solutions.
+          </p>
+          <h4 class="footer-heading">CONTACT US</h4>
+          <p>info@guidedtechms.com</p>
+
+          <div class="footer-social">
+            <a href="https://web.facebook.com/profile.php?id=61579123374511&sk=about" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/company/guided-tech-solutions-of-mississippi/" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
+            </a>
+            <a href="https://www.skool.com/the-time-saving-business-hub-2509/about?ref=56223a1a91aa4e92911c46ddb2559c94" target="_blank" rel="noopener">
+              <img src="../asset/skool-logo.png" alt="Skool">
+            </a>
+          </div>
+        </div>
+
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">SERVICES</h4>
+          <a href="../ai.html">AI Consulting</a>
+          <a href="../ai.html#machinelearning">Machine Learning</a>
+          <a href="../ai.html#aiautomation">Automation AI</a>
+          <a href="../automation.html#rpa">RPA SetUp</a>
+          <a href="../automation.html">Automation</a>
+          <a href="../automation.html#integration">Integration Tools</a>
+          <a href="../services.html#custom">Custom Connector</a>
+          <a href="../services.html#consulting">Consulting</a>
+          <a href="../services.html">All Services</a>
+        </div>
+
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">RESOURCES</h4>
+          <a href="../blog.html">Blog</a>
+          <a href="../casestudy.html">Case Studies</a>
+          <a href="../videos.html">Videos</a>
+        </div>
+
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">ABOUT</h4>
+          <a href="../about.html">Company</a>
+          <a href="../contact.html">Contact</a>
+        </div>
+      </div>
+
+      <div class="gts-footer-bottom">
+        © <span id="year"></span> Guided Tech Solutions — All rights reserved.
+      </div>
+    </footer>
+
   </div>
 
-  <script type="module" src="services-pricing.js"></script>
+  <!-- Your existing site script (menu toggle etc.) -->
+  <script src="../script.js"></script>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Page JS -->
+  <script type="module" src="./services-pricing.js"></script>
 </body>
 </html>
