@@ -265,17 +265,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
+     - FIXED: Removed conflicting event listeners
   ========================================================= */
   const btn = document.querySelector(".menu-toggle");
   const menu = document.querySelector(".navbar-menu");
   const overlay = document.getElementById("navOverlay");
 
   if (btn && menu && overlay) {
-    
-    // Prevent any clicks inside the menu from closing it
-    menu.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
 
     // Open/close toggle
     btn.addEventListener("click", (e) => {
@@ -285,9 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
     });
 
-    // Click overlay to close ONLY
-    overlay.addEventListener("click", (e) => {
-      e.stopPropagation();
+    // Click overlay to close
+    overlay.addEventListener("click", () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
       document.body.style.overflow = "";
@@ -297,25 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Detect close button click (top-right corner of menu)
-    menu.addEventListener("click", (e) => {
-      const rect = menu.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-      
-      // Close button area: top 70px, right 70px
-      if (clickX > rect.width - 70 && clickY < 70) {
-        menu.classList.remove("open");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "";
-        // Close all dropdowns
-        document.querySelectorAll(".nav-item.open").forEach(item => {
-          item.classList.remove("open");
-        });
-      }
-    });
-
-    // Accordion dropdowns
+    // Accordion dropdowns - FIXED
     document.querySelectorAll(".nav-parent").forEach(parentLink => {
       parentLink.addEventListener("click", (e) => {
         e.preventDefault();
@@ -337,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Regular nav links (non-dropdown) should work normally
+    // Regular nav links (non-dropdown) should close menu
     document.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
       link.addEventListener("click", () => {
         // Close menu when clicking regular links
