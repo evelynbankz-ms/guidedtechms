@@ -14,7 +14,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Your global site CSS -->
+  <!-- Global site CSS -->
   <link rel="stylesheet" href="../style.css" />
 
   <!-- Page CSS -->
@@ -24,21 +24,18 @@
 <body>
   <div class="page-wrapper">
 
-    <!-- NAVBAR (copied from homepage to keep styling consistent) -->
+    <!-- NAVBAR (same structure as homepage) -->
     <header class="navbar">
       <div class="navbar-container">
 
-        <!-- LOGO -->
         <a href="../index.html" class="navbar-logo">
           <img src="../asset/logo-icon.png" alt="Guided Tech Solutions Logo" class="navbar-logo-img">
           <span class="logo-text">Guided Tech Solutions</span>
         </a>
 
-        <!-- NAV MENU -->
         <nav class="navbar-menu" id="navbarMenu">
           <a href="../index.html" class="nav-link">Home</a>
 
-          <!-- ABOUT -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">About</a>
             <div class="mega-dropdown">
@@ -61,7 +58,6 @@
             </div>
           </div>
 
-          <!-- SERVICES -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent active">Services</a>
             <div class="mega-dropdown">
@@ -88,10 +84,8 @@
             </div>
           </div>
 
-          <!-- CAPABILITY -->
           <a href="../capability.html" class="nav-link">Capability</a>
 
-          <!-- RESOURCES -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">Resources</a>
             <div class="mega-dropdown">
@@ -109,7 +103,6 @@
             </div>
           </div>
 
-          <!-- CONTACT -->
           <div class="nav-item">
             <a href="#" class="nav-link nav-parent">Contact</a>
             <div class="mega-dropdown">
@@ -127,11 +120,11 @@
           </div>
         </nav>
 
-        <!-- RIGHT ACTIONS -->
         <div class="navbar-actions">
-          <!-- These are portal actions for this page -->
-          <button class="btn-primary sp-btn" id="btnLogin">Log In</button>
-          <button class="btn-primary sp-btn" id="btnLogout" style="display:none;">Log Out</button>
+          <button class="btn-primary sp-btn" id="btnLogin" type="button">Log In</button>
+          <button class="btn-primary sp-btn" id="btnLogout" type="button" style="display:none;">Log Out</button>
+
+          <!-- Keep your existing Get Started behavior -->
           <a href="../form.html" class="btn-primary sp-btn" id="btnGetStarted">Get Started</a>
 
           <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -144,10 +137,8 @@
       </div>
     </header>
 
-    <!-- Overlay -->
     <div class="nav-overlay" id="navOverlay"></div>
 
-    <!-- PAGE CONTENT -->
     <main class="sp-main">
       <div class="container">
 
@@ -161,11 +152,10 @@
             <span class="sp-dot" id="authDot"></span>
             <span id="authText">Checking sign-in…</span>
             <span class="sp-sep">•</span>
-            <span id="loadText">Loading services and plans…</span>
+            <span id="loadText">Loading…</span>
           </div>
         </header>
 
-        <!-- SERVICES -->
         <section class="sp-section">
           <div class="sp-section-head">
             <h2>Services</h2>
@@ -178,7 +168,6 @@
           </div>
         </section>
 
-        <!-- PLANS -->
         <section class="sp-section">
           <div class="sp-section-head">
             <h2>Subscription Plans</h2>
@@ -192,14 +181,14 @@
         </section>
 
         <div class="sp-note">
-          <strong>Note:</strong> “Subscribe” creates a checkout request in Firestore.
-          Your backend should convert it into a real checkout URL (Stripe, etc.).
+          <strong>Note:</strong> Subscribe buttons create a checkout request in Firestore.
+          <span class="sp-note-small">Your backend should convert it into a real checkout link (Stripe etc.).</span>
         </div>
 
       </div>
     </main>
 
-    <!-- FOOTER (copied from homepage for consistency) -->
+    <!-- FOOTER (same as homepage) -->
     <footer class="gts-footer">
       <div class="gts-footer-inner">
         <div class="gts-footer-col about-col">
@@ -208,6 +197,7 @@
             Empowering organizations with intelligent,
             scalable technology, and modern digital transformation solutions.
           </p>
+
           <h4 class="footer-heading">CONTACT US</h4>
           <p>info@guidedtechms.com</p>
 
@@ -261,7 +251,12 @@
 
   </div>
 
-  <!-- Your existing site script (menu toggle etc.) -->
+  <!-- Firebase compat (same versions as homepage to prevent mismatch) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <!-- Your existing UI script (menu toggle etc.) -->
   <script src="../script.js"></script>
 
   <script>
@@ -269,6 +264,6 @@
   </script>
 
   <!-- Page JS -->
-  <script type="module" src="./services-pricing.js"></script>
+  <script src="./services-pricing.js"></script>
 </body>
 </html>
