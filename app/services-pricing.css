@@ -314,31 +314,40 @@
   }
 }
 
-/* =========================================
-   Navbar Buttons - Small Screen Sizing
-========================================= */
-@media (max-width: 520px){
-  .navbar-actions{
-    gap: 8px;
+/* =====================================================
+   MOBILE NAV — SAFE FIX (NO JS DEPENDENCY)
+===================================================== */
+@media (max-width: 900px){
+
+  /* Overlay: light, visible, not blocking menu */
+  .nav-overlay{
+    background: rgba(248,249,249,0.92);
+    backdrop-filter: none;
+    z-index: 1000;
   }
 
-  .navbar-actions .btn-primary{
-    padding: 8px 10px;
-    font-size: 12px;
-    border-radius: 10px;
-    line-height: 1.1;
-    white-space: nowrap;
+  .nav-overlay.show{
+    display: block;
   }
 
-  /* Optional: reduce the "Get Started" slightly more */
-  #btnGetStarted{
-    padding: 8px 10px;
+  /* Mobile menu panel */
+  .navbar-menu{
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: min(85vw, 360px);
+    height: 100dvh;
+
+    background: #0b1220; /* KEEP DARK LIKE YOUR DESIGN */
+    overflow-y: auto;
+
+    z-index: 1001; /* ABOVE overlay */
+  }
+
+  /* Ensure links are clickable */
+  .navbar-menu a{
+    pointer-events: auto;
   }
 }
 
-@media (max-width: 380px){
-  .navbar-actions .btn-primary{
-    padding: 7px 8px;
-    font-size: 11px;
-  }
-}
