@@ -109,16 +109,16 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Overlay - LIGHTER */
+/* Overlay - blur the BACKGROUND, not the overlay itself */
 .nav-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
   z-index: 2500;
   transition: opacity 0.3s;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px); /* This blurs what's BEHIND the overlay */
 }
 
 .nav-overlay.show {
@@ -127,15 +127,31 @@ body {
 }
 
 /* ================================================
-   DESKTOP
+   MOBILE - VIEW
 ================================================ */
-@media (min-width: 1025px) {
-  .navbar-menu {
+@media (max-width: 1024px) {
+  .menu-toggle {
     display: flex;
-    gap: 32px;
-    align-items: center;
   }
 
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    bottom: 0;
+    width: 90%;
+    max-width: 400px;
+    background: linear-gradient(180deg, #071a24 0%, #0d2a3a 100%);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+    padding: 90px 28px 28px;
+    overflow-y: auto;
+    z-index: 3000;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    backdrop-filter: none; /* ← REMOVE any blur from the menu itself */
+  }
   .nav-link {
     color: #cfe4f4;
     font-size: 16px;
