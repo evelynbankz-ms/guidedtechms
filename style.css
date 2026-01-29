@@ -235,7 +235,7 @@ body {
     right: 0;
   }
 
-  /* Close button - clickable pseudo-element */
+  /* Close button - ONLY show when menu is open */
   .navbar-menu::after {
     content: '✕';
     position: fixed;
@@ -245,7 +245,7 @@ body {
     height: 48px;
     background: rgba(255, 255, 255, 0.12);
     border-radius: 50%;
-    display: flex;
+    display: none; /* ← HIDDEN by default */
     align-items: center;
     justify-content: center;
     font-size: 26px;
@@ -255,11 +255,12 @@ body {
     font-weight: 300;
     z-index: 3100;
   }
-
+  
+  /* Show ONLY when menu is open */
   .navbar-menu.open::after {
     display: flex;
   }
-
+  
   .nav-link {
     width: 100%;
     padding: 18px 0;
