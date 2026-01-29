@@ -283,17 +283,3 @@ onAuthStateChanged(auth, (user) => {
 // First paint
 setAuthUI(null);
 setLoading("Loading…");
-
-// SAFETY: Prevent clicks inside the menu from bubbling to the overlay
-menu.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-// SAFETY: Only close when clicking directly on overlay (not children)
-overlay.addEventListener("click", (e) => {
-  if (e.target !== overlay) return;
-  menu.classList.remove("open");
-  overlay.classList.remove("show");
-  document.body.style.overflow = "";
-  document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-});
