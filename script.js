@@ -263,9 +263,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* =========================================================
-     MOBILE MENU + OVERLAY + ACCORDION (MOBILE ONLY)
-     - FIXED: Removed conflicting event listeners
+   
+/* =========================================================
+     MOBILE MENU - FINAL WORKING VERSION
   ========================================================= */
   const btn = document.querySelector(".menu-toggle");
   const menu = document.querySelector(".navbar-menu");
@@ -273,68 +273,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btn && menu && overlay) {
 
-    // Open/close toggle
+    // Toggle menu
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      menu.classList.toggle("open");
-      overlay.classList.toggle("show");
-      document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
+      const isOpen = menu.classList.contains("open");
+      
+      if (isOpen) {
+        menu.classList.remove("open");
+        overlay.classList.remove("show");
+        document.body.style.overflow = "";
+      } else {
+        menu.classList.add("open");
+        overlay.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
     });
 
-    // Click overlay to close
+    // Close on overlay click
     overlay.addEventListener("click", () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
       document.body.style.overflow = "";
-      // Close all dropdowns
-      document.querySelectorAll(".nav-item.open").forEach(item => {
-        item.classList.remove("open");
-      });
+      document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
     });
 
-    // Accordion dropdowns - FIXED
-    document.querySelectorAll(".nav-parent").forEach(parentLink => {
-      parentLink.addEventListener("click", (e) => {
+    // Close button (click on ::after pseudo-element area)
+    menu.addEventListener("click", (e) => {
+      const rect = menu.getBoundingClientRect();
+      const clickX = e.clientX;
+      const clickY = e.clientY;
+      
+      // Top-right corner detection (where ::after button is)
+      const isCloseButton = clickX > rect.right - 80 && clickY < rect.top + 80;
+      
+      if (isCloseButton) {
+        menu.classList.remove("open");
+        overlay.classList.remove("show");
+        document.body.style.overflow = "";
+        e.stopPropagation();
+      }
+    });
+
+    // Dropdown toggles
+    menu.querySelectorAll(".nav-parent").forEach(link => {
+      link.addEventListener("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        const navItem = parentLink.closest(".nav-item");
+        const item = this.closest(".nav-item");
+        const wasOpen = item.classList.contains("open");
         
-        if (navItem) {
-          // Close other dropdowns
-          document.querySelectorAll(".nav-item").forEach(item => {
-            if (item !== navItem && item.classList.contains("open")) {
-              item.classList.remove("open");
-            }
-          });
-          
-          // Toggle current dropdown
-          navItem.classList.toggle("open");
+        // Close all others
+        menu.querySelectorAll(".nav-item.open").forEach(i => {
+          if (i !== item) i.classList.remove("open");
+        });
+        
+        // Toggle this one
+        if (wasOpen) {
+          item.classList.remove("open");
+        } else {
+          item.classList.add("open");
         }
       });
     });
 
-    // Regular nav links (non-dropdown) should close menu
-    document.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
+    // Regular links close menu
+    menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
       link.addEventListener("click", () => {
-        // Close menu when clicking regular links
         menu.classList.remove("open");
         overlay.classList.remove("show");
         document.body.style.overflow = "";
       });
     });
 
-    // ESC key to close
+    // ESC key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) {
         menu.classList.remove("open");
         overlay.classList.remove("show");
         document.body.style.overflow = "";
-        document.querySelectorAll(".nav-item.open").forEach(item => {
-          item.classList.remove("open");
-        });
       }
     });
   }
-
-}); // ← Closes the main DOMContentLoaded
