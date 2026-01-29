@@ -199,15 +199,18 @@
           </div>
         </section>
 
-        <div class="sp-note">
-          <strong>Checkout note:</strong> Clicking subscribe creates a Firestore request in <code>checkoutSessions</code>.
-          <br />
-          <!-- Placeholder instruction -->
-          <span class="sp-mini">
-            <!-- IMPORTANT PLACEHOLDER -->
-            YOU MUST ADD A BACKEND CHECKOUT PROCESS (E.G. CLOUD FUNCTION + STRIPE) TO TURN THAT REQUEST INTO A REAL PAYMENT FLOW.
-          </span>
-        </div>
+          <!--
+          CHECKOUT FLOW NOTE (DEVELOPER ONLY):
+          
+          Clicking "Subscribe" creates a document in the Firestore collection:
+            checkoutSessions
+          
+          You MUST add a backend checkout processor (e.g. Firebase Cloud Function + Stripe)
+          that:
+          1. Listens for new checkoutSessions docs
+          2. Creates a real payment session
+          3. Redirects the user to the payment provider
+          -->
 
       </div>
     </main>
