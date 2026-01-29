@@ -266,3 +266,50 @@
     align-items:flex-start;
   }
 }
+/* =========================================
+   MOBILE NAV FIX (Overlay + Clickability)
+   Put this at the VERY BOTTOM of this file
+========================================= */
+
+/* Base overlay behavior (works with your existing .show class) */
+.nav-overlay{
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none; /* IMPORTANT: prevents blocking clicks when hidden */
+  transition: opacity 0.25s ease;
+}
+
+/* When open */
+.nav-overlay.show{
+  opacity: 1;
+  pointer-events: auto; /* clickable ONLY when shown */
+}
+
+/* Mobile menu layering: menu MUST be above overlay */
+@media (max-width: 900px){
+  /* Make sure menu sits on top of overlay */
+  .navbar-menu{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh; /* better on mobile than 100vh */
+    width: min(86vw, 380px);
+    overflow-y: auto;
+
+    z-index: 1002;  /* IMPORTANT: higher than overlay */
+    background: #ffffff;
+
+    /* Optional: nicer look */
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    border-left: 1px solid rgba(46,64,83,0.12);
+  }
+
+  /* Overlay behind menu and NOT dark */
+  .nav-overlay{
+    z-index: 1001;
+    background: rgba(248, 249, 249, 0.92); /* light overlay */
+    /* NO DARK EFFECT */
+    backdrop-filter: none;
+  }
+}
