@@ -363,3 +363,15 @@
     font-size: 11px;
   }
 }
+
+/* =========================================
+   REMOVE THE "SECOND CLOSE" (HAMBURGER → X)
+   - Your global style.css is turning #menuToggle into an X
+   - We hide it when the menu is open
+========================================= */
+@media (max-width: 900px){
+  body.nav-open #menuToggle{
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
