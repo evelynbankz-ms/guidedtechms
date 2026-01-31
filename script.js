@@ -180,9 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       e.preventDefault();
       const target = safeQuery(href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
+      if (target) target.scrollIntoView({ behavior: "smooth" });
 
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
@@ -261,85 +259,84 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* =========================================================
-     MOBILE MENU
+     MOBILE MENU (FIXED)
   ========================================================= */
-  const btn = document.querySelector(".menu-toggle");
-  const menu = document.querySelector(".navbar-menu");
+  const btn = safeQuery(".menu-toggle");
+  const menu = safeQuery(".navbar-menu");
   const overlay = document.getElementById("navOverlay");
+  const closeBtn = document.getElementById("mobileNavClose"); // OPTIONAL BUTTON YOU ADDED
 
   if (btn && menu && overlay) {
 
-    btn.addEventListener("click", () => {
-      const isOpen = menu.classList.contains("open");
-      
-      if (isOpen) {
-        menu.classList.remove("open");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "";
-      } else {
-        menu.classList.add("open");
-        overlay.classList.add("show");
-        document.body.style.overflow = "hidden";
-      }
-    });
-
-    overlay.addEventListener("click", () => {
+    const closeMenu = () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
       document.body.style.overflow = "";
       document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+    };
+
+    const openMenu = () => {
+      menu.classList.add("open");
+      overlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+    };
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const isOpen = menu.classList.contains("open");
+      if (isOpen) closeMenu();
+      else openMenu();
     });
 
+    // Close when tapping overlay
+    overlay.addEventListener("click", (e) => {
+      if (e.target !== overlay) return;
+      closeMenu();
+    });
+
+    // Prevent clicks inside menu from closing overlay
     menu.addEventListener("click", (e) => {
-      const rect = menu.getBoundingClientRect();
-      const clickX = e.clientX;
-      const clickY = e.clientY;
-      
-      const isCloseButton = clickX > rect.right - 80 && clickY < rect.top + 80;
-      
-      if (isCloseButton) {
-        menu.classList.remove("open");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "";
-        e.stopPropagation();
-      }
+      e.stopPropagation();
     });
 
+    // Close button inside menu (if present)
+    closeBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeMenu();
+    });
+
+    // Dropdown toggles for nav parents
     menu.querySelectorAll(".nav-parent").forEach(link => {
       link.addEventListener("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const item = this.closest(".nav-item");
         const wasOpen = item.classList.contains("open");
-        
+
         menu.querySelectorAll(".nav-item.open").forEach(i => {
           if (i !== item) i.classList.remove("open");
         });
-        
-        if (wasOpen) {
-          item.classList.remove("open");
-        } else {
-          item.classList.add("open");
-        }
+
+        if (wasOpen) item.classList.remove("open");
+        else item.classList.add("open");
       });
     });
 
+    // Close menu when clicking any normal nav link (external pages)
     menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
       link.addEventListener("click", () => {
-        menu.classList.remove("open");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "";
+        closeMenu();
       });
     });
 
+    // Escape closes menu
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) {
-        menu.classList.remove("open");
-        overlay.classList.remove("show");
-        document.body.style.overflow = "";
+        closeMenu();
       }
     });
   }
 
-}); // ← THIS WAS MISSING
+});
