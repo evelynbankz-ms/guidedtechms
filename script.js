@@ -180,7 +180,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       e.preventDefault();
       const target = safeQuery(href);
-      if (target) target.scrollIntoView({ behavior: "smooth" });
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
 
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
@@ -259,12 +261,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* =========================================================
-     MOBILE MENU (FIXED)
-  ========================================================= */
-  const btn = safeQuery(".menu-toggle");
-  const menu = safeQuery(".navbar-menu");
+     ✅ MOBILE MENU (CORRECT FIX)
+     - ONE close button (#mobileNavClose)
+     - overlay closes menu
+     - clicking inside menu does NOT close overlay
+     - links work
+========================================================= */
+  const btn = document.getElementById("menuToggle");
+  const menu = document.getElementById("navbarMenu");
   const overlay = document.getElementById("navOverlay");
-  const closeBtn = document.getElementById("mobileNavClose"); // OPTIONAL BUTTON YOU ADDED
+  const closeBtn = document.getElementById("mobileNavClose");
 
   if (btn && menu && overlay) {
 
@@ -273,37 +279,40 @@ document.addEventListener("DOMContentLoaded", () => {
       overlay.classList.remove("show");
       document.body.style.overflow = "";
       document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+      btn.setAttribute("aria-expanded", "false");
     };
 
     const openMenu = () => {
       menu.classList.add("open");
       overlay.classList.add("show");
       document.body.style.overflow = "hidden";
+      btn.setAttribute("aria-expanded", "true");
     };
 
+    // Hamburger toggles open/close
     btn.addEventListener("click", (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const isOpen = menu.classList.contains("open");
       if (isOpen) closeMenu();
       else openMenu();
     });
 
-    // Close when tapping overlay
-    overlay.addEventListener("click", (e) => {
-      if (e.target !== overlay) return;
-      closeMenu();
-    });
-
-    // Prevent clicks inside menu from closing overlay
-    menu.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-
-    // Close button inside menu (if present)
+    // Close button closes
     closeBtn?.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       closeMenu();
+    });
+
+    // Clicking overlay closes
+    overlay.addEventListener("click", () => {
+      closeMenu();
+    });
+
+    // Clicking inside menu should NOT close overlay
+    menu.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
 
     // Dropdown toggles for nav parents
@@ -324,14 +333,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Close menu when clicking any normal nav link (external pages)
+    // Close when clicking normal links
     menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
       link.addEventListener("click", () => {
         closeMenu();
       });
     });
 
-    // Escape closes menu
+    // Escape key closes
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) {
         closeMenu();
