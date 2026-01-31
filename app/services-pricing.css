@@ -261,20 +261,35 @@
 }
 
 /* =====================================================
-   MOBILE NAVBAR — FINAL FIX (NO CONFLICTS)
+   ✅ OVERLAY: MUST BE HIDDEN BY DEFAULT
+   - It should only appear when .show is added
+===================================================== */
+.nav-overlay{
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1000;
+}
+
+.nav-overlay.show{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =====================================================
+   MOBILE NAVBAR — FINAL FIX (ONE CLOSE BUTTON)
 ===================================================== */
 @media (max-width: 900px){
 
   /* Light overlay */
   .nav-overlay{
-    position: fixed;
-    inset: 0;
     background: rgba(248,249,249,0.92);
     backdrop-filter: none;
-    z-index: 1000;
   }
 
-  /* Dark mobile menu */
+  /* Mobile menu panel (slide in/out) */
   .navbar-menu{
     position: fixed;
     top: 0;
@@ -284,15 +299,24 @@
     background: #0b1220;
     overflow-y: auto;
     z-index: 1001;
+
+    /* CLOSED state */
+    transform: translateX(105%);
+    transition: transform 0.25s ease;
+  }
+
+  /* OPEN state */
+  .navbar-menu.open{
+    transform: translateX(0);
   }
 
   .navbar-menu a{
     pointer-events: auto;
   }
 
-  /* Close button */
+  /* ✅ Close button is hidden until menu is open */
   .mobile-nav-close{
-    display: block;
+    display: none;
     position: sticky;
     top: 0;
     text-align: right;
@@ -303,6 +327,17 @@
     font-size: 26px;
     padding: 14px 16px;
     cursor: pointer;
+    z-index: 2;
+  }
+
+  .navbar-menu.open .mobile-nav-close{
+    display: block;
+  }
+
+  /* ✅ THIS REMOVES THE 2ND "X" (hamburger turning into X) */
+  body.nav-open #menuToggle{
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
