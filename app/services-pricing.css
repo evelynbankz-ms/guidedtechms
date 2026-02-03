@@ -393,5 +393,90 @@
   }
 }
 
+/* =====================================================
+   NUCLEAR FIX: REMOVE RED-BOX ICON ON #menuToggle
+   - Forces the button to ONLY show the 3 .menu-line spans
+   - Beats global style.css with higher specificity + !important
+===================================================== */
+@media (max-width: 900px){
+
+  /* Hard reset the toggle button (kills masks/icons/backgrounds) */
+  header.navbar .navbar-actions #menuToggle{
+    -webkit-appearance: none !important;
+    appearance: none !important;
+
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+
+    -webkit-mask: none !important;
+    mask: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+
+    border: 0 !important;
+    outline: none !important;
+
+    /* Rebuild layout */
+    width: 46px !important;
+    height: 46px !important;
+    padding: 10px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 6px !important;
+
+    border-radius: 12px !important;
+    cursor: pointer !important;
+
+    /* Prevent any icon/text from showing */
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  /* Kill any pseudo icon (VERY common in global style.css) */
+  header.navbar .navbar-actions #menuToggle::before,
+  header.navbar .navbar-actions #menuToggle::after{
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    -webkit-mask: none !important;
+    mask: none !important;
+  }
+
+  /* If global CSS inserts an svg/icon inside the button, hide it */
+  header.navbar .navbar-actions #menuToggle svg,
+  header.navbar .navbar-actions #menuToggle i,
+  header.navbar .navbar-actions #menuToggle img{
+    display: none !important;
+  }
+
+  /* Force the 3 hamburger lines to show */
+  header.navbar .navbar-actions #menuToggle .menu-line{
+    display: block !important;
+    width: 100% !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+
+    opacity: 1 !important;
+    transform: none !important;
+
+    background: #ffffff !important; /* matches your dark navbar */
+  }
+
+  /* Prevent any “turn into X” animation from global CSS */
+  header.navbar .navbar-actions #menuToggle.open .menu-line,
+  header.navbar .navbar-actions #menuToggle.active .menu-line,
+  header.navbar .navbar-actions #menuToggle[aria-expanded="true"] .menu-line{
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  header.navbar .navbar-actions #menuToggle[aria-expanded="true"] .menu-line:nth-child(2){
+    opacity: 1 !important;
+  }
+}
 
 
