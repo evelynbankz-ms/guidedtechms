@@ -278,7 +278,13 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
       document.body.style.overflow = "";
+
+      // ✅ IMPORTANT: enables CSS to hide the top toggle when menu is open
+      document.body.classList.remove("nav-open");
+
+      // close any opened dropdowns
       document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+
       btn.setAttribute("aria-expanded", "false");
     };
 
@@ -286,6 +292,10 @@ document.addEventListener("DOMContentLoaded", () => {
       menu.classList.add("open");
       overlay.classList.add("show");
       document.body.style.overflow = "hidden";
+
+      // ✅ IMPORTANT: enables CSS to hide the top toggle when menu is open
+      document.body.classList.add("nav-open");
+
       btn.setAttribute("aria-expanded", "true");
     };
 
@@ -293,17 +303,20 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
+
       const isOpen = menu.classList.contains("open");
       if (isOpen) closeMenu();
       else openMenu();
     });
 
-    // Close button closes
-    closeBtn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      closeMenu();
-    });
+    // Close button inside menu closes
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu();
+      });
+    }
 
     // Clicking overlay closes
     overlay.addEventListener("click", () => {
@@ -322,12 +335,16 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
 
         const item = this.closest(".nav-item");
+        if (!item) return;
+
         const wasOpen = item.classList.contains("open");
 
+        // close others
         menu.querySelectorAll(".nav-item.open").forEach(i => {
           if (i !== item) i.classList.remove("open");
         });
 
+        // toggle this one
         if (wasOpen) item.classList.remove("open");
         else item.classList.add("open");
       });
@@ -347,5 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 
 });
