@@ -209,18 +209,36 @@ body {
    ✅ Same as services-pricing behavior
    ✅ NO external red-box X
 ================================================ */
+/* ================================================
+   MOBILE ONLY — NAVBAR (UPDATED TO MATCH SERVICES-PRICING)
+================================================ */
 @media (max-width: 1024px) {
+
   .menu-toggle {
     display: flex;
   }
 
-  /* Mobile menu panel */
+  /* Light overlay like services-pricing */
+  .nav-overlay {
+    background: rgba(248, 249, 249, 0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 2500;
+  }
+
+  .nav-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Dark mobile menu panel (slide using transform) */
   .navbar-menu {
     position: fixed;
     top: 0;
     right: 0;
-    height: 100dvh;
     width: min(85vw, 360px);
+    height: 100dvh;
     background: #0b1220;
     overflow-y: auto;
     z-index: 3000;
@@ -232,7 +250,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding: 0; /* close button lives inside */
+    padding: 0; /* important: close button is sticky at top */
   }
 
   /* OPEN */
@@ -240,36 +258,36 @@ body {
     transform: translateX(0);
   }
 
-  /* ✅ Remove the old global external X completely */
-  .navbar-menu::before,
+  /* ✅ REMOVE the red-box close icon (it was .navbar-menu::after) */
   .navbar-menu::after {
     content: none !important;
     display: none !important;
   }
 
-  /* ✅ Inside-menu close button (the one you WANT) */
-  .mobile-nav-close{
+  /* ✅ Your real close button inside the menu */
+  .mobile-nav-close {
     display: none;
     position: sticky;
     top: 0;
     text-align: right;
     width: 100%;
-    background: rgba(11,18,32,0.95);
+    background: rgba(11, 18, 32, 0.95);
     color: #fff;
     border: none;
     font-size: 26px;
     padding: 14px 16px;
     cursor: pointer;
-    z-index: 5;
+    z-index: 2;
   }
 
-  .navbar-menu.open .mobile-nav-close{
+  .navbar-menu.open .mobile-nav-close {
     display: block;
   }
 
+  /* Menu links styling (same vibe as services-pricing) */
   .nav-link {
     width: 100%;
-    padding: 18px 0;
+    padding: 18px 22px;
     font-size: 18px;
     font-weight: 600;
     color: #ffffff;
@@ -279,12 +297,10 @@ body {
     align-items: center;
     justify-content: space-between;
     transition: all 0.25s ease;
-    padding-left: 28px;
-    padding-right: 28px;
   }
 
   .nav-link:hover {
-    padding-left: 38px;
+    padding-left: 28px;
   }
 
   .nav-item {
@@ -313,7 +329,7 @@ body {
     background: rgba(255, 255, 255, 0.06);
     border-radius: 10px;
     padding: 0;
-    margin: 12px 28px 8px;
+    margin: 12px 18px 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -366,55 +382,7 @@ body {
     border-radius: 4px;
     flex-shrink: 0;
   }
-
-  /* Buttons scale down on mobile */
-  .btn-primary {
-    padding: 8px 14px;
-    font-size: 14px;
-  }
-
-  .logo-text {
-    font-size: 14px;
-  }
 }
-
-@media (max-width: 520px){
-  .navbar-actions{ gap: 8px; }
-
-  .navbar-actions .btn-primary{
-    padding: 8px 10px;
-    font-size: 12px;
-    border-radius: 10px;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 420px) {
-  .navbar-menu {
-    width: 100%;
-    max-width: none;
-  }
-
-  .btn-primary {
-    padding: 7px 10px;
-    font-size: 13px;
-  }
-
-  .navbar-logo-img {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-@media (max-width: 380px){
-  .navbar-actions .btn-primary{
-    padding: 7px 8px;
-    font-size: 11px;
-  }
-}
-
-
-
 
 
 
