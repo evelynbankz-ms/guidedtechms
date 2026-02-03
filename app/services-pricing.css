@@ -262,9 +262,7 @@
 
 /* =====================================================
    ✅ OVERLAY: MUST BE HIDDEN BY DEFAULT
-   - It should only appear when .show is added
 ===================================================== */
-
 .nav-overlay{
   position: fixed;
   inset: 0;
@@ -282,8 +280,8 @@
 /* =====================================================
    MOBILE NAVBAR — FINAL FIX
    ✅ Keep hamburger ALWAYS
-   ✅ Use ONLY the inside-menu close button (.mobile-nav-close)
-   ✅ Force-disable hamburger→X animation coming from global style.css
+   ✅ Use ONLY inside-menu close button (.mobile-nav-close)
+   ✅ REMOVE the red-box icon (it’s coming from global style.css)
 ===================================================== */
 @media (max-width: 900px){
 
@@ -304,16 +302,11 @@
     overflow-y: auto;
     z-index: 1001;
 
-    /* CLOSED state */
     transform: translateX(105%);
     transition: transform 0.25s ease;
   }
 
-  /* OPEN state */
-  .navbar-menu.open{
-    transform: translateX(0);
-  }
-
+  .navbar-menu.open{ transform: translateX(0); }
   .navbar-menu a{ pointer-events: auto; }
 
   /* Inside-menu close button */
@@ -331,67 +324,50 @@
     cursor: pointer;
     z-index: 2;
   }
-
-  .navbar-menu.open .mobile-nav-close{
-    display: block;
-  }
+  .navbar-menu.open .mobile-nav-close{ display: block; }
 
   /* =====================================================
-     ✅ KEEP HAMBURGER VISIBLE (do not hide it)
+     ✅ REMOVE THE RED-BOX ICON ON #menuToggle
+     (global style.css is drawing it via mask/background/pseudo)
   ===================================================== */
-  #menuToggle{
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    display: inline-flex !important;
-  }
 
-  /* =====================================================
-     ✅ KILL ANY "X" CREATED BY PSEUDO ELEMENTS
-     (very common in global style.css)
-  ===================================================== */
+  /* 1) Kill any pseudo-element icon */
   #menuToggle::before,
   #menuToggle::after,
   .menu-toggle::before,
   .menu-toggle::after{
-    content: none !important;
+    content: "" !important;
     display: none !important;
   }
 
-  /* =====================================================
-     ✅ KILL ANY ICON/BACKGROUND SWAP
-  ===================================================== */
+  /* 2) Kill mask-based icons (VERY common) */
   #menuToggle,
   .menu-toggle{
+    -webkit-mask: none !important;
+    mask: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
     background-image: none !important;
   }
 
-  /* =====================================================
-     ✅ FORCE THE 3 LINES TO ALWAYS LOOK LIKE A HAMBURGER
-     (beats aria-expanded, .open, .active animations)
-  ===================================================== */
+  /* 3) Ensure the 3 hamburger lines are actually shown */
   #menuToggle .menu-line,
   .menu-toggle .menu-line{
     display: block !important;
-    width: 26px !important;
-    height: 2px !important;
-    margin: 5px 0 !important;
     transform: none !important;
     opacity: 1 !important;
   }
 
-  /* If global CSS targets aria-expanded */
-  #menuToggle[aria-expanded="true"] .menu-line,
-  #menuToggle[aria-expanded="false"] .menu-line{
-    transform: none !important;
-    opacity: 1 !important;
-  }
-
-  /* If global CSS targets .open / .active */
+  /* 4) Prevent “open/active/expanded” rules from hiding/swapping lines */
   #menuToggle.open .menu-line,
   #menuToggle.active .menu-line,
-  .menu-toggle.open .menu-line,
-  .menu-toggle.active .menu-line{
+  #menuToggle[aria-expanded="true"] .menu-line{
     transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* 5) In case global CSS hides the middle line */
+  #menuToggle .menu-line:nth-child(2){
     opacity: 1 !important;
   }
 }
@@ -416,5 +392,6 @@
     font-size: 11px;
   }
 }
+
 
 
