@@ -279,7 +279,9 @@
 }
 
 /* =====================================================
-   MOBILE NAVBAR — FINAL FIX (ONE CLOSE BUTTON)
+   MOBILE NAVBAR — FINAL FIX
+   ✅ Keep hamburger ALWAYS
+   ✅ Use ONLY the inside-menu close button (.mobile-nav-close)
 ===================================================== */
 @media (max-width: 900px){
 
@@ -334,10 +336,41 @@
     display: block;
   }
 
-  /* ✅ THIS REMOVES THE 2ND "X" (hamburger turning into X) */
+  /* =====================================================
+     ✅ IMPORTANT: DO NOT HIDE THE HAMBURGER
+     (Remove the old rule that set opacity:0)
+  ===================================================== */
   body.nav-open #menuToggle{
-    opacity: 0;
-    pointer-events: none;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: inline-flex !important;
+  }
+
+  /* =====================================================
+     ✅ IMPORTANT: STOP HAMBURGER FROM TURNING INTO AN X
+     (Your global style.css likely animates it on open)
+  ===================================================== */
+  #menuToggle[aria-expanded="true"] .menu-line,
+  #menuToggle[aria-expanded="false"] .menu-line{
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Some hamburger-to-X animations hide the middle line */
+  #menuToggle[aria-expanded="true"] .menu-line:nth-child(2){
+    opacity: 1 !important;
+  }
+
+  /* If your global CSS uses .open or .active on the toggle */
+  #menuToggle.open .menu-line,
+  #menuToggle.active .menu-line{
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  #menuToggle.open .menu-line:nth-child(2),
+  #menuToggle.active .menu-line:nth-child(2){
+    opacity: 1 !important;
   }
 }
 
@@ -364,14 +397,3 @@
   }
 }
 
-/* =========================================
-   REMOVE THE "SECOND CLOSE" (HAMBURGER → X)
-   - Your global style.css is turning #menuToggle into an X
-   - We hide it when the menu is open
-========================================= */
-@media (max-width: 900px){
-  body.nav-open #menuToggle{
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
