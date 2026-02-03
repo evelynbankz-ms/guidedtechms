@@ -270,6 +270,8 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
+  background: rgba(248,249,249,0.92);
+  backdrop-filter: none;
   z-index: 1000;
 }
 
@@ -279,17 +281,12 @@
 }
 
 /* =====================================================
-   MOBILE NAVBAR — FINAL FIX (ONE CLOSE BUTTON)
+   MOBILE NAVBAR — CLEAN SINGLE CONTROL
+   (NO CLOSE ICON AT ALL)
 ===================================================== */
 @media (max-width: 900px){
 
-  /* Light overlay */
-  .nav-overlay{
-    background: rgba(248,249,249,0.92);
-    backdrop-filter: none;
-  }
-
-  /* Mobile menu panel (slide in/out) */
+  /* Mobile menu panel */
   .navbar-menu{
     position: fixed;
     top: 0;
@@ -300,12 +297,12 @@
     overflow-y: auto;
     z-index: 1001;
 
-    /* CLOSED state */
+    /* CLOSED */
     transform: translateX(105%);
     transition: transform 0.25s ease;
   }
 
-  /* OPEN state */
+  /* OPEN */
   .navbar-menu.open{
     transform: translateX(0);
   }
@@ -314,36 +311,20 @@
     pointer-events: auto;
   }
 
-  /* ✅ Close button is hidden until menu is open */
+  /* 🚫 REMOVE CLOSE ICON COMPLETELY */
   .mobile-nav-close{
-    display: none;
-    position: sticky;
-    top: 0;
-    text-align: right;
-    width: 100%;
-    background: rgba(11,18,32,0.95);
-    color: #fff;
-    border: none;
-    font-size: 26px;
-    padding: 14px 16px;
-    cursor: pointer;
-    z-index: 2;
+    display: none !important;
   }
 
-  .navbar-menu.open .mobile-nav-close{
-    display: block;
-  }
-
-  /* ✅ THIS REMOVES THE 2ND "X" (hamburger turning into X) */
+  /* 🚫 HIDE HAMBURGER WHILE MENU IS OPEN */
   body.nav-open #menuToggle{
-    opacity: 0;
-    pointer-events: none;
+    display: none !important;
   }
 }
 
-/* ==============================
+/* =====================================================
    NAVBAR BUTTONS — SMALL SCREENS
-   ============================== */
+===================================================== */
 @media (max-width: 520px){
   .navbar-actions{
     gap: 8px;
@@ -364,14 +345,3 @@
   }
 }
 
-/* =========================================
-   REMOVE THE "SECOND CLOSE" (HAMBURGER → X)
-   - Your global style.css is turning #menuToggle into an X
-   - We hide it when the menu is open
-========================================= */
-@media (max-width: 900px){
-  body.nav-open #menuToggle{
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
