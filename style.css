@@ -37,272 +37,273 @@ body {
 /* ================================================
    NAVBAR (GLOBAL)
 ================================================ */
-.navbar {
-  width: 100%;
-  position: sticky;
-  top: 0;
-  height: 78px;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
-  z-index: 2000;
+.navbar{
+  width:100%;
+  position:sticky;
+  top:0;
+  height:78px;
+  display:flex;
+  align-items:center;
+  background:linear-gradient(135deg,#071a24 0%,#0d2a3a 100%);
+  z-index:2000;
 }
 
-.navbar-container {
-  max-width: 1250px;
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
+.navbar-container{
+  max-width:1250px;
+  margin:0 auto;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
 }
 
-.navbar-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ffffff;
-  font-weight: 700;
-  text-decoration: none;
-  z-index: 3500;
+.navbar-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  z-index:3500;
 }
 
-.navbar-logo-img {
-  width: 32px;
-  height: 32px;
+.navbar-logo-img{ width:32px; height:32px; }
+
+.logo-text{ font-size:18px; }
+
+.navbar-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  z-index:3500;
 }
 
-.logo-text {
-  font-size: 18px;
+.btn-primary{
+  background:#1b4f72;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:600;
+  text-decoration:none;
 }
 
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  z-index: 3500;
+/* Hamburger button */
+.menu-toggle{
+  display:none;
+  background:none;
+  border:none;
+  cursor:pointer;
+  flex-direction:column;
+  gap:4px;
+  padding:8px;
 }
 
-.btn-primary {
-  background: #1b4f72;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-/* Hamburger */
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px;
-}
-
-.menu-line {
-  width: 22px;
-  height: 2px;
-  background: #ffffff;
-  display: block;
+.menu-line{
+  width:22px;
+  height:2px;
+  background:#fff;
+  display:block;
 }
 
 /* ================================================
-   OVERLAY — BACKGROUND DIM ONLY
+   OVERLAY (GLOBAL)
+   ✅ NO dark cover / no blur / no wash
+   - Only used to block clicks + close menu when tapped
 ================================================ */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 2500; /* BELOW menu */
+.nav-overlay{
+  position:fixed;
+  inset:0;
+  background:transparent; /* IMPORTANT: no dark effect */
+  opacity:0;
+  pointer-events:none;
+  z-index:2500;
+  transition:opacity 0.2s ease;
 }
 
-.nav-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
+.nav-overlay.show{
+  opacity:1;
+  pointer-events:auto;
 }
 
 /* ================================================
-   DESKTOP
+   DESKTOP ONLY
 ================================================ */
-@media (min-width: 1025px) {
-  .navbar-menu {
-    display: flex;
-    gap: 32px;
-    align-items: center;
+@media (min-width:1025px){
+  .navbar-menu{
+    display:flex;
+    gap:32px;
+    align-items:center;
   }
 
-  .nav-link {
-    color: #cfe4f4;
-    font-size: 16px;
-    text-decoration: none;
-    padding: 10px 0;
+  .nav-link{
+    color:#cfe4f4;
+    font-size:16px;
+    text-decoration:none;
+    padding:10px 0;
   }
 
-  .nav-link:hover {
-    color: #ffffff;
+  .nav-link:hover{ color:#fff; }
+
+  .nav-item{ position:relative; }
+
+  .mega-dropdown{
+    position:absolute;
+    top:100%;
+    left:50%;
+    transform:translateX(-50%);
+    width:600px;
+    background:rgba(13,42,58,0.96);
+    border-radius:12px;
+    padding:20px;
+    opacity:0;
+    visibility:hidden;
+    display:flex;
+    gap:30px;
+    transition:0.3s;
   }
 
-  .nav-item {
-    position: relative;
-  }
-
-  .mega-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    background: rgba(13, 42, 58, 0.96);
-    border-radius: 12px;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    display: flex;
-    gap: 30px;
-  }
-
-  .nav-item:hover .mega-dropdown {
-    opacity: 1;
-    visibility: visible;
+  .nav-item:hover .mega-dropdown{
+    opacity:1;
+    visibility:visible;
   }
 }
 
 /* ================================================
-   MOBILE (MATCHES SERVICES-PRICING)
+   MOBILE ONLY — MATCH SERVICES-PRICING
 ================================================ */
-@media (max-width: 1024px) {
+@media (max-width:1024px){
 
-  .menu-toggle {
-    display: flex;
+  .menu-toggle{ display:flex; }
+
+  /* ✅ Better small-screen UI (logo + buttons smaller like you wanted) */
+  .navbar-container{ padding:0 14px; }
+  .logo-text{ font-size:14px; line-height:1.1; }
+  .navbar-actions{ gap:8px; }
+
+  .btn-primary{
+    padding:8px 10px;
+    font-size:12px;
+    border-radius:10px;
+    white-space:nowrap;
   }
 
-  /* Scale logo + buttons */
-  .logo-text {
-    font-size: 14px;
+  /* ✅ Mobile menu panel */
+  .navbar-menu{
+    position:fixed;
+    top:0;
+    right:0;
+    width:min(85vw,360px);
+    height:100dvh;
+    background:#0b1220;
+    overflow-y:auto;
+    z-index:3000; /* above overlay */
+
+    transform:translateX(105%);
+    transition:transform 0.25s ease;
+
+    display:flex;
+    flex-direction:column;
+    padding:0;
   }
 
-  .btn-primary {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
+  .navbar-menu.open{ transform:translateX(0); }
 
-  /* Mobile menu panel */
-  .navbar-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: min(85vw, 360px);
-    height: 100dvh;
-    background: #0b1220;
-    overflow-y: auto;
-    z-index: 3000; /* ABOVE overlay */
-
-    transform: translateX(105%);
-    transition: transform 0.25s ease;
-
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-  }
-
-  .navbar-menu.open {
-    transform: translateX(0);
-  }
-
-  /* REMOVE any old pseudo X */
+  /* ✅ REMOVE ANY “EXTERNAL X” generated by menu pseudo-elements */
   .navbar-menu::before,
-  .navbar-menu::after {
-    content: none !important;
-    display: none !important;
+  .navbar-menu::after{
+    content:none !important;
+    display:none !important;
   }
 
-  /* Close button INSIDE menu */
-  .mobile-nav-close {
-    display: none;
-    position: sticky;
-    top: 0;
-    text-align: right;
-    width: 100%;
-    background: rgba(11, 18, 32, 0.98);
-    color: #fff;
-    border: none;
-    font-size: 26px;
-    padding: 16px;
-    cursor: pointer;
-    z-index: 5;
+  /* ✅ REMOVE ANY “X near hamburger” generated by the toggle pseudo-elements */
+  #menuToggle::before,
+  #menuToggle::after,
+  .menu-toggle::before,
+  .menu-toggle::after{
+    content:none !important;
+    display:none !important;
   }
 
-  .navbar-menu.open .mobile-nav-close {
-    display: block;
+  /* ✅ STOP hamburger-to-X animations from any other CSS */
+  #menuToggle.open .menu-line,
+  #menuToggle.active .menu-line,
+  #menuToggle[aria-expanded="true"] .menu-line{
+    transform:none !important;
+    opacity:1 !important;
   }
+
+  /* ✅ The close button you WANT (inside the menu, at the top) */
+  .mobile-nav-close{
+    display:none;
+    position:sticky;
+    top:0;
+    text-align:right;
+    width:100%;
+    background:rgba(11,18,32,0.98);
+    color:#fff;
+    border:none;
+    font-size:26px;
+    padding:14px 16px;
+    cursor:pointer;
+    z-index:5;
+  }
+
+  .navbar-menu.open .mobile-nav-close{ display:block; }
 
   /* Menu links */
-  .nav-link {
-    width: 100%;
-    padding: 18px 22px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #ffffff;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .nav-link{
+    width:100%;
+    padding:18px 22px;
+    font-size:18px;
+    font-weight:600;
+    color:#fff;
+    text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
   }
 
-  .nav-item {
-    display: block;
+  .nav-item{ display:block; }
+
+  .nav-parent{ cursor:pointer; }
+
+  .nav-parent::after{
+    content:'›';
+    font-size:32px;
+    font-weight:300;
+    line-height:1;
+    color:#fff;
+    transition:transform 0.25s ease;
   }
 
-  .nav-parent::after {
-    content: '›';
-    font-size: 32px;
-    font-weight: 300;
-    color: #ffffff;
+  .nav-item.open .nav-parent::after{
+    transform:rotate(90deg);
   }
 
-  .nav-item.open .nav-parent::after {
-    transform: rotate(90deg);
+  .mega-dropdown{
+    display:none;
+    background:rgba(255,255,255,0.06);
+    border-radius:10px;
+    margin:12px 18px 8px;
+    border:1px solid rgba(255,255,255,0.1);
   }
 
-  .mega-dropdown {
-    display: none;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px;
-    margin: 12px 18px 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .nav-item.open .mega-dropdown {
-    display: block;
-    padding: 18px 20px;
+  .nav-item.open .mega-dropdown{
+    display:block;
+    padding:18px 20px;
   }
 }
 
-/* Extra small screens */
-@media (max-width: 420px) {
-  .logo-text {
-    font-size: 13px;
+@media (max-width:380px){
+  .btn-primary{
+    padding:7px 8px;
+    font-size:11px;
   }
-
-  .btn-primary {
-    padding: 7px 10px;
-    font-size: 12px;
-  }
-
-  .navbar-logo-img {
-    width: 26px;
-    height: 26px;
-  }
+  .logo-text{ font-size:13px; }
+  .navbar-logo-img{ width:26px; height:26px; }
 }
 
 
