@@ -61,10 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-/* =========================================================
-   COMMON DOM REFS (prevents "not defined" errors)
-========================================================= */
- const navbarEl = safeQuery(".navbar");
   
   /* =========================================================
      STICKY NAVBAR SHADOW
