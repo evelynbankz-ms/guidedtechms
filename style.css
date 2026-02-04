@@ -74,10 +74,8 @@ body {
   height: 32px;
 }
 
-/* If your company name text has .logo-text, this controls it */
 .logo-text {
-  font-size: 16px;
-  line-height: 1.1;
+  font-size: 18px;
 }
 
 .navbar-actions {
@@ -94,9 +92,6 @@ body {
   border-radius: 10px;
   font-weight: 600;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Hamburger */
@@ -115,42 +110,28 @@ body {
   height: 2px;
   background: #ffffff;
   display: block;
-  transition: all 0.3s ease;
-}
-
-/* =====================================================
-   OVERLAY (GLOBAL)
-   ✅ dims the PAGE BEHIND only
-   ✅ no blur
-   ✅ menu stays fully visible
-===================================================== */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2500;
-}
-
-/* dim only the background behind menu */
-.nav-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(248, 249, 249, 0.92); /* light overlay like your services-pricing */
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.nav-overlay.show {
-  pointer-events: auto;
-}
-
-.nav-overlay.show::before {
-  opacity: 1;
 }
 
 /* ================================================
-   DESKTOP ONLY
+   OVERLAY — BACKGROUND DIM ONLY
+================================================ */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 2500; /* BELOW menu */
+}
+
+.nav-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ================================================
+   DESKTOP
 ================================================ */
 @media (min-width: 1025px) {
   .navbar-menu {
@@ -187,59 +168,34 @@ body {
     visibility: hidden;
     display: flex;
     gap: 30px;
-    transition: 0.3s;
   }
 
   .nav-item:hover .mega-dropdown {
     opacity: 1;
     visibility: visible;
   }
-
-  .mega-col {
-    flex: 1;
-  }
-
-  .mega-col h4 {
-    color: #9cc7e1;
-    font-size: 12px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  .mega-col a {
-    color: #e0edf7;
-    display: block;
-    padding: 8px 0;
-    text-decoration: none;
-    font-size: 14px;
-  }
-
-  .mega-col a:hover {
-    color: #fff;
-  }
-
-  .mega-col a .icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-    margin-right: 8px;
-  }
 }
 
 /* ================================================
-   MOBILE ONLY (GLOBAL)
-   ✅ same behavior as services-pricing
-   ✅ close button inside menu at top
-   ✅ no external pseudo X
+   MOBILE (MATCHES SERVICES-PRICING)
 ================================================ */
 @media (max-width: 1024px) {
+
   .menu-toggle {
     display: flex;
   }
 
-  /* Slide-out panel */
+  /* Scale logo + buttons */
+  .logo-text {
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* Mobile menu panel */
   .navbar-menu {
     position: fixed;
     top: 0;
@@ -248,50 +204,48 @@ body {
     height: 100dvh;
     background: #0b1220;
     overflow-y: auto;
+    z-index: 3000; /* ABOVE overlay */
 
-    z-index: 3000; /* above overlay */
     transform: translateX(105%);
     transition: transform 0.25s ease;
 
     display: flex;
     flex-direction: column;
-    gap: 0;
-    padding: 0; /* close button lives inside */
+    padding: 0;
   }
 
   .navbar-menu.open {
     transform: translateX(0);
   }
 
-  /* ✅ remove any old external close icon created by pseudo-elements */
+  /* REMOVE any old pseudo X */
   .navbar-menu::before,
   .navbar-menu::after {
     content: none !important;
     display: none !important;
   }
 
-  /* ✅ Close button stays at TOP INSIDE menu */
+  /* Close button INSIDE menu */
   .mobile-nav-close {
     display: none;
     position: sticky;
     top: 0;
-    width: 100%;
     text-align: right;
-
+    width: 100%;
     background: rgba(11, 18, 32, 0.98);
     color: #fff;
     border: none;
-    font-size: 28px;
-    padding: 14px 16px;
+    font-size: 26px;
+    padding: 16px;
     cursor: pointer;
-    z-index: 10;
+    z-index: 5;
   }
 
   .navbar-menu.open .mobile-nav-close {
     display: block;
   }
 
-  /* Links */
+  /* Menu links */
   .nav-link {
     width: 100%;
     padding: 18px 22px;
@@ -299,31 +253,20 @@ body {
     font-weight: 600;
     color: #ffffff;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: all 0.25s ease;
-  }
-
-  .nav-link:hover {
-    padding-left: 28px;
   }
 
   .nav-item {
     display: block;
   }
 
-  .nav-parent {
-    cursor: pointer;
-  }
-
   .nav-parent::after {
-    content: "›";
+    content: '›';
     font-size: 32px;
     font-weight: 300;
-    line-height: 1;
-    transition: transform 0.3s ease;
     color: #ffffff;
   }
 
@@ -333,52 +276,32 @@ body {
 
   .mega-dropdown {
     display: none;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 0;
     margin: 12px 18px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255,255,255,0.1);
   }
 
   .nav-item.open .mega-dropdown {
     display: block;
     padding: 18px 20px;
   }
-
-  /* ✅ Make logo text and buttons smaller on mobile */
-  .navbar-container {
-    padding: 0 16px;
-  }
-
-  .navbar-logo-img {
-    width: 28px;
-    height: 28px;
-  }
-
-  .logo-text {
-    font-size: 14px;
-  }
-
-  .navbar-actions {
-    gap: 8px;
-  }
-
-  .btn-primary {
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 10px;
-    white-space: nowrap;
-  }
 }
 
-/* extra small phones */
+/* Extra small screens */
 @media (max-width: 420px) {
   .logo-text {
     font-size: 13px;
   }
+
   .btn-primary {
     padding: 7px 10px;
     font-size: 12px;
+  }
+
+  .navbar-logo-img {
+    width: 26px;
+    height: 26px;
   }
 }
 
