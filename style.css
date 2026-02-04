@@ -65,55 +65,6 @@ body {
   position: relative;
 }
 
-/* 5) Containers/sections should never exceed the screen */
-.page-wrapper,
-.container,
-section,
-header,
-footer,
-main,
-.navbar,
-.navbar-container,
-.navbar-menu,
-.nav-overlay {
-  max-width: 100%;
-}
-
-/* 6) Long text/URLs should wrap instead of forcing overflow */
-p, h1, h2, h3, h4, h5, h6, a, li, span, div {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-/* 7) Sliders/carousels often cause overflow — keep them contained */
-.blogs-slider,
-.testimonial-content,
-.impact-grid,
-.hero-grid,
-.dashboard-grid,
-.about-grid {
-  max-width: 100%;
-}
-
-/* If a slider must scroll horizontally, make sure it does NOT push the page */
-.blogs-slider {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 8) Stop weird “fixed” elements from creating extra width */
-.navbar-menu,
-.nav-overlay {
-  left: 0;
-  right: 0;
-}
-
-/* 9) Safety for any element positioned off-screen by accident */
-[class*="wrapper"],
-[class*="container"],
-[class*="section"] {
-  max-width: 100%;
-}
 
 
 .container {
