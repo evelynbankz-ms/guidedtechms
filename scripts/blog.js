@@ -329,6 +329,3 @@ if (btn && menu && overlay) {
     }
   });
 }
-
-
-});
