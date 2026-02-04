@@ -34,7 +34,6 @@ body {
 }
 
 .page-wrapper { min-height:100vh; }
-
 /* ================================================
    NAVBAR (GLOBAL)
 ================================================ */
@@ -109,20 +108,34 @@ body {
   transition: all 0.3s ease;
 }
 
-/* ✅ OVERLAY (GLOBAL) - LIGHT, NO BLUR */
-.nav-overlay {
+/* =====================================================
+   ✅ OVERLAY (GLOBAL) — dims BACKGROUND ONLY
+   - DOES NOT fade the menu
+   - No blur, no menu fade
+===================================================== */
+.nav-overlay{
   position: fixed;
   inset: 0;
-  background: rgba(248, 249, 249, 0.92);
-  opacity: 0;
   pointer-events: none;
   z-index: 2500;
+}
+
+/* dark dim layer */
+.nav-overlay::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* adjust darkness here */
+  opacity: 0;
   transition: opacity 0.25s ease;
 }
 
-.nav-overlay.show {
-  opacity: 1;
+.nav-overlay.show{
   pointer-events: auto;
+}
+
+.nav-overlay.show::before{
+  opacity: 1;
 }
 
 /* ================================================
@@ -206,11 +219,8 @@ body {
 
 /* ================================================
    MOBILE ONLY (GLOBAL)
-   ✅ Same as services-pricing behavior
+   ✅ Matches services-pricing behavior
    ✅ NO external red-box X
-================================================ */
-/* ================================================
-   MOBILE ONLY — NAVBAR (UPDATED TO MATCH SERVICES-PRICING)
 ================================================ */
 @media (max-width: 1024px) {
 
@@ -218,21 +228,7 @@ body {
     display: flex;
   }
 
-  /* Light overlay like services-pricing */
-  .nav-overlay {
-    background: rgba(248, 249, 249, 0.92);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-    z-index: 2500;
-  }
-
-  .nav-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Dark mobile menu panel (slide using transform) */
+  /* Mobile menu panel (slide using transform) */
   .navbar-menu {
     position: fixed;
     top: 0;
@@ -241,7 +237,7 @@ body {
     height: 100dvh;
     background: #0b1220;
     overflow-y: auto;
-    z-index: 3000;
+    z-index: 3000; /* ABOVE overlay */
 
     /* CLOSED */
     transform: translateX(105%);
@@ -250,7 +246,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding: 0; /* important: close button is sticky at top */
+    padding: 0; /* close button lives inside */
   }
 
   /* OPEN */
@@ -258,14 +254,15 @@ body {
     transform: translateX(0);
   }
 
-  /* ✅ REMOVE the red-box close icon (it was .navbar-menu::after) */
+  /* ✅ REMOVE any old external X created by pseudo-elements */
+  .navbar-menu::before,
   .navbar-menu::after {
     content: none !important;
     display: none !important;
   }
 
-  /* ✅ Your real close button inside the menu */
-  .mobile-nav-close {
+  /* ✅ Inside-menu close button (the one you WANT) */
+  .mobile-nav-close{
     display: none;
     position: sticky;
     top: 0;
@@ -277,14 +274,14 @@ body {
     font-size: 26px;
     padding: 14px 16px;
     cursor: pointer;
-    z-index: 2;
+    z-index: 5;
   }
 
-  .navbar-menu.open .mobile-nav-close {
+  .navbar-menu.open .mobile-nav-close{
     display: block;
   }
 
-  /* Menu links styling (same vibe as services-pricing) */
+  /* Menu links */
   .nav-link {
     width: 100%;
     padding: 18px 22px;
@@ -383,6 +380,7 @@ body {
     flex-shrink: 0;
   }
 }
+
 
 
 
