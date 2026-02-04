@@ -61,6 +61,74 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+/* =========================================================
+   COMMON DOM REFS (prevents "not defined" errors)
+========================================================= */
+ const navbarEl = safeQuery(".navbar");
+  
+  /* =========================================================
+     STICKY NAVBAR SHADOW
+  ========================================================= */
+  if (navbarEl) {
+    window.addEventListener("scroll", () => {
+      navbarEl.classList.toggle("scrolled", window.scrollY > 30);
+    });
+  }
+  
+ /* =========================================================
+     SMOOTH SCROLL (only for # links)
+  ========================================================= */
+  const navbarMenuEl = safeQuery(".navbar-menu");
+
+  safeQueryAll(".nav-link:not(.nav-parent)").forEach(link => {
+    link.addEventListener("click", e => {
+      const href = link.getAttribute("href");
+      if (!href || !href.startsWith("#") || href === "#") return;
+
+      e.preventDefault();
+      const target = safeQuery(href);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+
+      navbarMenuEl?.classList.remove("open");
+      document.getElementById("navOverlay")?.classList.remove("show");
+      document.body.style.overflow = "";
+    });
+  });
+
+  /* =========================================================
+     SCROLL REVEAL
+  ========================================================= */
+  const revealEls = safeQueryAll(".scroll-reveal");
+  if (revealEls.length) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => e.isIntersecting && e.target.classList.add("visible"));
+    }, { threshold: 0.18 });
+
+    revealEls.forEach(el => obs.observe(el));
+  }
+
+  /* =========================================================
+     FEATURE SWITCHER
+  ========================================================= */
+  safeQueryAll(".feature-item").forEach(item => {
+    item.addEventListener("click", () => {
+      safeQueryAll(".feature-item").forEach(i => i.classList.remove("active"));
+      safeQueryAll(".feature-content").forEach(c => c.classList.remove("active"));
+
+      item.classList.add("active");
+      document.getElementById(item.dataset.feature)?.classList.add("active");
+    });
+  });
+
+ /* =========================================================
+     FOOTER YEAR
+  ========================================================= */
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  
+
 // mobile menu 
 const btn = document.getElementById("menuToggle");
 const menu = document.getElementById("navbarMenu");
