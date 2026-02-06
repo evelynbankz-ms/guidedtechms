@@ -1,6 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // HERO PARALLAX (safe guard)
-  const hero = document.querySelector(".about-hero-content");
+
+  /* =========================================================
+     ✅ DEFENSIVE HELPERS (MUST EXIST ON EVERY PAGE JS)
+  ========================================================= */
+  const safeQuery = (sel) => {
+    try { return document.querySelector(sel); } catch { return null; }
+  };
+  const safeQueryAll = (sel) => {
+    try { return Array.from(document.querySelectorAll(sel)); } catch { return []; }
+  };
+
+  const navbarEl = safeQuery(".navbar");
+
+  /* =========================================================
+     HERO PARALLAX (safe guard)
+  ========================================================= */
+  const hero = safeQuery(".about-hero-content");
   if (hero) {
     window.addEventListener("scroll", () => {
       const scroll = window.scrollY;
@@ -9,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /**
-   * ✅ Scoped tabs initializer
-   * This prevents clicks in one section from hiding content in another section.
-   */
+  /* =========================================================
+     ✅ Scoped tabs initializer
+     This prevents clicks in one section from hiding content in another section.
+  ========================================================= */
   function initTabs(sectionSelector) {
-    const section = document.querySelector(sectionSelector);
+    const section = safeQuery(sectionSelector);
     if (!section) return;
 
     const tabs = section.querySelectorAll(".tab-btn");
@@ -23,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
-        // Only remove active INSIDE this section
         tabs.forEach((t) => t.classList.remove("active"));
         contents.forEach((c) => c.classList.remove("active"));
 
@@ -36,12 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Initialize tabs separately for both sections
-  initTabs("#about-mission");     // WHAT WE ARE section
-  initTabs(".who-we-serve");      // WHO WE SERVE section
+  initTabs("#about-mission");
+  initTabs(".who-we-serve");
 
-  // WHY CHOOSE US section (your existing logic, wrapped safely)
-  const buttons = document.querySelectorAll(".feature-item");
+  /* =========================================================
+     WHY CHOOSE US
+  ========================================================= */
+  const buttons = safeQueryAll(".feature-item");
   const title = document.getElementById("chooseTitle");
   const text = document.getElementById("chooseText");
 
@@ -51,17 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
         buttons.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
 
-        title.textContent = btn.dataset.title;
-        text.textContent = btn.dataset.text;
+        title.textContent = btn.dataset.title || "";
+        text.textContent = btn.dataset.text || "";
       });
     });
 
-    // activate first by default
     buttons[0].classList.add("active");
   }
 
-
-  
   /* =========================================================
      STICKY NAVBAR SHADOW
   ========================================================= */
@@ -70,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
       navbarEl.classList.toggle("scrolled", window.scrollY > 30);
     });
   }
-  
- /* =========================================================
+
+  /* =========================================================
      SMOOTH SCROLL (only for # links)
   ========================================================= */
   const navbarMenuEl = safeQuery(".navbar-menu");
@@ -83,9 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       e.preventDefault();
       const target = safeQuery(href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
+      if (target) target.scrollIntoView({ behavior: "smooth" });
 
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
@@ -106,38 +116,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================================================
-     FEATURE SWITCHER
+     FEATURE SWITCHER (only runs if feature-content exists)
   ========================================================= */
-  safeQueryAll(".feature-item").forEach(item => {
-    item.addEventListener("click", () => {
-      safeQueryAll(".feature-item").forEach(i => i.classList.remove("active"));
-      safeQueryAll(".feature-content").forEach(c => c.classList.remove("active"));
+  const featureContents = safeQueryAll(".feature-content");
+  if (featureContents.length) {
+    safeQueryAll(".feature-item").forEach(item => {
+      item.addEventListener("click", () => {
+        safeQueryAll(".feature-item").forEach(i => i.classList.remove("active"));
+        featureContents.forEach(c => c.classList.remove("active"));
 
-      item.classList.add("active");
-      document.getElementById(item.dataset.feature)?.classList.add("active");
+        item.classList.add("active");
+        const target = document.getElementById(item.dataset.feature);
+        if (target) target.classList.add("active");
+      });
     });
-  });
+  }
 
- /* =========================================================
+  /* =========================================================
      FOOTER YEAR
   ========================================================= */
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-  
 
-// mobile menu 
-const btn = document.getElementById("menuToggle");
-const menu = document.getElementById("navbarMenu");
-const overlay = document.getElementById("navOverlay");
-const closeBtn = document.getElementById("mobileNavClose");
+  /* =========================================================
+     ✅ MOBILE MENU (WORKS ON THIS PAGE)
+  ========================================================= */
+  const btn = document.getElementById("menuToggle");
+  const menu = document.getElementById("navbarMenu");
+  const overlay = document.getElementById("navOverlay");
+  const closeBtn = document.getElementById("mobileNavClose");
 
-if (btn && menu && overlay) {
+  if (!btn || !menu || !overlay || !closeBtn) {
+    console.warn("Navbar elements missing:", {
+      menuToggle: !!btn,
+      navbarMenu: !!menu,
+      navOverlay: !!overlay,
+      mobileNavClose: !!closeBtn,
+    });
+    return;
+  }
 
   const closeMenu = () => {
     menu.classList.remove("open");
     overlay.classList.remove("show");
     document.body.style.overflow = "";
-    document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+    menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
     btn.setAttribute("aria-expanded", "false");
   };
 
@@ -148,33 +171,26 @@ if (btn && menu && overlay) {
     btn.setAttribute("aria-expanded", "true");
   };
 
-  // Hamburger toggles open/close
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const isOpen = menu.classList.contains("open");
-    if (isOpen) closeMenu();
-    else openMenu();
+    menu.classList.contains("open") ? closeMenu() : openMenu();
   });
 
-  // Close button closes
-  closeBtn?.addEventListener("click", (e) => {
+  closeBtn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
     closeMenu();
   });
 
-  // ✅ FIX: only close if the actual overlay backdrop was clicked
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closeMenu();
   });
 
-  // Clicking inside menu should NOT close overlay
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+  // Keep menu clicks from bubbling to overlay
+  menu.addEventListener("click", (e) => e.stopPropagation());
 
-  // Dropdown toggles for nav parents
+  // Dropdown toggles
   menu.querySelectorAll(".nav-parent").forEach(link => {
     link.addEventListener("click", function(e) {
       e.preventDefault();
@@ -189,24 +205,17 @@ if (btn && menu && overlay) {
         if (i !== item) i.classList.remove("open");
       });
 
-      if (wasOpen) item.classList.remove("open");
-      else item.classList.add("open");
+      item.classList.toggle("open", !wasOpen);
     });
   });
 
   // Close when clicking normal links
   menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
-    link.addEventListener("click", () => {
-      closeMenu();
-    });
+    link.addEventListener("click", () => closeMenu());
   });
 
-  // Escape key closes
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu.classList.contains("open")) {
-      closeMenu();
-    }
+    if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
   });
-}
-  
+
 });
