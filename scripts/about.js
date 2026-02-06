@@ -1,52 +1,47 @@
-// ===============================
-// NAVBAR MOBILE MENU (BULLETPROOF)
-// ===============================
-(function initNavbarMenu() {
-  // Make sure the script is actually executing
-  console.log("✅ Navbar menu script loaded on:", window.location.pathname);
+// =====================================================
+// ✅ FULL PAGE JS (COPY + PASTE ALL)
+// - Navbar mobile menu works
+// - Dropdowns open
+// - Overlay click closes ONLY when clicking outside menu
+// - Links work
+// - Your About page logic included
+// =====================================================
 
-  const onReady = (fn) => {
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
-    else fn();
-  };
+document.addEventListener("DOMContentLoaded", () => {
+  // ===============================
+  // NAVBAR MOBILE MENU (BULLETPROOF)
+  // ===============================
+  console.log("✅ Page JS loaded:", window.location.pathname);
 
-  onReady(() => {
-    // Prefer IDs, but fall back to class selectors
-    const btn =
-      document.getElementById("menuToggle") ||
-      document.querySelector(".menu-toggle");
+  const btn =
+    document.getElementById("menuToggle") ||
+    document.querySelector(".menu-toggle");
 
-    const menu =
-      document.getElementById("navbarMenu") ||
-      document.querySelector(".navbar-menu");
+  const menu =
+    document.getElementById("navbarMenu") ||
+    document.querySelector(".navbar-menu");
 
-    const overlay =
-      document.getElementById("navOverlay") ||
-      document.querySelector(".nav-overlay");
+  const overlay =
+    document.getElementById("navOverlay") ||
+    document.querySelector(".nav-overlay");
 
-    const closeBtn =
-      document.getElementById("mobileNavClose") ||
-      document.querySelector(".mobile-nav-close");
+  const closeBtn =
+    document.getElementById("mobileNavClose") ||
+    document.querySelector(".mobile-nav-close");
 
-    // Hard fail if missing
-    if (!btn || !menu || !overlay || !closeBtn) {
-      console.error("❌ Navbar elements missing:", {
-        menuToggle: !!btn,
-        navbarMenu: !!menu,
-        navOverlay: !!overlay,
-        mobileNavClose: !!closeBtn,
-      });
-      return;
-    }
-
-    // If something is blocking clicks on the button, this will tell us
-    btn.addEventListener("click", () => console.log("🍔 hamburger clicked"));
-
+  if (!btn || !menu || !overlay || !closeBtn) {
+    console.error("❌ Navbar elements missing:", {
+      menuToggle: !!btn,
+      navbarMenu: !!menu,
+      navOverlay: !!overlay,
+      mobileNavClose: !!closeBtn,
+    });
+  } else {
     const closeMenu = () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
       document.body.style.overflow = "";
-      menu.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
+      menu.querySelectorAll(".nav-item.open").forEach((i) => i.classList.remove("open"));
       btn.setAttribute("aria-expanded", "false");
     };
 
@@ -57,31 +52,33 @@
       btn.setAttribute("aria-expanded", "true");
     };
 
-    // Hamburger toggles menu
+    // Hamburger toggles open/close
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       menu.classList.contains("open") ? closeMenu() : openMenu();
     });
 
-    // Inside close button
+    // Close button closes
     closeBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       closeMenu();
     });
 
-    // Only close if the actual overlay background is clicked
+    // Clicking overlay closes (ONLY if clicking outside menu)
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeMenu();
     });
 
-    // Clicking inside menu should not close
-    menu.addEventListener("click", (e) => e.stopPropagation());
+    // Clicking inside menu should NOT close overlay
+    menu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
 
-    // Dropdown toggles
-    menu.querySelectorAll(".nav-parent").forEach(link => {
-      link.addEventListener("click", function(e) {
+    // Dropdown toggles for .nav-parent
+    menu.querySelectorAll(".nav-parent").forEach((link) => {
+      link.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -90,50 +87,53 @@
 
         const wasOpen = item.classList.contains("open");
 
-        menu.querySelectorAll(".nav-item.open").forEach(i => {
+        // Close other open dropdowns
+        menu.querySelectorAll(".nav-item.open").forEach((i) => {
           if (i !== item) i.classList.remove("open");
         });
 
+        // Toggle current
         item.classList.toggle("open", !wasOpen);
       });
     });
 
-    // Close when clicking normal links
-    menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
+    // Close menu when clicking normal links (not dropdown parents)
+    menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach((link) => {
       link.addEventListener("click", () => closeMenu());
     });
 
-    // Escape closes
+    // ESC closes
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
     });
 
-    console.log("✅ Navbar menu initialized OK");
-  });
-})();
+    console.log("✅ Navbar initialized OK");
+  }
 
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  /* =========================================================
-     ✅ DEFENSIVE HELPERS (MUST EXIST ON EVERY PAGE JS)
-  ========================================================= */
+  // =========================================================
+  // ✅ DEFENSIVE HELPERS (YOUR PAGE LOGIC)
+  // =========================================================
   const safeQuery = (sel) => {
-    try { return document.querySelector(sel); } catch { return null; }
+    try {
+      return document.querySelector(sel);
+    } catch {
+      return null;
+    }
   };
+
   const safeQueryAll = (sel) => {
-    try { return Array.from(document.querySelectorAll(sel)); } catch { return []; }
+    try {
+      return Array.from(document.querySelectorAll(sel));
+    } catch {
+      return [];
+    }
   };
 
   const navbarEl = safeQuery(".navbar");
 
-  /* =========================================================
-     HERO PARALLAX (safe guard)
-  ========================================================= */
+  // =========================================================
+  // HERO PARALLAX (safe guard)
+  // =========================================================
   const hero = safeQuery(".about-hero-content");
   if (hero) {
     window.addEventListener("scroll", () => {
@@ -143,10 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* =========================================================
-     ✅ Scoped tabs initializer
-     This prevents clicks in one section from hiding content in another section.
-  ========================================================= */
+  // =========================================================
+  // ✅ Scoped tabs initializer
+  // =========================================================
   function initTabs(sectionSelector) {
     const section = safeQuery(sectionSelector);
     if (!section) return;
@@ -172,9 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabs("#about-mission");
   initTabs(".who-we-serve");
 
-  /* =========================================================
-     WHY CHOOSE US
-  ========================================================= */
+  // =========================================================
+  // WHY CHOOSE US
+  // =========================================================
   const buttons = safeQueryAll(".feature-item");
   const title = document.getElementById("chooseTitle");
   const text = document.getElementById("chooseText");
@@ -193,22 +192,22 @@ document.addEventListener("DOMContentLoaded", () => {
     buttons[0].classList.add("active");
   }
 
-  /* =========================================================
-     STICKY NAVBAR SHADOW
-  ========================================================= */
+  // =========================================================
+  // STICKY NAVBAR SHADOW
+  // =========================================================
   if (navbarEl) {
     window.addEventListener("scroll", () => {
       navbarEl.classList.toggle("scrolled", window.scrollY > 30);
     });
   }
 
-  /* =========================================================
-     SMOOTH SCROLL (only for # links)
-  ========================================================= */
+  // =========================================================
+  // SMOOTH SCROLL (only for # links)
+  // =========================================================
   const navbarMenuEl = safeQuery(".navbar-menu");
 
-  safeQueryAll(".nav-link:not(.nav-parent)").forEach(link => {
-    link.addEventListener("click", e => {
+  safeQueryAll(".nav-link:not(.nav-parent)").forEach((link) => {
+    link.addEventListener("click", (e) => {
       const href = link.getAttribute("href");
       if (!href || !href.startsWith("#") || href === "#") return;
 
@@ -222,27 +221,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* =========================================================
-     SCROLL REVEAL
-  ========================================================= */
+  // =========================================================
+  // SCROLL REVEAL
+  // =========================================================
   const revealEls = safeQueryAll(".scroll-reveal");
   if (revealEls.length) {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => e.isIntersecting && e.target.classList.add("visible"));
-    }, { threshold: 0.18 });
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible"));
+      },
+      { threshold: 0.18 }
+    );
 
-    revealEls.forEach(el => obs.observe(el));
+    revealEls.forEach((el) => obs.observe(el));
   }
 
-  /* =========================================================
-     FEATURE SWITCHER (only runs if feature-content exists)
-  ========================================================= */
+  // =========================================================
+  // FEATURE SWITCHER (only runs if feature-content exists)
+  // =========================================================
   const featureContents = safeQueryAll(".feature-content");
   if (featureContents.length) {
-    safeQueryAll(".feature-item").forEach(item => {
+    safeQueryAll(".feature-item").forEach((item) => {
       item.addEventListener("click", () => {
-        safeQueryAll(".feature-item").forEach(i => i.classList.remove("active"));
-        featureContents.forEach(c => c.classList.remove("active"));
+        safeQueryAll(".feature-item").forEach((i) => i.classList.remove("active"));
+        featureContents.forEach((c) => c.classList.remove("active"));
 
         item.classList.add("active");
         const target = document.getElementById(item.dataset.feature);
@@ -251,10 +253,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* =========================================================
-     FOOTER YEAR
-  ========================================================= */
+  // =========================================================
+  // FOOTER YEAR
+  // =========================================================
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-
- 
+});
