@@ -8,35 +8,42 @@
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ===============================
-  // NAVBAR MOBILE MENU (BULLETPROOF)
-  // ===============================
   console.log("✅ Page JS loaded:", window.location.pathname);
 
-  const btn =
-    document.getElementById("menuToggle") ||
-    document.querySelector(".menu-toggle");
+  // =====================================================
+  // NAVBAR MENU — SCOPED PER NAVBAR (FIXES WRONG-ELEMENT BINDING)
+  // =====================================================
+  const navbars = Array.from(document.querySelectorAll(".navbar"));
 
-  const menu =
-    document.getElementById("navbarMenu") ||
-    document.querySelector(".navbar-menu");
+  if (!navbars.length) {
+    console.warn("⚠️ No .navbar found on this page");
+    return;
+  }
 
-  const overlay =
-    document.getElementById("navOverlay") ||
-    document.querySelector(".nav-overlay");
+  navbars.forEach((navbar, index) => {
+    // find elements INSIDE this navbar only
+    const btn = navbar.querySelector("#menuToggle, .menu-toggle");
+    const menu = navbar.querySelector("#navbarMenu, .navbar-menu");
 
-  const closeBtn =
-    document.getElementById("mobileNavClose") ||
-    document.querySelector(".mobile-nav-close");
+    // overlay is usually OUTSIDE navbar, so find it by id first:
+    const overlay =
+      document.getElementById("navOverlay") ||
+      document.querySelector(".nav-overlay");
 
-  if (!btn || !menu || !overlay || !closeBtn) {
-    console.error("❌ Navbar elements missing:", {
-      menuToggle: !!btn,
-      navbarMenu: !!menu,
-      navOverlay: !!overlay,
-      mobileNavClose: !!closeBtn,
-    });
-  } else {
+    const closeBtn =
+      menu?.querySelector("#mobileNavClose, .mobile-nav-close") || null;
+
+    if (!btn || !menu || !overlay || !closeBtn) {
+      console.error(`❌ Navbar[${index}] missing parts:`, {
+        menuToggle: !!btn,
+        navbarMenu: !!menu,
+        navOverlay: !!overlay,
+        mobileNavClose: !!closeBtn,
+      });
+      return;
+    }
+
+    // --- helpers
     const closeMenu = () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
@@ -52,31 +59,33 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute("aria-expanded", "true");
     };
 
-    // Hamburger toggles open/close
+    // --- IMPORTANT: ensure button click always works (even if something tries to block)
+    btn.style.pointerEvents = "auto";
+
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
+      console.log("🍔 hamburger clicked (navbar index):", index);
+
       menu.classList.contains("open") ? closeMenu() : openMenu();
     });
 
-    // Close button closes
     closeBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       closeMenu();
     });
 
-    // Clicking overlay closes (ONLY if clicking outside menu)
+    // clicking outside menu closes
     overlay.addEventListener("click", (e) => {
+      // if user clicked overlay itself (not menu)
       if (e.target === overlay) closeMenu();
     });
 
-    // Clicking inside menu should NOT close overlay
-    menu.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+    // clicking inside menu shouldn't close
+    menu.addEventListener("click", (e) => e.stopPropagation());
 
-    // Dropdown toggles for .nav-parent
+    // dropdown parents toggle
     menu.querySelectorAll(".nav-parent").forEach((link) => {
       link.addEventListener("click", function (e) {
         e.preventDefault();
@@ -87,28 +96,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const wasOpen = item.classList.contains("open");
 
-        // Close other open dropdowns
+        // close others
         menu.querySelectorAll(".nav-item.open").forEach((i) => {
           if (i !== item) i.classList.remove("open");
         });
 
-        // Toggle current
         item.classList.toggle("open", !wasOpen);
       });
     });
 
-    // Close menu when clicking normal links (not dropdown parents)
+    // normal links close menu
     menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach((link) => {
       link.addEventListener("click", () => closeMenu());
     });
 
-    // ESC closes
+    // escape closes
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
     });
 
-    console.log("✅ Navbar initialized OK");
-  }
+    console.log(`✅ Navbar[${index}] initialized OK`);
+  });
+
+
 
   // =========================================================
   // ✅ DEFENSIVE HELPERS (YOUR PAGE LOGIC)
