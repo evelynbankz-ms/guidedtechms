@@ -1418,3 +1418,15 @@ body {
 /* .nav-overlay { pointer-events: none; }
 .nav-overlay.show { pointer-events: auto; } */
 
+
+.navbar-actions {
+  position: relative;
+  z-index: 9999;
+}
+
+.menu-toggle {
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
