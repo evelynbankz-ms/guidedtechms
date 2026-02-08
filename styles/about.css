@@ -1410,11 +1410,11 @@ body {
 
 
 /* Ensure hamburger is always clickable above overlay */
-.navbar { position: sticky; z-index: 2000; }
+/* .navbar { position: sticky; z-index: 2000; }
 .navbar-actions { position: relative; z-index: 4000; }
-.menu-toggle { position: relative; z-index: 5000; }
+.menu-toggle { position: relative; z-index: 5000; } */
 
 /* Overlay should never block clicks unless it is .show */
-.nav-overlay { pointer-events: none; }
-.nav-overlay.show { pointer-events: auto; }
+/* .nav-overlay { pointer-events: none; }
+.nav-overlay.show { pointer-events: auto; } */
 
