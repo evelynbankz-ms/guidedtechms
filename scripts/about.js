@@ -4,11 +4,36 @@
 // - Dropdowns open
 // - Overlay click closes ONLY when clicking outside menu
 // - Links work
+// - Scroll behind overlay is LOCKED (mobile-safe, iOS-safe)
 // - Your About page logic included
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("✅ Page JS loaded:", window.location.pathname);
+
+  // =====================================================
+  // ✅ SCROLL LOCK (ROBUST: works on iOS + Android)
+  // =====================================================
+  let savedScrollY = 0;
+
+  const lockScroll = () => {
+    // Don't double-lock
+    if (document.body.classList.contains("no-scroll")) return;
+
+    savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+
+    document.body.classList.add("no-scroll");
+    document.body.style.top = `-${savedScrollY}px`;
+  };
+
+  const unlockScroll = () => {
+    if (!document.body.classList.contains("no-scroll")) return;
+
+    document.body.classList.remove("no-scroll");
+    document.body.style.top = "";
+
+    window.scrollTo(0, savedScrollY);
+  };
 
   // =====================================================
   // NAVBAR MENU — SCOPED PER NAVBAR (FIXES WRONG-ELEMENT BINDING)
@@ -19,6 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("⚠️ No .navbar found on this page");
     return;
   }
+
+  // Escape closes (attach ONCE, not per-navbar)
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+
+    // close any open menus
+    document.querySelectorAll(".navbar-menu.open").forEach((menuEl) => {
+      menuEl.classList.remove("open");
+    });
+    document.querySelectorAll(".nav-overlay.show").forEach((ov) => {
+      ov.classList.remove("show");
+    });
+
+    // close any open dropdowns
+    document.querySelectorAll(".navbar-menu .nav-item.open").forEach((i) => i.classList.remove("open"));
+
+    // restore scroll
+    unlockScroll();
+
+    // reset aria-expanded
+    document.querySelectorAll("#menuToggle[aria-expanded='true'], .menu-toggle[aria-expanded='true']").forEach((btn) => {
+      btn.setAttribute("aria-expanded", "false");
+    });
+  });
 
   navbars.forEach((navbar, index) => {
     // find elements INSIDE this navbar only
@@ -47,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeMenu = () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
-      document.body.style.overflow = "";
+      unlockScroll();
       menu.querySelectorAll(".nav-item.open").forEach((i) => i.classList.remove("open"));
       btn.setAttribute("aria-expanded", "false");
     };
@@ -55,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openMenu = () => {
       menu.classList.add("open");
       overlay.classList.add("show");
-      document.body.style.overflow = "hidden";
+      lockScroll();
       btn.setAttribute("aria-expanded", "true");
     };
 
@@ -110,15 +159,8 @@ document.addEventListener("DOMContentLoaded", () => {
       link.addEventListener("click", () => closeMenu());
     });
 
-    // escape closes
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
-    });
-
     console.log(`✅ Navbar[${index}] initialized OK`);
   });
-
-
 
   // =========================================================
   // ✅ DEFENSIVE HELPERS (YOUR PAGE LOGIC)
@@ -227,7 +269,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
-      document.body.style.overflow = "";
+
+      // ✅ use robust unlock
+      unlockScroll();
     });
   });
 
