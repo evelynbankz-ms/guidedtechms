@@ -25,6 +25,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body.no-scroll {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+}
 
 /* =========================================================
    GLOBAL ANTI-HORIZONTAL-OVERFLOW PACK (ALL PAGES)
