@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Subscriptions — Guided Tech Solutions</title>
+  <link rel="shortcut icon" href="../asset/logo-icon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="./portal.css" />
+</head>
+<body>
+<div class="portal-wrap">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <img src="../asset/logo-icon.png" alt="Guided Tech Solutions" class="navbar-logo-img">
+        <span class="logo-text">Guided Tech Solutions</span>
+      </a>
+      <nav class="navbar-menu" id="navbarMenu">
+        <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="Close menu">✕</button>
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="./portal-services.html" class="nav-link">Services</a>
+        <a href="../about.html" class="nav-link">About</a>
+        <a href="../contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="navbar-actions">
+        <button class="btn-primary" id="btnLogin"  type="button" style="display:none">Log In</button>
+        <button class="btn-primary" id="btnLogout" type="button" style="display:none">Log Out</button>
+        <a href="../form.html" class="btn-primary">Get Started</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span class="menu-line"></span><span class="menu-line"></span><span class="menu-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- PORTAL LAYOUT -->
+  <div class="portal-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name"  id="sidebarName">Not signed in</div>
+          <div class="sidebar-user-email" id="sidebarEmail">—</div>
+        </div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <nav class="sidebar-nav">
+        <a href="./portal-services.html"       class="sidebar-link">
+          <span class="sidebar-icon">☰</span><span>Services &amp; Pricing</span>
+        </a>
+        <a href="./portal-subscriptions.html"  class="sidebar-link active">
+          <span class="sidebar-icon">👤</span><span>My Subscriptions</span>
+        </a>
+        <a href="./portal-dashboard.html"      class="sidebar-link">
+          <span class="sidebar-icon">📊</span><span>Dashboard</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="portal-main">
+
+      <div class="portal-auth-bar" aria-live="polite">
+        <span class="portal-auth-dot" id="authDot"></span>
+        <span id="authText">Checking sign-in…</span>
+        <span class="portal-auth-sep">•</span>
+        <span id="loadText">Loading…</span>
+      </div>
+
+      <div class="portal-page-head">
+        <h1 class="portal-page-title">My Subscriptions</h1>
+        <p class="portal-page-subtitle">View and manage your active services and subscription plans.</p>
+      </div>
+
+      <!-- ACTIVE SUBSCRIPTIONS (shown when user has subscriptions) -->
+      <section class="portal-section" id="activeSubsSection" style="display:none">
+        <div class="portal-section-head">
+          <div>
+            <h2 class="portal-section-title">Active Subscriptions</h2>
+            <p class="portal-section-sub">Your currently active services and plans</p>
+          </div>
+          <span class="dash-live-pill">
+            <span class="dash-live-dot"></span>
+            Live
+          </span>
+        </div>
+        <div class="portal-section-body">
+          <div class="sub-cards-grid" id="subCardsGrid"></div>
+        </div>
+      </section>
+
+      <!-- EMPTY / LOCKED STATE (shown when no subscriptions) -->
+      <section class="portal-section" id="emptySubsSection">
+        <div class="portal-section-body">
+
+          <!-- No subscriptions message -->
+          <div class="portal-locked">
+            <span class="portal-locked-icon">📭</span>
+            <h2 class="portal-locked-title">No Active Subscriptions Yet</h2>
+            <p class="portal-locked-desc">
+              You haven't subscribed to any services or plans yet.
+              Browse our offerings below and get started — your subscription details will appear here once active.
+            </p>
+            <div class="portal-locked-actions">
+              <a href="./portal-services.html" class="btn-portal-primary">Browse Services</a>
+              <a href="./portal-services.html#plans" class="btn-portal-ghost">View Plans</a>
+            </div>
+          </div>
+
+          <!-- Recommendations divider -->
+          <p class="rec-heading">Recommended for You</p>
+
+          <!-- Recommended plans -->
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+            Popular subscription plans chosen by businesses like yours:
+          </p>
+          <div class="plans-grid" id="recPlansGrid" aria-busy="true">
+            <div class="skeleton-block" style="height:280px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:280px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:280px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:280px;border-radius:14px"></div>
+          </div>
+
+          <!-- Recommended services -->
+          <p style="font-size:13px;color:var(--muted);margin:24px 0 16px">
+            Or activate individual services:
+          </p>
+          <div class="services-flow" id="recServicesFlow" aria-busy="true">
+            <div class="skeleton-block" style="height:240px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:240px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:240px;border-radius:14px"></div>
+            <div class="skeleton-block" style="height:240px;border-radius:14px"></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="gts-footer">
+    <div class="gts-footer-inner">
+      <div class="gts-footer-col about-col">
+        <h2 class="footer-logo">Guided Tech Solutions</h2>
+        <p class="footer-desc">Empowering organizations with intelligent, scalable technology and modern digital transformation solutions.</p>
+        <h4 class="footer-heading">CONTACT US</h4>
+        <p>info@guidedtechms.com</p>
+      </div>
+      <div class="gts-footer-col">
+        <h4 class="footer-heading">PORTAL</h4>
+        <a href="./portal-services.html">Services &amp; Pricing</a>
+        <a href="./portal-subscriptions.html">My Subscriptions</a>
+        <a href="./portal-dashboard.html">Dashboard</a>
+      </div>
+      <div class="gts-footer-col">
+        <h4 class="footer-heading">COMPANY</h4>
+        <a href="../about.html">About</a>
+        <a href="../contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="gts-footer-bottom">© <span id="footerYear"></span> Guided Tech Solutions — All rights reserved.</div>
+  </footer>
+
+</div>
+<script src="../script.js"></script>
+<script type="module" src="./portal-subscriptions.js"></script>
+</body>
+</html>
