@@ -1,41 +1,25 @@
 /* ============================================================
    FILE: app/portal.css
-   Client portal — Services & Pricing page
-   Inherits: style.css tokens (--primary, --accent, --muted, etc.)
+   Shared styles for all three portal pages.
+   Inherits global tokens from style.css
    ============================================================ */
 
-/* ── Extra tokens (portal-specific, not overriding global) ── */
 :root {
   --portal-sidebar-w: 260px;
-  --portal-topbar-h:  78px;   /* matches .navbar height */
-  --portal-bg:        #F2F4F7;
-  --portal-surface:   #ffffff;
+  --portal-topbar-h:  78px;
   --portal-border:    rgba(46,64,83,0.09);
   --portal-shadow:    0 2px 12px rgba(16,24,40,0.07);
   --portal-shadow-md: 0 8px 30px rgba(16,24,40,0.10);
   --portal-radius:    14px;
   --portal-green:     #10b981;
-  --portal-transition: 0.22s ease;
+  --portal-trans:     0.22s ease;
 }
 
 /* ============================================================
-   WRAPPER
+   PORTAL WRAP & LAYOUT
    ============================================================ */
-.portal-wrap {
-  min-height: 100vh;
-  background: var(--portal-bg);
-}
+.portal-wrap { min-height: 100vh; background: var(--bg); }
 
-/* ============================================================
-   NAVBAR — button spacing tweak only (rest from style.css)
-   ============================================================ */
-.portal-nav-btn {
-  margin-left: 8px;
-}
-
-/* ============================================================
-   PORTAL LAYOUT  (sidebar + main)
-   ============================================================ */
 .portal-layout {
   display: flex;
   min-height: calc(100vh - var(--portal-topbar-h));
@@ -50,12 +34,12 @@
   position: sticky;
   top: var(--portal-topbar-h);
   height: calc(100vh - var(--portal-topbar-h));
-  background: var(--portal-surface);
+  background: var(--surface);
   border-right: 1px solid var(--portal-border);
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   overflow-y: auto;
 }
 
@@ -84,10 +68,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-.sidebar-user-info {
-  flex: 1;
-  min-width: 0;
-}
+.sidebar-user-info { flex: 1; min-width: 0; }
 
 .sidebar-user-name {
   font-size: 13px;
@@ -113,11 +94,7 @@
 }
 
 /* Nav links */
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
 
 .sidebar-link {
   display: flex;
@@ -129,9 +106,9 @@
   font-weight: 500;
   color: var(--muted);
   text-decoration: none;
-  transition: background var(--portal-transition),
-              color var(--portal-transition),
-              transform var(--portal-transition);
+  transition: background var(--portal-trans),
+              color var(--portal-trans),
+              transform var(--portal-trans);
 }
 
 .sidebar-link:hover {
@@ -158,17 +135,15 @@
   flex-shrink: 0;
 }
 
-.sidebar-link.active .sidebar-icon {
-  background: rgba(255,255,255,0.18);
-}
+.sidebar-link.active .sidebar-icon { background: rgba(255,255,255,0.18); }
 
 /* ============================================================
-   MAIN CONTENT AREA
+   MAIN CONTENT
    ============================================================ */
 .portal-main {
   flex: 1;
   padding: 32px 36px 64px;
-  min-width: 0; /* prevents overflow */
+  min-width: 0;
 }
 
 /* Auth status bar */
@@ -177,7 +152,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  background: var(--portal-surface);
+  background: var(--surface);
   border: 1px solid var(--portal-border);
   border-radius: 12px;
   padding: 10px 16px;
@@ -194,18 +169,14 @@
   flex-shrink: 0;
 }
 
-.portal-auth-sep {
-  opacity: 0.45;
-}
+.portal-auth-sep { opacity: 0.45; }
 
 /* Page heading */
-.portal-page-head {
-  margin-bottom: 28px;
-}
+.portal-page-head { margin-bottom: 28px; }
 
 .portal-page-title {
   font-family: "Poppins", sans-serif;
-  font-size: clamp(24px, 2.8vw, 36px);
+  font-size: clamp(22px, 2.8vw, 34px);
   font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.02em;
@@ -221,10 +192,10 @@
 }
 
 /* ============================================================
-   SECTION WRAPPER
+   SECTION CARD
    ============================================================ */
 .portal-section {
-  background: var(--portal-surface);
+  background: var(--surface);
   border-radius: var(--portal-radius);
   border: 1px solid var(--portal-border);
   box-shadow: var(--portal-shadow);
@@ -232,12 +203,6 @@
   overflow: hidden;
 }
 
-.portal-section--dark {
-  background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
-  border-color: rgba(255,255,255,0.06);
-}
-
-/* Section header */
 .portal-section-head {
   display: flex;
   align-items: flex-start;
@@ -247,18 +212,12 @@
   border-bottom: 1px solid var(--portal-border);
 }
 
-.portal-section-head--dark {
-  border-bottom-color: rgba(255,255,255,0.08);
-}
-
 .portal-section-title {
   font-family: "Poppins", sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: #0f172a;
 }
-
-.portal-section-title--light { color: #ffffff; }
 
 .portal-section-sub {
   font-size: 13px;
@@ -266,30 +225,7 @@
   margin-top: 3px;
 }
 
-.portal-section-sub--light {
-  color: rgba(255,255,255,0.60);
-}
-
-/* Section body */
-.portal-section-body {
-  padding: 24px 28px;
-}
-
-/* ============================================================
-   EMPTY STATE
-   ============================================================ */
-.portal-empty {
-  padding: 36px 20px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.portal-empty-icon {
-  display: block;
-  font-size: 36px;
-  margin-bottom: 10px;
-}
+.portal-section-body { padding: 24px 28px; }
 
 /* ============================================================
    SKELETON SHIMMER
@@ -299,19 +235,15 @@
   100% { background-position: -200% 0; }
 }
 
-.svc-skeleton,
-.plan-skeleton {
+.skeleton-block {
   border-radius: var(--portal-radius);
   background: linear-gradient(90deg, #eef2f7 25%, #e2e8f0 50%, #eef2f7 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
 }
 
-.svc-skeleton  { height: 260px; }
-.plan-skeleton { height: 300px; }
-
 /* ============================================================
-   SERVICES FLOW  (horizontal stepper)
+   SERVICES FLOW  (portal-services.html)
    ============================================================ */
 .services-flow {
   display: grid;
@@ -320,7 +252,6 @@
   position: relative;
 }
 
-/* Connector line between cards */
 .services-flow::before {
   content: '';
   position: absolute;
@@ -333,7 +264,6 @@
   pointer-events: none;
 }
 
-/* Individual service card */
 .svc-card {
   display: flex;
   flex-direction: column;
@@ -344,7 +274,6 @@
   z-index: 1;
 }
 
-/* Arrow chevron between cards */
 .svc-card:not(:last-child)::after {
   content: '›';
   position: absolute;
@@ -357,7 +286,6 @@
   line-height: 1;
 }
 
-/* Icon circle */
 .svc-icon-ring {
   width: 72px;
   height: 72px;
@@ -369,9 +297,7 @@
   font-size: 26px;
   margin-bottom: 14px;
   position: relative;
-  transition: transform var(--portal-transition),
-              box-shadow var(--portal-transition),
-              border-color var(--portal-transition);
+  transition: transform var(--portal-trans), box-shadow var(--portal-trans), border-color var(--portal-trans);
 }
 
 .svc-card:hover .svc-icon-ring {
@@ -380,7 +306,6 @@
   border-color: var(--primary);
 }
 
-/* Active / subscribed ring state */
 .svc-card.is-active .svc-icon-ring {
   background: linear-gradient(135deg, #d4f0e4, #b6e8d0);
   border-color: var(--portal-green);
@@ -403,21 +328,8 @@
   border: 2px solid #fff;
 }
 
-.svc-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 5px;
-  line-height: 1.3;
-}
-
-.svc-desc {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.5;
-  margin-bottom: 14px;
-  min-height: 36px;
-}
+.svc-name    { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 5px; line-height: 1.3; }
+.svc-desc    { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; min-height: 36px; }
 
 .svc-price-box {
   width: 100%;
@@ -429,25 +341,10 @@
   text-align: left;
 }
 
-.svc-from {
-  font-size: 11px;
-  color: var(--muted);
-}
+.svc-from   { font-size: 11px; color: var(--muted); }
+.svc-amount { font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.03em; }
+.svc-amount span { font-size: 12px; font-weight: 500; color: var(--muted); }
 
-.svc-amount {
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-  letter-spacing: -0.03em;
-}
-
-.svc-amount span {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-/* Subscribe button */
 .btn-subscribe {
   width: 100%;
   padding: 9px 12px;
@@ -458,28 +355,16 @@
   font-size: 12px;
   font-weight: 700;
   font-family: "Inter", sans-serif;
-  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background var(--portal-transition), transform var(--portal-transition);
+  transition: background var(--portal-trans), transform var(--portal-trans);
 }
 
-.btn-subscribe:hover {
-  background: #154360;
-  transform: translateY(-1px);
-}
-
-.btn-subscribe.activated {
-  background: var(--portal-green);
-}
-
-.btn-subscribe:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.btn-subscribe:hover   { background: #154360; transform: translateY(-1px); }
+.btn-subscribe.activated { background: var(--portal-green); }
+.btn-subscribe:disabled  { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* ============================================================
-   SUBSCRIPTION PLANS GRID
+   PLANS GRID (portal-services.html + recommendation cards)
    ============================================================ */
 .plans-grid {
   display: grid;
@@ -487,7 +372,6 @@
   gap: 16px;
 }
 
-/* Plan card */
 .plan-card {
   border: 2px solid var(--portal-border);
   border-radius: var(--portal-radius);
@@ -496,10 +380,8 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
-  background: var(--portal-surface);
-  transition: border-color var(--portal-transition),
-              box-shadow var(--portal-transition),
-              transform var(--portal-transition);
+  background: var(--surface);
+  transition: border-color var(--portal-trans), box-shadow var(--portal-trans), transform var(--portal-trans);
 }
 
 .plan-card:hover {
@@ -510,11 +392,9 @@
 
 .plan-card.is-popular {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(230,126,34,0.10),
-              var(--portal-shadow-md);
+  box-shadow: 0 0 0 3px rgba(230,126,34,0.10), var(--portal-shadow-md);
 }
 
-/* Popular badge */
 .plan-popular-badge {
   position: absolute;
   top: -12px;
@@ -532,9 +412,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-.plan-icon {
-  font-size: 28px;
-}
+.plan-icon   { font-size: 28px; }
 
 .plan-name {
   font-family: "Poppins", sans-serif;
@@ -543,44 +421,21 @@
   color: #0f172a;
 }
 
-/* Pricing row */
-.plan-pricing {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-}
+.plan-pricing { display: flex; align-items: baseline; gap: 4px; }
 
 .plan-price {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.04em;
   font-family: "Poppins", sans-serif;
 }
 
-.plan-period {
-  font-size: 13px;
-  color: var(--muted);
-}
+.plan-period { font-size: 13px; color: var(--muted); }
+.plan-desc   { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.plan-divider{ height: 1px; background: var(--portal-border); }
 
-.plan-desc {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.plan-divider {
-  height: 1px;
-  background: var(--portal-border);
-}
-
-/* Features list */
-.plan-features {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
+.plan-features { display: flex; flex-direction: column; gap: 8px; flex: 1; }
 
 .plan-feat {
   display: flex;
@@ -605,7 +460,6 @@
   margin-top: 1px;
 }
 
-/* Get Started button */
 .btn-get-started {
   width: 100%;
   padding: 11px;
@@ -618,122 +472,145 @@
   font-family: "Inter", sans-serif;
   cursor: pointer;
   margin-top: auto;
-  transition: background var(--portal-transition),
-              color var(--portal-transition),
-              border-color var(--portal-transition),
-              transform var(--portal-transition);
+  transition: background var(--portal-trans), color var(--portal-trans),
+              border-color var(--portal-trans), transform var(--portal-trans);
 }
 
-.btn-get-started:hover {
-  background: #0f172a;
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-.plan-card.is-popular .btn-get-started {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.plan-card.is-popular .btn-get-started:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
-}
-
-.btn-get-started.subscribed {
-  background: var(--portal-green);
-  border-color: var(--portal-green);
-  color: #fff;
-}
-
-.btn-get-started:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.btn-get-started:hover            { background: #0f172a; color: #fff; transform: translateY(-1px); }
+.plan-card.is-popular .btn-get-started { background: var(--accent); border-color: var(--accent); color: #fff; }
+.plan-card.is-popular .btn-get-started:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-get-started.subscribed       { background: var(--portal-green); border-color: var(--portal-green); color: #fff; }
+.btn-get-started:disabled         { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* ============================================================
-   REAL-TIME DASHBOARD
+   EMPTY / LOCKED STATE  (subscriptions + dashboard pages)
    ============================================================ */
-
-/* Live pill */
-.dash-live-pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255,255,255,0.10);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 12px;
-  color: #fff;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.dash-live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #4ade80;
-  animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(1.4); }
-}
-
-/* ── Locked state ── */
-.dash-locked {
-  padding: 52px 28px;
+.portal-locked {
   text-align: center;
+  padding: 52px 28px 36px;
 }
 
-.dash-lock-icon {
-  font-size: 44px;
-  margin-bottom: 14px;
-  opacity: 0.45;
-}
+.portal-locked-icon  { font-size: 52px; display: block; margin-bottom: 16px; opacity: 0.45; }
+.portal-locked-title { font-family: "Poppins", sans-serif; font-size: 22px; font-weight: 600; color: #0f172a; margin-bottom: 8px; }
+.portal-locked-desc  { font-size: 14px; color: var(--muted); max-width: 400px; margin: 0 auto 24px; line-height: 1.65; }
 
-.dash-lock-title {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 8px;
-}
+.portal-locked-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
-.dash-lock-desc {
-  font-size: 14px;
-  color: rgba(255,255,255,0.65);
-  max-width: 380px;
-  margin: 0 auto 22px;
-  line-height: 1.6;
-}
-
-.dash-lock-cta {
-  display: inline-block;
-  background: var(--accent);
+.btn-portal-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  background: var(--primary);
   color: #fff;
-  padding: 10px 26px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  transition: opacity var(--portal-transition);
+  font-family: "Inter", sans-serif;
+  transition: background var(--portal-trans), transform var(--portal-trans);
 }
 
-.dash-lock-cta:hover {
-  opacity: 0.88;
+.btn-portal-primary:hover { background: #154360; transform: translateY(-1px); }
+
+.btn-portal-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  transition: background var(--portal-trans), color var(--portal-trans);
 }
 
-/* ── Active state ── */
-.dash-active {
-  padding: 24px 28px;
+.btn-portal-ghost:hover { background: var(--primary); color: #fff; }
+
+/* Recommendations heading */
+.rec-heading {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--portal-border);
 }
 
-/* KPI grid */
+/* ============================================================
+   ACTIVE SUBSCRIPTION CARDS  (portal-subscriptions.html)
+   ============================================================ */
+.sub-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.sub-card {
+  border: 1px solid var(--portal-border);
+  border-radius: var(--portal-radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface);
+  box-shadow: var(--portal-shadow);
+}
+
+.sub-card-header { display: flex; align-items: center; justify-content: space-between; }
+.sub-card-name   { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; }
+.sub-card-type   { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+
+.sub-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sub-status-badge.active   { background: rgba(16,185,129,0.12); color: var(--portal-green); }
+.sub-status-badge.pending  { background: rgba(245,158,11,0.12);  color: #d97706; }
+.sub-status-badge.inactive { background: rgba(239,68,68,0.10);   color: #dc2626; }
+
+.sub-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.sub-card-price { font-size: 22px; font-weight: 800; color: #0f172a; font-family: "Poppins", sans-serif; }
+.sub-card-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+
+.sub-card-meta { font-size: 12px; color: var(--muted); }
+
+.sub-card-features { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+
+.sub-feat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sub-feat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   DASHBOARD  (portal-dashboard.html)
+   ============================================================ */
 .dash-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -742,16 +619,17 @@
 }
 
 .dash-kpi-card {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.10);
+  background: var(--surface);
+  border: 1px solid var(--portal-border);
   border-radius: 12px;
-  padding: 16px;
+  padding: 18px;
+  box-shadow: var(--portal-shadow);
 }
 
 .dash-kpi-label {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.55);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
@@ -759,35 +637,31 @@
 .dash-kpi-value {
   font-size: 28px;
   font-weight: 800;
-  color: #ffffff;
+  color: #0f172a;
   letter-spacing: -0.04em;
   margin-top: 4px;
   font-family: "Poppins", sans-serif;
 }
 
-.dash-kpi-value--sm  { font-size: 18px; margin-top: 6px; }
-.dash-kpi-value--green { color: #4ade80; }
+.dash-kpi-value--sm    { font-size: 18px; margin-top: 6px; }
+.dash-kpi-value--green { color: var(--portal-green); }
 
-.dash-kpi-meta {
-  font-size: 11px;
-  margin-top: 4px;
-  color: rgba(255,255,255,0.50);
-}
+.dash-kpi-meta { font-size: 11px; margin-top: 4px; color: var(--muted); }
+.dash-kpi-meta--up { color: var(--portal-green); }
 
-.dash-kpi-meta--up { color: #4ade80; }
-
-/* Chart area */
+/* Chart placeholder */
 .dash-chart {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--surface);
+  border: 1px solid var(--portal-border);
   border-radius: 12px;
   padding: 20px;
-  height: 150px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--portal-shadow);
 }
 
 .dash-chart-label {
@@ -796,26 +670,48 @@
   left: 20px;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255,255,255,0.50);
+  color: var(--muted);
 }
 
 .dash-bars {
   display: flex;
   align-items: flex-end;
   gap: 6px;
-  height: 90px;
+  height: 100px;
 }
 
-.dash-bar {
-  flex: 1;
-  height: var(--h);
-  border-radius: 5px 5px 0 0;
-  background: rgba(27,79,114,0.5);
-  transition: opacity 0.3s;
+.dash-bar     { flex: 1; height: var(--h); border-radius: 5px 5px 0 0; background: rgba(27,79,114,0.18); }
+.dash-bar--mid{ background: rgba(27,79,114,0.45); }
+.dash-bar--hi { background: var(--accent); }
+
+/* ============================================================
+   LIVE PILL
+   ============================================================ */
+.dash-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16,185,129,0.10);
+  border: 1px solid rgba(16,185,129,0.22);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--portal-green);
+  font-weight: 600;
 }
 
-.dash-bar--mid { background: rgba(36,113,163,0.7); }
-.dash-bar--hi  { background: var(--accent); }
+.dash-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--portal-green);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
 
 /* ============================================================
    RESPONSIVE
@@ -826,26 +722,23 @@
   .services-flow::before { display: none; }
   .svc-card::after       { display: none; }
   .dash-kpi-grid         { grid-template-columns: repeat(2, 1fr); }
+  .sub-cards-grid        { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 900px) {
   :root { --portal-sidebar-w: 72px; }
-
   .sidebar-link span:not(.sidebar-icon) { display: none; }
-  .sidebar-link  { justify-content: center; padding: 10px; }
-  .sidebar-user-info { display: none; }
-
-  .portal-main { padding: 24px 20px 50px; }
+  .sidebar-link          { justify-content: center; padding: 10px; }
+  .sidebar-user-info     { display: none; }
+  .portal-main           { padding: 24px 20px 50px; }
 }
 
 @media (max-width: 640px) {
-  .plans-grid    { grid-template-columns: 1fr; }
-  .services-flow { grid-template-columns: 1fr; }
-  .dash-kpi-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .portal-main         { padding: 20px 16px 50px; }
+  .plans-grid     { grid-template-columns: 1fr; }
+  .services-flow  { grid-template-columns: 1fr; }
+  .dash-kpi-grid  { grid-template-columns: repeat(2, 1fr); }
+  .sub-cards-grid { grid-template-columns: 1fr; }
+  .portal-main    { padding: 20px 16px 50px; }
   .portal-section-body { padding: 16px; }
   .portal-section-head { padding: 16px 16px 12px; }
-
-  .portal-page-title { font-size: 24px; }
 }
