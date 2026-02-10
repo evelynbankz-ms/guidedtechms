@@ -166,6 +166,12 @@ body {
   transition:all 0.3s ease;
 }
 
+
+/* ✅ Mobile close button should NEVER show on desktop */
+.mobile-nav-close {
+  display: none;
+}
+
 /* =========================
    OVERLAY (GLOBAL)
    ✅ NO filter / NO blur / NO tint
