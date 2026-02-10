@@ -1,285 +1,296 @@
 /* ==============================
    FILE: app/services-pricing.js
+   Frontend logic for Services & Pricing page
    ============================== */
 
 import { db, auth } from "../admin/firebase.js";
-
-import {
-  collection,
-  getDocs,
+import { 
+  collection, 
+  getDocs, 
+  query, 
+  where,
   addDoc,
-  serverTimestamp
+  serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
-import {
-  GoogleAuthProvider,
+import { 
+  onAuthStateChanged,
   signInWithPopup,
-  signOut,
-  onAuthStateChanged
+  GoogleAuthProvider,
+  signOut 
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
-/* ------------------------------
-   Defensive helpers (like your homepage)
--------------------------------- */
-const safeQuery = (sel) => {
-  try { return document.querySelector(sel); } catch { return null; }
-};
-
-/* ------------------------------
-   DOM Refs
--------------------------------- */
-const servicesGrid = safeQuery("#servicesGrid");
-const plansGrid = safeQuery("#plansGrid");
-const servicesEmpty = safeQuery("#servicesEmpty");
-const plansEmpty = safeQuery("#plansEmpty");
-
-const authDot = safeQuery("#authDot");
-const authText = safeQuery("#authText");
-const loadText = safeQuery("#loadText");
-
-const btnLogin = safeQuery("#btnLogin");
-const btnLogout = safeQuery("#btnLogout");
-
-/* ------------------------------
-   Utils
--------------------------------- */
-function setLoading(msg) {
-  if (loadText) loadText.textContent = msg || "";
+/* ====================
+   ESCAPE HTML
+==================== */
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[m]));
 }
 
-function money(cents) {
-  if (typeof cents !== "number") return "$—";
-  return (cents / 100).toLocaleString(undefined, { style: "currency", currency: "USD" });
-}
+/* ====================
+   AUTH STATE
+==================== */
+let currentUser = null;
 
-function esc(str) {
-  return String(str ?? "").replace(/[<>&"]/g, (ch) => {
-    const map = { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" };
-    return map[ch] || ch;
-  });
-}
+const authDot = document.getElementById("authDot");
+const authText = document.getElementById("authText");
+const loadText = document.getElementById("loadText");
+const btnLogin = document.getElementById("btnLogin");
+const btnLogout = document.getElementById("btnLogout");
 
-function setAuthUI(user) {
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  
   if (user) {
-    if (authDot) authDot.style.background = "#16a34a";
-    if (authText) authText.textContent = `Signed in as ${user.email || "user"}`;
+    // Signed in
+    authDot.style.background = "#10b981";
+    authText.textContent = `Signed in as ${user.email}`;
+    
     if (btnLogin) btnLogin.style.display = "none";
-    if (btnLogout) btnLogout.style.display = "inline-flex";
+    if (btnLogout) btnLogout.style.display = "inline-block";
   } else {
-    if (authDot) authDot.style.background = "#d1d5db";
-    if (authText) authText.textContent = "Not signed in";
-    if (btnLogin) btnLogin.style.display = "inline-flex";
+    // Not signed in
+    authDot.style.background = "#ef4444";
+    authText.textContent = "Not signed in";
+    
+    if (btnLogin) btnLogin.style.display = "inline-block";
     if (btnLogout) btnLogout.style.display = "none";
   }
-}
+});
 
-/* ------------------------------
-   Render
--------------------------------- */
-function renderServiceCard(service, user) {
-  const icon = esc(service.icon || "🛠️");
-  const title = esc(service.name || "Service");
-  const desc = esc(service.description || "Brief service description.");
-  const price = money(service.fromPriceCents);
-
-  const disabled = user ? "" : "disabled";
-  const label = user ? "Subscribe to Activate" : "Log in to Subscribe";
-
-  return `
-    <article class="sp-card">
-      <div class="sp-icon" aria-hidden="true">${icon}</div>
-      <div class="sp-card-title">${title}</div>
-      <div class="sp-card-desc">${desc}</div>
-
-      <div class="sp-pricebox">
-        <div>
-          <div class="sp-mini">From</div>
-          <div class="sp-price">${price}</div>
-        </div>
-        <button class="sp-action js-subscribe-service" data-id="${esc(service.id)}" ${disabled}>
-          ${label}
-        </button>
-      </div>
-    </article>
-  `;
-}
-
-function renderPlanCard(plan, user) {
-  const icon = esc(plan.icon || "📦");
-  const name = esc(plan.name || "Plan");
-  const price = money(plan.priceCents);
-  const interval = esc(plan.interval || "month");
-
-  const features = Array.isArray(plan.features) ? plan.features : [];
-  const featuresHtml = features.slice(0, 6).map(f => `
-    <div class="sp-feature">
-      <div class="sp-check" aria-hidden="true">✓</div>
-      <div>${esc(f)}</div>
-    </div>
-  `).join("");
-
-  const disabled = user ? "" : "disabled";
-  const label = user ? "Get Started" : "Log in to Get Started";
-
-  return `
-    <article class="sp-card">
-      <div class="sp-icon" aria-hidden="true">${icon}</div>
-      <div class="sp-card-title">${name}</div>
-
-      <div>
-        <span class="sp-plan-price">${price}</span>
-        <span class="sp-plan-interval"> / ${interval}</span>
-      </div>
-
-      <div class="sp-card-desc">${esc(plan.description || "Plan description")}</div>
-
-      <div class="sp-features">
-        ${featuresHtml || `<div class="sp-mini">Add features[] in Firestore</div>`}
-      </div>
-
-      <div style="margin-top:auto;">
-        <button class="sp-action sp-plan-btn js-subscribe-plan" data-id="${esc(plan.id)}" ${disabled}>
-          ${label}
-        </button>
-      </div>
-    </article>
-  `;
-}
-
-/* ------------------------------
-   Firestore loaders
--------------------------------- */
-async function loadServices(user) {
-  if (!servicesGrid) return;
-
-  servicesGrid.setAttribute("aria-busy", "true");
-  servicesGrid.innerHTML = "";
-  if (servicesEmpty) servicesEmpty.style.display = "none";
-
-  const snap = await getDocs(collection(db, "services"));
-  const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-  if (!items.length) {
-    if (servicesEmpty) servicesEmpty.style.display = "block";
-  } else {
-    servicesGrid.innerHTML = items.map(s => renderServiceCard(s, user)).join("");
-  }
-
-  servicesGrid.setAttribute("aria-busy", "false");
-}
-
-async function loadPlans(user) {
-  if (!plansGrid) return;
-
-  plansGrid.setAttribute("aria-busy", "true");
-  plansGrid.innerHTML = "";
-  if (plansEmpty) plansEmpty.style.display = "none";
-
-  const snap = await getDocs(collection(db, "plans"));
-  const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-  if (!items.length) {
-    if (plansEmpty) plansEmpty.style.display = "block";
-  } else {
-    plansGrid.innerHTML = items.map(p => renderPlanCard(p, user)).join("");
-  }
-
-  plansGrid.setAttribute("aria-busy", "false");
-}
-
-/* ------------------------------
-   Subscription request
--------------------------------- */
-async function createCheckoutRequest({ type, refId }) {
-  const user = auth.currentUser;
-  if (!user) throw new Error("Please log in first.");
-
-  await addDoc(collection(db, "checkoutSessions"), {
-    uid: user.uid,
-    email: user.email || "",
-    type,      // "service" or "plan"
-    refId,     // doc id from services/plans
-    status: "created",
-    createdAt: serverTimestamp(),
-
-    // PLACEHOLDER (CAPS):
-    // IF YOU USE STRIPE OR ANY PAYMENT PROVIDER, ADD PRICE IDS + SUCCESS/CANCEL URLS HERE,
-    // THEN USE A CLOUD FUNCTION TO CREATE A REAL CHECKOUT SESSION URL.
-    // priceId: "STRIPE_PRICE_ID_HERE",
-    // successUrl: window.location.origin + "/app/dashboard.html",
-    // cancelUrl: window.location.href
-  });
-
-  alert("Subscription request created. NEXT: Connect a checkout system (e.g., Stripe + Cloud Function).");
-}
-
-/* ------------------------------
-   Events
--------------------------------- */
+/* ====================
+   LOGIN/LOGOUT
+==================== */
 btnLogin?.addEventListener("click", async () => {
+  const provider = new GoogleAuthProvider();
   try {
-    const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
-  } catch (e) {
-    console.error(e);
-    alert("Login failed. Check Firebase Auth provider + allowed domains.");
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Login failed. Please try again.");
   }
 });
 
 btnLogout?.addEventListener("click", async () => {
   try {
     await signOut(auth);
-  } catch (e) {
-    console.error(e);
-    alert("Logout failed.");
-  }
-});
-
-document.addEventListener("click", async (e) => {
-  const serviceBtn = e.target.closest?.(".js-subscribe-service");
-  const planBtn = e.target.closest?.(".js-subscribe-plan");
-
-  try {
-    if (serviceBtn) {
-      const id = serviceBtn.getAttribute("data-id");
-      serviceBtn.disabled = true;
-      await createCheckoutRequest({ type: "service", refId: id });
-      serviceBtn.disabled = false;
-    }
-
-    if (planBtn) {
-      const id = planBtn.getAttribute("data-id");
-      planBtn.disabled = true;
-      await createCheckoutRequest({ type: "plan", refId: id });
-      planBtn.disabled = false;
-    }
   } catch (err) {
-    console.error(err);
-    alert(err.message || "Something went wrong.");
-    if (serviceBtn) serviceBtn.disabled = false;
-    if (planBtn) planBtn.disabled = false;
+    console.error("Logout error:", err);
   }
 });
 
-/* ------------------------------
-   Init
--------------------------------- */
-async function refresh(user) {
-  setLoading("Loading services and plans…");
+/* ====================
+   LOAD SERVICES
+==================== */
+async function loadServices() {
+  const servicesGrid = document.getElementById("servicesGrid");
+  const servicesEmpty = document.getElementById("servicesEmpty");
+  
   try {
-    await Promise.all([loadServices(user), loadPlans(user)]);
-    setLoading("");
-  } catch (e) {
-    console.error(e);
-    setLoading("Failed to load data. Check Firestore rules.");
+    const q = query(
+      collection(db, "services"),
+      where("active", "==", true)
+    );
+    const snapshot = await getDocs(q);
+    
+    const services = [];
+    snapshot.forEach(doc => {
+      services.push({ id: doc.id, ...doc.data() });
+    });
+    
+    if (services.length === 0) {
+      servicesGrid.innerHTML = "";
+      servicesEmpty.style.display = "block";
+      return;
+    }
+    
+    servicesEmpty.style.display = "none";
+    servicesGrid.innerHTML = services.map(service => `
+      <div class="sp-card">
+        ${service.icon ? `<div class="sp-icon">${escapeHtml(service.icon)}</div>` : ''}
+        
+        <div class="sp-card-title">${escapeHtml(service.name || "Untitled")}</div>
+        <div class="sp-card-desc">${escapeHtml(service.description || "")}</div>
+        
+        <div class="sp-pricebox">
+          <div>
+            <div class="sp-mini">Price</div>
+            <div class="sp-price">$${service.price || 0}</div>
+          </div>
+          <div>
+            <div class="sp-mini">${escapeHtml(service.pricePeriod || "")}</div>
+          </div>
+        </div>
+        
+        <button 
+          class="sp-action" 
+          data-activate-service="${service.id}"
+          ${!currentUser ? 'disabled title="Please sign in to activate"' : ''}>
+          ${currentUser ? 'Activate' : 'Sign in to activate'}
+        </button>
+      </div>
+    `).join('');
+    
+  } catch (err) {
+    console.error("Error loading services:", err);
+    servicesGrid.innerHTML = `<div class="sp-empty">Error loading services. Please refresh.</div>`;
+  } finally {
+    servicesGrid.removeAttribute("aria-busy");
   }
 }
 
-onAuthStateChanged(auth, (user) => {
-  setAuthUI(user);
-  refresh(user);
+/* ====================
+   LOAD PLANS
+==================== */
+async function loadPlans() {
+  const plansGrid = document.getElementById("plansGrid");
+  const plansEmpty = document.getElementById("plansEmpty");
+  
+  try {
+    const q = query(
+      collection(db, "plans"),
+      where("active", "==", true)
+    );
+    const snapshot = await getDocs(q);
+    
+    const plans = [];
+    snapshot.forEach(doc => {
+      plans.push({ id: doc.id, ...doc.data() });
+    });
+    
+    if (plans.length === 0) {
+      plansGrid.innerHTML = "";
+      plansEmpty.style.display = "block";
+      return;
+    }
+    
+    plansEmpty.style.display = "none";
+    plansGrid.innerHTML = plans.map(plan => {
+      const features = Array.isArray(plan.features) 
+        ? plan.features.map(f => `
+            <div class="sp-feature">
+              <div class="sp-check">✓</div>
+              <span>${escapeHtml(f)}</span>
+            </div>
+          `).join('')
+        : '';
+      
+      return `
+        <div class="sp-card">
+          ${plan.icon ? `<div class="sp-icon">${escapeHtml(plan.icon)}</div>` : ''}
+          
+          <div class="sp-card-title">${escapeHtml(plan.name || "Untitled")}</div>
+          <div class="sp-card-desc">${escapeHtml(plan.description || "")}</div>
+          
+          ${features ? `<div class="sp-features">${features}</div>` : ''}
+          
+          <div class="sp-pricebox">
+            <div>
+              <div class="sp-mini">Monthly price</div>
+              <div class="sp-price">$${plan.price || 0}</div>
+            </div>
+            <div>
+              <div class="sp-mini">${escapeHtml(plan.billingPeriod || "monthly")}</div>
+            </div>
+          </div>
+          
+          <button 
+            class="sp-action sp-plan-btn" 
+            data-subscribe-plan="${plan.id}"
+            ${!currentUser ? 'disabled title="Please sign in to subscribe"' : ''}>
+            ${currentUser ? 'Subscribe' : 'Sign in to subscribe'}
+          </button>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (err) {
+    console.error("Error loading plans:", err);
+    plansGrid.innerHTML = `<div class="sp-empty">Error loading plans. Please refresh.</div>`;
+  } finally {
+    plansGrid.removeAttribute("aria-busy");
+  }
+}
+
+/* ====================
+   ACTIVATE SERVICE
+==================== */
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-activate-service]");
+  if (!btn || !currentUser) return;
+  
+  const serviceId = btn.dataset.activateService;
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+  
+  try {
+    // Create a service activation record
+    await addDoc(collection(db, "serviceActivations"), {
+      userId: currentUser.uid,
+      userEmail: currentUser.email,
+      serviceId: serviceId,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    
+    alert("Service activation request submitted! We'll contact you shortly.");
+    btn.textContent = "Requested";
+    
+  } catch (err) {
+    console.error("Activation error:", err);
+    alert("Failed to activate service. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "Activate";
+  }
 });
 
-// First paint
-setAuthUI(null);
-setLoading("Loading…");
+/* ====================
+   SUBSCRIBE TO PLAN
+==================== */
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-subscribe-plan]");
+  if (!btn || !currentUser) return;
+  
+  const planId = btn.dataset.subscribePlan;
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+  
+  try {
+    // Create a checkout session document
+    // Note: You need a backend function to process this
+    await addDoc(collection(db, "checkoutSessions"), {
+      userId: currentUser.uid,
+      userEmail: currentUser.email,
+      planId: planId,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    
+    alert("Subscription request submitted! Redirecting to payment...\n\nNote: You need to set up a payment processor (Stripe, etc.) to complete this flow.");
+    btn.textContent = "Pending";
+    
+  } catch (err) {
+    console.error("Subscription error:", err);
+    alert("Failed to start subscription. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "Subscribe";
+  }
+});
+
+/* ====================
+   INITIAL LOAD
+==================== */
+document.addEventListener("DOMContentLoaded", async () => {
+  loadText.textContent = "Loading services...";
+  await loadServices();
+  
+  loadText.textContent = "Loading plans...";
+  await loadPlans();
+  
+  loadText.textContent = "Ready";
+});
