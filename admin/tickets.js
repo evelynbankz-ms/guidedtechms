@@ -13,46 +13,32 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
 /* ----------------------------------------------------
-   🔧 REQUIRED PLACEHOLDERS (FILL THESE IN)
+   🔧 REQUIRED PLACEHOLDERS (fill in after deploy)
 ---------------------------------------------------- */
-/**
- * After you deploy Firebase Functions, you’ll get a URL like:
- * https://us-central1-YOUR_PROJECT.cloudfunctions.net/sendAdminTicketEmail
- */
 const SEND_REPLY_FUNCTION_URL =
   "PASTE_YOUR_sendAdminTicketEmail_FUNCTION_URL_HERE";
-
-/**
- * Must match: firebase functions:config:set sendgrid.inbound_secret="..."
- * This protects the function from random public calls.
- */
 const ADMIN_SECRET = "PASTE_THE_SAME_RANDOM_SECRET_HERE";
 
 /* ----------------------------------------------------
    DOM
 ---------------------------------------------------- */
-const ticketList = document.getElementById("ticketList");
-
-const ticketEmpty = document.getElementById("ticketEmpty");
-const ticketHeader = document.getElementById("ticketHeader");
+const ticketList    = document.getElementById("ticketList");
+const ticketEmpty   = document.getElementById("ticketEmpty");
+const ticketHeader  = document.getElementById("ticketHeader");
 const ticketSubject = document.getElementById("ticketSubject");
-const ticketMeta = document.getElementById("ticketMeta");
-const ticketStatus = document.getElementById("ticketStatus");
-
-const ticketThread = document.getElementById("ticketThread");
+const ticketMeta    = document.getElementById("ticketMeta");
+const ticketStatus  = document.getElementById("ticketStatus");
+const ticketThread  = document.getElementById("ticketThread");
 const ticketReplyBox = document.getElementById("ticketReplyBox");
+const sendReplyBtn  = document.getElementById("sendReplyBtn");
+const closeBtn      = document.getElementById("closeTicketBtn");
+const statusFilter  = document.getElementById("statusFilter");
+const statTotal     = document.getElementById("statTotal");
+const statOpen      = document.getElementById("statOpen");
+const statPending   = document.getElementById("statPending");
+const statClosed    = document.getElementById("statClosed");
 
-const sendReplyBtn = document.getElementById("sendReplyBtn");
-const closeBtn = document.getElementById("closeTicketBtn");
-
-const statusFilter = document.getElementById("statusFilter");
-
-const statTotal = document.getElementById("statTotal");
-const statOpen = document.getElementById("statOpen");
-const statPending = document.getElementById("statPending");
-const statClosed = document.getElementById("statClosed");
-
-let currentTicketId = null;
+let currentTicketId   = null;
 let currentTicketData = null;
 
 /* ----------------------------------------------------
@@ -60,11 +46,8 @@ let currentTicketData = null;
 ---------------------------------------------------- */
 function escapeHtml(str) {
   return String(str || "").replace(/[&<>"']/g, (m) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
   }[m]));
 }
 
@@ -72,13 +55,33 @@ function stripHtml(s) {
   return String(s || "").replace(/<[^>]*>/g, "").trim();
 }
 
+/**
+ * Safely format any timestamp Firestore might return:
+ *   - Firestore Timestamp object  → .toMillis()
+ *   - plain number (Date.now())   → use directly
+ *   - ISO string                  → Date.parse()
+ *   - serverTimestamp() sentinel  → null (not yet resolved)
+ */
 function formatDate(ts) {
   if (!ts) return "";
   try {
+    // Firestore Timestamp object
+    if (typeof ts.toMillis === "function") return new Date(ts.toMillis()).toLocaleString();
+    // plain number
+    if (typeof ts === "number") return new Date(ts).toLocaleString();
+    // string
     return new Date(ts).toLocaleString();
   } catch {
     return "";
   }
+}
+
+/** Same normalisation but returns a sortable number for comparisons */
+function tsToNumber(ts) {
+  if (!ts) return 0;
+  if (typeof ts.toMillis === "function") return ts.toMillis();
+  if (typeof ts === "number") return ts;
+  return Date.parse(ts) || 0;
 }
 
 function isQuillEmpty(html) {
@@ -86,49 +89,81 @@ function isQuillEmpty(html) {
   return !v || v === "<p><br></p>" || v === "<div><br></div>";
 }
 
+/** FIX: treat "new" (old contact.js) as "open" so tickets always show */
+function normalizeStatus(raw) {
+  const s = (raw || "open").toLowerCase();
+  return s === "new" ? "open" : s;
+}
+
 function showEmptyState() {
-  if (ticketEmpty) ticketEmpty.style.display = "block";
-  if (ticketHeader) ticketHeader.style.display = "none";
-  if (ticketThread) ticketThread.style.display = "none";
+  if (ticketEmpty)   ticketEmpty.style.display   = "block";
+  if (ticketHeader)  ticketHeader.style.display  = "none";
+  if (ticketThread)  ticketThread.style.display  = "none";
   if (ticketReplyBox) ticketReplyBox.style.display = "none";
 }
 
 /* ----------------------------------------------------
    LOAD TICKETS LIST + STATS
+   FIX: "new" status used by old contact.js submissions is
+   included by querying without a status filter first, then
+   filtering client-side when a status is selected.
+   This avoids Firestore composite-index issues and catches
+   legacy "new" documents automatically.
 ---------------------------------------------------- */
 async function loadTickets() {
-  let q = query(collection(db, "tickets"), orderBy("lastMessageAt", "desc"));
+  // Always fetch all tickets ordered by lastMessageAt desc.
+  // We filter client-side so we never miss legacy "new" tickets
+  // and never hit a missing Firestore composite index.
+  let q = query(
+    collection(db, "tickets"),
+    orderBy("lastMessageAt", "desc")
+  );
 
-  if (statusFilter?.value) {
-    q = query(
-      collection(db, "tickets"),
-      where("status", "==", statusFilter.value),
-      orderBy("lastMessageAt", "desc")
+  // If Firestore throws (missing index on a fresh project), fall back
+  // to a simple collection fetch and sort manually.
+  let docs;
+  try {
+    const snap = await getDocs(q);
+    docs = snap.docs;
+  } catch (err) {
+    console.warn("Ordered query failed, falling back to unordered fetch:", err);
+    const snap = await getDocs(collection(db, "tickets"));
+    docs = snap.docs.sort(
+      (a, b) => tsToNumber(b.data().lastMessageAt) - tsToNumber(a.data().lastMessageAt)
     );
   }
 
-  const snap = await getDocs(q);
+  const filterValue = statusFilter?.value || "";
 
   if (ticketList) ticketList.innerHTML = "";
   const stats = { total: 0, open: 0, pending: 0, closed: 0 };
 
-  snap.forEach((d) => {
-    const t = d.data() || {};
-    const status = (t.status || "open").toLowerCase();
+  docs.forEach((d) => {
+    const t      = d.data() || {};
+    const status = normalizeStatus(t.status); // "new" → "open"
 
     stats.total++;
     if (stats[status] !== undefined) stats[status]++;
+
+    // Client-side filter: if a status is selected, skip non-matches.
+    // "new" tickets always show under "open".
+    if (filterValue) {
+      const normalizedFilter = normalizeStatus(filterValue);
+      if (status !== normalizedFilter) return;
+    }
 
     const item = document.createElement("div");
     item.className = "ticket-item";
     item.dataset.id = d.id;
 
     const unreadDot = t.unreadAdmin
-      ? `<span style="width:8px;height:8px;background:#e67e22;border-radius:50%;display:inline-block;margin-right:8px"></span>`
+      ? `<span style="width:8px;height:8px;background:#e67e22;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0"></span>`
       : "";
 
     item.innerHTML = `
-      <div class="subject">${unreadDot}${escapeHtml(t.subject || "Support Ticket")}</div>
+      <div class="subject" style="display:flex;align-items:center">
+        ${unreadDot}${escapeHtml(t.subject || "Support Ticket")}
+      </div>
       <div class="small">${escapeHtml(t.email || "No email")}</div>
       <div class="small" style="opacity:0.8">${escapeHtml(t.lastMessagePreview || "")}</div>
       <span class="badge ${status}">${escapeHtml(status)}</span>
@@ -138,36 +173,69 @@ async function loadTickets() {
     ticketList?.appendChild(item);
   });
 
-  if (statTotal) statTotal.textContent = stats.total;
-  if (statOpen) statOpen.textContent = stats.open;
+  if (statTotal)   statTotal.textContent   = stats.total;
+  if (statOpen)    statOpen.textContent    = stats.open;
   if (statPending) statPending.textContent = stats.pending;
-  if (statClosed) statClosed.textContent = stats.closed;
+  if (statClosed)  statClosed.textContent  = stats.closed;
 
   if (!currentTicketId) showEmptyState();
 }
 
 /* ----------------------------------------------------
-   LOAD THREAD (Zendesk-style: unified messages)
+   LOAD THREAD
+   FIX: Also checks the ticket doc's own `message` field
+   as a fallback for tickets submitted before the
+   ticket_messages collection was in use.
 ---------------------------------------------------- */
 async function loadThread(ticketId) {
   if (!ticketThread) return;
   ticketThread.innerHTML = "";
 
-  const snap = await getDocs(
-    query(
-      collection(db, "ticket_messages"),
-      where("ticketId", "==", ticketId),
-      orderBy("createdAt", "asc")
-    )
-  );
+  let snap;
+  try {
+    snap = await getDocs(
+      query(
+        collection(db, "ticket_messages"),
+        where("ticketId", "==", ticketId),
+        orderBy("createdAt", "asc")
+      )
+    );
+  } catch (err) {
+    console.warn("ticket_messages ordered query failed, falling back:", err);
+    const raw = await getDocs(
+      query(collection(db, "ticket_messages"), where("ticketId", "==", ticketId))
+    );
+    snap = {
+      docs: raw.docs.sort(
+        (a, b) => tsToNumber(a.data().createdAt) - tsToNumber(b.data().createdAt)
+      )
+    };
+  }
+
+  // ── Fallback: show ticket's own `message` field if no thread messages found
+  // This handles tickets submitted before ticket_messages was implemented.
+  if (!snap.docs.length && currentTicketData?.message) {
+    ticketThread.innerHTML = `
+      <div class="thread-message user">
+        <div class="meta">
+          <strong>${escapeHtml(currentTicketData.name || "Customer")}</strong>
+          <span>${formatDate(currentTicketData.createdAt)}</span>
+        </div>
+        <div class="bubble">
+          <p>${escapeHtml(currentTicketData.message)}</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
 
   if (!snap.docs.length) {
     ticketThread.innerHTML = `<div class="empty">No messages yet.</div>`;
     return;
   }
 
-  snap.forEach((d) => {
-    const m = d.data() || {};
+  snap.docs.forEach((d) => {
+    const m      = d.data() || {};
     const sender = m.sender === "admin" ? "admin" : "user";
 
     ticketThread.innerHTML += `
@@ -192,13 +260,12 @@ async function loadThread(ticketId) {
 async function openTicket(ticketId) {
   currentTicketId = ticketId;
 
-  // Highlight selected ticket
   document.querySelectorAll(".ticket-item").forEach((el) => {
     el.classList.toggle("active", el.dataset.id === ticketId);
   });
 
   const ticketRef = doc(db, "tickets", ticketId);
-  const snap = await getDoc(ticketRef);
+  const snap      = await getDoc(ticketRef);
 
   if (!snap.exists()) {
     showEmptyState();
@@ -207,16 +274,13 @@ async function openTicket(ticketId) {
 
   currentTicketData = snap.data() || {};
 
-  // Show ticket UI
-  if (ticketEmpty) ticketEmpty.style.display = "none";
-  if (ticketHeader) ticketHeader.style.display = "block";
-  if (ticketThread) ticketThread.style.display = "block";
+  if (ticketEmpty)    ticketEmpty.style.display    = "none";
+  if (ticketHeader)   ticketHeader.style.display   = "block";
+  if (ticketThread)   ticketThread.style.display   = "block";
   if (ticketReplyBox) ticketReplyBox.style.display = "block";
 
-  // Init Quill editor (your tickets.html defines window.initTicketQuill)
   if (window.initTicketQuill) window.initTicketQuill();
 
-  // Fill header
   if (ticketSubject) ticketSubject.textContent = currentTicketData.subject || "Support Ticket";
   if (ticketMeta) {
     ticketMeta.textContent = `${currentTicketData.name || "Anonymous"} • ${
@@ -224,42 +288,34 @@ async function openTicket(ticketId) {
     } • ${formatDate(currentTicketData.createdAt)}`;
   }
 
-  if (ticketStatus) ticketStatus.value = (currentTicketData.status || "open").toLowerCase();
+  // Show normalised status (so "new" renders as "open" in the dropdown)
+  if (ticketStatus) ticketStatus.value = normalizeStatus(currentTicketData.status);
 
-  // Mark as read in admin
-  await updateDoc(doc(db, "tickets", ticketId), {
-    unreadAdmin: false
-  });
+  // Mark as read
+  await updateDoc(doc(db, "tickets", ticketId), { unreadAdmin: false });
 
-  // Load full thread
   await loadThread(ticketId);
 
-  // Clear editor
   if (window.clearTicketReply) window.clearTicketReply();
 
-  // Refresh list (unread dot disappears)
+  // Refresh list (removes unread dot)
   await loadTickets();
 }
 
 /* ----------------------------------------------------
-   STATUS CHANGE (manual status update)
+   STATUS CHANGE
 ---------------------------------------------------- */
 ticketStatus?.addEventListener("change", async () => {
   if (!currentTicketId) return;
-
   await updateDoc(doc(db, "tickets", currentTicketId), {
-    status: ticketStatus.value,
+    status:    ticketStatus.value,
     updatedAt: Date.now()
   });
-
   await loadTickets();
 });
 
 /* ----------------------------------------------------
-   SEND ADMIN REPLY:
-   ✅ Save to Firestore thread (ticket_messages)
-   ✅ Update ticket metadata (tickets)
-   ✅ Call Cloud Function to send EMAIL only
+   SEND ADMIN REPLY
 ---------------------------------------------------- */
 sendReplyBtn?.addEventListener("click", async () => {
   if (!currentTicketId) return;
@@ -269,28 +325,30 @@ sendReplyBtn?.addEventListener("click", async () => {
 
   const now = Date.now();
 
-  // 1) Save admin message into unified thread
+  // 1) Save admin message to thread
   await addDoc(collection(db, "ticket_messages"), {
-    ticketId: currentTicketId,
-    sender: "admin",
-    senderName: "Admin",
-    senderEmail: "info@guidedtechms.com", // the actual sending happens in the function
-    bodyHtml: html,
-    createdAt: now
+    ticketId:    currentTicketId,
+    sender:      "admin",
+    senderName:  "Admin",
+    senderEmail: "info@guidedtechms.com",
+    bodyHtml:    html,
+    createdAt:   now
   });
 
-  // 2) Update ticket metadata (Zendesk-like)
+  // 2) Update ticket metadata
   await updateDoc(doc(db, "tickets", currentTicketId), {
-    status: "pending",
-    updatedAt: now,
-    lastMessageAt: now,
+    status:             "pending",
+    updatedAt:          now,
+    lastMessageAt:      now,
     lastMessagePreview: stripHtml(html).slice(0, 120)
   });
 
-  // 3) Send email via Cloud Function (ONLY EMAIL)
-  // If placeholders aren't filled yet, it will skip safely.
+  // 3) Send email via Cloud Function
   try {
-    if (SEND_REPLY_FUNCTION_URL.startsWith("http") && ADMIN_SECRET.length > 10) {
+    if (
+      SEND_REPLY_FUNCTION_URL.startsWith("http") &&
+      ADMIN_SECRET.length > 10
+    ) {
       const resp = await fetch(SEND_REPLY_FUNCTION_URL, {
         method: "POST",
         headers: {
@@ -309,16 +367,15 @@ sendReplyBtn?.addEventListener("click", async () => {
       }
     } else {
       console.warn(
-        "Email send skipped: set SEND_REPLY_FUNCTION_URL and ADMIN_SECRET in admin/tickets.js"
+        "Email send skipped — set SEND_REPLY_FUNCTION_URL and ADMIN_SECRET in tickets.js"
       );
     }
   } catch (err) {
     console.error("Email send exception:", err);
   }
 
-  // 4) Clear editor + refresh UI
+  // 4) Refresh UI
   if (window.clearTicketReply) window.clearTicketReply();
-
   await loadTickets();
   await loadThread(currentTicketId);
 });
@@ -328,20 +385,19 @@ sendReplyBtn?.addEventListener("click", async () => {
 ---------------------------------------------------- */
 closeBtn?.addEventListener("click", async () => {
   if (!currentTicketId) return;
-
   await updateDoc(doc(db, "tickets", currentTicketId), {
-    status: "closed",
+    status:    "closed",
     updatedAt: Date.now()
   });
-
   await loadTickets();
+  showEmptyState();
 });
 
 /* ----------------------------------------------------
    FILTER
 ---------------------------------------------------- */
 statusFilter?.addEventListener("change", () => {
-  currentTicketId = null;
+  currentTicketId   = null;
   currentTicketData = null;
   loadTickets();
 });
