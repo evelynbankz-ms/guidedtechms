@@ -33,7 +33,6 @@ const mergeCancelBtn   = $("mergeCancelBtn");
 const mergeConfirmBtn  = $("mergeConfirmBtn");
 const mergeList        = $("mergeList");
 const mergeSearch      = $("mergeSearch");
-const replyStatusChg   = $("replyStatusChange");
 
 /* sidebar refs */
 const sidebarRequester   = $("sidebarRequester");
@@ -402,7 +401,7 @@ sendReplyBtn?.addEventListener("click", async()=>{
   const mode   = window.getReplyMode?window.getReplyMode():"reply";
   const isNote = mode==="note";
   const now    = Date.now();
-  const newStatus = replyStatusChg?.value||"pending";
+  const newStatus = "pending"; // status after reply
 
   // save to thread
   await addDoc(collection(db,"ticket_messages"),{
