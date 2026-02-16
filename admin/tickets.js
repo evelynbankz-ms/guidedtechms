@@ -306,35 +306,33 @@ async function openTicket(ticketId) {
 
   if (window.initTicketQuill) window.initTicketQuill();
 
-  // header
+  // ── HEADER ─────────────────────────────────────────────
+  // Title = sender name (not subject / "Website Contact")
+  // Meta  = subject only + status badge — no email or date (those live in sidebar)
   if (ticketSubject)
-    ticketSubject.textContent = currentTicketData.subject||"Support Ticket";
+    ticketSubject.textContent = currentTicketData.name || currentTicketData.email || "Unknown Sender";
 
   const st = normStatus(currentTicketData.status);
   if (ticketMeta) {
     ticketMeta.innerHTML = `
-      ${esc(currentTicketData.name||"Anonymous")}
-      &nbsp;·&nbsp;
-      <a href="mailto:${esc(currentTicketData.email||"")}" style="color:inherit;text-decoration:underline">
-        ${esc(currentTicketData.email||"No email")}
-      </a>
-      &nbsp;·&nbsp;
-      ${fmtDate(currentTicketData.createdAt)}
-      <span class="badge ${st}" style="margin-left:6px">${st}</span>
+      <span style="color:var(--text-soft);font-weight:400">${esc(currentTicketData.subject||"No subject")}</span>
+      <span class="badge ${st}" style="margin-left:8px">${st}</span>
     `;
   }
 
   if (ticketStatus) ticketStatus.value = st;
 
-  // props chips
+  // Props chips: category + source only (date is already in sidebar — no duplication)
   $("propCategory").textContent = currentTicketData.category||"General";
   $("propSource").textContent   = currentTicketData.source||"contact-form";
-  $("propCreated").textContent  = fmtDate(currentTicketData.createdAt);
+  const propCreatedEl = $("propCreated");
+  if (propCreatedEl) propCreatedEl.style.display = "none";
   if (currentTicketData.mergedFrom?.length) {
     if (propMerged) propMerged.style.display="inline-flex";
   } else {
     if (propMerged) propMerged.style.display="none";
   }
+
 
   // sidebar
   if (sidebarRequester) sidebarRequester.textContent = currentTicketData.name||"—";
@@ -695,6 +693,38 @@ function makeRowResizer(resizerId, topElId, bottomElId) {
 }
 
 /* ── Init ────────────────────────────────────────────────── */
+/* ── Header height resizer ───────────────────────────────── */
+function makeHeaderResizer(resizerId, headerId) {
+  const handle = document.getElementById(resizerId);
+  const header = document.getElementById(headerId);
+  if (!handle || !header) return;
+
+  let startY, startH;
+
+  handle.addEventListener("mousedown", e => {
+    e.preventDefault();
+    startY = e.clientY;
+    startH = header.getBoundingClientRect().height;
+    handle.classList.add("dragging");
+    document.body.classList.add("resizing-row");
+
+    function onMove(ev) {
+      const delta = ev.clientY - startY;
+      const newH  = Math.max(70, Math.min(startH + delta, 240));
+      header.style.minHeight = newH + "px";
+      header.style.maxHeight = newH + "px";
+    }
+    function onUp() {
+      handle.classList.remove("dragging");
+      document.body.classList.remove("resizing-row");
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup",   onUp);
+    }
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup",   onUp);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
   showEmptyState();
   loadTickets();
@@ -703,4 +733,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   makeColResizer("resizerLD", "panelList",    "panelDetail");
   makeColResizer("resizerDS", "panelSidebar", "panelDetail");
   makeRowResizer("resizerTR", "ticketThread", "tdReply");
+
+  // header height resizer (drag the bottom edge of the ticket header)
+  makeHeaderResizer("headerResizer", "tdHeader");
 });
