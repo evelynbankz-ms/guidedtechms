@@ -4,17 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Admin — Support Tickets</title>
-
 <link rel="shortcut icon" href="../asset/logo-icon.png">
 <link rel="stylesheet" href="admin.css">
-
-<!-- Quill CSS -->
-<link
-  href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css"
-  rel="stylesheet"
-/>
+<link rel="stylesheet" href="tickets.css">
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet"/>
 </head>
-
 <body>
 <div class="admin-wrap">
 
@@ -43,132 +37,253 @@
     </aside>
 
     <!-- MAIN -->
-    <main class="admin-main">
+    <main class="admin-main tickets-page">
 
-      <!-- ANALYTICS -->
+      <!-- STAT BAR -->
       <div class="stats-grid">
-        <div class="stat-card"><h4>Total</h4><span id="statTotal">0</span></div>
-        <div class="stat-card"><h4>Open</h4><span id="statOpen">0</span></div>
-        <div class="stat-card"><h4>Pending</h4><span id="statPending">0</span></div>
-        <div class="stat-card"><h4>Closed</h4><span id="statClosed">0</span></div>
+        <div class="stat-card" id="statCardTotal">
+          <h4>Total</h4><span id="statTotal">0</span>
+        </div>
+        <div class="stat-card open" id="statCardOpen">
+          <h4>Open</h4><span id="statOpen">0</span>
+        </div>
+        <div class="stat-card pending" id="statCardPending">
+          <h4>Pending</h4><span id="statPending">0</span>
+        </div>
+        <div class="stat-card closed" id="statCardClosed">
+          <h4>Closed</h4><span id="statClosed">0</span>
+        </div>
       </div>
 
-      <!-- FILTERS -->
-      <div class="filters">
-        <select id="statusFilter">
-          <option value="">All Status</option>
-          <option value="open">Open</option>
-          <option value="pending">Pending</option>
-          <option value="closed">Closed</option>
-        </select>
+      <!-- TOOLBAR -->
+      <div class="ticket-toolbar">
+        <div class="toolbar-left">
+          <select id="statusFilter" class="tb-select">
+            <option value="">All Tickets</option>
+            <option value="open">Open</option>
+            <option value="pending">Pending</option>
+            <option value="closed">Closed</option>
+          </select>
+          <select id="sortFilter" class="tb-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="name">By Name</option>
+          </select>
+          <input id="searchInput" class="tb-search" type="text" placeholder="Search tickets…"/>
+        </div>
+        <div class="toolbar-right">
+          <button class="tb-btn" id="mergeBtn" title="Merge selected tickets" disabled>
+            ⤴ Merge
+          </button>
+          <button class="tb-btn tb-btn-primary" id="refreshBtn" title="Refresh">
+            ↻ Refresh
+          </button>
+        </div>
       </div>
 
-      <div class="tickets-layout">
+      <!-- THREE-PANEL WORKSPACE -->
+      <div class="workspace" id="workspace">
 
-        <!-- TICKET LIST -->
-        <div class="ticket-list" id="ticketList"></div>
+        <!-- ── PANEL A: Ticket List ── -->
+        <div class="panel panel-list" id="panelList">
+          <div class="panel-list-inner" id="ticketList"></div>
+        </div>
 
-        <!-- TICKET DETAIL -->
-        <div class="ticket-detail" id="ticketDetail">
+        <!-- DRAG HANDLE: list ↔ detail -->
+        <div class="resizer" id="resizerLD" title="Drag to resize"></div>
+
+        <!-- ── PANEL B: Ticket Detail ── -->
+        <div class="panel panel-detail" id="panelDetail">
 
           <!-- EMPTY STATE -->
-          <div class="empty" id="ticketEmpty">
-            Select a ticket to view
+          <div class="td-empty" id="ticketEmpty">
+            <div class="td-empty-icon">📭</div>
+            <p>Select a ticket to view the conversation</p>
           </div>
 
-          <!-- HEADER -->
-          <div id="ticketHeader" style="display:none">
-            <h3 id="ticketSubject"></h3>
-            <p id="ticketMeta"></p>
+          <!-- DETAIL CONTENT (hidden until ticket selected) -->
+          <div class="td-content" id="tdContent" style="display:none">
 
-            <label>Status</label>
-            <select id="ticketStatus">
-              <option value="open">Open</option>
-              <option value="pending">Pending</option>
-              <option value="closed">Closed</option>
-            </select>
-          </div>
+            <!-- DETAIL HEADER -->
+            <div class="td-header" id="tdHeader">
+              <div class="td-header-top">
+                <div class="td-header-left">
+                  <h2 id="ticketSubject" class="td-subject"></h2>
+                  <p id="ticketMeta" class="td-meta"></p>
+                </div>
+                <div class="td-header-right">
+                  <select id="ticketStatus" class="status-select">
+                    <option value="open">Open</option>
+                    <option value="pending">Pending</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                  <div class="td-actions">
+                    <button class="icon-btn" id="mergeTicketBtn" title="Merge with another ticket">⤴ Merge</button>
+                    <button class="icon-btn danger" id="closeTicketBtn" title="Close this ticket">✕ Close</button>
+                  </div>
+                </div>
+              </div>
 
-          <!-- THREAD -->
-          <div id="ticketThread" class="ticket-thread" style="display:none"></div>
+              <!-- TICKET PROPERTIES ROW -->
+              <div class="td-props" id="tdProps">
+                <span class="prop-chip" id="propCategory"></span>
+                <span class="prop-chip" id="propSource"></span>
+                <span class="prop-chip" id="propCreated"></span>
+                <span class="prop-chip merged-chip" id="propMerged" style="display:none">🔗 Merged ticket</span>
+              </div>
+            </div>
 
-          <!-- ADMIN REPLY -->
-          <div id="ticketReplyBox" style="display:none; margin-top:16px">
+            <!-- MESSAGE THREAD -->
+            <div class="td-thread" id="ticketThread"></div>
 
-            <label style="margin-bottom:6px;display:block">
-              Reply to customer
-            </label>
+            <!-- DRAG HANDLE: thread ↔ reply -->
+            <div class="resizer resizer-h" id="resizerTR" title="Drag to resize"></div>
 
-            <!-- Quill editor -->
-            <div
-              id="ticketReplyEditor"
-              style="height:160px;background:#fff;border-radius:8px"
-            ></div>
-
-            <div class="row" style="margin-top:12px">
-              <button class="btn btn-primary" id="sendReplyBtn">
-                Send Reply
-              </button>
-
-              <button class="btn btn-ghost" id="closeTicketBtn">
-                Close Ticket
-              </button>
+            <!-- REPLY BOX -->
+            <div class="td-reply" id="tdReply">
+              <div class="reply-tabs">
+                <button class="reply-tab active" data-tab="reply">Reply</button>
+                <button class="reply-tab" data-tab="note">Internal Note</button>
+              </div>
+              <div class="reply-editor-wrap">
+                <div id="ticketReplyEditor" class="reply-quill"></div>
+              </div>
+              <div class="reply-actions">
+                <div class="reply-actions-left">
+                  <button class="reply-submit" id="sendReplyBtn">Send Reply</button>
+                  <select id="replyStatusChange" class="reply-status-select" title="Change status on submit">
+                    <option value="pending">→ Set Pending</option>
+                    <option value="open">→ Set Open</option>
+                    <option value="closed">→ Set Closed</option>
+                  </select>
+                </div>
+                <button class="reply-toggle" id="replyToggle" title="Minimize / Maximize reply box">⌃</button>
+              </div>
             </div>
 
           </div>
-
         </div>
 
-      </div>
+        <!-- DRAG HANDLE: detail ↔ sidebar -->
+        <div class="resizer" id="resizerDS" title="Drag to resize"></div>
+
+        <!-- ── PANEL C: Ticket Sidebar (Properties) ── -->
+        <div class="panel panel-sidebar" id="panelSidebar">
+          <div class="ts-section">
+            <h4 class="ts-heading">Requester</h4>
+            <div class="ts-field" id="sidebarRequester">—</div>
+          </div>
+          <div class="ts-section">
+            <h4 class="ts-heading">Contact Info</h4>
+            <div class="ts-field" id="sidebarEmail">—</div>
+          </div>
+          <div class="ts-section">
+            <h4 class="ts-heading">Category</h4>
+            <div class="ts-field" id="sidebarCategory">—</div>
+          </div>
+          <div class="ts-section">
+            <h4 class="ts-heading">Source</h4>
+            <div class="ts-field" id="sidebarSource">—</div>
+          </div>
+          <div class="ts-section">
+            <h4 class="ts-heading">Created</h4>
+            <div class="ts-field" id="sidebarCreated">—</div>
+          </div>
+          <div class="ts-section">
+            <h4 class="ts-heading">Last Updated</h4>
+            <div class="ts-field" id="sidebarUpdated">—</div>
+          </div>
+          <div class="ts-section" id="mergedSection" style="display:none">
+            <h4 class="ts-heading">Merged From</h4>
+            <div class="ts-field" id="sidebarMerged">—</div>
+          </div>
+
+          <!-- REQUESTER'S OTHER TICKETS -->
+          <div class="ts-section">
+            <h4 class="ts-heading">Other Tickets by Requester</h4>
+            <div id="sidebarOtherTickets" class="ts-other-tickets">—</div>
+          </div>
+        </div>
+
+      </div><!-- /workspace -->
 
     </main>
   </div>
 </div>
 
-<!-- CORE -->
+<!-- MERGE MODAL -->
+<div class="modal-overlay" id="mergeOverlay" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Merge Tickets</h3>
+      <button class="modal-close" id="mergeClose">✕</button>
+    </div>
+    <p class="modal-sub">Select the ticket to merge <strong>into</strong>. The other ticket will be closed and its messages moved here.</p>
+    <input type="text" id="mergeSearch" class="tb-search" placeholder="Search by name, email or subject…" style="margin:12px 0;width:100%"/>
+    <div id="mergeList" class="merge-list"></div>
+    <div class="modal-footer">
+      <button class="tb-btn" id="mergeCancelBtn">Cancel</button>
+      <button class="tb-btn tb-btn-primary" id="mergeConfirmBtn" disabled>Merge</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <script type="module" src="firebase.js"></script>
 <script type="module" src="tickets.js"></script>
 
-<!-- Quill JS -->
-<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
-
 <script>
-/* ----------------------------------------------------
-   QUILL (TICKETS ONLY)
----------------------------------------------------- */
-
+/* ── Quill init (called from tickets.js) ── */
 let ticketQuill = null;
+let replyMode   = "reply"; // "reply" | "note"
 
 window.initTicketQuill = function () {
   const el = document.getElementById("ticketReplyEditor");
   if (!el || typeof Quill === "undefined") return;
-
-  if (ticketQuill) {
-    ticketQuill.setContents([]);
-    return;
-  }
-
+  if (ticketQuill) { ticketQuill.setContents([]); return; }
   ticketQuill = new Quill(el, {
     theme: "snow",
     placeholder: "Write your response…",
     modules: {
       toolbar: [
-        ["bold", "italic", "underline"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link"],
+        ["bold","italic","underline"],
+        [{ list:"ordered" },{ list:"bullet" }],
+        ["link","blockquote"],
         ["clean"]
       ]
     }
   });
 };
 
-window.getTicketReplyHTML = function () {
-  return ticketQuill ? ticketQuill.root.innerHTML : "";
-};
+window.getTicketReplyHTML  = () => ticketQuill ? ticketQuill.root.innerHTML : "";
+window.clearTicketReply    = () => { if (ticketQuill) ticketQuill.setContents([]); };
+window.getReplyMode        = () => replyMode;
 
-window.clearTicketReply = function () {
-  if (ticketQuill) ticketQuill.setContents([]);
-};
+/* Reply tab switching */
+document.addEventListener("click", e => {
+  const tab = e.target.closest(".reply-tab");
+  if (!tab) return;
+  document.querySelectorAll(".reply-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  replyMode = tab.dataset.tab;
+  const editor = document.getElementById("ticketReplyEditor");
+  if (editor) {
+    editor.style.background = replyMode === "note" ? "#fffbec" : "#fff";
+  }
+});
+
+/* Reply box minimize / maximize */
+let replyMinimized = false;
+document.addEventListener("click", e => {
+  if (!e.target.closest("#replyToggle")) return;
+  const reply = document.getElementById("tdReply");
+  const btn   = document.getElementById("replyToggle");
+  replyMinimized = !replyMinimized;
+  reply.classList.toggle("minimized", replyMinimized);
+  btn.textContent = replyMinimized ? "⌄" : "⌃";
+  btn.title       = replyMinimized ? "Maximize reply box" : "Minimize reply box";
+});
 </script>
 
 </body>
