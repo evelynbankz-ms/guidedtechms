@@ -317,39 +317,75 @@
   min-height: 0;
 }
 
-/* Detail header */
+/* Detail header — resizable via drag handle at bottom edge */
 .td-header {
   flex-shrink: 0;
-  padding: 16px 20px 12px;
+  padding: 14px 20px 18px;
   border-bottom: 1.5px solid var(--border);
   background: #fff;
+  position: relative;
+  min-height: 80px;
 }
+/* Drag handle at the bottom edge of the header */
+.td-header-resizer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  cursor: row-resize;
+  z-index: 5;
+  transition: background 0.15s;
+}
+.td-header-resizer:hover,
+.td-header-resizer.dragging { background: rgba(27,79,114,0.08); }
+.td-header-resizer::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 36px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.15s, width 0.15s;
+}
+.td-header-resizer:hover::after,
+.td-header-resizer.dragging::after { background: var(--primary); width: 56px; }
+
 .td-header-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 .td-header-left { flex: 1; min-width: 0; }
+
+/* Subject = SENDER NAME — big and bold */
 .td-subject {
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Meta = ticket subject text + status badge only */
 .td-meta {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-soft);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
+  line-height: 1.4;
 }
+
 .td-header-right {
   display: flex;
   align-items: center;
@@ -385,12 +421,12 @@
 .icon-btn:hover { background: var(--bg); color: var(--text); }
 .icon-btn.danger:hover { background: #fdecea; border-color: #e74c3c; color: #e74c3c; }
 
-/* Props chips */
+/* Props chips: category + source only — no date chip */
 .td-props {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
+  gap: 5px;
+  margin-top: 7px;
 }
 .prop-chip {
   font-size: 11.5px;
