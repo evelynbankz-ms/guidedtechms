@@ -1,13 +1,9 @@
-// admin/tickets.js  — Zendesk-parity feature set
+// admin/tickets.js — Zendesk-parity feature set (Vercel edition)
 import { db } from "./firebase.js";
 import {
   collection, query, where, getDocs,
   addDoc, updateDoc, deleteDoc, doc, getDoc, writeBatch
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
-/* ── Cloud function placeholders ─────────────────────────── */
-const SEND_REPLY_FUNCTION_URL = "PASTE_YOUR_sendAdminTicketEmail_FUNCTION_URL_HERE";
-const ADMIN_SECRET            = "PASTE_THE_SAME_RANDOM_SECRET_HERE";
 
 /* ── DOM refs ────────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
@@ -50,8 +46,8 @@ const propMerged         = $("propMerged");
 let allTickets        = [];
 let currentTicketId   = null;
 let currentTicketData = null;
-let selectedForMerge  = new Set();   // ticket IDs checked in list
-let mergeTargetId     = null;        // selected in merge modal
+let selectedForMerge  = new Set();
+let mergeTargetId     = null;
 
 /* ── Helpers ─────────────────────────────────────────────── */
 const esc = s => String(s||"").replace(/[&<>"']/g,m=>
@@ -154,10 +150,8 @@ function renderTicketList() {
 
   let items = [...allTickets];
 
-  // filter by status
   if (filterVal) items = items.filter(t=>normStatus(t.status)===normStatus(filterVal));
 
-  // search
   if (searchVal) {
     items = items.filter(t=>{
       const hay = [t.name,t.email,t.subject,t.lastMessagePreview].join(" ").toLowerCase();
@@ -165,7 +159,6 @@ function renderTicketList() {
     });
   }
 
-  // sort
   if (sortVal==="oldest") {
     items.sort((a,b)=>tsNum(a.createdAt)-tsNum(b.createdAt));
   } else if (sortVal==="name") {
@@ -190,10 +183,8 @@ function renderTicketList() {
     if (t.id===currentTicketId) item.classList.add("active");
     if (selectedForMerge.has(t.id)) item.classList.add("selected-for-merge");
 
-    // Primary display: sender name (bold) → subject → preview
     const displayName = t.name || t.email || "Unknown";
-    const unread = t.unreadAdmin
-      ? `<span class="unread-dot"></span>`:"";
+    const unread = t.unreadAdmin ? `<span class="unread-dot"></span>`:"";
 
     item.innerHTML = `
       <div class="ti-top">
@@ -216,7 +207,6 @@ function renderTicketList() {
       if (e.target.checked) selectedForMerge.add(t.id);
       else selectedForMerge.delete(t.id);
       item.classList.toggle("selected-for-merge",e.target.checked);
-      // enable toolbar merge button when 2+ selected
       if (mergeBtn) mergeBtn.disabled = selectedForMerge.size < 2;
     });
 
@@ -240,7 +230,6 @@ async function loadThread(ticketId) {
   let messages = raw.docs.map(d=>({id:d.id,...d.data()}))
     .sort((a,b)=>tsNum(a.createdAt)-tsNum(b.createdAt));
 
-  // fallback: ticket's own `message` field
   if (!messages.length && currentTicketData?.message) {
     messages.push({
       sender:    "user",
@@ -255,7 +244,6 @@ async function loadThread(ticketId) {
     return;
   }
 
-  // Group by date and render with date separators
   let lastDate = null;
   messages.forEach(m=>{
     const msgDate = fmtDateLabel(m.createdAt);
@@ -290,7 +278,6 @@ async function loadThread(ticketId) {
 async function openTicket(ticketId) {
   currentTicketId = ticketId;
 
-  // highlight in list
   document.querySelectorAll(".ticket-item").forEach(el=>{
     el.classList.toggle("active", el.dataset.id===ticketId);
   });
@@ -299,15 +286,11 @@ async function openTicket(ticketId) {
   if (!snap.exists()) { showEmptyState(); return; }
   currentTicketData = snap.data()||{};
 
-  // show content
   if (ticketEmpty) ticketEmpty.style.display="none";
   if (tdContent)   tdContent.style.display="flex";
 
   if (window.initTicketQuill) window.initTicketQuill();
 
-  // ── HEADER ─────────────────────────────────────────────
-  // Title = sender name (not subject / "Website Contact")
-  // Meta  = subject only + status badge — no email or date (those live in sidebar)
   if (ticketSubject)
     ticketSubject.textContent = currentTicketData.name || currentTicketData.email || "Unknown Sender";
 
@@ -321,7 +304,6 @@ async function openTicket(ticketId) {
 
   if (ticketStatus) ticketStatus.value = st;
 
-  // Props chips: category + source only (date is already in sidebar — no duplication)
   $("propCategory").textContent = currentTicketData.category||"General";
   $("propSource").textContent   = currentTicketData.source||"contact-form";
   const propCreatedEl = $("propCreated");
@@ -332,8 +314,6 @@ async function openTicket(ticketId) {
     if (propMerged) propMerged.style.display="none";
   }
 
-
-  // sidebar
   if (sidebarRequester) sidebarRequester.textContent = currentTicketData.name||"—";
   if (sidebarEmail)
     sidebarEmail.innerHTML = currentTicketData.email
@@ -351,16 +331,10 @@ async function openTicket(ticketId) {
     mergedSection.style.display="none";
   }
 
-  // other tickets by this requester
   await loadOtherTickets(currentTicketData.email, ticketId);
-
-  // mark as read
   await updateDoc(doc(db,"tickets",ticketId),{unreadAdmin:false});
-
   await loadThread(ticketId);
   if (window.clearTicketReply) window.clearTicketReply();
-
-  // refresh list silently
   loadTickets();
 }
 
@@ -392,7 +366,7 @@ ticketStatus?.addEventListener("change", async()=>{
   loadTickets();
 });
 
-/* ── Send reply / internal note ──────────────────────────── */
+/* ── Send reply / internal note (VERCEL EDITION) ──────────── */
 sendReplyBtn?.addEventListener("click", async()=>{
   if (!currentTicketId) return;
   const html = window.getTicketReplyHTML?window.getTicketReplyHTML():"";
@@ -401,9 +375,8 @@ sendReplyBtn?.addEventListener("click", async()=>{
   const mode   = window.getReplyMode?window.getReplyMode():"reply";
   const isNote = mode==="note";
   const now    = Date.now();
-  const newStatus = "pending"; // status after reply
 
-  // save to thread
+  // 1) Save to Firestore thread
   await addDoc(collection(db,"ticket_messages"),{
     ticketId:    currentTicketId,
     sender:      "admin",
@@ -414,26 +387,38 @@ sendReplyBtn?.addEventListener("click", async()=>{
     createdAt:   now
   });
 
-  // update ticket
+  // 2) Update ticket
   await updateDoc(doc(db,"tickets",currentTicketId),{
-    status:             isNote ? (currentTicketData?.status||"open") : newStatus,
+    status:             isNote ? (currentTicketData?.status||"open") : "pending",
     updatedAt:          now,
     lastMessageAt:      now,
     lastMessagePreview: stripHtml(html).slice(0,120)
   });
 
-  // email only for real replies (not internal notes)
-  if (!isNote) {
+  // 3) Send email via Vercel serverless function (skip for internal notes)
+  if (!isNote && currentTicketData?.email) {
     try {
-      if (SEND_REPLY_FUNCTION_URL.startsWith("http") && ADMIN_SECRET.length>10) {
-        const resp = await fetch(SEND_REPLY_FUNCTION_URL,{
-          method:"POST",
-          headers:{"Content-Type":"application/json","x-admin-secret":ADMIN_SECRET},
-          body:JSON.stringify({ticketId:currentTicketId, bodyHtml:html})
-        });
-        if (!resp.ok) console.error("Email failed:",resp.status);
+      const resp = await fetch("https://YOUR-VERCEL-DOMAIN.vercel.app/api/send-ticket-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-secret": "YOUR_ADMIN_SECRET_HERE"
+        },
+        body: JSON.stringify({
+          ticketId:  currentTicketId,
+          toEmail:   currentTicketData.email,
+          toName:    currentTicketData.name,
+          subject:   currentTicketData.subject,
+          bodyHtml:  html
+        })
+      });
+
+      if (!resp.ok) {
+        console.error("Email failed:", resp.status, await resp.text().catch(()=>""));
       }
-    } catch(err) { console.error("Email error:",err); }
+    } catch (err) {
+      console.error("Email error:", err);
+    }
   }
 
   if (window.clearTicketReply) window.clearTicketReply();
@@ -461,14 +446,11 @@ searchInput?.addEventListener("input", renderTicketList);
 refreshBtn?.addEventListener("click", loadTickets);
 
 /* ── MERGE FEATURE ───────────────────────────────────────── */
-
-// Open merge modal from ticket detail header
 mergeTicketBtn?.addEventListener("click",()=>{
   if (!currentTicketId) return;
   openMergeModal(currentTicketId);
 });
 
-// Open merge modal from toolbar (when 2 tickets are checked)
 mergeBtn?.addEventListener("click",()=>{
   if (selectedForMerge.size<2) return;
   const ids = [...selectedForMerge];
@@ -479,14 +461,10 @@ function openMergeModal(sourceId, preselected=null) {
   mergeTargetId = null;
   if (mergeConfirmBtn) mergeConfirmBtn.disabled=true;
   if (mergeSearch)     mergeSearch.value="";
-
-  // Populate merge list (all tickets except the source)
   renderMergeList(sourceId, "");
-
   if (mergeSearch) {
     mergeSearch.oninput = ()=>renderMergeList(sourceId, mergeSearch.value);
   }
-
   if (mergeOverlay) mergeOverlay.style.display="flex";
 }
 
@@ -532,7 +510,6 @@ function renderMergeList(sourceId, searchVal) {
   });
 }
 
-// Close modal
 [mergeClose, mergeCancelBtn].forEach(btn=>{
   btn?.addEventListener("click",()=>{
     if (mergeOverlay) mergeOverlay.style.display="none";
@@ -540,14 +517,11 @@ function renderMergeList(sourceId, searchVal) {
   });
 });
 
-// Confirm merge
 mergeConfirmBtn?.addEventListener("click", async()=>{
   if (!mergeTargetId || !currentTicketId) return;
   mergeConfirmBtn.disabled=true;
   mergeConfirmBtn.textContent="Merging…";
-
   await performMerge(currentTicketId, mergeTargetId);
-
   mergeConfirmBtn.textContent="Merge";
   if (mergeOverlay) mergeOverlay.style.display="none";
   mergeTargetId=null;
@@ -557,33 +531,20 @@ mergeConfirmBtn?.addEventListener("click", async()=>{
   await openTicket(currentTicketId);
 });
 
-/**
- * Merge strategy (Zendesk-style):
- *   - Move all messages from `fromId` into `intoId`
- *   - Add a system note in `intoId` thread announcing the merge
- *   - Close/mark `fromId` as merged
- *   - Record mergedFrom[] on `intoId`
- */
 async function performMerge(intoId, fromId) {
   const now = Date.now();
-
-  // 1) fetch messages of the source ticket
   const msgSnap = await getDocs(
     query(collection(db,"ticket_messages"), where("ticketId","==",fromId))
   );
-
-  // 2) re-point them to the target ticket
   const batch = writeBatch(db);
   msgSnap.docs.forEach(d=>{
     batch.update(doc(db,"ticket_messages",d.id),{ticketId:intoId});
   });
   await batch.commit();
 
-  // 3) get source ticket info for the system note
   const fromSnap = await getDoc(doc(db,"tickets",fromId));
   const fromData = fromSnap.exists()?fromSnap.data():{};
 
-  // 4) add system note announcing the merge
   await addDoc(collection(db,"ticket_messages"),{
     ticketId:    intoId,
     sender:      "system",
@@ -596,14 +557,12 @@ async function performMerge(intoId, fromId) {
     createdAt:   now
   });
 
-  // 5) close the source ticket and mark as merged
   await updateDoc(doc(db,"tickets",fromId),{
     status:    "closed",
     mergedInto: intoId,
     updatedAt: now
   });
 
-  // 6) record merge history on target ticket
   const intoSnap = await getDoc(doc(db,"tickets",intoId));
   const existing = intoSnap.exists()?intoSnap.data().mergedFrom||[]:[fromId];
   const mergedFrom = [...new Set([...existing, fromId])];
@@ -618,30 +577,21 @@ async function performMerge(intoId, fromId) {
 
 /* ══════════════════════════════════════════════════════════
    DRAGGABLE RESIZERS
-   Three resizers:
-     resizerLD  — col: list  ↔ detail
-     resizerDS  — col: detail ↔ sidebar
-     resizerTR  — row: thread ↔ reply (inside panel-detail)
 ══════════════════════════════════════════════════════════ */
-
 function makeColResizer(resizerId, panelAId, panelBId) {
   const handle  = $(resizerId);
   const panelA  = $(panelAId);
   if (!handle || !panelA) return;
-
   let startX, startW;
-
   handle.addEventListener("mousedown", e=>{
     e.preventDefault();
     startX = e.clientX;
     startW = panelA.getBoundingClientRect().width;
     handle.classList.add("dragging");
     document.body.classList.add("resizing-col");
-
     function onMove(ev) {
       const delta = ev.clientX - startX;
-      const newW  = Math.max(panelA.style.minWidth ? parseInt(panelA.style.minWidth) : 180,
-                    Math.min(startW + delta, 600));
+      const newW  = Math.max(180, Math.min(startW + delta, 600));
       panelA.style.width = newW + "px";
     }
     function onUp() {
@@ -660,9 +610,7 @@ function makeRowResizer(resizerId, topElId, bottomElId) {
   const topEl  = $(topElId);
   const botEl  = $(bottomElId);
   if (!handle || !topEl || !botEl) return;
-
   let startY, startTopH, startBotH;
-
   handle.addEventListener("mousedown", e=>{
     e.preventDefault();
     startY     = e.clientY;
@@ -670,7 +618,6 @@ function makeRowResizer(resizerId, topElId, bottomElId) {
     startBotH  = botEl.getBoundingClientRect().height;
     handle.classList.add("dragging");
     document.body.classList.add("resizing-row");
-
     function onMove(ev) {
       const delta = ev.clientY - startY;
       const newTopH = Math.max(60, startTopH + delta);
@@ -691,22 +638,17 @@ function makeRowResizer(resizerId, topElId, bottomElId) {
   });
 }
 
-/* ── Init ────────────────────────────────────────────────── */
-/* ── Header height resizer ───────────────────────────────── */
 function makeHeaderResizer(resizerId, headerId) {
   const handle = document.getElementById(resizerId);
   const header = document.getElementById(headerId);
   if (!handle || !header) return;
-
   let startY, startH;
-
   handle.addEventListener("mousedown", e => {
     e.preventDefault();
     startY = e.clientY;
     startH = header.getBoundingClientRect().height;
     handle.classList.add("dragging");
     document.body.classList.add("resizing-row");
-
     function onMove(ev) {
       const delta = ev.clientY - startY;
       const newH  = Math.max(70, Math.min(startH + delta, 240));
@@ -724,15 +666,12 @@ function makeHeaderResizer(resizerId, headerId) {
   });
 }
 
+/* ── Init ────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", ()=>{
   showEmptyState();
   loadTickets();
-
-  // wire resizers
   makeColResizer("resizerLD", "panelList",    "panelDetail");
   makeColResizer("resizerDS", "panelSidebar", "panelDetail");
   makeRowResizer("resizerTR", "ticketThread", "tdReply");
-
-  // header height resizer (drag the bottom edge of the ticket header)
   makeHeaderResizer("headerResizer", "tdHeader");
 });
