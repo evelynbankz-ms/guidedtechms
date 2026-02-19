@@ -59,9 +59,10 @@
 
   .hero-sub-img {
     width: 160px;
-    bottom: -18px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 30px;
+    left: auto;
+    right: 30px;
+    transform: none;
   }
 
   /* ── IMPACT SECTION ────────────────────────────────────────────── */
@@ -237,9 +238,10 @@
 
   .hero-sub-img {
     width: 140px;
-    bottom: -16px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 20px;
+    left: auto;
+    right: 20px;
+    transform: none;
     border-radius: 12px;
   }
 
@@ -555,9 +557,10 @@
 
   .hero-sub-img {
     width: 120px;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 15px;
+    left: auto;
+    right: 15px;
+    transform: none;
   }
 
   /* ── IMPACT SECTION ────────────────────────────────────────────── */
