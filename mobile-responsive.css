@@ -60,7 +60,8 @@
   .hero-sub-img {
     width: 160px;
     bottom: -18px;
-    left: 20px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   /* ── IMPACT SECTION ────────────────────────────────────────────── */
@@ -237,7 +238,8 @@
   .hero-sub-img {
     width: 140px;
     bottom: -16px;
-    left: 16px;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 12px;
   }
 
@@ -260,18 +262,16 @@
   }
 
   .impact-stats {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     padding-top: 0;
   }
 
   .impact-item {
-    padding: 20px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  }
-
-  .impact-item:last-child {
-    border-bottom: none;
+    padding: 18px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.5);
   }
 
   .impact-value {
@@ -556,7 +556,8 @@
   .hero-sub-img {
     width: 120px;
     bottom: -12px;
-    left: 12px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   /* ── IMPACT SECTION ────────────────────────────────────────────── */
@@ -566,6 +567,14 @@
 
   .impact-heading {
     font-size: 1.3rem;
+  }
+
+  .impact-stats {
+    gap: 16px;
+  }
+
+  .impact-item {
+    padding: 16px 14px;
   }
 
   .impact-value {
