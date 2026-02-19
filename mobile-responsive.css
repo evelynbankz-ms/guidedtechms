@@ -58,10 +58,12 @@
   }
 
   .hero-sub-img {
-    width: 160px;
-    bottom: 30px;
+    width: 50%;
+    max-width: 200px;
+    height: auto;
+    bottom: 40px;
     left: auto;
-    right: 30px;
+    right: 40px;
     transform: none;
   }
 
@@ -237,10 +239,12 @@
   }
 
   .hero-sub-img {
-    width: 140px;
-    bottom: 20px;
+    width: 45%;
+    max-width: 180px;
+    height: auto;
+    bottom: 30px;
     left: auto;
-    right: 20px;
+    right: 30px;
     transform: none;
     border-radius: 12px;
   }
@@ -556,10 +560,12 @@
   }
 
   .hero-sub-img {
-    width: 120px;
-    bottom: 15px;
+    width: 45%;
+    max-width: 150px;
+    height: auto;
+    bottom: 20px;
     left: auto;
-    right: 15px;
+    right: 20px;
     transform: none;
   }
 
