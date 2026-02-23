@@ -485,11 +485,6 @@
     padding: 0 16px;
   }
 
-  .about-col {
-    grid-column: span 2;
-    margin-bottom: 10px;
-  }
-
   .footer-logo {
     font-size: 1.3rem;
   }
