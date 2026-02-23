@@ -1484,23 +1484,48 @@ body {
   .choose-grid {
     grid-template-columns: 1fr;
     gap: 24px;
+    display: flex;
+    flex-direction: column;
   }
   
-  /* Reorder: card first, buttons second */
+  /* Left side stays first (title, description, buttons) */
   .choose-left {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Right side (card) comes after left side */
+  .choose-right {
     order: 2;
   }
   
-  .choose-right {
-    order: 1;
-  }
-  
-  /* Feature buttons list - smaller */
+  /* Make buttons appear AFTER the card within left column */
   .feature-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 20px;
+    order: 3;
+  }
+  
+  /* Title and description come before card */
+  .section-label {
+    order: 1;
+  }
+  
+  .choose-title {
+    order: 2;
+  }
+  
+  .choose-desc {
+    order: 3;
+  }
+  
+  /* Now make the card appear BETWEEN description and buttons */
+  /* by moving it into the left column visually */
+  .choose-right {
+    order: 2;
+    margin: 20px 0;
   }
   
   .feature-item { 
@@ -1513,7 +1538,7 @@ body {
     font-size: 1.1rem;
   }
   
-  /* Content card appears above buttons - smaller */
+  /* Content card - smaller */
   .choose-card {
     padding: 24px 18px;
     width: 100%;
