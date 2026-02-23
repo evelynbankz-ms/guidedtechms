@@ -485,6 +485,18 @@
     padding: 0 16px;
   }
 
+  /* Force proper column order: SERVICES left, RESOURCES+ABOUT right */
+  .gts-footer-col:nth-child(1) { order: 1; } /* Company info - first */
+  .gts-footer-col:nth-child(2) { order: 2; } /* SERVICES - left column */
+  .gts-footer-col:nth-child(3) { order: 3; } /* RESOURCES - right column */
+  .gts-footer-col:nth-child(4) { order: 4; } /* ABOUT - right column below RESOURCES */
+  
+  .about-col {
+    grid-column: span 2;
+    order: 0;
+    margin-bottom: 20px;
+  }
+
   .footer-logo {
     font-size: 1.3rem;
   }
