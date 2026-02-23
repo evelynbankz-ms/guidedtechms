@@ -479,14 +479,15 @@
   }
 
   .gts-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 36px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
     width: 100%;
     padding: 0 16px;
   }
 
   .about-col {
-    grid-column: span 1;
+    grid-column: span 2;
+    margin-bottom: 10px;
   }
 
   .footer-logo {
@@ -500,12 +501,12 @@
 
   .footer-heading {
     font-size: 13px;
-    margin: 20px 0 10px;
+    margin: 18px 0 8px;
   }
 
   .gts-footer-col a {
     font-size: 0.95rem;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .footer-social {
