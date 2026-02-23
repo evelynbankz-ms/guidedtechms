@@ -1476,16 +1476,59 @@ body {
   
   .choose-desc { font-size: 0.9rem; }
   
-  .feature-item { 
-    font-size: 0.9rem;
-    padding: 11px 14px;
+  /* ═══════════════════════════════════════════════════════════
+     WHY CHOOSE US - MOBILE STACKED LAYOUT
+  ═══════════════════════════════════════════════════════════ */
+  
+  /* Make it single column on mobile */
+  .choose-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
   
-  .choose-card {
-    padding: 30px 24px;
+  /* Reorder: card first, buttons second */
+  .choose-left {
+    order: 2;
   }
-  .choose-card h3 { font-size: 1.2rem; }
-  .choose-card p { font-size: 0.9rem; }
+  
+  .choose-right {
+    order: 1;
+  }
+  
+  /* Feature buttons list - smaller */
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  
+  .feature-item { 
+    font-size: 0.8rem;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  
+  .feature-item .arrow {
+    font-size: 1.1rem;
+  }
+  
+  /* Content card appears above buttons - smaller */
+  .choose-card {
+    padding: 24px 18px;
+    width: 100%;
+    min-height: auto;
+  }
+  
+  .choose-card h3 { 
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  
+  .choose-card p { 
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
   
   .history-title,
   .leaders-title,
