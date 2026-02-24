@@ -1425,6 +1425,7 @@ body {
 
 
 
+
 /* ═══════════════════════════════════════════════════════════════════
    ABOUT PAGE MOBILE RESPONSIVE - MINIMAL SCALING ONLY
    Keep ALL layouts exactly as desktop, just smaller fonts/spacing
@@ -1510,49 +1511,52 @@ body {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     HISTORY SECTION - Mobile improvements
-     Text wraps around image, smaller stats box, justified text
+     HISTORY SECTION - Mobile fixes
+     Image on left, text wraps to right and below
   ═══════════════════════════════════════════════════════════ */
   
-  /* Single column but text wraps around image */
+  /* Container allows text wrapping */
+  .history-container {
+    overflow: auto;
+  }
+  
   .history-grid {
     display: block;
   }
   
-  /* Image - smaller and floated left so text wraps around it */
+  /* Image floated left - text wraps around it */
   .history-right {
     float: left;
-    margin: 0 16px 12px 0;
-    max-width: 150px;
+    margin: 0 14px 12px 0;
+    max-width: 160px;
   }
   
   .history-image {
     max-width: 100%;
-    width: 150px;
+    width: 160px;
   }
   
-  /* Text content - wraps around image, FULL TEXT SHOWN */
+  /* Text wraps around image on right, continues below */
   .history-left {
     text-align: justify;
+    overflow: hidden;
   }
   
   .history-left p {
     font-size: 0.85rem;
     line-height: 1.6;
     margin-bottom: 12px;
-    /* NO LINE CLAMPING - show full text */
   }
   
-  /* Stats card - MUCH SMALLER, keep horizontal layout */
+  /* Stats card - appears below everything with clear */
   .history-stats {
-    margin-top: 30px;
-    padding: 10px 12px;
+    clear: both;
+    margin-top: 20px;
+    padding: 8px 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 6px;
-    clear: both;
-    max-width: 100%;
+    gap: 4px;
   }
   
   .stat-item {
@@ -1562,7 +1566,7 @@ body {
     align-items: center;
     text-align: center;
     border-right: 1px solid rgba(255,255,255,0.18);
-    padding: 6px 2px;
+    padding: 5px 2px;
   }
   
   .stat-item:last-child {
@@ -1570,46 +1574,43 @@ body {
   }
   
   .stat-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     text-align: center;
-    margin-bottom: 3px;
-    line-height: 1.2;
+    margin-bottom: 2px;
+    line-height: 1.1;
   }
   
   .stat-value {
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-align: center;
   }
   
   /* ═══════════════════════════════════════════════════════════
-     FIX SECTION TITLES (not content) to one line
+     REDUCE TITLE FONT SIZE to fit one line - NO CUTTING OFF
   ═══════════════════════════════════════════════════════════ */
   
   .mission-title,
   .choose-title {
-    font-size: 1.4rem;
-    line-height: 1.2;
-    
-    /* Limit TITLE to one line */
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    /* NO line clamping - just smaller font */
   }
   
-  /* Keep descriptions normal - NO clamping */
+  /* ═══════════════════════════════════════════════════════════
+     HERO SUBTITLE - Centered, smaller font, NO justify
+  ═══════════════════════════════════════════════════════════ */
+  
   .hero-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     line-height: 1.5;
-    /* NO line clamping - show full text */
+    text-align: center;
   }
   
+  /* Keep other descriptions normal */
   .choose-desc,
   .history-subtitle {
     font-size: 0.85rem;
     line-height: 1.5;
-    /* NO line clamping on descriptions */
   }
   
   /* ═══════════════════════════════════════════════════════════
@@ -1627,7 +1628,7 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     JUSTIFY ALL CONTENT CARD TEXT
+     JUSTIFY ALL CONTENT CARD TEXT (except hero)
   ═══════════════════════════════════════════════════════════ */
   
   .tab-content p,
