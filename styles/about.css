@@ -1511,54 +1511,48 @@ body {
 
   /* ═══════════════════════════════════════════════════════════
      HISTORY SECTION - Mobile improvements
-     Smaller stats box (horizontal layout), text wraps around image, smaller descriptions
+     Text wraps around image, smaller stats box, justified text
   ═══════════════════════════════════════════════════════════ */
   
-  /* Keep single column layout */
+  /* Single column but text wraps around image */
   .history-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: block;
   }
   
   /* Image - smaller and floated left so text wraps around it */
   .history-right {
     float: left;
-    margin: 0 16px 16px 0;
-    max-width: 180px;
+    margin: 0 16px 12px 0;
+    max-width: 150px;
   }
   
   .history-image {
     max-width: 100%;
-    width: 180px;
+    width: 150px;
   }
   
-  /* Text content - wraps around image */
+  /* Text content - wraps around image, FULL TEXT SHOWN */
   .history-left {
     text-align: justify;
-    clear: none;
   }
   
   .history-left p {
     font-size: 0.85rem;
     line-height: 1.6;
-    
-    /* Limit to approximately one line */
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 12px;
+    /* NO LINE CLAMPING - show full text */
   }
   
-  /* Stats card - smaller, keep HORIZONTAL layout */
+  /* Stats card - MUCH SMALLER, keep horizontal layout */
   .history-stats {
     margin-top: 30px;
-    padding: 12px 16px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 8px;
-    clear: both; /* Appears below wrapped image */
+    gap: 6px;
+    clear: both;
+    max-width: 100%;
   }
   
   .stat-item {
@@ -1568,8 +1562,7 @@ body {
     align-items: center;
     text-align: center;
     border-right: 1px solid rgba(255,255,255,0.18);
-    padding: 8px 4px;
-    border-bottom: none;
+    padding: 6px 2px;
   }
   
   .stat-item:last-child {
@@ -1577,32 +1570,70 @@ body {
   }
   
   .stat-label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+    line-height: 1.2;
   }
   
   .stat-value {
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: center;
   }
   
   /* ═══════════════════════════════════════════════════════════
-     ALL SECTIONS - Limit descriptions to one line
+     FIX SECTION TITLES (not content) to one line
   ═══════════════════════════════════════════════════════════ */
   
-  .hero-subtitle,
-  .choose-desc,
-  .history-subtitle {
-    font-size: 0.85rem;
-    line-height: 1.4;
+  .mission-title,
+  .choose-title {
+    font-size: 1.4rem;
+    line-height: 1.2;
     
-    /* Limit to one line */
+    /* Limit TITLE to one line */
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  
+  /* Keep descriptions normal - NO clamping */
+  .hero-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    /* NO line clamping - show full text */
+  }
+  
+  .choose-desc,
+  .history-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    /* NO line clamping on descriptions */
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     REDUCE BUTTON FONT SIZE - Single line buttons
+  ═══════════════════════════════════════════════════════════ */
+  
+  .tab-btn {
+    padding: 9px 8px;
+    font-size: 0.7rem;
+  }
+  
+  .who-we-serve .tab-btn {
+    padding: 9px 6px;
+    font-size: 0.7rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     JUSTIFY ALL CONTENT CARD TEXT
+  ═══════════════════════════════════════════════════════════ */
+  
+  .tab-content p,
+  .choose-card p,
+  .who-we-serve .tab-content p {
+    text-align: justify;
   }
 
   
