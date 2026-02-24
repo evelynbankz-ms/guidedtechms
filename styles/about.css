@@ -1478,47 +1478,38 @@ body {
   .choose-desc { font-size: 0.9rem; }
   
   /* ═══════════════════════════════════════════════════════════
-     WHO WE SERVE - Match layout with WHAT WE ARE section
+     WHO WE SERVE - Same mobile layout as WHAT WE ARE section
+     Single column: title on top, tabs below, content below
   ═══════════════════════════════════════════════════════════ */
   
-  /* Keep same 2-column grid as mission section */
+  /* Single column layout */
   .who-we-serve .mission-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
   
-  /* Tabs stay horizontal like mission section */
+  /* Tabs stay horizontal */
   .who-we-serve .mission-tabs {
     padding: 3px;
   }
   
   .who-we-serve .tab-btn {
-    padding: 10px 8px;
-    font-size: 0.75rem;
+    padding: 10px 12px;
+    font-size: 0.85rem;
   }
   
-  /* Tab content - limit to 1-2 lines per paragraph */
+  /* Tab content */
   .who-we-serve .tab-content {
     padding-top: 18px;
   }
   
   .who-we-serve .tab-content p {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    
-    /* Limit text to 2 lines max */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 14px;
   }
-  
-  /* Only show first paragraph on mobile */
-  .who-we-serve .tab-content p:nth-child(2) {
-    display: none;
-  }
+
+
   
   /* ═══════════════════════════════════════════════════════════
      WHY CHOOSE US - MOBILE LAYOUT
