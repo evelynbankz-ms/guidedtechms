@@ -1478,51 +1478,34 @@ body {
   .choose-desc { font-size: 0.9rem; }
   
   /* ═══════════════════════════════════════════════════════════
-     WHY CHOOSE US - MOBILE STACKED LAYOUT
-     Card shows above buttons
+     WHY CHOOSE US - MOBILE LAYOUT
+     Keep original order, just make everything smaller
   ═══════════════════════════════════════════════════════════ */
   
-  /* Make the parent container use flexbox */
+  /* Stack everything vertically */
   .choose-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
   
-  /* Left side (title, desc, buttons) */
-  .choose-left {
-    display: flex;
-    flex-direction: column;
-    order: 1;
-  }
-  
-  /* Right side (card) comes BETWEEN description and buttons */
-  .choose-right {
-    order: 2;
-    margin: 24px 0 20px;
-  }
-  
-  /* Title stays at top */
   .section-label {
-    order: 1;
+    margin-bottom: 10px;
   }
   
   .choose-title {
-    order: 2;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   
   .choose-desc {
-    order: 3;
-    margin-bottom: 0;
+    margin-bottom: 20px;
   }
   
-  /* Buttons come AFTER card (in a separate container) */
+  /* Buttons list - smaller */
   .feature-list {
-    order: 3;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-top: 0;
   }
   
   .feature-item { 
@@ -1535,7 +1518,7 @@ body {
     font-size: 1.1rem;
   }
   
-  /* Content card - smaller */
+  /* Content card - smaller, appears after buttons */
   .choose-card {
     padding: 24px 18px;
     width: 100%;
