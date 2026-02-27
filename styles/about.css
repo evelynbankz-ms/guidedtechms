@@ -1706,22 +1706,22 @@ body {
   
 
 
-/* LEADERS & TEAM - 2 PER ROW, SMALLER */
+
+
+    /* LEADERS & TEAM - CENTERED if 1, 2 per row if multiple, SMALLER */
   .leaders-grid,
   .team-members-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
     justify-items: center;
     max-width: 100%;
   }
   
-  /* Center BOTH leaders and team members when single card */
-  .leaders-grid:has(.leader-card:only-child),
-  .team-members-grid:has(.team-member-card:only-child) {
-    grid-template-columns: 1fr !important;
-    max-width: 200px;
-    margin: 0 auto;
+  /* Single card centered */
+  .leaders-grid:has(:only-child),
+  .team-members-grid:has(:only-child) {
+    justify-content: center;
   }
   
   .leaders-subtitle,
@@ -1737,53 +1737,45 @@ body {
   
   .leader-card,
   .team-member-card {
-    max-width: 100%;
+    max-width: 180px;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    flex-direction: column;
   }
   
-  /* MINIMAL padding, MAXIMUM sizes */
+  /* CENTERED content */
   .leader-image-wrapper,
   .team-member-img-area {
-    padding: 6px 0;
+    padding: 14px 0;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 auto;
   }
   
   .leader-image,
   .team-member-img {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto;
   }
   
   .leader-info,
   .team-member-info {
-    padding: 6px 4px;
+    padding: 10px 6px 14px;
     text-align: center;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
   
   .leader-name,
   .team-member-name {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     text-align: center;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
   
   .leader-role,
   .team-member-role {
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   
   .leader-linkedin,
@@ -1796,20 +1788,7 @@ body {
   
   .leader-linkedin img,
   .team-member-linkedin img {
-    width: 20px;
-  }
-  
-  .leader-linkedin,
-  .team-member-linkedin {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-  }
-  
-  .leader-linkedin img,
-  .team-member-linkedin img {
-    width: 11px;
+    width: 13px;
   }
 }
 
@@ -1834,5 +1813,3 @@ body {
   .leader-name, .team-member-name { font-size: 0.7rem; }
   .leader-role, .team-member-role { font-size: 0.55rem; }
 }
-
-
