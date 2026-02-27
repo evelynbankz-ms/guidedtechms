@@ -103,7 +103,7 @@ body {
 ========================= */
 .navbar{
   width:100%;
-  position:sticky;
+  position:fixed;
   top:0;
   height:78px;
   display:flex;
