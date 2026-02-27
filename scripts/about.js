@@ -1,11 +1,12 @@
 // =====================================================
-// ✅ FULL PAGE JS (COPY + PASTE ALL)
+// ✅ FULL PAGE JS — ABOUT PAGE
 // - Navbar mobile menu works
 // - Dropdowns open
 // - Overlay click closes ONLY when clicking outside menu
 // - Links work
 // - Scroll behind overlay is LOCKED (mobile-safe, iOS-safe)
-// - Your About page logic included
+// - Sticky navbar shadow (desktop + mobile)
+// - About page logic included
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,26 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
   let savedScrollY = 0;
 
   const lockScroll = () => {
-    // Don't double-lock
     if (document.body.classList.contains("no-scroll")) return;
-
     savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-
     document.body.classList.add("no-scroll");
     document.body.style.top = `-${savedScrollY}px`;
   };
 
   const unlockScroll = () => {
     if (!document.body.classList.contains("no-scroll")) return;
-
     document.body.classList.remove("no-scroll");
     document.body.style.top = "";
-
     window.scrollTo(0, savedScrollY);
   };
 
   // =====================================================
-  // NAVBAR MENU — SCOPED PER NAVBAR (FIXES WRONG-ELEMENT BINDING)
+  // NAVBAR MENU — SCOPED PER NAVBAR
   // =====================================================
   const navbars = Array.from(document.querySelectorAll(".navbar"));
 
@@ -49,32 +45,25 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
 
-    // close any open menus
     document.querySelectorAll(".navbar-menu.open").forEach((menuEl) => {
       menuEl.classList.remove("open");
     });
     document.querySelectorAll(".nav-overlay.show").forEach((ov) => {
       ov.classList.remove("show");
     });
-
-    // close any open dropdowns
     document.querySelectorAll(".navbar-menu .nav-item.open").forEach((i) => i.classList.remove("open"));
 
-    // restore scroll
     unlockScroll();
 
-    // reset aria-expanded
     document.querySelectorAll("#menuToggle[aria-expanded='true'], .menu-toggle[aria-expanded='true']").forEach((btn) => {
       btn.setAttribute("aria-expanded", "false");
     });
   });
 
   navbars.forEach((navbar, index) => {
-    // find elements INSIDE this navbar only
     const btn = navbar.querySelector("#menuToggle, .menu-toggle");
     const menu = navbar.querySelector("#navbarMenu, .navbar-menu");
 
-    // overlay is usually OUTSIDE navbar, so find it by id first:
     const overlay =
       document.getElementById("navOverlay") ||
       document.querySelector(".nav-overlay");
@@ -92,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // --- helpers
     const closeMenu = () => {
       menu.classList.remove("open");
       overlay.classList.remove("show");
@@ -108,14 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute("aria-expanded", "true");
     };
 
-    // --- IMPORTANT: ensure button click always works (even if something tries to block)
     btn.style.pointerEvents = "auto";
 
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       console.log("🍔 hamburger clicked (navbar index):", index);
-
       menu.classList.contains("open") ? closeMenu() : openMenu();
     });
 
@@ -125,16 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
       closeMenu();
     });
 
-    // clicking outside menu closes
     overlay.addEventListener("click", (e) => {
-      // if user clicked overlay itself (not menu)
       if (e.target === overlay) closeMenu();
     });
 
-    // clicking inside menu shouldn't close
     menu.addEventListener("click", (e) => e.stopPropagation());
 
-    // dropdown parents toggle
     menu.querySelectorAll(".nav-parent").forEach((link) => {
       link.addEventListener("click", function (e) {
         e.preventDefault();
@@ -145,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const wasOpen = item.classList.contains("open");
 
-        // close others
         menu.querySelectorAll(".nav-item.open").forEach((i) => {
           if (i !== item) i.classList.remove("open");
         });
@@ -154,7 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // normal links close menu
     menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach((link) => {
       link.addEventListener("click", () => closeMenu());
     });
@@ -163,28 +143,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =========================================================
-  // ✅ DEFENSIVE HELPERS (YOUR PAGE LOGIC)
+  // ✅ DEFENSIVE HELPERS
   // =========================================================
   const safeQuery = (sel) => {
-    try {
-      return document.querySelector(sel);
-    } catch {
-      return null;
-    }
+    try { return document.querySelector(sel); } catch { return null; }
   };
 
   const safeQueryAll = (sel) => {
-    try {
-      return Array.from(document.querySelectorAll(sel));
-    } catch {
-      return [];
-    }
+    try { return Array.from(document.querySelectorAll(sel)); } catch { return []; }
   };
 
+  // =========================================================
+  // STICKY NAVBAR SHADOW (desktop + mobile)
+  // =========================================================
   const navbarEl = safeQuery(".navbar");
 
+  if (navbarEl) {
+    window.addEventListener("scroll", () => {
+      navbarEl.classList.toggle("scrolled", window.scrollY > 30);
+    });
+  }
+
   // =========================================================
-  // HERO PARALLAX (safe guard)
+  // HERO PARALLAX
   // =========================================================
   const hero = safeQuery(".about-hero-content");
   if (hero) {
@@ -196,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // ✅ Scoped tabs initializer
+  // SCOPED TABS INITIALIZER
   // =========================================================
   function initTabs(sectionSelector) {
     const section = safeQuery(sectionSelector);
@@ -226,14 +207,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   // WHY CHOOSE US
   // =========================================================
-  const buttons = safeQueryAll(".feature-item");
+  const chooseButtons = safeQueryAll(".feature-item");
   const title = document.getElementById("chooseTitle");
   const text = document.getElementById("chooseText");
 
-  if (buttons.length && title && text) {
-    buttons.forEach((btn) => {
+  if (chooseButtons.length && title && text) {
+    chooseButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
+        chooseButtons.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
 
         title.textContent = btn.dataset.title || "";
@@ -241,16 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    buttons[0].classList.add("active");
-  }
-
-  // =========================================================
-  // STICKY NAVBAR SHADOW
-  // =========================================================
-  if (navbarEl) {
-    window.addEventListener("scroll", () => {
-      navbarEl.classList.toggle("scrolled", window.scrollY > 30);
-    });
+    chooseButtons[0].classList.add("active");
   }
 
   // =========================================================
@@ -270,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
       navbarMenuEl?.classList.remove("open");
       document.getElementById("navOverlay")?.classList.remove("show");
 
-      // ✅ use robust unlock
       unlockScroll();
     });
   });
@@ -286,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       { threshold: 0.18 }
     );
-
     revealEls.forEach((el) => obs.observe(el));
   }
 
@@ -307,81 +277,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
-
-// =====================================================
-// MOBILE HISTORY SECTION REORDERING
-// Moves history image to appear beside text on mobile
-// Add this to your about.js file
-// =====================================================
-
-document.addEventListener("DOMContentLoaded", () => {
-  
-  // Function to reorder history section on mobile
+  // =====================================================
+  // MOBILE HISTORY SECTION REORDERING
+  // =====================================================
   function reorderHistoryOnMobile() {
-    const historyGrid = document.querySelector('.history-grid');
-    const historyLeft = document.querySelector('.history-left');
-    const historyRight = document.querySelector('.history-right');
-    
-    // Only proceed if elements exist
-    if (!historyGrid || !historyLeft || !historyRight) {
-      console.log('History section elements not found');
-      return;
-    }
-    
-    // Check if mobile (767px or less)
+    const historyGrid = document.querySelector(".history-grid");
+    const historyLeft = document.querySelector(".history-left");
+    const historyRight = document.querySelector(".history-right");
+
+    if (!historyGrid || !historyLeft || !historyRight) return;
+
     if (window.innerWidth <= 767) {
-      // Clone the image element
       const imageClone = historyRight.cloneNode(true);
-      
-      // Remove the original from grid
+
       if (historyRight.parentNode === historyGrid) {
-        historyRight.style.display = 'none';
+        historyRight.style.display = "none";
       }
-      
-      // Check if we already inserted it
-      const existingClone = historyLeft.querySelector('.history-right');
+
+      const existingClone = historyLeft.querySelector(".history-right");
       if (!existingClone) {
-        // Insert at the beginning of history-left
         historyLeft.insertBefore(imageClone, historyLeft.firstChild);
-        console.log('✅ History image inserted beside text (mobile)');
+        console.log("✅ History image inserted beside text (mobile)");
       }
     } else {
-      // Desktop: restore original layout
-      const clonedImage = historyLeft.querySelector('.history-right');
-      if (clonedImage) {
-        clonedImage.remove();
-      }
-      if (historyRight) {
-        historyRight.style.display = '';
-      }
-      console.log('✅ History restored to desktop layout');
+      const clonedImage = historyLeft.querySelector(".history-right");
+      if (clonedImage) clonedImage.remove();
+      if (historyRight) historyRight.style.display = "";
+      console.log("✅ History restored to desktop layout");
     }
   }
-  
-  // Run on load
+
   reorderHistoryOnMobile();
-  
-  // Run on resize (debounced)
+
   let resizeTimer;
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      reorderHistoryOnMobile();
-    }, 250);
+    resizeTimer = setTimeout(reorderHistoryOnMobile, 250);
   });
-  
-  console.log('📱 Mobile history reordering script loaded');
-});
-
-
-
-
-  
 
   // =========================================================
   // FOOTER YEAR
   // =========================================================
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
 });
