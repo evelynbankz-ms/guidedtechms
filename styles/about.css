@@ -1704,6 +1704,8 @@ body {
     line-height: 1.3;
   }
   
+
+
   /* LEADERS & TEAM - 2 PER ROW, SMALLER */
   .leaders-grid,
   .team-members-grid {
@@ -1739,10 +1741,10 @@ body {
     width: 100%;
   }
   
-  /* CENTERED content - TIGHTER SPACING */
+  /* CENTERED content - REDUCE VERTICAL SPACING ONLY */
   .leader-image-wrapper,
   .team-member-img-area {
-    padding: 8px 0;
+    padding: 10px 0;
     text-align: center;
     display: flex;
     align-items: center;
@@ -1758,7 +1760,7 @@ body {
   
   .leader-info,
   .team-member-info {
-    padding: 6px 4px 8px;
+    padding: 8px 8px 10px;
     text-align: center;
   }
   
@@ -1773,7 +1775,7 @@ body {
   .team-member-role {
     font-size: 0.55rem;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
   
   .leader-linkedin,
