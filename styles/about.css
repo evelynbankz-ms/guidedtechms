@@ -1695,12 +1695,12 @@ body {
   }
   
   .value-text h3 {
-    font-size: 0.85rem;
+    font-size: 0.95rem ;
     margin-bottom: 3px;
   }
   
   .value-text p {
-    font-size: 0.75rem;
+    font-size: 0.85rem !important;
     line-height: 1.3;
   }
   
