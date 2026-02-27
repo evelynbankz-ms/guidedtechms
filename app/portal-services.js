@@ -1,15 +1,34 @@
 /* ============================================================
    FILE: app/portal-services.js
-   Page 1 — Services & Pricing
+   Page 1 — Services & Pricing with Stripe + Vercel integration
    ============================================================ */
 
-import { db } from "../admin/firebase.js";
+import { db, auth } from "../admin/firebase.js";
 import { authReady, currentUser, esc, fmtPrice } from "./portal-layout.js";
 import {
   collection, getDocs, query, where, addDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import {
+  signInWithPopup, GoogleAuthProvider
+} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 const loadText = document.getElementById("loadText");
+
+/* ══════════════════════════════
+   STRIPE CHECKOUT INTEGRATION
+══════════════════════════════ */
+
+/* ── Stripe publishable key (PLACEHOLDER) ── */
+const STRIPE_PUBLISHABLE_KEY = "pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE";
+
+/* ── Load Stripe.js ── */
+let stripe = null;
+const stripeScript = document.createElement("script");
+stripeScript.src = "https://js.stripe.com/v3/";
+stripeScript.onload = () => {
+  stripe = window.Stripe(STRIPE_PUBLISHABLE_KEY);
+};
+document.head.appendChild(stripeScript);
 
 /* ══════════════════════════════
    RENDER HELPERS
@@ -32,7 +51,8 @@ function renderServiceCard(svc, signedIn) {
       <button class="btn-subscribe"
         data-activate-svc="${esc(svc.id)}"
         data-svc-name="${esc(svc.name || "")}"
-        ${!signedIn ? "disabled" : ""}>
+        data-svc-price="${price}"
+        data-svc-type="service">
         Subscribe to Activate
       </button>
     </div>`;
@@ -64,7 +84,9 @@ function renderPlanCard(plan, signedIn) {
       <button class="btn-get-started"
         data-subscribe-plan="${esc(plan.id)}"
         data-plan-name="${esc(plan.name || "")}"
-        ${!signedIn ? "disabled" : ""}>
+        data-plan-price="${price}"
+        data-plan-billing="${billing}"
+        data-svc-type="plan">
         Get Started
       </button>
     </div>`;
@@ -124,61 +146,117 @@ async function loadPlans(signedIn) {
 }
 
 /* ══════════════════════════════
-   ACTIVATE SERVICE click
+   AUTH CHECK → STRIPE CHECKOUT
 ══════════════════════════════ */
-document.addEventListener("click", async e => {
-  const btn = e.target.closest("[data-activate-svc]");
-  if (!btn || !currentUser) return;
+async function initiateCheckout(itemData) {
+  // 1. Ensure user is signed in
+  if (!currentUser) {
+    const confirmed = confirm("You need to sign in to continue. Sign in now?");
+    if (!confirmed) return;
 
-  btn.disabled = true;
-  btn.textContent = "Requesting…";
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+      await new Promise(resolve => setTimeout(resolve, 500));
+      if (!currentUser) {
+        alert("Sign-in failed. Please try again.");
+        return;
+      }
+    } catch (err) {
+      if (err.code !== "auth/popup-closed-by-user") {
+        alert("Sign-in failed. Please try again.");
+      }
+      return;
+    }
+  }
+
+  // 2. Create checkout session document in Firestore
+  const checkoutData = {
+    userId:    currentUser.uid,
+    userEmail: currentUser.email,
+    itemType:  itemData.type,
+    itemId:    itemData.id,
+    itemName:  itemData.name,
+    price:     itemData.price,
+    billing:   itemData.billing || null,
+    status:    "pending",
+    createdAt: serverTimestamp(),
+  };
 
   try {
-    await addDoc(collection(db, "serviceActivations"), {
-      userId:    currentUser.uid,
-      userEmail: currentUser.email,
-      serviceId: btn.dataset.activateSvc,
-      serviceName: btn.dataset.svcName,
-      status:    "pending",
-      createdAt: serverTimestamp(),
+    const docRef = await addDoc(collection(db, "checkoutSessions"), checkoutData);
+
+    // 3. Call Vercel API to create Stripe session
+    const response = await fetch("/api/create-checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId: docRef.id }),
     });
-    btn.textContent = "✓ Requested";
-    btn.classList.add("activated");
-    btn.closest(".svc-card")?.classList.add("is-active");
+
+    const result = await response.json();
+
+    if (!result.success || !result.sessionId) {
+      alert("Failed to create checkout session. Please try again.");
+      return;
+    }
+
+    // 4. Redirect to Stripe Checkout
+    if (!stripe) {
+      alert("Stripe is still loading. Please try again in a moment.");
+      return;
+    }
+
+    const { error } = await stripe.redirectToCheckout({ sessionId: result.sessionId });
+    if (error) {
+      console.error("Stripe redirect error:", error);
+      alert("Failed to redirect to checkout. Please try again.");
+    }
+
   } catch (err) {
-    console.error("Activate service:", err);
-    btn.disabled = false;
-    btn.textContent = "Subscribe to Activate";
-    alert("Failed to send request. Please try again.");
+    console.error("Checkout error:", err);
+    alert("Failed to start checkout. Please try again.");
   }
-});
+}
 
 /* ══════════════════════════════
-   SUBSCRIBE TO PLAN click
+   BUTTON CLICK HANDLERS
 ══════════════════════════════ */
-document.addEventListener("click", async e => {
-  const btn = e.target.closest("[data-subscribe-plan]");
-  if (!btn || !currentUser) return;
+document.addEventListener("click", e => {
+  // Service activation
+  const svcBtn = e.target.closest("[data-activate-svc]");
+  if (svcBtn) {
+    e.preventDefault();
+    svcBtn.disabled = true;
+    svcBtn.textContent = "Processing…";
 
-  btn.disabled = true;
-  btn.textContent = "Processing…";
-
-  try {
-    await addDoc(collection(db, "checkoutSessions"), {
-      userId:    currentUser.uid,
-      userEmail: currentUser.email,
-      planId:    btn.dataset.subscribePlan,
-      planName:  btn.dataset.planName,
-      status:    "pending",
-      createdAt: serverTimestamp(),
+    initiateCheckout({
+      type: "service",
+      id:   svcBtn.dataset.activateSvc,
+      name: svcBtn.dataset.svcName,
+      price: parseFloat(svcBtn.dataset.svcPrice) || 0,
+    }).finally(() => {
+      svcBtn.disabled = false;
+      svcBtn.textContent = "Subscribe to Activate";
     });
-    btn.textContent = "✓ Pending Review";
-    btn.classList.add("subscribed");
-  } catch (err) {
-    console.error("Subscribe plan:", err);
-    btn.disabled = false;
-    btn.textContent = "Get Started";
-    alert("Failed to start subscription. Please try again.");
+    return;
+  }
+
+  // Plan subscription
+  const planBtn = e.target.closest("[data-subscribe-plan]");
+  if (planBtn) {
+    e.preventDefault();
+    planBtn.disabled = true;
+    planBtn.textContent = "Processing…";
+
+    initiateCheckout({
+      type:    "plan",
+      id:      planBtn.dataset.subscribePlan,
+      name:    planBtn.dataset.planName,
+      price:   parseFloat(planBtn.dataset.planPrice) || 0,
+      billing: planBtn.dataset.planBilling,
+    }).finally(() => {
+      planBtn.disabled = false;
+      planBtn.textContent = "Get Started";
+    });
   }
 });
 
