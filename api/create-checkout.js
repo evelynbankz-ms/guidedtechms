@@ -1,3 +1,15 @@
+/* ============================================================
+   FILE: api/create-checkout.js
+   Vercel Serverless Function — creates Stripe checkout session
+   
+   Place this file in: /api/create-checkout.js
+   
+   REQUIRED ENVIRONMENT VARIABLES (set in Vercel Dashboard):
+   - STRIPE_SECRET_KEY
+   - FIREBASE_SERVICE_ACCOUNT (entire JSON service account as string)
+   - NEXT_PUBLIC_BASE_URL (your domain, e.g., https://yourdomain.com)
+   ============================================================ */
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const admin = require('firebase-admin');
 
