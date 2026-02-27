@@ -1072,7 +1072,7 @@ body {
 }
 
 /* =========================================
-   IMAGE SECTION
+   IMAGE SECTION — CENTERED
 ========================================= */
 
 .leader-image-wrapper {
@@ -1080,6 +1080,9 @@ body {
   padding: 40px 0;
   text-align: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .leader-image {
@@ -1089,10 +1092,11 @@ body {
   object-fit: cover;
   border: 4px solid #ffffff;
   background: #ffffff;
+  margin: 0 auto;
 }
 
 /* =========================================
-   INFO SECTION
+   INFO SECTION — CENTERED
 ========================================= */
 
 .leader-info {
@@ -1106,15 +1110,24 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 6px;
+  text-align: center;
 }
 
 .leader-role {
   color: #d4e0ea;
   font-size: 0.9rem;
   margin-bottom: 18px;
+  text-align: center;
 }
 
-/* LinkedIn Icon */
+/* LinkedIn Icon — CENTERED */
+.leader-linkedin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
 .leader-linkedin img {
   width: 20px;
   opacity: 0.85;
@@ -1210,13 +1223,16 @@ body {
 }
 
 /* =========================================
-   IMAGE AREA
+   IMAGE AREA — CENTERED
 ========================================= */
 
 .team-member-img-area {
   background: #1B4F72;
   text-align: center;
   padding: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .team-member-img {
@@ -1226,10 +1242,11 @@ body {
   border-radius: 50%;
   border: 4px solid #fff;
   background: #fff;
+  margin: 0 auto;
 }
 
 /* =========================================
-   INFO AREA
+   INFO AREA — CENTERED
 ========================================= */
 
 .team-member-info {
@@ -1243,15 +1260,24 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 6px;
+  text-align: center;
 }
 
 .team-member-role {
   font-size: 0.9rem;
   margin-bottom: 18px;
   color: #d4e0ea;
+  text-align: center;
 }
 
-/* LinkedIn */
+/* LinkedIn — CENTERED */
+.team-member-linkedin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
 .team-member-linkedin img {
   width: 20px;
   opacity: 0.85;
@@ -1263,11 +1289,11 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .team-members-title {
     font-size: 2.2rem;
   }
-}
+} */
 
 
 /* =========================================
@@ -1428,19 +1454,15 @@ body {
 
 
 /* ═══════════════════════════════════════════════════════════════════
-   ABOUT PAGE MOBILE RESPONSIVE CSS - COMPLETE AND FINAL
-   Paste this at the END of styles/about.css
+   ABOUT PAGE MOBILE - COMPLETE FINAL VERSION
+   Paste at END of styles/about.css
 ═══════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 767px) {
   
-  /* ═══════════════════════════════════════════════════════════
-     UNIFORM CONTAINER PADDING - Prevent overflow
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* UNIFORM PADDING */
   .container,
   .navbar-container,
-  .values-container,
   .history-container,
   .leaders-container,
   .team-members-container {
@@ -1449,8 +1471,14 @@ body {
     max-width: 100%;
     overflow-x: hidden;
   }
+  
+  /* VALUES SECTION - EXTRA LEFT/RIGHT SPACING */
+  .values-container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
 
-  /* All sections - uniform reduced padding */
+  /* Section padding */
   .hero { padding: 50px 0; }
   .mission { padding: 50px 0 40px; }
   .why-choose-us { padding: 50px 0; }
@@ -1460,58 +1488,38 @@ body {
   .team-members-section { padding: 50px 0; }
   .values-section { padding: 50px 0; }
 
-  /* ═══════════════════════════════════════════════════════════
-     SECTION TITLES - MUCH SMALLER
-     Change these values to make titles smaller/larger
-  ═══════════════════════════════════════════════════════════ */
-  
-  /* What We Are & Why Choose Us & Who We Serve titles */
+  /* SECTION TITLES */
   .mission-title,
   .choose-title {
-    font-size: 1.05rem;  /* CHANGE THIS to adjust size */
-    line-height: 1.3;
+    font-size: 1.05rem;
   }
   
-  /* History, Leaders, Team, Values titles */
   .history-title,
   .leaders-title,
   .team-members-title,
   .values-title {
-    font-size: 1.5rem;  /* CHANGE THIS to adjust size */
+    font-size: 1.5rem;
   }
   
-  /* Hero title */
   .hero-title p {
-    font-size: 1.8rem;  /* CHANGE THIS to adjust size */
+    font-size: 1.8rem;
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     HERO SECTION
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* HERO */
   .hero-subtitle {
     font-size: 0.75rem;
     line-height: 1.5;
     text-align: center;
   }
   
-  .breadcrumbs {
-    font-size: 0.85rem;
-  }
-  
+  .breadcrumbs { font-size: 0.85rem; }
   .section-label {
     font-size: 0.75rem;
     padding-left: 45px;
   }
+  .section-label::before { width: 32px; }
   
-  .section-label::before {
-    width: 32px;
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     MISSION & WHO WE SERVE SECTIONS
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* TABS */
   .mission-grid,
   .who-we-serve .mission-grid {
     grid-template-columns: 1fr;
@@ -1542,13 +1550,14 @@ body {
     text-align: justify;
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     WHY CHOOSE US SECTION
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* WHY CHOOSE US - REDUCE HEADING FONT */
   .choose-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+  
+  .choose-card h3 {
+    font-size: 0.9rem !important;
   }
   
   .choose-desc {
@@ -1567,7 +1576,6 @@ body {
   .feature-item {
     font-size: 0.8rem;
     padding: 10px 12px;
-    text-align: left;
   }
   
   .feature-item .arrow {
@@ -1576,13 +1584,6 @@ body {
   
   .choose-card {
     padding: 24px 18px;
-    width: 100%;
-    min-height: auto;
-  }
-  
-  .choose-card h3 {
-    font-size: 1.05rem;
-    margin-bottom: 12px;
   }
   
   .choose-card p {
@@ -1591,10 +1592,7 @@ body {
     text-align: justify;
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     HISTORY SECTION - Text left, Image right
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* HISTORY - TEXT LEFT, IMAGE RIGHT, SECOND PARAGRAPH EXTENDS */
   .history-section {
     overflow: auto;
   }
@@ -1605,8 +1603,8 @@ body {
   
   .history-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 12px;
     align-items: start;
   }
   
@@ -1632,8 +1630,15 @@ body {
     margin-bottom: 12px;
   }
   
+  /* Second paragraph extends beyond grid */
+  .history-left p:nth-of-type(2) {
+    grid-column: span 2;
+    width: 100%;
+  }
+  
   .history-right {
     order: 2;
+    grid-row: 3;
   }
   
   .history-image {
@@ -1641,15 +1646,16 @@ body {
     width: 100%;
   }
   
-  /* Stats card */
+  /* Stats card - CENTERED, not cramped */
   .history-stats {
     grid-column: span 2;
-    margin-top: 18px;
-    padding: 8px 10px;
+    margin: 20px auto 0;
+    padding: 10px 14px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 4px;
+    gap: 8px;
+    max-width: 85%;
   }
   
   .stat-item {
@@ -1659,7 +1665,7 @@ body {
     align-items: center;
     text-align: center;
     border-right: 1px solid rgba(255,255,255,0.18);
-    padding: 5px 2px;
+    padding: 6px 4px;
   }
   
   .stat-item:last-child {
@@ -1668,20 +1674,14 @@ body {
   
   .stat-label {
     font-size: 0.6rem;
-    text-align: center;
-    margin-bottom: 2px;
-    line-height: 1.1;
+    margin-bottom: 3px;
   }
   
   .stat-value {
     font-size: 0.95rem;
-    text-align: center;
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     VALUES SECTION - MUCH SMALLER, 2 columns
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* VALUES - SMALLER, 2 columns, EXTRA SIDE PADDING */
   .values-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 18px 12px;
@@ -1709,14 +1709,20 @@ body {
     line-height: 1.3;
   }
   
-  /* ═══════════════════════════════════════════════════════════
-     LEADERS & TEAM - SMALLER, 2 per row, ALL CENTERED
-  ═══════════════════════════════════════════════════════════ */
-  
+  /* LEADERS & TEAM - CENTERED if 1, 2 per row if multiple, SMALLER */
   .leaders-grid,
   .team-members-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    justify-items: center;
+    max-width: 100%;
+  }
+  
+  /* Single card centered */
+  .leaders-grid:has(:only-child),
+  .team-members-grid:has(:only-child) {
+    justify-content: center;
   }
   
   .leaders-subtitle,
@@ -1732,14 +1738,15 @@ body {
   
   .leader-card,
   .team-member-card {
-    max-width: 100%;
+    max-width: 180px;
+    width: 100%;
   }
   
-  /* Image area - CENTERED */
+  /* CENTERED content */
   .leader-image-wrapper,
   .team-member-img-area {
-    padding: 18px 0;
-    text-align: center !important;
+    padding: 14px 0;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1747,106 +1754,63 @@ body {
   
   .leader-image,
   .team-member-img {
-    width: 55px;
-    height: 55px;
-    margin: 0 auto !important;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
   }
   
-  /* Info area - CENTERED */
   .leader-info,
   .team-member-info {
-    padding: 12px 8px 16px;
-    text-align: center !important;
+    padding: 10px 6px 14px;
+    text-align: center;
   }
   
   .leader-name,
   .team-member-name {
-    font-size: 0.8rem;
-    text-align: center !important;
-    margin-bottom: 4px;
+    font-size: 0.75rem;
+    text-align: center;
+    margin-bottom: 3px;
   }
   
   .leader-role,
   .team-member-role {
-    font-size: 0.65rem;
-    text-align: center !important;
-    margin-bottom: 10px;
+    font-size: 0.6rem;
+    text-align: center;
+    margin-bottom: 8px;
   }
   
-  /* LinkedIn icon - CENTERED */
   .leader-linkedin,
   .team-member-linkedin {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0 auto;
   }
   
   .leader-linkedin img,
   .team-member-linkedin img {
-    width: 14px;
+    width: 13px;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SMALL MOBILE (max-width: 480px) - Even smaller
-═══════════════════════════════════════════════════════════════════ */
+/* SMALL MOBILE */
 @media (max-width: 480px) {
-  
-  .hero,
-  .mission,
-  .why-choose-us,
-  .who-we-serve,
-  .history-section,
-  .leaders-section,
-  .team-members-section,
+  .hero, .mission, .why-choose-us, .who-we-serve,
+  .history-section, .leaders-section, .team-members-section,
   .values-section {
     padding: 40px 0 35px;
   }
   
   .hero-title p { font-size: 1.5rem; }
-  .hero-subtitle { font-size: 0.7rem; }
+  .mission-title, .choose-title { font-size: 0.95rem; }
+  .history-title, .leaders-title, .team-members-title, .values-title { font-size: 1.3rem; }
+  .choose-card h3 { font-size: 0.85rem !important; }
   
-  .mission-title,
-  .choose-title { font-size: 0.95rem; }
-  
-  .history-title,
-  .leaders-title,
-  .team-members-title,
-  .values-title { font-size: 1.3rem; }
-  
-  .section-label { font-size: 0.7rem; }
-  .tab-btn { font-size: 0.65rem; }
-  .tab-content p { font-size: 0.85rem; }
-  
-  .choose-card h3 { font-size: 0.95rem; }
-  .choose-card p,
-  .history-left p { font-size: 0.8rem; }
-  
-  .value-icon-circle {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
-  
+  .value-icon-circle { width: 35px; height: 35px; font-size: 16px; }
   .value-text h3 { font-size: 0.75rem; }
   .value-text p { font-size: 0.6rem; }
   
-  .leader-image,
-  .team-member-img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .leader-name,
-  .team-member-name { font-size: 0.75rem; }
-  
-  .leader-role,
-  .team-member-role { font-size: 0.6rem; }
-  
-  .stat-value { font-size: 0.9rem; }
+  .leader-image, .team-member-img { width: 45px; height: 45px; }
+  .leader-name, .team-member-name { font-size: 0.7rem; }
+  .leader-role, .team-member-role { font-size: 0.55rem; }
 }
-
-/* ═══════════════════════════════════════════════════════════════════
-   END OF ABOUT PAGE MOBILE CSS
-═══════════════════════════════════════════════════════════════════ */
