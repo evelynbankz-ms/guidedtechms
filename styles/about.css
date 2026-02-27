@@ -1428,91 +1428,171 @@ body {
 
 
 /* ═══════════════════════════════════════════════════════════════════
-   ABOUT PAGE MOBILE RESPONSIVE - MINIMAL SCALING ONLY
-   Keep ALL layouts exactly as desktop, just smaller fonts/spacing
-   Add this at the end of styles/about.css
+   ABOUT PAGE MOBILE RESPONSIVE CSS - COMPLETE AND FINAL
+   Paste this at the END of styles/about.css
 ═══════════════════════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════════════════
-   MOBILE (max-width: 767px) - Scale down only
-═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   
-  /* Containers - smaller padding */
+  /* ═══════════════════════════════════════════════════════════
+     UNIFORM CONTAINER PADDING - Prevent overflow
+  ═══════════════════════════════════════════════════════════ */
+  
   .container,
+  .navbar-container,
+  .values-container,
   .history-container,
   .leaders-container,
   .team-members-container {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 14px;
+    padding-right: 14px;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
-  /* All sections - reduce padding */
+  /* All sections - uniform reduced padding */
   .hero { padding: 50px 0; }
   .mission { padding: 50px 0 40px; }
-  .why-choose-us { padding: 60px 0; }
+  .why-choose-us { padding: 50px 0; }
   .who-we-serve { padding: 50px 0 40px; }
   .history-section { padding: 50px 0; }
   .leaders-section,
   .team-members-section { padding: 50px 0; }
+  .values-section { padding: 50px 0; }
 
-  /* Font scaling - all titles smaller */
-  .hero-title p { font-size: 1.8rem; }
-  .hero-subtitle { font-size: 0.9rem; }
-  .breadcrumbs { font-size: 0.85rem; }
+  /* ═══════════════════════════════════════════════════════════
+     SECTION TITLES - MUCH SMALLER
+     Change these values to make titles smaller/larger
+  ═══════════════════════════════════════════════════════════ */
   
-  .section-label { 
+  /* What We Are & Why Choose Us & Who We Serve titles */
+  .mission-title,
+  .choose-title {
+    font-size: 1.05rem;  /* CHANGE THIS to adjust size */
+    line-height: 1.3;
+  }
+  
+  /* History, Leaders, Team, Values titles */
+  .history-title,
+  .leaders-title,
+  .team-members-title,
+  .values-title {
+    font-size: 1.5rem;  /* CHANGE THIS to adjust size */
+  }
+  
+  /* Hero title */
+  .hero-title p {
+    font-size: 1.8rem;  /* CHANGE THIS to adjust size */
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HERO SECTION
+  ═══════════════════════════════════════════════════════════ */
+  
+  .hero-subtitle {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  .section-label {
     font-size: 0.75rem;
     padding-left: 45px;
   }
-  .section-label::before { width: 32px; }
   
-  .mission-title,
-  .choose-title { font-size: 1.6rem; }
-  
-  .tab-btn { 
-    font-size: 0.85rem;
-    padding: 9px 10px;
+  .section-label::before {
+    width: 32px;
   }
   
-  .tab-content p { font-size: 0.9rem; }
-  
-  .choose-desc { font-size: 0.9rem; }
-  
   /* ═══════════════════════════════════════════════════════════
-     WHO WE SERVE - Same mobile layout as WHAT WE ARE section
-     Single column: title on top, tabs below, content below
+     MISSION & WHO WE SERVE SECTIONS
   ═══════════════════════════════════════════════════════════ */
   
-  /* Single column layout */
+  .mission-grid,
   .who-we-serve .mission-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
   
-  /* Tabs stay horizontal */
+  .mission-tabs,
   .who-we-serve .mission-tabs {
     padding: 3px;
   }
   
+  .tab-btn,
   .who-we-serve .tab-btn {
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: 9px 8px;
+    font-size: 0.7rem;
   }
   
-  /* Tab content */
+  .tab-content,
   .who-we-serve .tab-content {
     padding-top: 18px;
   }
   
+  .tab-content p,
   .who-we-serve .tab-content p {
     font-size: 0.9rem;
     line-height: 1.65;
     margin-bottom: 14px;
+    text-align: justify;
   }
-
+  
   /* ═══════════════════════════════════════════════════════════
-     HISTORY SECTION - Image beside text for ALL mobile sizes
+     WHY CHOOSE US SECTION
+  ═══════════════════════════════════════════════════════════ */
+  
+  .choose-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .choose-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0;
+  }
+  
+  .feature-item {
+    font-size: 0.8rem;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  
+  .feature-item .arrow {
+    font-size: 1.1rem;
+  }
+  
+  .choose-card {
+    padding: 24px 18px;
+    width: 100%;
+    min-height: auto;
+  }
+  
+  .choose-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  
+  .choose-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    text-align: justify;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HISTORY SECTION - Text left, Image right
   ═══════════════════════════════════════════════════════════ */
   
   .history-section {
@@ -1526,23 +1606,21 @@ body {
   .history-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 14px;
     align-items: start;
   }
   
   .history-title {
-    font-size: 1.8rem;
     grid-column: span 2;
   }
   
   .history-subtitle {
     font-size: 0.85rem;
     line-height: 1.5;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     grid-column: span 2;
   }
   
-  /* Text on left */
   .history-left {
     text-align: justify;
     order: 1;
@@ -1554,7 +1632,6 @@ body {
     margin-bottom: 12px;
   }
   
-  /* Image on right */
   .history-right {
     order: 2;
   }
@@ -1564,10 +1641,10 @@ body {
     width: 100%;
   }
   
-  /* Stats card below both - spans full width */
+  /* Stats card */
   .history-stats {
     grid-column: span 2;
-    margin-top: 20px;
+    margin-top: 18px;
     padding: 8px 10px;
     display: flex;
     flex-direction: row;
@@ -1602,43 +1679,55 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     VALUES SECTION - Keep original 2-column layout, just smaller
+     VALUES SECTION - MUCH SMALLER, 2 columns
   ═══════════════════════════════════════════════════════════ */
   
   .values-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px 40px;
+    gap: 18px 12px;
   }
   
   .value-row {
-    gap: 16px;
+    gap: 8px;
+    padding: 0;
   }
   
   .value-icon-circle {
-    width: 60px;
-    height: 60px;
-    min-width: 60px;
-    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 18px;
   }
   
   .value-text h3 {
-    font-size: 1.2rem;
-    margin-bottom: 6px;
+    font-size: 0.85rem;
+    margin-bottom: 3px;
   }
   
   .value-text p {
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 0.65rem;
+    line-height: 1.3;
   }
   
   /* ═══════════════════════════════════════════════════════════
-     LEADERS & TEAM SECTIONS - Keep 2 per row, just smaller cards
+     LEADERS & TEAM - SMALLER, 2 per row, ALL CENTERED
   ═══════════════════════════════════════════════════════════ */
   
   .leaders-grid,
   .team-members-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  
+  .leaders-subtitle,
+  .team-members-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .leaders-title::after,
+  .team-members-title::after {
+    width: 80px;
+    height: 3px;
   }
   
   .leader-card,
@@ -1646,211 +1735,57 @@ body {
     max-width: 100%;
   }
   
+  /* Image area - CENTERED */
   .leader-image-wrapper,
   .team-member-img-area {
-    padding: 30px 0;
+    padding: 18px 0;
+    text-align: center !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .leader-image,
   .team-member-img {
-    width: 75px;
-    height: 75px;
+    width: 55px;
+    height: 55px;
+    margin: 0 auto !important;
   }
   
+  /* Info area - CENTERED */
   .leader-info,
   .team-member-info {
-    padding: 18px 14px 22px;
+    padding: 12px 8px 16px;
+    text-align: center !important;
   }
   
   .leader-name,
   .team-member-name {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    text-align: center !important;
+    margin-bottom: 4px;
   }
   
   .leader-role,
   .team-member-role {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
+    text-align: center !important;
+    margin-bottom: 10px;
+  }
+  
+  /* LinkedIn icon - CENTERED */
+  .leader-linkedin,
+  .team-member-linkedin {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 auto;
   }
   
   .leader-linkedin img,
   .team-member-linkedin img {
-    width: 18px;
+    width: 14px;
   }
-  
-  .leaders-title,
-  .team-members-title {
-    font-size: 1.8rem;
-  }
-  
-  .stat-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    border-right: 1px solid rgba(255,255,255,0.18);
-    padding: 5px 2px;
-  }
-  
-  .stat-item:last-child {
-    border-right: none;
-  }
-  
-  .stat-label {
-    font-size: 0.6rem;
-    text-align: center;
-    margin-bottom: 2px;
-    line-height: 1.1;
-  }
-  
-  .stat-value {
-    font-size: 0.95rem;
-    text-align: center;
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     MAKE TITLES MUCH SMALLER - Actually fit one line
-  ═══════════════════════════════════════════════════════════ */
-  
-  .mission-title,
-  .choose-title {
-    font-size: 0.95rem;
-    line-height: 1.3;
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     HERO SUBTITLE - Centered, smaller font
-  ═══════════════════════════════════════════════════════════ */
-  
-  .hero-subtitle {
-    font-size: 0.75rem;
-    line-height: 1.5;
-    text-align: center;
-  }
-  
-  .choose-desc {
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     REDUCE BUTTON FONT SIZE
-  ═══════════════════════════════════════════════════════════ */
-  
-  .tab-btn {
-    padding: 9px 8px;
-    font-size: 0.7rem;
-  }
-  
-  .who-we-serve .tab-btn {
-    padding: 9px 6px;
-    font-size: 0.7rem;
-  }
-  
-  /* ═══════════════════════════════════════════════════════════
-     JUSTIFY ALL CONTENT CARD TEXT (except hero)
-  ═══════════════════════════════════════════════════════════ */
-  
-  .tab-content p,
-  .choose-card p,
-  .who-we-serve .tab-content p {
-    text-align: justify;
-  }
-
-  
-  /* ═══════════════════════════════════════════════════════════
-     WHY CHOOSE US - MOBILE LAYOUT
-     Keep original order, just make everything smaller
-  ═══════════════════════════════════════════════════════════ */
-  
-  /* Stack everything vertically */
-  .choose-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .section-label {
-    margin-bottom: 10px;
-  }
-  
-  .choose-title {
-    margin-bottom: 12px;
-  }
-  
-  .choose-desc {
-    margin-bottom: 20px;
-  }
-  
-  /* Buttons list - smaller */
-  .feature-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 0;
-  }
-  
-  .feature-item { 
-    font-size: 0.8rem;
-    padding: 10px 12px;
-    text-align: left;
-  }
-  
-  .feature-item .arrow {
-    font-size: 1.1rem;
-  }
-  
-  /* Content card - smaller, appears after buttons */
-  .choose-card {
-    padding: 24px 18px;
-    width: 100%;
-    min-height: auto;
-  }
-  
-  .choose-card h3 { 
-    font-size: 1.05rem;
-    margin-bottom: 12px;
-  }
-  
-  .choose-card p { 
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-  
-  .history-title,
-  .leaders-title,
-  .team-members-title { font-size: 1.8rem; }
-  
-  .history-subtitle,
-  .leaders-subtitle,
-  .team-members-subtitle { font-size: 0.9rem; }
-  
-  .history-left p { font-size: 0.9rem; }
-  
-  .history-stats { padding: 14px 18px; }
-  .stat-label { font-size: 0.8rem; }
-  .stat-value { font-size: 1.2rem; }
-  
-  .leader-image,
-  .team-member-img {
-    width: 85px;
-    height: 85px;
-  }
-  
-  .leader-name,
-  .team-member-name { font-size: 1.05rem; }
-  
-  .leader-role,
-  .team-member-role { font-size: 0.8rem; }
-  
-  /* Footer */
-  .gts-footer { padding: 50px 0 25px; }
-  .gts-footer-inner { padding: 0 16px; gap: 45px; }
-  .footer-logo { font-size: 1.2rem; }
-  .footer-desc { font-size: 0.9rem; }
-  .footer-heading { font-size: 12px; margin: 20px 0 8px; }
-  .gts-footer-col a { font-size: 0.9rem; margin-bottom: 6px; }
-  .footer-social img { width: 19px; }
-  .gts-footer-bottom { font-size: 0.8rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1864,38 +1799,54 @@ body {
   .who-we-serve,
   .history-section,
   .leaders-section,
-  .team-members-section { padding: 40px 0 35px; }
+  .team-members-section,
+  .values-section {
+    padding: 40px 0 35px;
+  }
   
   .hero-title p { font-size: 1.5rem; }
-  .hero-subtitle { font-size: 0.85rem; }
+  .hero-subtitle { font-size: 0.7rem; }
   
   .mission-title,
-  .choose-title { font-size: 1.4rem; }
+  .choose-title { font-size: 0.95rem; }
   
   .history-title,
   .leaders-title,
-  .team-members-title { font-size: 1.5rem; }
+  .team-members-title,
+  .values-title { font-size: 1.3rem; }
   
   .section-label { font-size: 0.7rem; }
-  .tab-btn { font-size: 0.8rem; }
+  .tab-btn { font-size: 0.65rem; }
   .tab-content p { font-size: 0.85rem; }
   
-  .choose-card h3 { font-size: 1.1rem; }
+  .choose-card h3 { font-size: 0.95rem; }
   .choose-card p,
-  .history-left p { font-size: 0.85rem; }
+  .history-left p { font-size: 0.8rem; }
+  
+  .value-icon-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+  
+  .value-text h3 { font-size: 0.75rem; }
+  .value-text p { font-size: 0.6rem; }
   
   .leader-image,
   .team-member-img {
-    width: 75px;
-    height: 75px;
+    width: 50px;
+    height: 50px;
   }
   
   .leader-name,
-  .team-member-name { font-size: 1rem; }
+  .team-member-name { font-size: 0.75rem; }
   
-  .stat-value { font-size: 1.1rem; }
+  .leader-role,
+  .team-member-role { font-size: 0.6rem; }
+  
+  .stat-value { font-size: 0.9rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   END - NO LAYOUT CHANGES, ONLY SIZE SCALING
+   END OF ABOUT PAGE MOBILE CSS
 ═══════════════════════════════════════════════════════════════════ */
