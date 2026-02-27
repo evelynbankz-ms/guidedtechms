@@ -307,6 +307,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
+
+  // =====================================================
+// MOBILE HISTORY SECTION REORDERING
+// Moves history image to appear beside text on mobile
+// Add this to your about.js file
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  
+  // Function to reorder history section on mobile
+  function reorderHistoryOnMobile() {
+    const historyGrid = document.querySelector('.history-grid');
+    const historyLeft = document.querySelector('.history-left');
+    const historyRight = document.querySelector('.history-right');
+    
+    // Only proceed if elements exist
+    if (!historyGrid || !historyLeft || !historyRight) {
+      console.log('History section elements not found');
+      return;
+    }
+    
+    // Check if mobile (767px or less)
+    if (window.innerWidth <= 767) {
+      // Move image inside the left container, before the first paragraph
+      const firstParagraph = historyLeft.querySelector('p');
+      if (firstParagraph && historyRight.parentNode === historyGrid) {
+        historyLeft.insertBefore(historyRight, firstParagraph);
+        console.log('✅ History image moved beside text (mobile)');
+      }
+    } else {
+      // Desktop: move image back to grid (if it was moved)
+      if (historyRight.parentNode === historyLeft) {
+        historyGrid.appendChild(historyRight);
+        console.log('✅ History image moved back to grid (desktop)');
+      }
+    }
+  }
+  
+  // Run on load
+  reorderHistoryOnMobile();
+  
+  // Run on resize (debounced)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      reorderHistoryOnMobile();
+    }, 250);
+  });
+  
+  console.log('📱 Mobile history reordering script loaded');
+});
+
   // =========================================================
   // FOOTER YEAR
   // =========================================================
