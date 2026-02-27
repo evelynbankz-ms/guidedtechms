@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // =====================================================
+// =====================================================
 // MOBILE HISTORY SECTION REORDERING
 // Moves history image to appear beside text on mobile
 // Add this to your about.js file
@@ -331,18 +331,31 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Check if mobile (767px or less)
     if (window.innerWidth <= 767) {
-      // Move image inside the left container, before the first paragraph
-      const firstParagraph = historyLeft.querySelector('p');
-      if (firstParagraph && historyRight.parentNode === historyGrid) {
-        historyLeft.insertBefore(historyRight, firstParagraph);
-        console.log('✅ History image moved beside text (mobile)');
+      // Clone the image element
+      const imageClone = historyRight.cloneNode(true);
+      
+      // Remove the original from grid
+      if (historyRight.parentNode === historyGrid) {
+        historyRight.style.display = 'none';
+      }
+      
+      // Check if we already inserted it
+      const existingClone = historyLeft.querySelector('.history-right');
+      if (!existingClone) {
+        // Insert at the beginning of history-left
+        historyLeft.insertBefore(imageClone, historyLeft.firstChild);
+        console.log('✅ History image inserted beside text (mobile)');
       }
     } else {
-      // Desktop: move image back to grid (if it was moved)
-      if (historyRight.parentNode === historyLeft) {
-        historyGrid.appendChild(historyRight);
-        console.log('✅ History image moved back to grid (desktop)');
+      // Desktop: restore original layout
+      const clonedImage = historyLeft.querySelector('.history-right');
+      if (clonedImage) {
+        clonedImage.remove();
       }
+      if (historyRight) {
+        historyRight.style.display = '';
+      }
+      console.log('✅ History restored to desktop layout');
     }
   }
   
@@ -360,6 +373,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log('📱 Mobile history reordering script loaded');
 });
+
+
+
+
+  
 
   // =========================================================
   // FOOTER YEAR
