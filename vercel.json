@@ -53,3 +53,19 @@
     { "source": "/admin/login.html", "destination": "/admin/login", "permanent": true }
   ]
 }
+
+
+
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com https://js.stripe.com; object-src 'none';"
+        }
+      ]
+    }
+  ]
+}
