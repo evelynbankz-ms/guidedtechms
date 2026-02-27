@@ -1515,15 +1515,18 @@ body {
      HISTORY SECTION - Image beside text, text wraps
   ═══════════════════════════════════════════════════════════ */
   
-  .history-container {
+  .history-section {
     overflow: auto;
   }
   
-  .history-grid {
-    display: flow-root;
+  .history-container {
+    overflow: visible;
   }
   
-  /* Move image to appear AFTER title/subtitle but BEFORE text */
+  .history-grid {
+    display: block;
+  }
+  
   .history-title {
     font-size: 1.8rem;
   }
@@ -1534,22 +1537,28 @@ body {
     margin-bottom: 16px;
   }
   
-  /* Image floated left beside paragraphs */
-  .history-right {
+  /* Image will be moved by JavaScript into .history-left */
+  /* When inside .history-left, it floats left */
+  .history-left .history-right {
     float: left;
     margin: 0 14px 12px 0;
     max-width: 140px;
-    order: 2;
   }
   
-  .history-image {
+  .history-left .history-image {
     max-width: 100%;
     width: 140px;
   }
   
-  /* Text wraps around image */
+  /* Original image in grid - hide on mobile */
+  .history-grid > .history-right {
+    display: none;
+  }
+  
+  /* Text wraps around floated image */
   .history-left {
     text-align: justify;
+    overflow: auto;
   }
   
   .history-left p {
