@@ -866,15 +866,18 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     FOOTER - 2-column layout on mobile
+     FOOTER - 2-column layout with EQUAL spacing
   ═══════════════════════════════════════════════════════════ */
   
   .gts-footer {
-    padding: 50px 0 25px;
+    padding: 50px 16px 25px 16px;
   }
   
   .gts-footer-inner {
-    width: 95%;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 20px;
   }
@@ -979,6 +982,10 @@ body {
     border-radius: 10px;
   }
   
+  .gts-footer {
+    padding: 45px 14px 20px 14px;
+  }
+  
   .gts-footer-inner {
     width: 100%;
     gap: 35px 16px;
@@ -1032,6 +1039,10 @@ body {
   
   .service-layout {
     padding: 35px 12px;
+  }
+  
+  .gts-footer {
+    padding: 40px 12px 18px 12px;
   }
   
   .service-text h2 {
