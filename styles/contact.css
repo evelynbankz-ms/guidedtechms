@@ -739,3 +739,284 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTACT/CAREERS PAGE MOBILE RESPONSIVE CSS
+   Paste this at the END of styles/contact.css
+═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  
+  /* ═══════════════════════════════════════════════════════════
+     UNIFORM CONTAINER PADDING
+  ═══════════════════════════════════════════════════════════ */
+  
+  .container,
+  .navbar-container {
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HERO SECTION - More top padding to clear navbar
+  ═══════════════════════════════════════════════════════════ */
+  
+  .hero {
+    padding: 100px 0 50px;
+  }
+  
+  .hero-title p {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-title p::after {
+    width: 80px;
+    height: 3px;
+    bottom: -10px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 auto 25px;
+    padding: 0 10px;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     CONTACT OPTIONS SECTION
+  ═══════════════════════════════════════════════════════════ */
+  
+  .contact-options {
+    padding: 50px 16px;
+  }
+  
+  .contact-head {
+    margin-bottom: 35px;
+  }
+  
+  .contact-head h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .contact-head h2::after {
+    height: 3px;
+    bottom: -5px;
+  }
+  
+  .contact-head p {
+    font-size: 0.9rem;
+    margin-top: 12px;
+    padding: 0 10px;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     CONTACT GRID - Single column on mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     CONTACT CARDS - Optimized for mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .contact-card {
+    border-radius: 12px;
+  }
+  
+  .card-top {
+    padding: 20px;
+  }
+  
+  .card-top .icon {
+    font-size: 26px;
+  }
+  
+  .contact-card h3 {
+    font-size: 1rem;
+    padding: 18px 16px;
+    line-height: 1.5;
+  }
+  
+  .card-link {
+    padding: 0 16px 20px;
+    font-size: 0.95rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER - 2-column layout on mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .gts-footer {
+    padding: 50px 0 25px;
+  }
+  
+  .gts-footer-inner {
+    width: 95%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
+  }
+  
+  /* Company info spans full width */
+  .gts-footer-col.about-col {
+    grid-column: span 2;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+  
+  .footer-heading {
+    font-size: 12px;
+    margin: 18px 0 8px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .footer-social {
+    gap: 12px;
+    margin-top: 15px;
+  }
+  
+  .footer-social img {
+    width: 19px;
+  }
+  
+  .gts-footer-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMALL MOBILE (max-width: 480px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  
+  .hero {
+    padding: 90px 0 45px;
+  }
+  
+  .hero-title p {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .contact-options {
+    padding: 40px 14px;
+  }
+  
+  .contact-head h2 {
+    font-size: 1.6rem;
+  }
+  
+  .contact-head p {
+    font-size: 0.85rem;
+  }
+  
+  .contact-grid {
+    gap: 16px;
+    padding: 0 5px;
+  }
+  
+  .card-top {
+    padding: 18px;
+  }
+  
+  .card-top .icon {
+    font-size: 24px;
+  }
+  
+  .contact-card h3 {
+    font-size: 0.95rem;
+    padding: 16px 14px;
+  }
+  
+  .card-link {
+    font-size: 0.9rem;
+    padding: 0 14px 18px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    gap: 35px 16px;
+  }
+  
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.85rem;
+  }
+  
+  .footer-heading {
+    font-size: 11px;
+    margin: 16px 0 6px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.85rem;
+  }
+  
+  .footer-social img {
+    width: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTRA SMALL MOBILE (max-width: 360px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  
+  .hero-title p {
+    font-size: 1.4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .contact-head h2 {
+    font-size: 1.4rem;
+  }
+  
+  .contact-card h3 {
+    font-size: 0.9rem;
+    padding: 14px 12px;
+  }
+  
+  .card-link {
+    font-size: 0.85rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   END OF CONTACT/CAREERS PAGE MOBILE CSS
+═══════════════════════════════════════════════════════════════════ */
