@@ -308,51 +308,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-
-// =====================================================
-// MOBILE HISTORY SECTION - MOVE IMAGE BESIDE TEXT
-// =====================================================
-document.addEventListener("DOMContentLoaded", () => {
-  
-  function repositionHistoryImage() {
-    const historyGrid = document.querySelector('.history-grid');
-    const historyLeft = document.querySelector('.history-left');
-    const historyRight = document.querySelector('.history-right');
-    
-    if (!historyGrid || !historyLeft || !historyRight) {
-      console.log('History section elements not found');
-      return;
-    }
-    
-    // On mobile (767px and below)
-    if (window.innerWidth <= 767) {
-      // Move image to beginning of history-left so it floats beside text
-      if (historyRight.parentNode !== historyLeft) {
-        historyLeft.insertBefore(historyRight, historyLeft.firstChild);
-        console.log('✅ History image moved beside text (mobile)');
-      }
-    } else {
-      // On desktop, move it back to grid
-      if (historyRight.parentNode === historyLeft) {
-        historyGrid.appendChild(historyRight);
-        console.log('✅ History image moved back to grid (desktop)');
-      }
-    }
-  }
-  
-  // Run on load
-  repositionHistoryImage();
-  
-  // Run on resize (debounced)
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(repositionHistoryImage, 100);
-  });
-  
-  console.log('📱 Mobile history script loaded');
-});
-
   
 
   // =========================================================
