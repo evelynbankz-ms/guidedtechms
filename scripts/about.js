@@ -309,12 +309,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+This is my current js code.
+
+Should I replace it?
 // =====================================================
 // MOBILE HISTORY SECTION REORDERING
 // Moves history image to appear beside text on mobile
 // Add this to your about.js file
 // =====================================================
-
 document.addEventListener("DOMContentLoaded", () => {
   
   // Function to reorder history section on mobile
@@ -373,7 +375,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log('📱 Mobile history reordering script loaded');
 });
-
 
 
 
