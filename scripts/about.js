@@ -309,74 +309,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-This is my current js code.
-
-Should I replace it?
 // =====================================================
-// MOBILE HISTORY SECTION REORDERING
-// Moves history image to appear beside text on mobile
-// Add this to your about.js file
+// MOBILE HISTORY SECTION - MOVE IMAGE BESIDE TEXT
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
   
-  // Function to reorder history section on mobile
-  function reorderHistoryOnMobile() {
+  function repositionHistoryImage() {
     const historyGrid = document.querySelector('.history-grid');
     const historyLeft = document.querySelector('.history-left');
     const historyRight = document.querySelector('.history-right');
     
-    // Only proceed if elements exist
     if (!historyGrid || !historyLeft || !historyRight) {
       console.log('History section elements not found');
       return;
     }
     
-    // Check if mobile (767px or less)
+    // On mobile (767px and below)
     if (window.innerWidth <= 767) {
-      // Clone the image element
-      const imageClone = historyRight.cloneNode(true);
-      
-      // Remove the original from grid
-      if (historyRight.parentNode === historyGrid) {
-        historyRight.style.display = 'none';
-      }
-      
-      // Check if we already inserted it
-      const existingClone = historyLeft.querySelector('.history-right');
-      if (!existingClone) {
-        // Insert at the beginning of history-left
-        historyLeft.insertBefore(imageClone, historyLeft.firstChild);
-        console.log('✅ History image inserted beside text (mobile)');
+      // Move image to beginning of history-left so it floats beside text
+      if (historyRight.parentNode !== historyLeft) {
+        historyLeft.insertBefore(historyRight, historyLeft.firstChild);
+        console.log('✅ History image moved beside text (mobile)');
       }
     } else {
-      // Desktop: restore original layout
-      const clonedImage = historyLeft.querySelector('.history-right');
-      if (clonedImage) {
-        clonedImage.remove();
+      // On desktop, move it back to grid
+      if (historyRight.parentNode === historyLeft) {
+        historyGrid.appendChild(historyRight);
+        console.log('✅ History image moved back to grid (desktop)');
       }
-      if (historyRight) {
-        historyRight.style.display = '';
-      }
-      console.log('✅ History restored to desktop layout');
     }
   }
   
   // Run on load
-  reorderHistoryOnMobile();
+  repositionHistoryImage();
   
   // Run on resize (debounced)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      reorderHistoryOnMobile();
-    }, 250);
+    resizeTimer = setTimeout(repositionHistoryImage, 100);
   });
   
-  console.log('📱 Mobile history reordering script loaded');
+  console.log('📱 Mobile history script loaded');
 });
-
-
 
   
 
