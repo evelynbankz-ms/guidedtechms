@@ -866,20 +866,24 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     FOOTER - 2-column layout with EQUAL spacing
+     FOOTER - 2-column layout with EQUAL spacing (matches about page)
   ═══════════════════════════════════════════════════════════ */
   
   .gts-footer {
-    padding: 50px 16px 25px 16px;
+    padding: 50px 0 25px;
   }
   
   .gts-footer-inner {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 16px;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 20px;
+  }
+  
+  .gts-footer-col.about-col {
+    grid-column: span 2;
   }
   
   /* Company info spans full width */
@@ -983,11 +987,12 @@ body {
   }
   
   .gts-footer {
-    padding: 45px 14px 20px 14px;
+    padding: 45px 0 20px;
   }
   
   .gts-footer-inner {
     width: 100%;
+    padding: 0 14px;
     gap: 35px 16px;
   }
   
@@ -1042,7 +1047,11 @@ body {
   }
   
   .gts-footer {
-    padding: 40px 12px 18px 12px;
+    padding: 40px 0 18px;
+  }
+  
+  .gts-footer-inner {
+    padding: 0 12px;
   }
   
   .service-text h2 {
