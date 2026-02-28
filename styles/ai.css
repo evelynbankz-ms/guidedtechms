@@ -739,3 +739,289 @@ body {
   .gts-footer-inner {
     grid-template-columns: 1fr;
   }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   AI/SERVICES PAGE MOBILE RESPONSIVE CSS
+   Paste this at the END of styles/ai.css
+═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  
+  /* ═══════════════════════════════════════════════════════════
+     UNIFORM CONTAINER PADDING
+  ═══════════════════════════════════════════════════════════ */
+  
+  .container,
+  .navbar-container {
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HERO SECTION - Clear navbar properly
+  ═══════════════════════════════════════════════════════════ */
+  
+  .hero {
+    padding: 100px 0 50px;
+  }
+  
+  .hero-title p {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-title p::after {
+    width: 80px;
+    height: 3px;
+    bottom: -10px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 auto 25px;
+    padding: 0 10px;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE LAYOUT - Optimized for mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-layout {
+    padding: 50px 0;
+    gap: 60px;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE ROWS - Single column, image first
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-row,
+  .service-row.reverse {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  /* Image always appears first on mobile */
+  .service-row .service-image,
+  .service-row.reverse .service-image {
+    order: 1;
+  }
+  
+  .service-row .service-text,
+  .service-row.reverse .service-text {
+    order: 2;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE TEXT - Mobile optimized
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-text h2 {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    text-align: left;
+  }
+  
+  .service-text p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 12px;
+    max-width: 100%;
+    text-align: justify;
+  }
+  
+  .service-text ul {
+    margin-top: 16px;
+    padding-left: 20px;
+  }
+  
+  .service-text li {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE IMAGE - Mobile optimized
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-image img {
+    max-height: 280px;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.1);
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER - 2-column layout on mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .gts-footer {
+    padding: 50px 0 25px;
+  }
+  
+  .gts-footer-inner {
+    width: 95%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
+  }
+  
+  /* Company info spans full width */
+  .gts-footer-col.about-col {
+    grid-column: span 2;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+  
+  .footer-heading {
+    font-size: 12px;
+    margin: 18px 0 8px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .footer-social {
+    gap: 12px;
+    margin-top: 15px;
+  }
+  
+  .footer-social img {
+    width: 19px;
+  }
+  
+  .gts-footer-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMALL MOBILE (max-width: 480px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  
+  .hero {
+    padding: 90px 0 45px;
+  }
+  
+  .hero-title p {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .service-layout {
+    padding: 40px 0;
+    gap: 50px;
+  }
+  
+  .service-row,
+  .service-row.reverse {
+    gap: 20px;
+  }
+  
+  .service-text h2 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  
+  .service-text p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .service-text ul {
+    margin-top: 14px;
+    padding-left: 18px;
+  }
+  
+  .service-text li {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  
+  .service-image img {
+    max-height: 240px;
+    border-radius: 10px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    gap: 35px 16px;
+  }
+  
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.85rem;
+  }
+  
+  .footer-heading {
+    font-size: 11px;
+    margin: 16px 0 6px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.85rem;
+  }
+  
+  .footer-social img {
+    width: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTRA SMALL MOBILE (max-width: 360px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  
+  .hero-title p {
+    font-size: 1.4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .service-text h2 {
+    font-size: 1.3rem;
+  }
+  
+  .service-text p {
+    font-size: 0.85rem;
+  }
+  
+  .service-text li {
+    font-size: 0.8rem;
+  }
+  
+  .service-image img {
+    max-height: 220px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   END OF AI/SERVICES PAGE MOBILE CSS
+═══════════════════════════════════════════════════════════════════ */
