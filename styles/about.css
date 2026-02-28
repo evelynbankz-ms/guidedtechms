@@ -1897,7 +1897,7 @@ body {
 
 /* SMALL MOBILE */
 @media (max-width: 480px) {
-  .hero, .mission, .why-choose-us, .who-we-serve,
+  .mission, .why-choose-us, .who-we-serve,
   .history-section, .leaders-section, .team-members-section,
   .values-section {
     padding: 40px 0 35px;
