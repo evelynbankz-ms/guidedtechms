@@ -672,3 +672,301 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   FAQ PAGE MOBILE RESPONSIVE CSS
+   Paste this at the END of styles/faq.css
+═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  
+  /* ═══════════════════════════════════════════════════════════
+     UNIFORM CONTAINER PADDING - EQUAL LEFT/RIGHT SPACING
+  ═══════════════════════════════════════════════════════════ */
+  
+  .container,
+  .navbar-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HERO SECTION - Clear navbar properly
+  ═══════════════════════════════════════════════════════════ */
+  
+  .hero {
+    padding: 100px 16px 50px 16px;
+  }
+  
+  .hero-title p {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-title p::after {
+    width: 80px;
+    height: 3px;
+    bottom: -10px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 auto 25px;
+    padding: 0 10px;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FAQ SECTION - Mobile optimized with equal spacing
+  ═══════════════════════════════════════════════════════════ */
+  
+  .faq-section {
+    max-width: 100%;
+    margin: 50px auto 60px;
+    padding: 0 16px;
+  }
+  
+  .faq-section h1 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FAQ ITEMS - Accordion style
+  ═══════════════════════════════════════════════════════════ */
+  
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+  }
+  
+  .faq-question {
+    font-size: 1rem;
+    padding: 0;
+    gap: 12px;
+  }
+  
+  .faq-question span {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  .faq-answer {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-right: 20px;
+  }
+  
+  /* Open state */
+  .faq-item.open .faq-question span {
+    transform: rotate(45deg);
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER - 2-column layout with EQUAL spacing (matches other pages)
+  ═══════════════════════════════════════════════════════════ */
+  
+  .gts-footer {
+    padding: 50px 0 25px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
+  }
+  
+  /* Company info spans full width */
+  .gts-footer-col.about-col {
+    grid-column: span 2;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+  
+  .footer-heading {
+    font-size: 12px;
+    margin: 18px 0 8px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .footer-social {
+    gap: 12px;
+    margin-top: 15px;
+  }
+  
+  .footer-social img {
+    width: 19px;
+  }
+  
+  .gts-footer-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMALL MOBILE (max-width: 480px) - EQUAL LEFT/RIGHT SPACING
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  
+  /* EQUAL LEFT/RIGHT SPACING FOR ALL SECTIONS */
+  .container,
+  .navbar-container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+  
+  .hero {
+    padding: 90px 14px 45px 14px;
+  }
+  
+  .hero-title p {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .faq-section {
+    margin: 40px auto 50px;
+    padding: 0 14px;
+  }
+  
+  .faq-section h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  
+  .faq-item {
+    padding: 14px 0;
+  }
+  
+  .faq-question {
+    font-size: 0.95rem;
+  }
+  
+  .faq-question span {
+    font-size: 1.4rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.9rem;
+    margin-top: 8px;
+    padding-right: 16px;
+  }
+  
+  .gts-footer {
+    padding: 45px 0 20px;
+  }
+  
+  .gts-footer-inner {
+    padding: 0 14px;
+    gap: 35px 16px;
+  }
+  
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.85rem;
+  }
+  
+  .footer-heading {
+    font-size: 11px;
+    margin: 16px 0 6px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.85rem;
+  }
+  
+  .footer-social img {
+    width: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTRA SMALL MOBILE (max-width: 360px) - EQUAL LEFT/RIGHT SPACING
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  
+  /* EQUAL LEFT/RIGHT SPACING FOR ALL SECTIONS */
+  .container,
+  .navbar-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  .hero {
+    padding: 85px 12px 40px 12px;
+  }
+  
+  .hero-title p {
+    font-size: 1.4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .faq-section {
+    margin: 35px auto 45px;
+    padding: 0 12px;
+  }
+  
+  .faq-section h1 {
+    font-size: 1.4rem;
+  }
+  
+  .faq-item {
+    padding: 12px 0;
+  }
+  
+  .faq-question {
+    font-size: 0.9rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.85rem;
+    padding-right: 14px;
+  }
+  
+  .gts-footer {
+    padding: 40px 0 18px;
+  }
+  
+  .gts-footer-inner {
+    padding: 0 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   END OF FAQ PAGE MOBILE CSS
+═══════════════════════════════════════════════════════════════════ */
