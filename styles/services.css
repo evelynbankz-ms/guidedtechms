@@ -741,3 +741,362 @@ body {
   .gts-footer-inner {
     grid-template-columns: 1fr;
   }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   SERVICES/CONNECTOR DEVELOPMENT PAGE MOBILE RESPONSIVE CSS
+   Paste this at the END of styles/services.css
+═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  
+  /* ═══════════════════════════════════════════════════════════
+     UNIFORM CONTAINER PADDING - EQUAL LEFT/RIGHT SPACING
+  ═══════════════════════════════════════════════════════════ */
+  
+  .container,
+  .navbar-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     HERO SECTION - Clear navbar properly
+  ═══════════════════════════════════════════════════════════ */
+  
+  .hero {
+    padding: 100px 16px 50px 16px;
+  }
+  
+  .hero-title p {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  
+  .hero-title p::after {
+    width: 80px;
+    height: 3px;
+    bottom: -10px;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 auto 25px;
+    padding: 0 10px;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE SECTIONS - Optimized for mobile
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-section {
+    padding: 50px 16px;
+  }
+  
+  .service-section.alt {
+    padding: 50px 16px;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE GRID - Single column, image first
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .service-section.reverse .service-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Image always appears first on mobile */
+  .service-visual {
+    order: 1;
+  }
+  
+  .service-text {
+    order: 2;
+  }
+  
+  .service-section.reverse .service-text,
+  .service-section.reverse .service-visual {
+    order: unset;
+  }
+  
+  .service-section.reverse .service-visual {
+    order: 1;
+  }
+  
+  .service-section.reverse .service-text {
+    order: 2;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE TEXT - Mobile optimized
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-text h2 {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    text-align: left;
+  }
+  
+  .service-text p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin-bottom: 12px;
+    text-align: justify;
+  }
+  
+  .service-emphasis {
+    margin-top: 16px;
+    padding-left: 0;
+  }
+  
+  .service-emphasis li {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    padding-left: 20px;
+  }
+  
+  .service-emphasis li::before {
+    font-size: 1.2rem;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     SERVICE VISUAL - Mobile optimized
+  ═══════════════════════════════════════════════════════════ */
+  
+  .service-visual {
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.15);
+  }
+  
+  .service-visual img {
+    max-height: 280px;
+    object-fit: cover;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER - 2-column layout with EQUAL spacing (matches about page)
+  ═══════════════════════════════════════════════════════════ */
+  
+  .gts-footer {
+    padding: 50px 0 25px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
+  }
+  
+  /* Company info spans full width */
+  .gts-footer-col.about-col {
+    grid-column: span 2;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+  
+  .footer-heading {
+    font-size: 12px;
+    margin: 18px 0 8px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .footer-social {
+    gap: 12px;
+    margin-top: 15px;
+  }
+  
+  .footer-social img {
+    width: 19px;
+  }
+  
+  .gts-footer-bottom {
+    margin-top: 40px;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMALL MOBILE (max-width: 480px) - EQUAL LEFT/RIGHT SPACING
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  
+  /* EQUAL LEFT/RIGHT SPACING FOR ALL SECTIONS */
+  .container,
+  .navbar-container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+  
+  .hero {
+    padding: 90px 14px 45px 14px;
+  }
+  
+  .hero-title p {
+    font-size: 1.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .service-section {
+    padding: 40px 14px;
+  }
+  
+  .service-section.alt {
+    padding: 40px 14px;
+  }
+  
+  .service-grid {
+    gap: 20px;
+  }
+  
+  .service-text h2 {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  
+  .service-text p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .service-emphasis {
+    margin-top: 14px;
+  }
+  
+  .service-emphasis li {
+    font-size: 0.85rem;
+    margin-bottom: 7px;
+    padding-left: 18px;
+  }
+  
+  .service-visual {
+    border-radius: 10px;
+  }
+  
+  .service-visual img {
+    max-height: 240px;
+  }
+  
+  .gts-footer {
+    padding: 45px 0 20px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    padding: 0 14px;
+    gap: 35px 16px;
+  }
+  
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+  
+  .footer-desc {
+    font-size: 0.85rem;
+  }
+  
+  .footer-heading {
+    font-size: 11px;
+    margin: 16px 0 6px;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.85rem;
+  }
+  
+  .footer-social img {
+    width: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EXTRA SMALL MOBILE (max-width: 360px) - EQUAL LEFT/RIGHT SPACING
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  
+  /* EQUAL LEFT/RIGHT SPACING FOR ALL SECTIONS */
+  .container,
+  .navbar-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  .hero {
+    padding: 85px 12px 40px 12px;
+  }
+  
+  .hero-title p {
+    font-size: 1.4rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .service-section {
+    padding: 35px 12px;
+  }
+  
+  .service-section.alt {
+    padding: 35px 12px;
+  }
+  
+  .service-text h2 {
+    font-size: 1.3rem;
+  }
+  
+  .service-text p {
+    font-size: 0.85rem;
+  }
+  
+  .service-emphasis li {
+    font-size: 0.8rem;
+  }
+  
+  .service-visual img {
+    max-height: 220px;
+  }
+  
+  .gts-footer {
+    padding: 40px 0 18px;
+  }
+  
+  .gts-footer-inner {
+    padding: 0 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   END OF SERVICES/CONNECTOR PAGE MOBILE CSS
+═══════════════════════════════════════════════════════════════════ */
