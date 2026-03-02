@@ -792,7 +792,7 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     CONTACT OPTIONS SECTION
+     CONTACT OPTIONS GRID - 2 CARDS PER ROW on mobile
   ═══════════════════════════════════════════════════════════ */
   
   .contact-options {
@@ -820,18 +820,18 @@ body {
   }
   
   /* ═══════════════════════════════════════════════════════════
-     CONTACT GRID - Single column on mobile
+     CONTACT GRID - 2 CARDS PER ROW
   ═══════════════════════════════════════════════════════════ */
   
   .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px;
     max-width: 100%;
-    padding: 0 10px;
+    padding: 0;
   }
   
   /* ═══════════════════════════════════════════════════════════
-     CONTACT CARDS - Optimized for mobile
+     CONTACT CARDS - Optimized for 2-column mobile layout
   ═══════════════════════════════════════════════════════════ */
   
   .contact-card {
@@ -848,13 +848,13 @@ body {
   
   .contact-card h3 {
     font-size: 1rem;
-    padding: 18px 16px;
-    line-height: 1.5;
+    padding: 18px 14px;
+    line-height: 1.4;
   }
   
   .card-link {
-    padding: 0 16px 20px;
-    font-size: 0.95rem;
+    padding: 0 14px 20px;
+    font-size: 0.9rem;
   }
   
   /* ═══════════════════════════════════════════════════════════
@@ -951,8 +951,7 @@ body {
   }
   
   .contact-grid {
-    gap: 16px;
-    padding: 0 5px;
+    gap: 12px;
   }
   
   .card-top {
@@ -965,12 +964,12 @@ body {
   
   .contact-card h3 {
     font-size: 0.95rem;
-    padding: 16px 14px;
+    padding: 16px 12px;
   }
   
   .card-link {
-    font-size: 0.9rem;
-    padding: 0 14px 18px;
+    font-size: 0.85rem;
+    padding: 0 12px 18px;
   }
   
   .gts-footer {
@@ -1029,13 +1028,38 @@ body {
     font-size: 0.8rem;
   }
   
+  .contact-options {
+    padding: 35px 12px;
+  }
+  
   .contact-head h2 {
     font-size: 1.4rem;
   }
   
+  .contact-head p {
+    font-size: 0.8rem;
+  }
+  
+  .contact-grid {
+    gap: 10px;
+  }
+  
+  .card-top {
+    padding: 16px;
+  }
+  
+  .card-top .icon {
+    font-size: 22px;
+  }
+  
   .contact-card h3 {
     font-size: 0.9rem;
-    padding: 14px 12px;
+    padding: 14px 10px;
+  }
+  
+  .card-link {
+    font-size: 0.8rem;
+    padding: 0 10px 16px;
   }
   
   .card-link {
