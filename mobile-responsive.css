@@ -475,14 +475,16 @@
 
   /* ── FOOTER ────────────────────────────────────────────────────── */
   .gts-footer {
-    padding: 60px 0 30px;
+    padding: 50px 0 25px;
   }
 
   .gts-footer-inner {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 20px;
     width: 100%;
+    max-width: 100%;
     padding: 0 16px;
+    margin: 0 auto;
   }
 
   /* Force proper column order: SERVICES left, RESOURCES+ABOUT right */
@@ -498,37 +500,37 @@
   }
 
   .footer-logo {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .footer-desc {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    max-width: 100%;
   }
 
   .footer-heading {
-    font-size: 13px;
+    font-size: 12px;
     margin: 18px 0 8px;
   }
 
   .gts-footer-col a {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 6px;
   }
 
   .footer-social {
-    margin-top: 16px;
+    margin-top: 15px;
     gap: 12px;
   }
 
   .footer-social img {
-    width: 20px;
+    width: 19px;
   }
 
   .gts-footer-bottom {
     margin-top: 40px;
-    padding-top: 24px;
-    font-size: 0.85rem;
+    padding-top: 20px;
+    font-size: 0.8rem;
   }
 }
 
@@ -692,27 +694,33 @@
 
   /* ── FOOTER ────────────────────────────────────────────────────── */
   .gts-footer {
-    padding: 50px 0 24px;
+    padding: 45px 0 20px;
   }
 
   .gts-footer-inner {
-    gap: 28px;
+    padding: 0 14px;
+    gap: 35px 16px;
   }
 
   .footer-logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .footer-desc {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .footer-heading {
-    font-size: 12px;
+    font-size: 11px;
+    margin: 16px 0 6px;
   }
 
   .gts-footer-col a {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-social img {
+    width: 18px;
   }
 }
 
@@ -763,6 +771,15 @@
 
   .blog-card {
     min-width: 220px;
+  }
+
+  /* ── FOOTER ────────────────────────────────────────────────────── */
+  .gts-footer {
+    padding: 40px 0 18px;
+  }
+
+  .gts-footer-inner {
+    padding: 0 12px;
   }
 }
 
