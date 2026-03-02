@@ -790,6 +790,8 @@ body {
 
 
 
+
+
 /* ================================================
    CAPABILITY PAGE — ADDITIONAL STYLES
    Paste at the bottom of your styles/capability.css
@@ -799,10 +801,15 @@ body {
 /* ── Overview section: text + contact card side by side ── */
 .cap-overview-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 320px;
   gap: 28px;
-  align-items: start;
-  margin-bottom: 36px;   /* breathing space above the three cards */
+  align-items: start;        /* both columns align to top */
+  margin-bottom: 40px;       /* breathing space above the three cards */
+}
+
+/* Override any inherited stretch from cap-grid */
+.cap-overview-row > * {
+  align-self: start;
 }
 
 /* Overview text: paragraph line spacing */
@@ -830,10 +837,10 @@ body {
   text-decoration: underline;
 }
 
-/* Contact card: fit to content, don't stretch full height */
+/* Contact card: fit to content only, never stretch vertically */
 .cap-contact-card {
-  width: 320px;
-  align-self: start;    /* key: stops it stretching to match the text column */
+  align-self: start !important;
+  height: auto !important;
 }
 
 .cap-contact-card h3 {
@@ -861,8 +868,9 @@ body {
 
 
 /* ── Three info cards (NAICS / Company Data / Partnerships) ── */
+/* The margin-top here creates the visible gap below the overview row */
 .cap-info-cards {
-  margin-top: 0;         /* gap already provided by cap-overview-row margin-bottom */
+  margin-top: 8px;
 }
 
 .cap-info-cards .cap-card h3 {
