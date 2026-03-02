@@ -792,38 +792,98 @@ body {
 
 /* ================================================
    CAPABILITY PAGE — ADDITIONAL STYLES
-   Add these to the bottom of your capability.css
+   Paste at the bottom of your styles/capability.css
 ================================================ */
 
-/* NAICS / Company Data / Partnerships cards row */
-.cap-grid.three .cap-card h3 {
-  color: #1B4F72;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #eaf2f8;
+
+/* ── Overview section: text + contact card side by side ── */
+.cap-overview-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 36px;   /* breathing space above the three cards */
 }
 
-/* Overview website link */
-.cap-section a {
+/* Overview text: paragraph line spacing */
+.cap-overview-text h2 {
+  margin-bottom: 16px;
+  color: #1B4F72;
+}
+
+.cap-overview-text p {
+  margin-bottom: 14px;   /* gap between each paragraph */
+  line-height: 1.75;
+}
+
+.cap-overview-text p:last-child {
+  margin-bottom: 0;
+}
+
+.cap-overview-text a {
   color: #1B4F72;
   text-decoration: none;
   font-weight: 500;
 }
 
-.cap-section a:hover {
+.cap-overview-text a:hover {
   text-decoration: underline;
 }
 
-/* Differentiators tagline */
+/* Contact card: fit to content, don't stretch full height */
+.cap-contact-card {
+  width: 320px;
+  align-self: start;    /* key: stops it stretching to match the text column */
+}
+
+.cap-contact-card h3 {
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
+.cap-contact-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cap-contact-card ul li {
+  padding: 5px 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.92);
+  line-height: 1.5;
+}
+
+.cap-contact-card ul li:last-child {
+  border-bottom: none;
+}
+
+
+/* ── Three info cards (NAICS / Company Data / Partnerships) ── */
+.cap-info-cards {
+  margin-top: 0;         /* gap already provided by cap-overview-row margin-bottom */
+}
+
+.cap-info-cards .cap-card h3 {
+  color: #1B4F72;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eaf2f8;
+}
+
+
+/* ── Differentiators tagline ── */
 .diff-tagline {
   font-weight: 600;
   color: #1B4F72;
   margin-bottom: 20px;
 }
 
-/* Download Section */
+
+/* ── Download section ── */
 .download-wrap {
   text-align: center;
   margin-top: 50px;
@@ -831,13 +891,13 @@ body {
 
 .download-wrap h3 {
   color: #1B4F72;
-  margin-bottom: 14px;
-  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
 }
 
 .download-wrap p {
   color: #2E4053;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .download-btn {
@@ -851,7 +911,7 @@ body {
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(230, 126, 34, 0.35);
+  box-shadow: 0 4px 16px rgba(230,126,34,0.35);
   transition: background 0.25s ease, transform 0.2s ease;
 }
 
@@ -865,14 +925,25 @@ body {
   flex-shrink: 0;
 }
 
-/* ================================================
-   MOBILE RESPONSIVE — CAPABILITY PAGE
-================================================ */
+
+/* ════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
   .cap-grid.two,
   .cap-grid.three {
     grid-template-columns: 1fr;
+  }
+
+  /* Stack overview text above contact card */
+  .cap-overview-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contact card goes full width on mobile */
+  .cap-contact-card {
+    width: 100%;
   }
 }
 
@@ -902,9 +973,8 @@ body {
     padding: 20px 18px;
   }
 
-  .download-btn {
-    padding: 12px 22px;
-    font-size: 0.95rem;
+  .cap-overview-row {
+    margin-bottom: 28px;
   }
 }
 
@@ -939,7 +1009,7 @@ body {
   }
 
   .download-wrap h3 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .download-btn {
@@ -950,6 +1020,10 @@ body {
   }
 
   .cap-list li {
-    font-size: 0.93rem;
+    font-size: 0.92rem;
+  }
+
+  .cap-overview-row {
+    margin-bottom: 22px;
   }
 }
