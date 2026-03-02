@@ -847,5 +847,29 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   MOBILE MENU DROPDOWN ALIGNMENT FIX
+   Ensures dropdown content is LEFT-ALIGNED not centered
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  
+  .mega-dropdown {
+    text-align: left !important;
+  }
+  
+  .mega-col {
+    text-align: left !important;
+  }
+  
+  .mega-col h4 {
+    text-align: left !important;
+  }
+  
+  .mega-col a {
+    text-align: left !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    END OF MOBILE RESPONSIVE FIXES
 ═══════════════════════════════════════════════════════════════════ */
