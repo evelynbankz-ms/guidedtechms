@@ -786,3 +786,170 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+/* ================================================
+   CAPABILITY PAGE — ADDITIONAL STYLES
+   Add these to the bottom of your capability.css
+================================================ */
+
+/* NAICS / Company Data / Partnerships cards row */
+.cap-grid.three .cap-card h3 {
+  color: #1B4F72;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eaf2f8;
+}
+
+/* Overview website link */
+.cap-section a {
+  color: #1B4F72;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cap-section a:hover {
+  text-decoration: underline;
+}
+
+/* Differentiators tagline */
+.diff-tagline {
+  font-weight: 600;
+  color: #1B4F72;
+  margin-bottom: 20px;
+}
+
+/* Download Section */
+.download-wrap {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.download-wrap h3 {
+  color: #1B4F72;
+  margin-bottom: 14px;
+  font-size: 1.3rem;
+}
+
+.download-wrap p {
+  color: #2E4053;
+  margin-bottom: 24px;
+}
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #E67E22;
+  color: #fff;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(230, 126, 34, 0.35);
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #cf6d17;
+  transform: translateY(-2px);
+}
+
+.download-btn svg {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ================================================
+   MOBILE RESPONSIVE — CAPABILITY PAGE
+================================================ */
+
+@media (max-width: 900px) {
+  .cap-grid.two,
+  .cap-grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title p {
+    font-size: 1.9rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: 28px;
+  }
+
+  .cap-section {
+    padding: 52px 0;
+  }
+
+  .cap-band {
+    padding: 52px 0;
+  }
+
+  .cap-card {
+    padding: 20px 18px;
+  }
+
+  .download-btn {
+    padding: 12px 22px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title p {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
+  }
+
+  .cap-section {
+    padding: 40px 0;
+  }
+
+  .cap-band {
+    padding: 40px 0;
+  }
+
+  .cap-card {
+    padding: 18px 14px;
+  }
+
+  .tag-grid span {
+    padding: 8px 12px;
+    font-size: 0.88rem;
+  }
+
+  .download-wrap h3 {
+    font-size: 1.1rem;
+  }
+
+  .download-btn {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cap-list li {
+    font-size: 0.93rem;
+  }
+}
