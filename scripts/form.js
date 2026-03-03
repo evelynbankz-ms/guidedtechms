@@ -1,53 +1,74 @@
+// scripts/form.js - Contact form submission with subject field
+
 import { db } from "../admin/firebase.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-const form = document.getElementById("contactForm");
+const form = document.getElementById('contactForm');
 
-form?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const name = form.name.value.trim();
-  const email = form.email.value.trim();
-  const phone = form.phone.value.trim();
-  const message = form.message.value.trim();
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
 
-  if (!name || !email || !message) {
-    alert("Please fill all required fields.");
-    return;
-  }
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>Sending...</span>';
 
-  try {
-    const now = Date.now();
+    try {
+      // Get form data including subject
+      const ticketData = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim() || "",
+        subject: form.subject.value.trim(),  // ✅ SUBJECT FIELD
+        message: form.message.value.trim(),
+        category: form.category?.value || "General",
+        source: "contact-form",
+        status: "open",
+        unreadAdmin: true,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        lastMessageAt: serverTimestamp(),
+        lastMessagePreview: form.message.value.trim().slice(0, 120)
+      };
 
-    // ✅ 1) Create Ticket (container)
-    const ticketRef = await addDoc(collection(db, "tickets"), {
-      subject: "Website Contact", // TODO: optionally add subject input on the form
-      name,
-      email,
-      phone,
-      status: "open",
-      source: "contact-form",
-      createdAt: now,
-      updatedAt: now,
-      lastMessageAt: now,
-      lastMessagePreview: message.slice(0, 120),
-      unreadAdmin: true
-    });
+      // Submit to Firestore
+      await addDoc(collection(db, "tickets"), ticketData);
 
-    // ✅ 2) Add first message into the thread
-    await addDoc(collection(db, "ticket_messages"), {
-      ticketId: ticketRef.id,
-      sender: "user",
-      senderName: name,
-      senderEmail: email,
-      bodyHtml: `<p>${message.replace(/\n/g, "<br>")}</p>`,
-      createdAt: now
-    });
+      // Success feedback
+      submitBtn.innerHTML = '<span>✓ Sent!</span>';
+      submitBtn.style.background = '#10b981';
 
-    alert("Your message has been sent successfully.");
-    form.reset();
-  } catch (err) {
-    console.error("Error saving ticket:", err);
-    alert("Failed to submit message. Please try again.");
-  }
-});
+      // Reset form
+      form.reset();
+
+      // Show success message (if you want to add one)
+      alert('Thank you! Your ticket has been submitted. We\'ll get back to you soon.');
+
+      // Reset button after 3 seconds
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+        submitBtn.disabled = false;
+      }, 3000);
+
+    } catch (error) {
+      console.error('Error submitting ticket:', error);
+      
+      // Error feedback
+      submitBtn.innerHTML = '<span>✗ Failed</span>';
+      submitBtn.style.background = '#ef4444';
+      
+      alert('Failed to submit ticket. Please try again or contact us directly at info@guidedtechms.com');
+
+      // Reset button after 3 seconds
+      setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+        submitBtn.disabled = false;
+      }, 3000);
+    }
+  });
+}
