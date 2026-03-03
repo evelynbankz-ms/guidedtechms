@@ -366,7 +366,9 @@ ticketStatus?.addEventListener("change", async()=>{
   loadTickets();
 });
 
-/* ── Send reply / internal note (VERCEL EDITION) ──────────── */
+/* ══════════════════════════════════════════════════════════
+   SEND REPLY / INTERNAL NOTE (VERCEL + SENDGRID)
+══════════════════════════════════════════════════════════ */
 sendReplyBtn?.addEventListener("click", async()=>{
   if (!currentTicketId) return;
   const html = window.getTicketReplyHTML?window.getTicketReplyHTML():"";
@@ -376,54 +378,75 @@ sendReplyBtn?.addEventListener("click", async()=>{
   const isNote = mode==="note";
   const now    = Date.now();
 
-  // 1) Save to Firestore thread
-  await addDoc(collection(db,"ticket_messages"),{
-    ticketId:    currentTicketId,
-    sender:      "admin",
-    senderName:  "Admin",
-    senderEmail: "info@guidedtechms.com",
-    bodyHtml:    html,
-    isNote:      isNote,
-    createdAt:   now
-  });
+  // Disable button during send
+  sendReplyBtn.disabled = true;
+  const originalText = sendReplyBtn.textContent;
+  sendReplyBtn.textContent = "Sending…";
 
-  // 2) Update ticket
-  await updateDoc(doc(db,"tickets",currentTicketId),{
-    status:             isNote ? (currentTicketData?.status||"open") : "pending",
-    updatedAt:          now,
-    lastMessageAt:      now,
-    lastMessagePreview: stripHtml(html).slice(0,120)
-  });
+  try {
+    // 1) Save to Firestore thread
+    await addDoc(collection(db,"ticket_messages"),{
+      ticketId:    currentTicketId,
+      sender:      "admin",
+      senderName:  "Admin",
+      senderEmail: "info@guidedtechms.com",
+      bodyHtml:    html,
+      isNote:      isNote,
+      createdAt:   now
+    });
 
-  // 3) Send email via Vercel serverless function (skip for internal notes)
-  if (!isNote && currentTicketData?.email) {
-    try {
-      const resp = await fetch("https://YOUR-VERCEL-DOMAIN.vercel.app/api/send-ticket-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-secret": "YOUR_ADMIN_SECRET_HERE"
-        },
-        body: JSON.stringify({
-          ticketId:  currentTicketId,
-          toEmail:   currentTicketData.email,
-          toName:    currentTicketData.name,
-          subject:   currentTicketData.subject,
-          bodyHtml:  html
-        })
-      });
+    // 2) Update ticket
+    await updateDoc(doc(db,"tickets",currentTicketId),{
+      status:             isNote ? (currentTicketData?.status||"open") : "pending",
+      updatedAt:          now,
+      lastMessageAt:      now,
+      lastMessagePreview: stripHtml(html).slice(0,120)
+    });
 
-      if (!resp.ok) {
-        console.error("Email failed:", resp.status, await resp.text().catch(()=>""));
+    // 3) Send email via Vercel serverless function (skip for internal notes)
+    if (!isNote && currentTicketData?.email) {
+      try {
+        const resp = await fetch("/api/send-ticket-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-secret": "guidedtechmsadminticketkey26!"  // ← REPLACE THIS WITH YOUR ACTUAL SECRET
+          },
+          body: JSON.stringify({
+            ticketId:  currentTicketId,
+            toEmail:   currentTicketData.email,
+            toName:    currentTicketData.name,
+            subject:   currentTicketData.subject,
+            bodyHtml:  html
+          })
+        });
+
+        if (!resp.ok) {
+          const errorText = await resp.text().catch(()=>"Unknown error");
+          console.error("Email failed:", resp.status, errorText);
+          alert("✅ Reply saved to ticket, but email notification failed. Check console for details.");
+        } else {
+          console.log("✅ Email sent successfully");
+        }
+      } catch (err) {
+        console.error("Email error:", err);
+        alert("✅ Reply saved to ticket, but email notification failed.");
       }
-    } catch (err) {
-      console.error("Email error:", err);
     }
-  }
 
-  if (window.clearTicketReply) window.clearTicketReply();
-  await loadTickets();
-  await loadThread(currentTicketId);
+    // Clear editor and refresh
+    if (window.clearTicketReply) window.clearTicketReply();
+    await loadTickets();
+    await loadThread(currentTicketId);
+
+  } catch (err) {
+    console.error("Reply error:", err);
+    alert("Failed to send reply. Please try again.");
+  } finally {
+    // Re-enable button
+    sendReplyBtn.disabled = false;
+    sendReplyBtn.textContent = originalText;
+  }
 });
 
 /* ── Close ticket ────────────────────────────────────────── */
@@ -445,7 +468,9 @@ sortFilter?.addEventListener("change", renderTicketList);
 searchInput?.addEventListener("input", renderTicketList);
 refreshBtn?.addEventListener("click", loadTickets);
 
-/* ── MERGE FEATURE ───────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   MERGE FEATURE
+══════════════════════════════════════════════════════════ */
 mergeTicketBtn?.addEventListener("click",()=>{
   if (!currentTicketId) return;
   openMergeModal(currentTicketId);
@@ -666,7 +691,9 @@ function makeHeaderResizer(resizerId, headerId) {
   });
 }
 
-/* ── Init ────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════ */
 document.addEventListener("DOMContentLoaded", ()=>{
   showEmptyState();
   loadTickets();
