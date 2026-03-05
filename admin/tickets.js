@@ -186,6 +186,16 @@ function renderTicketList() {
     const displayName = t.name || t.email || "Unknown";
     const unread = t.unreadAdmin ? `<span class="unread-dot"></span>`:"";
 
+    // ✅ Determine category badge based on source
+    let categoryBadge = '';
+    if (t.source === 'direct-email' || t.source === 'follow-up-email') {
+      const badgeText = t.category || 'General Email';
+      const badgeColor = t.source === 'follow-up-email' ? '#3b82f6' : '#8b5cf6';
+      categoryBadge = `<span class="badge" style="background:${badgeColor}20;color:${badgeColor};border:1px solid ${badgeColor}40">📧 ${esc(badgeText)}</span>`;
+    } else if (t.source === 'contact-form') {
+      categoryBadge = `<span class="badge" style="background:#10b98120;color:#10b981;border:1px solid #10b98140">📝 Contact Form</span>`;
+    }
+
     item.innerHTML = `
       <div class="ti-top">
         <span class="ti-name">${unread}${esc(displayName)}</span>
@@ -195,8 +205,8 @@ function renderTicketList() {
       <div class="ti-preview">${esc(t.lastMessagePreview||"")}</div>
       <div class="ti-bottom">
         <span class="badge ${status}">${status}</span>
+        ${categoryBadge}
         ${t.mergedInto?`<span class="badge" style="background:#e8f5e9;color:#2e7d32">🔗 merged</span>`:""}
-        ${t.category?`<span style="font-size:11px;color:#96a2b0">${esc(t.category)}</span>`:""}
         <input class="merge-checkbox" type="checkbox" title="Select for merge"
           ${selectedForMerge.has(t.id)?"checked":""} style="margin-left:auto">
       </div>
@@ -378,13 +388,11 @@ sendReplyBtn?.addEventListener("click", async()=>{
   const isNote = mode==="note";
   const now    = Date.now();
 
-  // Disable button during send
   sendReplyBtn.disabled = true;
   const originalText = sendReplyBtn.textContent;
   sendReplyBtn.textContent = "Sending…";
 
   try {
-    // 1) Save to Firestore thread
     await addDoc(collection(db,"ticket_messages"),{
       ticketId:    currentTicketId,
       sender:      "admin",
@@ -395,7 +403,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
       createdAt:   now
     });
 
-    // 2) Update ticket
     await updateDoc(doc(db,"tickets",currentTicketId),{
       status:             isNote ? (currentTicketData?.status||"open") : "pending",
       updatedAt:          now,
@@ -403,14 +410,13 @@ sendReplyBtn?.addEventListener("click", async()=>{
       lastMessagePreview: stripHtml(html).slice(0,120)
     });
 
-    // 3) Send email via Vercel serverless function (skip for internal notes)
     if (!isNote && currentTicketData?.email) {
       try {
         const resp = await fetch("/api/send-ticket-email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-admin-secret": "guidedtechmsadminticketkey26!"  // ← REPLACE THIS WITH YOUR ACTUAL SECRET
+            "x-admin-secret": "guidedtechmsadminticketkey26!"
           },
           body: JSON.stringify({
             ticketId:  currentTicketId,
@@ -434,7 +440,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
       }
     }
 
-    // Clear editor and refresh
     if (window.clearTicketReply) window.clearTicketReply();
     await loadTickets();
     await loadThread(currentTicketId);
@@ -443,7 +448,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
     console.error("Reply error:", err);
     alert("Failed to send reply. Please try again.");
   } finally {
-    // Re-enable button
     sendReplyBtn.disabled = false;
     sendReplyBtn.textContent = originalText;
   }
@@ -702,4 +706,3 @@ document.addEventListener("DOMContentLoaded", ()=>{
   makeRowResizer("resizerTR", "ticketThread", "tdReply");
   makeHeaderResizer("headerResizer", "tdHeader");
 });
-
