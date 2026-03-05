@@ -388,13 +388,11 @@ sendReplyBtn?.addEventListener("click", async()=>{
   const isNote = mode==="note";
   const now    = Date.now();
 
-  // Disable button during send
   sendReplyBtn.disabled = true;
   const originalText = sendReplyBtn.textContent;
   sendReplyBtn.textContent = "Sending…";
 
   try {
-    // 1) Save to Firestore thread
     await addDoc(collection(db,"ticket_messages"),{
       ticketId:    currentTicketId,
       sender:      "admin",
@@ -405,7 +403,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
       createdAt:   now
     });
 
-    // 2) Update ticket
     await updateDoc(doc(db,"tickets",currentTicketId),{
       status:             isNote ? (currentTicketData?.status||"open") : "pending",
       updatedAt:          now,
@@ -413,7 +410,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
       lastMessagePreview: stripHtml(html).slice(0,120)
     });
 
-    // 3) Send email via Vercel serverless function (skip for internal notes)
     if (!isNote && currentTicketData?.email) {
       try {
         const resp = await fetch("/api/send-ticket-email", {
@@ -444,7 +440,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
       }
     }
 
-    // Clear editor and refresh
     if (window.clearTicketReply) window.clearTicketReply();
     await loadTickets();
     await loadThread(currentTicketId);
@@ -453,7 +448,6 @@ sendReplyBtn?.addEventListener("click", async()=>{
     console.error("Reply error:", err);
     alert("Failed to send reply. Please try again.");
   } finally {
-    // Re-enable button
     sendReplyBtn.disabled = false;
     sendReplyBtn.textContent = originalText;
   }
