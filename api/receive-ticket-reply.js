@@ -1,16 +1,13 @@
 /* ============================================================
    FILE: api/receive-ticket-reply.js
-   Vercel Serverless Function — Handle incoming email replies
+   FINAL VERSION - Shows ALL emails in admin ticket panel
    
-   SETUP:
-   1. Deploy this function
-   2. Configure SendGrid Inbound Parse:
-      - Go to https://app.sendgrid.com/settings/parse
-      - Click "Add Host & URL"
-      - Hostname: reply.guidedtechms.com (or subdomain you own)
-      - URL: https://yourdomain.vercel.app/api/receive-ticket-reply
-      - Check "POST the raw, full MIME message"
-   3. Add MX records to your DNS for the subdomain
+   Categorizes emails automatically:
+   - "Ticket Reply" - Customer replying to existing ticket
+   - "New Inquiry" - New email from contact form
+   - "General Email" - Any other email to info@guidedtechms.com
+   
+   ALL emails appear in admin panel with category badges!
    
    REQUIRED ENV VARS:
    - FIREBASE_SERVICE_ACCOUNT
@@ -28,14 +25,14 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-// Disable body parsing (we need raw body)
+// Disable body parsing
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-// Helper to parse email body
+// Get raw body
 async function getRawBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];
@@ -45,7 +42,7 @@ async function getRawBody(req) {
   });
 }
 
-// Parse multipart form data (simple parser for email body)
+// Parse multipart form data
 function parseMultipart(body, boundary) {
   const parts = body.split(`--${boundary}`);
   const fields = {};
@@ -63,17 +60,33 @@ function parseMultipart(body, boundary) {
   return fields;
 }
 
-// Extract ticket ID from subject or email headers
+// Extract ticket ID from subject or headers
 function extractTicketId(subject, headers) {
-  // Look for ticket ID in subject: "Re: [Ticket #ABC123]"
-  const subjectMatch = subject?.match(/Ticket #([A-Za-z0-9]+)/i);
+  const subjectMatch = subject?.match(/\[?Ticket #([A-Za-z0-9]+)\]?/i);
   if (subjectMatch) return subjectMatch[1];
   
-  // Look in custom headers
   const headerMatch = headers?.match(/X-Ticket-ID:\s*([A-Za-z0-9]+)/i);
   if (headerMatch) return headerMatch[1];
   
   return null;
+}
+
+// Extract name from email address
+function extractName(emailString) {
+  // Try to get name from "John Doe <john@example.com>" format
+  const nameMatch = emailString.match(/^(.+?)\s*</);
+  if (nameMatch) return nameMatch[1].trim().replace(/"/g, '');
+  
+  // Otherwise use email before @
+  const emailMatch = emailString.match(/<([^>]+)>/) || [null, emailString];
+  const email = emailMatch[1];
+  return email.split('@')[0].replace(/[._-]/g, ' ');
+}
+
+// Extract email address only
+function extractEmail(emailString) {
+  const match = emailString.match(/<([^>]+)>/);
+  return match ? match[1] : emailString;
 }
 
 export default async function handler(req, res) {
@@ -95,79 +108,113 @@ export default async function handler(req, res) {
 
     const from = fields.from || '';
     const to = fields.to || '';
-    const subject = fields.subject || '';
+    const subject = fields.subject || 'No Subject';
     const text = fields.text || '';
     const html = fields.html || '';
     const headers = fields.headers || '';
 
-    // Extract email address from "Name <email@domain.com>" format
-    const emailMatch = from.match(/<([^>]+)>/);
-    const senderEmail = emailMatch ? emailMatch[1] : from;
+    const senderEmail = extractEmail(from);
+    const senderName = extractName(from);
 
-    // Try to find the ticket
-    let ticketId = extractTicketId(subject, headers);
-    let ticket = null;
+    // Check if this is a ticket reply
+    const ticketId = extractTicketId(subject, headers);
 
-    // If no ticket ID in subject, try to find by email
-    if (!ticketId) {
-      const ticketsSnap = await db.collection('tickets')
-        .where('email', '==', senderEmail)
-        .where('status', 'in', ['open', 'pending'])
-        .orderBy('updatedAt', 'desc')
-        .limit(1)
-        .get();
-
-      if (!ticketsSnap.empty) {
-        ticket = ticketsSnap.docs[0];
-        ticketId = ticket.id;
-      }
-    } else {
+    // SCENARIO 1: Reply to existing ticket
+    if (ticketId) {
       const ticketSnap = await db.collection('tickets').doc(ticketId).get();
+      
       if (ticketSnap.exists) {
-        ticket = ticketSnap;
+        // Add reply to existing ticket thread
+        await db.collection('ticket_messages').add({
+          ticketId: ticketId,
+          sender: 'user',
+          senderName: senderName,
+          senderEmail: senderEmail,
+          bodyHtml: html || `<p>${text.replace(/\n/g, '<br>')}</p>`,
+          isNote: false,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+
+        // Update ticket
+        await db.collection('tickets').doc(ticketId).update({
+          status: 'open',
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          lastMessageAt: admin.firestore.FieldValue.serverTimestamp(),
+          lastMessagePreview: text.slice(0, 120),
+          unreadAdmin: true,
+        });
+
+        console.log(`✅ Reply added to ticket ${ticketId}`);
+
+        return res.status(200).json({ 
+          success: true,
+          action: 'ticket_reply',
+          category: 'Ticket Reply',
+          ticketId
+        });
       }
     }
 
-    if (!ticket || !ticketId) {
-      console.log('No matching ticket found for email from:', senderEmail);
-      return res.status(200).json({ 
-        message: 'Email received but no matching ticket found',
-        from: senderEmail 
-      });
+    // SCENARIO 2 & 3: New email (no ticket ID or ticket not found)
+    // Check if sender has existing tickets
+    const existingTickets = await db.collection('tickets')
+      .where('email', '==', senderEmail)
+      .where('status', 'in', ['open', 'pending'])
+      .orderBy('updatedAt', 'desc')
+      .limit(1)
+      .get();
+
+    let category = 'General Email';
+    let source = 'direct-email';
+
+    // If sender has open tickets, likely a follow-up
+    if (!existingTickets.empty) {
+      category = 'Follow-up Email';
+      source = 'follow-up-email';
     }
 
-    const ticketData = ticket.data();
+    // Create new ticket for this email
+    const now = admin.firestore.FieldValue.serverTimestamp();
+    
+    const newTicket = await db.collection('tickets').add({
+      name: senderName,
+      email: senderEmail,
+      phone: '',
+      subject: subject.replace(/^(Re:|Fwd?:)\s*/gi, '').trim(),
+      message: text,
+      category: category,  // "General Email" or "Follow-up Email"
+      source: source,      // "direct-email" or "follow-up-email"
+      status: 'open',
+      unreadAdmin: true,
+      createdAt: now,
+      updatedAt: now,
+      lastMessageAt: now,
+      lastMessagePreview: text.slice(0, 120),
+      emailSource: 'inbound-parse'  // Tag to identify it came from email
+    });
 
-    // Add message to ticket thread
+    // Add initial message to thread
     await db.collection('ticket_messages').add({
-      ticketId: ticketId,
+      ticketId: newTicket.id,
       sender: 'user',
-      senderName: ticketData.name || 'Customer',
+      senderName: senderName,
       senderEmail: senderEmail,
       bodyHtml: html || `<p>${text.replace(/\n/g, '<br>')}</p>`,
       isNote: false,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: now,
     });
 
-    // Update ticket
-    await db.collection('tickets').doc(ticketId).update({
-      status: 'open',
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      lastMessageAt: admin.firestore.FieldValue.serverTimestamp(),
-      lastMessagePreview: text.slice(0, 120),
-      unreadAdmin: true,
-    });
-
-    console.log(`✅ Reply added to ticket ${ticketId} from ${senderEmail}`);
+    console.log(`✅ New ticket created from email: ${newTicket.id} - Category: ${category}`);
 
     return res.status(200).json({ 
-      success: true, 
-      ticketId,
-      message: 'Reply added to ticket' 
+      success: true,
+      action: 'new_ticket',
+      category: category,
+      ticketId: newTicket.id
     });
 
   } catch (error) {
-    console.error('Error processing email reply:', error);
+    console.error('Error processing email:', error);
     return res.status(500).json({ 
       error: 'Failed to process email',
       detail: error.message 
