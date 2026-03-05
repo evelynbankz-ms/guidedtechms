@@ -702,3 +702,59 @@ document.addEventListener("DOMContentLoaded", ()=>{
   makeRowResizer("resizerTR", "ticketThread", "tdReply");
   makeHeaderResizer("headerResizer", "tdHeader");
 });
+
+
+
+
+
+/* ============================================================
+   renderTicketList() function
+   Shows category/source badges for each ticket
+   ============================================================ */
+
+// Inside renderTicketList() function, update the ticket item HTML:
+
+function renderTicketList() {
+  // ... existing code ...
+
+  items.forEach(t=>{
+    const status = normStatus(t.status);
+    const item   = document.createElement("div");
+    item.className = "ticket-item";
+    item.dataset.id = t.id;
+
+    if (t.id===currentTicketId) item.classList.add("active");
+    if (selectedForMerge.has(t.id)) item.classList.add("selected-for-merge");
+
+    const displayName = t.name || t.email || "Unknown";
+    const unread = t.unreadAdmin ? `<span class="unread-dot"></span>`:"";
+
+    // ✅ NEW: Determine category badge based on source
+    let categoryBadge = '';
+    if (t.source === 'direct-email' || t.source === 'follow-up-email') {
+      const badgeText = t.category || 'General Email';
+      const badgeColor = t.source === 'follow-up-email' ? '#3b82f6' : '#8b5cf6';
+      categoryBadge = `<span class="badge" style="background:${badgeColor}20;color:${badgeColor};border:1px solid ${badgeColor}40">📧 ${esc(badgeText)}</span>`;
+    } else if (t.source === 'contact-form') {
+      categoryBadge = `<span class="badge" style="background:#10b98120;color:#10b981;border:1px solid #10b98140">📝 Contact Form</span>`;
+    }
+
+    item.innerHTML = `
+      <div class="ti-top">
+        <span class="ti-name">${unread}${esc(displayName)}</span>
+        <span class="ti-time">${fmtShort(t.lastMessageAt||t.createdAt)}</span>
+      </div>
+      <div class="ti-subject">${esc(t.subject||"No subject")}</div>
+      <div class="ti-preview">${esc(t.lastMessagePreview||"")}</div>
+      <div class="ti-bottom">
+        <span class="badge ${status}">${status}</span>
+        ${categoryBadge}
+        ${t.mergedInto?`<span class="badge" style="background:#e8f5e9;color:#2e7d32">🔗 merged</span>`:""}
+        <input class="merge-checkbox" type="checkbox" title="Select for merge"
+          ${selectedForMerge.has(t.id)?"checked":""} style="margin-left:auto">
+      </div>
+    `;
+
+    // ... rest of the code ...
+  });
+}
