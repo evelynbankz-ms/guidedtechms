@@ -527,12 +527,12 @@
 
   .gts-footer-col a {
     font-size: 0.9rem;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
   }
 
   .footer-social {
     margin-top: 12px;
-    gap: 12px;
+    gap: 8px;
   }
 
   .footer-social img {
@@ -729,10 +729,15 @@
 
   .gts-footer-col a {
     font-size: 0.85rem;
+    margin-bottom: 2px;
   }
 
   .footer-social img {
     width: 18px;
+  }
+  
+  .footer-social {
+    gap: 6px;
   }
   
   .gts-footer-bottom {
