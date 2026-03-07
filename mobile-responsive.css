@@ -487,17 +487,17 @@
     margin: 0 auto;
   }
 
-  /* Force proper column order: SERVICES left, RESOURCES+ABOUT right */
-  .gts-footer-col:nth-child(1) { order: 1; } /* Company info - first */
-  .gts-footer-col:nth-child(2) { order: 2; } /* SERVICES - left column */
-  .gts-footer-col:nth-child(3) { order: 3; } /* RESOURCES - right column */
-  .gts-footer-col:nth-child(4) { order: 4; } /* ABOUT - right column below RESOURCES */
-  
-  .about-col {
+  /* Company info spans full width and appears FIRST */
+  .gts-footer-col.about-col {
     grid-column: span 2;
     order: 0;
     margin-bottom: 10px;
   }
+
+  /* Force proper column order: SERVICES left, RESOURCES+ABOUT right */
+  .gts-footer-col:nth-child(2) { order: 1; } /* SERVICES - left column */
+  .gts-footer-col:nth-child(3) { order: 2; } /* RESOURCES - right column */
+  .gts-footer-col:nth-child(4) { order: 3; } /* ABOUT - below RESOURCES */
 
   .footer-logo {
     font-size: 1.2rem;
@@ -701,7 +701,7 @@
 
   .gts-footer-inner {
     padding: 0 14px;
-    gap: 35px 16px;
+    gap: 25px 16px;
   }
 
   .footer-logo {
@@ -714,7 +714,7 @@
 
   .footer-heading {
     font-size: 11px;
-    margin: 16px 0 6px;
+    margin: 10px 0 6px;
   }
 
   .gts-footer-col a {
@@ -724,6 +724,12 @@
   .footer-social img {
     width: 18px;
   }
+  
+  .gts-footer-bottom {
+    margin-top: 25px;
+    padding-top: 18px;
+  }
+}
 }
 
 /* ═══════════════════════════════════════════════════════════════════
