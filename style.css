@@ -1691,3 +1691,43 @@ body {
   .hero-main-img { border-radius: 12px; }
   .floating-card { width: 180px; padding:10px; }
 }
+
+
+
+/* ══════════════════════════════════════════════════════════
+   FOOTER MOBILE OVERRIDE - PASTE AT BOTTOM OF style.css
+══════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  .gts-footer-col a {
+    margin-bottom: 0px !important;
+    padding: 2px 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  .footer-social {
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .gts-footer-col a {
+    padding: 1px 0 !important;
+    line-height: 1.1 !important;
+  }
+  
+  .footer-social {
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .gts-footer-col a {
+    padding: 0px 0 !important;
+    line-height: 1.05 !important;
+  }
+  
+  .footer-social {
+    gap: 8px !important;
+  }
+}
