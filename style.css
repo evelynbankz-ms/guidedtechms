@@ -1557,6 +1557,8 @@ body {
 
 
 /* ---------- FOOTER ---------- */
+
+/* FOOTER BOTTOM */
 .gts-footer {
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   background-size: cover;
@@ -1611,19 +1613,21 @@ body {
   display: flex;
   gap: 14px;
   margin-top: 18px;
-  filter: brightness(0) invert(1); /* ← FORCES WHITE ICON */
 }
 
 .footer-social img {
   width: 22px;
   opacity: 0.8;
   transition: 0.2s;
+  filter: brightness(0) invert(1); /* ← FORCES WHITE ICON */
 }
 
 .footer-social img:hover {
   opacity: 1;
   transform: scale(1.1);
 }
+
+
 
 /* Footer Bottom */
 .gts-footer-bottom {
@@ -1648,6 +1652,12 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+
+
 
 
 /* ---------- ANIMATIONS & FADE-IN ---------- */
@@ -1694,40 +1704,4 @@ body {
 
 
 
-/* ══════════════════════════════════════════════════════════
-   FOOTER MOBILE OVERRIDE - PASTE AT BOTTOM OF style.css
-══════════════════════════════════════════════════════════ */
 
-@media (max-width: 767px) {
-  .gts-footer-col a {
-    margin-bottom: 0px !important;
-    padding: 2px 0 !important;
-    line-height: 1.2 !important;
-  }
-  
-  .footer-social {
-    gap: 12px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .gts-footer-col a {
-    padding: 1px 0 !important;
-    line-height: 1.1 !important;
-  }
-  
-  .footer-social {
-    gap: 10px !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .gts-footer-col a {
-    padding: 0px 0 !important;
-    line-height: 1.05 !important;
-  }
-  
-  .footer-social {
-    gap: 8px !important;
-  }
-}
