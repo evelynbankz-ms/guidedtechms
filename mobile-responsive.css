@@ -474,89 +474,52 @@
   }
 
   /* ── FOOTER ────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+     FOOTER - Same as homepage mobile
+  ═══════════════════════════════════════════════════════════ */
+  
   .gts-footer {
     padding: 50px 0 25px;
   }
-
+  
   .gts-footer-inner {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px 20px;
-    width: 100%;
-    max-width: 100%;
     padding: 0 16px;
-    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 20px;
   }
-
-  /* Company info spans full width and appears FIRST */
-  .gts-footer-col.about-col {
+  
+  .gts-footer-col:first-child {
     grid-column: span 2;
-    order: 0;
-    margin-bottom: 10px;
   }
-
-  /* Force proper column order: SERVICES left, RESOURCES+ABOUT right */
-  .gts-footer-col:nth-child(2) { order: 1; } /* SERVICES - left column */
-  .gts-footer-col:nth-child(3) { order: 2; } /* RESOURCES - right column */
-  .gts-footer-col:nth-child(4) { order: 3; } /* ABOUT - below RESOURCES */
-
+  
   .footer-logo {
     font-size: 1.2rem;
-    margin-bottom: 8px;
   }
-
+  
   .footer-desc {
     font-size: 0.9rem;
-    max-width: 100%;
-    margin-bottom: 12px;
   }
-
+  
   .footer-heading {
     font-size: 12px;
-    margin: 0 0 8px 0;
+    margin: 18px 0 8px;
   }
   
-  /* Ensure CONTACT US heading has no top margin */
-  .about-col .footer-heading {
-    margin-top: 14px;
-  }
-  
-  /* Service/Resource/About headings have NO top margin */
-  .gts-footer-col:not(.about-col) .footer-heading {
-    margin-top: 0;
-  }
-
-  /* ── FOOTER LINKS - FORCE TIGHT SPACING ─────────────────────────── */
-  .gts-footer .gts-footer-inner .gts-footer-col a {
+  .gts-footer-col a {
     font-size: 0.9rem;
-    margin-bottom: 0px !important;
-    margin-top: 0px !important;
-    padding: 4px 0 !important;
-    display: block !important;
-    line-height: 1.3 !important;
-  }
-
-  /* ── SOCIAL ICONS - FORCE TIGHT SPACING ────────────────────────── */
-  .gts-footer .gts-footer-inner .about-col .footer-social {
-    margin-top: 12px;
-    gap: 10px !important;
-    display: flex !important;
+    margin-bottom: 6px;
   }
   
-  .gts-footer .gts-footer-inner .about-col .footer-social a {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
   .footer-social img {
     width: 19px;
   }
-
+  
   .gts-footer-bottom {
-    margin-top: 30px;
-    padding-top: 20px;
     font-size: 0.8rem;
+    padding: 0 16px;
   }
-}
+
+
 
 /* ═══════════════════════════════════════════════════════════════════
    SMALL MOBILE BREAKPOINT (max-width: 480px)
