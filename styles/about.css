@@ -1740,52 +1740,88 @@ body {
 
 
   
-/* ═══════════════════════════════════════════════════════════
-     FOOTER - Same as homepage mobile
-  ═══════════════════════════════════════════════════════════ */
+/* FOOTER - EXACT MATCH TO OTHER PAGES */
   
-  .gts-footer {
-    padding: 50px 0 25px;
-  }
-  
-  .gts-footer-inner {
-    padding: 0 16px;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px 20px;
-  }
-  
-  .gts-footer-col:first-child {
-    grid-column: span 2;
-  }
-  
-  .footer-logo {
-    font-size: 1.2rem;
-  }
-  
-  .footer-desc {
-    font-size: 0.9rem;
-  }
-  
-  .footer-heading {
-    font-size: 12px;
-    margin: 18px 0 8px;
-  }
-  
-  .gts-footer-col a {
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-  }
-  
-  .footer-social img {
-    width: 19px;
-  }
-  
-  .gts-footer-bottom {
-    font-size: 0.8rem;
-    padding: 0 16px;
-  }
+.gts-footer {
+  padding: 50px 0 25px;
+}
 
+.gts-footer-inner {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 16px !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px 20px;
+}
 
+.gts-footer-col.about-col {
+  grid-column: span 2;
+  order: 0;
+  margin-bottom: 10px;
+}
+
+.gts-footer-col:nth-child(2) {
+  order: 1;
+}
+
+.gts-footer-col:nth-child(3) {
+  order: 2;
+}
+
+.gts-footer-col:nth-child(4) {
+  order: 3;
+}
+
+.footer-logo {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  max-width: 100%;
+  margin-bottom: 12px;
+}
+
+.footer-heading {
+  font-size: 12px;
+  margin: 0 0 8px 0;
+}
+
+.about-col .footer-heading {
+  margin-top: 14px;
+}
+
+.gts-footer-col:not(.about-col) .footer-heading {
+  margin-top: 0;
+}
+
+.gts-footer-col a {
+  font-size: 0.9rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 2 !important;
+}
+
+.footer-social {
+  margin-top: 12px;
+  gap: 12px !important;
+}
+
+.footer-social a {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.footer-social img {
+  width: 19px;
+}
+
+.gts-footer-bottom {
+  margin-top: 30px;
+  padding-top: 20px;
+  font-size: 0.8rem;
+}
 
 
   /* LEADERS & TEAM - 2 PER ROW, SMALLER */
