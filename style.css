@@ -1385,7 +1385,7 @@ body {
   background: #4ba3ff;
 }
 
-/* FOOTER */
+/* FOOTER - MATCHING OTHER PAGES EXACTLY */
 .gts-footer {
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   background-size: cover;
@@ -1410,6 +1410,13 @@ body {
   margin: 25px 0 12px;
 }
 
+.footer-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
 .footer-desc {
   max-width: 320px;
   line-height: 1.6;
@@ -1420,7 +1427,6 @@ body {
 .gts-footer-col a {
   display: block;
   font-size: 15px;
-  margin-bottom: 8px;
   text-decoration: none;
   color: rgba(255,255,255,0.75);
   transition: 0.2s;
@@ -1468,41 +1474,6 @@ body {
 @media (max-width: 700px) {
   .gts-footer-inner {
     grid-template-columns: 1fr;
-  }
-}
-
-/* MOBILE FOOTER TIGHT SPACING */
-@media (max-width: 767px) {
-  .gts-footer-col a {
-    margin-bottom: 0px;
-    padding: 2px 0;
-    line-height: 1.2;
-  }
-  
-  .footer-social {
-    gap: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .gts-footer-col a {
-    padding: 1px 0;
-    line-height: 1.1;
-  }
-  
-  .footer-social {
-    gap: 10px;
-  }
-}
-
-@media (max-width: 360px) {
-  .gts-footer-col a {
-    padding: 0px 0;
-    line-height: 1.05;
-  }
-  
-  .footer-social {
-    gap: 8px;
   }
 }
 
