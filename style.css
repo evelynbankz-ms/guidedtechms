@@ -24,32 +24,22 @@ body {
   line-height:1.5;
 }
 
-
-/* =========================================================
-   GLOBAL ANTI-HORIZONTAL-OVERFLOW PACK (ALL PAGES)
-   Paste near the top of style.css (after reset)
-========================================================= */
-
-/* 1) Always prevent sideways scroll */
 html, body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-/* 2) Consistent sizing everywhere */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* 3) Media can never overflow */
 img, video, svg, canvas {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* 4) Fix the classic mobile “100vw causes overflow” issue */
 :root {
   --safe-vw: 100%;
 }
@@ -59,13 +49,9 @@ img, video, svg, canvas {
   max-width: 100%;
 }
 
-/* If you personally used width:100vw anywhere, convert it to 100% (recommended).
-   But this helps protect you even if you miss one. */
 body {
   position: relative;
 }
-
-
 
 .container {
   width: 100%;
@@ -77,18 +63,8 @@ body {
 }
 
 .page-wrapper { min-height:100vh; }
-/* =========================================================
-   GLOBAL NAVBAR — FINAL (COPY/PASTE EVERYTHING)
-   - Overlay: NO dark/white filter, NO blur (click-catcher only)
-   - Menu opens BELOW navbar (no overlap with hamburger)
-   - Links click properly
-   - Dropdowns open with .nav-item.open (your JS)
-   - Removes external pseudo X
-========================================================= */
 
-/* =========================
-   NAVBAR (GLOBAL)
-========================= */
+/* NAVBAR */
 .navbar{
   width:100%;
   position:sticky;
@@ -97,7 +73,7 @@ body {
   display:flex;
   align-items:center;
   background:linear-gradient(135deg,#071a24 0%,#0d2a3a 100%);
-  z-index:4000; /* keep above overlay */
+  z-index:4000;
 }
 
 .navbar-container{
@@ -122,7 +98,6 @@ body {
 }
 
 .navbar-logo-img{ width:32px; height:32px; }
-
 .logo-text{ line-height:1.1; }
 
 .navbar-actions{
@@ -144,7 +119,6 @@ body {
   justify-content:center;
 }
 
-/* Hamburger */
 .menu-toggle{
   display:none;
   background:none;
@@ -163,25 +137,18 @@ body {
   transition:all 0.3s ease;
 }
 
-
-/* ✅ Mobile close button should NEVER show on desktop */
 .mobile-nav-close {
   display: none;
 }
 
-/* =========================
-   OVERLAY (GLOBAL)
-   ✅ NO filter / NO blur / NO tint
-   ✅ Only used to close on outside click
-========================= */
 .nav-overlay{
   position:fixed;
   inset:0;
-  background:transparent;     /* IMPORTANT: no dark/white overlay */
+  background:transparent;
   opacity:0;
   pointer-events:none;
   transition:opacity 0.2s ease;
-  z-index:2000;               /* BELOW menu + below navbar */
+  z-index:2000;
 }
 
 .nav-overlay.show{
@@ -189,9 +156,6 @@ body {
   pointer-events:auto;
 }
 
-/* =========================
-   DESKTOP ONLY
-========================= */
 @media (min-width:1025px){
   .navbar-menu{
     display:flex;
@@ -210,7 +174,6 @@ body {
   }
 
   .nav-link:hover{ color:#ffffff; }
-
   .nav-item{ position:relative; }
 
   .mega-dropdown{
@@ -254,17 +217,8 @@ body {
   .mega-col a:hover{ color:#fff; }
 }
 
-/* =========================
-   MOBILE ONLY — MATCH YOUR SERVICES-PRICING
-   ✅ Menu sits BELOW navbar (top: 78px)
-   ✅ Links clickable
-   ✅ Dropdown opens with .nav-item.open
-========================= */
 @media (max-width:1024px){
-
   .menu-toggle{ display:flex; }
-
-  /* Make logo + buttons smaller on mobile */
   .logo-text{ font-size:14px; }
 
   .btn-primary{
@@ -275,44 +229,37 @@ body {
 
   .navbar-actions{ gap:10px; }
 
-  /* MENU PANEL */
   .navbar-menu{
     position:fixed;
-    top:78px;                      /* ✅ BELOW NAVBAR */
+    top:78px;
     right:0;
     width:min(85vw,360px);
-    height:calc(100dvh - 78px);    /* ✅ fits remaining screen */
+    height:calc(100dvh - 78px);
     background:#0b1220;
     overflow-y:auto;
-
-    z-index:3000;                  /* ✅ ABOVE overlay */
+    z-index:3000;
     transform:translateX(105%);
     transition:transform 0.25s ease;
-
     display:flex;
     flex-direction:column;
-
-    padding:0;                     /* no weird offsets */
-    pointer-events:auto;           /* ✅ clickable */
+    padding:0;
+    pointer-events:auto;
   }
 
   .navbar-menu.open{ transform:translateX(0); }
 
-  /* ✅ REMOVE ANY EXTERNAL X (pseudo close icon) */
   .navbar-menu::before,
   .navbar-menu::after{
     content:none !important;
     display:none !important;
   }
 
-  /* ✅ Close button INSIDE menu (the one you want) */
   .mobile-nav-close{
     display:none;
     position:sticky;
     top:0;
     width:100%;
     text-align:right;
-
     background:rgba(11,18,32,0.95);
     color:#fff;
     border:none;
@@ -326,12 +273,10 @@ body {
     display:block;
   }
 
-  /* Give the first link breathing room under the close button */
   .navbar-menu .nav-link:first-of-type{
     margin-top:6px;
   }
 
-  /* LINKS */
   .nav-link{
     width:100%;
     padding:18px 22px;
@@ -340,13 +285,11 @@ body {
     color:#ffffff;
     text-decoration:none;
     border-bottom:1px solid rgba(255,255,255,0.12);
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     transition:padding 0.25s ease;
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
   .nav-link:hover{
@@ -354,8 +297,6 @@ body {
   }
 
   .nav-item{ display:block; }
-
-  /* DROPDOWN PARENT ARROW */
   .nav-parent{ cursor:pointer; }
 
   .nav-parent::after{
@@ -371,7 +312,6 @@ body {
     transform:rotate(90deg);
   }
 
-  /* ✅ DROPDOWN CONTENT — this is what makes it OPEN */
   .mega-dropdown{
     display:none;
     background:rgba(255,255,255,0.06);
@@ -379,7 +319,7 @@ body {
     padding:0;
     margin:12px 18px 8px;
     border:1px solid rgba(255,255,255,0.10);
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
   .nav-item.open .mega-dropdown{
@@ -387,7 +327,6 @@ body {
     padding:18px 20px;
   }
 
-  /* Dropdown links */
   .mega-col{ margin-bottom:18px; }
 
   .mega-col h4{
@@ -411,7 +350,7 @@ body {
     border-radius:8px;
     transition:all 0.25s ease;
     font-weight:500;
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
   .mega-col a:hover{
@@ -420,7 +359,6 @@ body {
   }
 }
 
-/* Smaller phones */
 @media (max-width:520px){
   .navbar-actions{ gap:8px; }
 
@@ -455,43 +393,27 @@ body {
   }
 }
 
-
-
-
-
-/* ----------------------------------------------------
-   HERO SECTION — FINAL, FULLY CORRECTED VERSION
------------------------------------------------------ */
-/* HERO SECTION — softer deep blue */
+/* HERO SECTION */
 .hero-section {
-  background: linear-gradient(
-    135deg,
-    #081e2b 0%,   /* softened version of #071a24 */
-    #0f3144 100%  /* softened version of #0d2a3a */
-  );
+  background: linear-gradient(135deg, #081e2b 0%, #0f3144 100%);
   position: relative;
   padding: 130px 0;
   overflow: hidden;
 }
 
-/* VISIBLE TEMPLATE GRID */
 .hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
-
-  /* NOTICE THE STRONGER LINES */
   background-image:
     linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
-
-  background-size: 160px 160px; /* Bigger grid = more visible */
-  opacity: 0.35;                /* Much stronger */
+  background-size: 160px 160px;
+  opacity: 0.35;
   pointer-events: none;
   z-index: 0;
 }
 
-/* CONTENT ABOVE GRID */
 .hero-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -504,9 +426,6 @@ body {
   z-index: 2;
 }
 
-/* ----------------------------------------------------
-   LEFT SIDE TEXT AREA
------------------------------------------------------ */
 .hero-tag {
   font-size: 0.85rem;
   font-weight: 600;
@@ -523,7 +442,6 @@ body {
   margin-bottom: 18px;
 }
 
-/* HOME PAGE HERO HIGHLIGHT — MATCH ABOUT PAGE */
 .hero-title .underline {
   color: #4ba3ff;
   font-weight: inherit;
@@ -531,7 +449,6 @@ body {
   z-index: 1;
 }
 
-/* REMOVE UNDERLINE EFFECT */
 .hero-title .underline::after {
   content: none;
 }
@@ -544,7 +461,6 @@ body {
   max-width: 520px;
 }
 
-/* BUTTON — UNTOUCHED */
 .hero-btn {
   display: inline-block;
   background-color: #1B4F72;
@@ -563,9 +479,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* ----------------------------------------------------
-   PEOPLE SECTION
------------------------------------------------------ */
 .hero-people {
   margin-top: 8px;
   display: flex;
@@ -607,9 +520,6 @@ body {
   color: #d4e6f1;
 }
 
-/* ----------------------------------------------------
-   RIGHT SIDE — IMAGES (STATIC, SLIGHTLY SMALLER)
------------------------------------------------------ */
 .hero-image-frame {
   width: 100%;
   max-width: 420px;
@@ -618,19 +528,16 @@ body {
   animation: none !important;
 }
 
-/* Main image */
 .hero-main-img {
   width: 100%;
   height: 520px;
   border-radius: 20px;
   object-fit: cover;
-
   transform: none !important;
   animation: none !important;
   transition: none !important;
 }
 
-/* Sub-image */
 .hero-sub-img {
   width: 180px;
   position: absolute;
@@ -638,14 +545,10 @@ body {
   left: 24px;
   border-radius: 14px;
   object-fit: cover;
-
   transform: none !important;
   animation: none !important;
 }
 
-/* ----------------------------------------------------
-   RESPONSIVE
------------------------------------------------------ */
 @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -670,8 +573,7 @@ body {
   }
 }
 
-
-/* ---------- IMPACT / OTHER SECTIONS (simple tidy styling) ---------- */
+/* SECTIONS */
 .section-impact, .section-about, .section-dashboard,
 .section-features, .section-testimonials, .section-pricing,
 .section-blogs {
@@ -679,9 +581,8 @@ body {
   background: var(--surface);
 }
 
-/* ---------- IMPACT SECTION (Clayo-style clean layout) ---------- */
 .section-impact {
-  background: #eaeff3; /* very light neutral gray-green */
+  background: #eaeff3;
   padding: 80px 0;
   font-family:"Inter", sans-serif;
   color: #111;
@@ -694,7 +595,6 @@ body {
   padding: 0 24px;
 }
 
-/* Grid layout: left label + right content */
 .impact-grid {
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -702,7 +602,6 @@ body {
   gap: 40px;
 }
 
-/* Left label */
 .impact-label {
   display: flex;
   align-items: center;
@@ -717,14 +616,12 @@ body {
   flex-shrink: 0;
 }
 
-/* Right content */
 .impact-content {
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
-/* Heading text */
 .impact-heading {
   font-family: "Poppins", sans-serif;
   font-size: 28px;
@@ -735,7 +632,6 @@ body {
   max-width: 900px;
 }
 
-/* Stats container */
 .impact-stats {
   display: flex;
   justify-content: space-between;
@@ -744,7 +640,6 @@ body {
   padding-top: 28px;
 }
 
-/* Each item */
 .impact-item {
   flex: 1 1 0;
   display: flex;
@@ -755,7 +650,6 @@ body {
   position: relative;
 }
 
-/* Vertical dividers */
 .impact-item + .impact-item::before {
   content: "";
   position: absolute;
@@ -766,7 +660,6 @@ body {
   background: rgba(0, 0, 0, 0.08);
 }
 
-/* Value (number) */
 .impact-value {
   font-family: "Poppins", sans-serif;
   font-size: 28px;
@@ -775,7 +668,6 @@ body {
   color: #0b0b0b;
 }
 
-/* Description */
 .impact-description {
   font-size: 15px;
   color: #444;
@@ -784,7 +676,6 @@ body {
   max-width: 200px;
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 992px) {
   .impact-grid {
     grid-template-columns: 1fr;
@@ -827,9 +718,7 @@ body {
   }
 }
 
-
-
-/* about grid */
+/* ABOUT */
 .section-about {
   padding: 100px 0;
   background: var(--off-white);
@@ -859,14 +748,12 @@ body {
   color: var(--slate-gray, #2E4053);
 }
 
-/* --- Grid Layout --- */
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-/* --- Card Styles --- */
 .about-card {
   background: #fff;
   padding: 32px;
@@ -891,7 +778,6 @@ body {
   line-height: 1.6;
 }
 
-/* --- Variants --- */
 .stat-card {
   background: #eaeff3;
   color: #fff;
@@ -906,23 +792,18 @@ body {
   grid-column: span 2;
 }
 
-/* --- Responsive --- */
 @media (max-width: 900px) {
   .about-grid {
     grid-template-columns: 1fr;
   }
 }
 
-
-
-
-/* Dashboard / Expertise — centered layout */
+/* DASHBOARD */
 .section-dashboard {
   background: #eaeff3;
   padding: 92px 0 80px;
 }
 
-/* Head (label + title + subtitle) centered */
 .dashboard-head {
   text-align: center;
   max-width: 980px;
@@ -942,7 +823,6 @@ body {
 .label-wrapper.centered svg { display:block; }
 .label-text { font-size: 0.95rem; }
 
-/* Title */
 .dashboard-title {
   font-family: "Poppins", sans-serif;
   font-size: clamp(28px, 4.6vw, 44px);
@@ -952,7 +832,6 @@ body {
   margin: 6px 0 12px;
 }
 
-/* Subtitle */
 .dashboard-subtitle {
   color: var(--muted, #2E4053);
   font-size: 1.02rem;
@@ -961,7 +840,6 @@ body {
   line-height: 1.6;
 }
 
-/* Grid: 2x2 cards, centered within container */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -971,7 +849,6 @@ body {
   padding: 0 16px;
 }
 
-/* Card styling (soft surface like screenshot) */
 .dashboard-card {
   background: var(--surface, #f5f7f6);
   border-radius: 18px;
@@ -1001,10 +878,8 @@ body {
   border-radius: 12px;
   background: rgba(255,255,255,0.85);
   box-shadow: 0 8px 18px rgba(0,0,0,0.04);
-  /* remove or replace with an actual SVG or image later */
 }
 
-/* Card text */
 .card-title {
   font-size: 1.15rem;
   color: var(--primary, #1B4F72);
@@ -1018,7 +893,6 @@ body {
   line-height: 1.6;
 }
 
-/* CTA wrapper and centered button */
 .dashboard-cta-wrap {
   text-align: center;
   margin-top: 14px;
@@ -1039,7 +913,6 @@ body {
   transform: translateY(-3px);
 }
 
-/* RESPONSIVE */
 @media (max-width: 980px) {
   .dashboard-grid { gap: 22px; margin: 30px auto; }
   .dashboard-card { padding: 26px; min-height: 200px; }
@@ -1053,12 +926,7 @@ body {
   .card-media { margin-bottom: 14px; }
 }
 
-
-
-
-
-/* features grid */
-/* GENERAL LAYOUT */
+/* FEATURES */
 .section-features {
   padding: 100px 0;
   background: #fff;
@@ -1066,13 +934,6 @@ body {
   color: #000;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* HEADER AREA */
 .features-top {
   display: flex;
   flex-direction: column;
@@ -1092,29 +953,27 @@ body {
 .features-title {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   line-height: 1.3;
-  /* max-width: 900px; */
   color: #111;
-  max-width: 100%;      /* allow full width use of container */
+  max-width: 100%;
   width: 100%;
 }
 
-/* GRID */
 .features-main {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   gap: 60px;
-  flex-wrap: nowrap; /* ensures they stay on one line */
+  flex-wrap: nowrap;
 }
 
-
-/* LEFT LIST */
 .features-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
   border-right: 1px solid #eee;
   padding-right: 40px;
+  flex: 1;
+  max-width: 45%;
 }
 
 .feature-item {
@@ -1139,7 +998,6 @@ body {
   color: #222;
 }
 
-/* RIGHT SIDE CARD */
 .feature-card {
   background: #f7f8f8;
   border-radius: 20px;
@@ -1150,9 +1008,10 @@ body {
   justify-content: center;
   position: relative;
   box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  flex: 1;
+  max-width: 55%;
 }
 
-/* CONTENT ANIMATION */
 .feature-content {
   display: none;
   text-align: left;
@@ -1181,18 +1040,6 @@ body {
   line-height: 1.6;
 }
 
-.features-list {
-  flex: 1;
-  max-width: 45%;
-}
-
-.feature-card {
-  flex: 1;
-  max-width: 55%;
-}
-
-
-/* RESPONSIVE */
 @media (max-width: 950px) {
   .features-main {
     grid-template-columns: 1fr;
@@ -1212,8 +1059,7 @@ body {
   }
 }
 
-
-/* ---------- Testimonials ---------- */
+/* TESTIMONIALS */
 .section-testimonials {
   background: #ffff;
   text-align: center;
@@ -1300,8 +1146,7 @@ body {
   color: #fff;
 }
 
-
-/* ---------- Pricing ---------- */
+/* PRICING */
 .section-pricing {
   padding: 120px 0;
   background: #fff;
@@ -1413,9 +1258,7 @@ body {
   opacity: 0.8;
 }
 
-
-/* blog slider */
-/* ---------- BLOG SECTION ---------- */
+/* BLOG */
 .section-blogs {
   padding: 100px 0;
   background: #eaeff3;
@@ -1476,12 +1319,10 @@ body {
   padding: 16px 20px 24px;
 }
 
-/* CARD BODY */
 .card-body {
   padding: 22px 22px 26px;
 }
 
-/* TAGS */
 .blog-tags {
   margin-bottom: 12px;
 }
@@ -1495,7 +1336,6 @@ body {
   font-weight: 600;
 }
 
-/* TITLE */
 .title {
   font-size: 1.2rem;
   font-weight: 700;
@@ -1504,21 +1344,11 @@ body {
   margin-bottom: 10px;
 }
 
-/* EXCERPT */
 .excerpt {
   font-size: 1rem;
   color: #4c5b66;
   line-height: 1.55;
   margin-bottom: 20px;
-}
-
-
-.blog-tags span {
-  font-size: 0.8rem;
-  background: #f0f0f0;
-  padding: 3px 8px;
-  border-radius: 20px;
-  color: #333;
 }
 
 .blog-card h3 {
@@ -1552,20 +1382,16 @@ body {
 }
 
 .slider-arrow:hover {
-  background: #4ba3ff; /* Guided Tech accent color */
+  background: #4ba3ff;
 }
 
-
-/* ---------- FOOTER ---------- */
-
-/* FOOTER BOTTOM */
+/* FOOTER */
 .gts-footer {
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
   background-size: cover;
   padding: 80px 0 40px;
   color: rgba(255,255,255,0.85);
 }
-
 
 .gts-footer-inner {
   width: 90%;
@@ -1576,16 +1402,14 @@ body {
   gap: 60px;
 }
 
-/* Headings */
 .footer-heading {
   font-size: 14px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #F39C12; /* gold accent */
+  color: #F39C12;
   margin: 25px 0 12px;
 }
 
-/* Description */
 .footer-desc {
   max-width: 320px;
   line-height: 1.6;
@@ -1593,7 +1417,6 @@ body {
   opacity: 0.9;
 }
 
-/* Footer Links */
 .gts-footer-col a {
   display: block;
   font-size: 15px;
@@ -1608,7 +1431,6 @@ body {
   transform: translateX(4px);
 }
 
-/* Social Icons */
 .footer-social {
   display: flex;
   gap: 14px;
@@ -1619,7 +1441,7 @@ body {
   width: 22px;
   opacity: 0.8;
   transition: 0.2s;
-  filter: brightness(0) invert(1); /* ← FORCES WHITE ICON */
+  filter: brightness(0) invert(1);
 }
 
 .footer-social img:hover {
@@ -1627,9 +1449,6 @@ body {
   transform: scale(1.1);
 }
 
-
-
-/* Footer Bottom */
 .gts-footer-bottom {
   margin-top: 60px;
   text-align: center;
@@ -1639,7 +1458,6 @@ body {
   border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
   .gts-footer-inner {
     grid-template-columns: 1fr 1fr;
@@ -1653,18 +1471,44 @@ body {
   }
 }
 
+/* MOBILE FOOTER TIGHT SPACING */
+@media (max-width: 767px) {
+  .gts-footer-col a {
+    margin-bottom: 0px;
+    padding: 2px 0;
+    line-height: 1.2;
+  }
+  
+  .footer-social {
+    gap: 12px;
+  }
+}
 
+@media (max-width: 480px) {
+  .gts-footer-col a {
+    padding: 1px 0;
+    line-height: 1.1;
+  }
+  
+  .footer-social {
+    gap: 10px;
+  }
+}
 
+@media (max-width: 360px) {
+  .gts-footer-col a {
+    padding: 0px 0;
+    line-height: 1.05;
+  }
+  
+  .footer-social {
+    gap: 8px;
+  }
+}
 
-
-
-
-
-/* ---------- ANIMATIONS & FADE-IN ---------- */
 .fade-in { opacity:0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-in.visible { opacity:1; transform: translateY(0); }
 
-/* subtle float for images */
 .hero-main-img, .hero-secondary-img {
   animation: floatY 5.5s ease-in-out infinite;
 }
@@ -1674,7 +1518,6 @@ body {
   100% { transform: translateY(0) rotate(4deg); }
 }
 
-/* ---------- RESPONSIVE ---------- */
 @media (max-width: 1080px) {
   .hero-title { font-size: 38px; }
   .hero-subtitle { font-size: 15px; }
@@ -1683,25 +1526,8 @@ body {
   .floating-card { left: -22px; bottom: -30px; width: 200px; }
 }
 
-  .hero-wrapper {
-    flex-direction: column-reverse;
-    align-items:center;
-    text-align:center;
-    gap: 28px;
-  }
-  .hero-content { max-width: 720px; width:100%; }
-  .hero-image-wrapper { width:100%; }
-  .hero-secondary-img { display:none; } /* hide overlay on small screens */
-  .floating-card { left: 50%; transform: translateX(-50%); bottom: -28px; }
-}
-
-/* small phones */
 @media (max-width: 420px) {
   .hero-title { font-size: 28px; }
   .hero-main-img { border-radius: 12px; }
   .floating-card { width: 180px; padding:10px; }
 }
-
-
-
-
