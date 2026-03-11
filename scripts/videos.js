@@ -1,4 +1,4 @@
-const API_KEY = CONFIG.API_KEY;
+const API_KEY = "AIzaSyCvP79SfaVU3XOoUk4PwT7W9tsfX7NBvlc";
 const CHANNEL_ID = "UCIjWmVxHHvjrqLBKLT0QlgA";
 const MAX_RESULTS = 12;
 
