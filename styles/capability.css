@@ -10,12 +10,9 @@
   --nav-height: 78px;
   --transition: 0.28s ease;
   --shadow-1: 0 6px 20px rgba(16,24,40,0.08);
-
-  /* Highlight color used in hero */
   --highlight: #4ba3ff;
 }
 
-/* RESET */
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: "Inter", sans-serif;
@@ -25,7 +22,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
 body.no-scroll {
   position: fixed;
   left: 0;
@@ -34,31 +30,22 @@ body.no-scroll {
   overflow: hidden;
 }
 
-/* =========================================================
-   GLOBAL ANTI-HORIZONTAL-OVERFLOW PACK (ALL PAGES)
-   Paste near the top of style.css (after reset)
-========================================================= */
-
-/* 1) Always prevent sideways scroll */
 html, body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-/* 2) Consistent sizing everywhere */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* 3) Media can never overflow */
 img, video, svg, canvas {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* 4) Fix the classic mobile “100vw causes overflow” issue */
 :root {
   --safe-vw: 100%;
 }
@@ -68,14 +55,10 @@ img, video, svg, canvas {
   max-width: 100%;
 }
 
-/* If you personally used width:100vw anywhere, convert it to 100% (recommended).
-   But this helps protect you even if you miss one. */
 body {
   position: relative;
 }
 
-
-/* GLOBAL CONTAINER — EVERY SECTION ALIGNED PERFECTLY */
 .container,
 .navbar-container,
 .values-container {
@@ -96,11 +79,10 @@ body {
   }
 }
 
-/* PAGE WRAPPER */
 .page-wrapper { min-height: 100vh; }
 
 /* =========================
-   NAVBAR (GLOBAL)
+   NAVBAR
 ========================= */
 .navbar{
   width:100%;
@@ -110,7 +92,7 @@ body {
   display:flex;
   align-items:center;
   background:linear-gradient(135deg,#071a24 0%,#0d2a3a 100%);
-  z-index:4000; /* keep above overlay */
+  z-index:4000;
 }
 
 .navbar-container{
@@ -135,7 +117,6 @@ body {
 }
 
 .navbar-logo-img{ width:32px; height:32px; }
-
 .logo-text{ line-height:1.1; }
 
 .navbar-actions{
@@ -157,7 +138,6 @@ body {
   justify-content:center;
 }
 
-/* Hamburger */
 .menu-toggle{
   display:none;
   background:none;
@@ -176,25 +156,16 @@ body {
   transition:all 0.3s ease;
 }
 
+.mobile-nav-close { display: none; }
 
-/* ✅ Mobile close button should NEVER show on desktop */
-.mobile-nav-close {
-  display: none;
-}
-
-/* =========================
-   OVERLAY (GLOBAL)
-   ✅ NO filter / NO blur / NO tint
-   ✅ Only used to close on outside click
-========================= */
 .nav-overlay{
   position:fixed;
   inset:0;
-  background:transparent;     /* IMPORTANT: no dark/white overlay */
+  background:transparent;
   opacity:0;
   pointer-events:none;
   transition:opacity 0.2s ease;
-  z-index:2000;               /* BELOW menu + below navbar */
+  z-index:2000;
 }
 
 .nav-overlay.show{
@@ -202,9 +173,6 @@ body {
   pointer-events:auto;
 }
 
-/* =========================
-   DESKTOP ONLY
-========================= */
 @media (min-width:1025px){
   .navbar-menu{
     display:flex;
@@ -223,7 +191,6 @@ body {
   }
 
   .nav-link:hover{ color:#ffffff; }
-
   .nav-item{ position:relative; }
 
   .mega-dropdown{
@@ -267,17 +234,8 @@ body {
   .mega-col a:hover{ color:#fff; }
 }
 
-/* =========================
-   MOBILE ONLY — MATCH YOUR SERVICES-PRICING
-   ✅ Menu sits BELOW navbar (top: 78px)
-   ✅ Links clickable
-   ✅ Dropdown opens with .nav-item.open
-========================= */
 @media (max-width:1024px){
-
   .menu-toggle{ display:flex; }
-
-  /* Make logo + buttons smaller on mobile */
   .logo-text{ font-size:14px; }
 
   .btn-primary{
@@ -288,44 +246,37 @@ body {
 
   .navbar-actions{ gap:10px; }
 
-  /* MENU PANEL */
   .navbar-menu{
     position:fixed;
-    top:78px;                      /* ✅ BELOW NAVBAR */
+    top:78px;
     right:0;
     width:min(85vw,360px);
-    height:calc(100dvh - 78px);    /* ✅ fits remaining screen */
+    height:calc(100dvh - 78px);
     background:#0b1220;
     overflow-y:auto;
-
-    z-index:3000;                  /* ✅ ABOVE overlay */
+    z-index:3000;
     transform:translateX(105%);
     transition:transform 0.25s ease;
-
     display:flex;
     flex-direction:column;
-
-    padding:0;                     /* no weird offsets */
-    pointer-events:auto;           /* ✅ clickable */
+    padding:0;
+    pointer-events:auto;
   }
 
   .navbar-menu.open{ transform:translateX(0); }
 
-  /* ✅ REMOVE ANY EXTERNAL X (pseudo close icon) */
   .navbar-menu::before,
   .navbar-menu::after{
     content:none !important;
     display:none !important;
   }
 
-  /* ✅ Close button INSIDE menu (the one you want) */
   .mobile-nav-close{
     display:none;
     position:sticky;
     top:0;
     width:100%;
     text-align:right;
-
     background:rgba(11,18,32,0.95);
     color:#fff;
     border:none;
@@ -335,16 +286,10 @@ body {
     z-index:5;
   }
 
-  .navbar-menu.open .mobile-nav-close{
-    display:block;
-  }
+  .navbar-menu.open .mobile-nav-close{ display:block; }
 
-  /* Give the first link breathing room under the close button */
-  .navbar-menu .nav-link:first-of-type{
-    margin-top:6px;
-  }
+  .navbar-menu .nav-link:first-of-type{ margin-top:6px; }
 
-  /* LINKS */
   .nav-link{
     width:100%;
     padding:18px 22px;
@@ -353,22 +298,15 @@ body {
     color:#ffffff;
     text-decoration:none;
     border-bottom:1px solid rgba(255,255,255,0.12);
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     transition:padding 0.25s ease;
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
-  .nav-link:hover{
-    padding-left:28px;
-  }
-
+  .nav-link:hover{ padding-left:28px; }
   .nav-item{ display:block; }
-
-  /* DROPDOWN PARENT ARROW */
   .nav-parent{ cursor:pointer; }
 
   .nav-parent::after{
@@ -380,11 +318,8 @@ body {
     color:#ffffff;
   }
 
-  .nav-item.open .nav-parent::after{
-    transform:rotate(90deg);
-  }
+  .nav-item.open .nav-parent::after{ transform:rotate(90deg); }
 
-  /* ✅ DROPDOWN CONTENT — this is what makes it OPEN */
   .mega-dropdown{
     display:none;
     background:rgba(255,255,255,0.06);
@@ -392,7 +327,7 @@ body {
     padding:0;
     margin:12px 18px 8px;
     border:1px solid rgba(255,255,255,0.10);
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
   .nav-item.open .mega-dropdown{
@@ -400,7 +335,6 @@ body {
     padding:18px 20px;
   }
 
-  /* Dropdown links */
   .mega-col{ margin-bottom:18px; }
 
   .mega-col h4{
@@ -424,7 +358,7 @@ body {
     border-radius:8px;
     transition:all 0.25s ease;
     font-weight:500;
-    pointer-events:auto;           /* ✅ clickable */
+    pointer-events:auto;
   }
 
   .mega-col a:hover{
@@ -433,46 +367,25 @@ body {
   }
 }
 
-/* Smaller phones */
 @media (max-width:520px){
   .navbar-actions{ gap:8px; }
-
-  .btn-primary{
-    padding:8px 10px;
-    font-size:12px;
-    border-radius:10px;
-    white-space:nowrap;
-  }
-
+  .btn-primary{ padding:8px 10px; font-size:12px; border-radius:10px; white-space:nowrap; }
   .logo-text{ font-size:13px; }
 }
 
 @media (max-width:380px){
-  .btn-primary{
-    padding:7px 8px;
-    font-size:11px;
-  }
-
+  .btn-primary{ padding:7px 8px; font-size:11px; }
   .logo-text{ font-size:12px; }
 }
 
 @media (max-width:420px){
-  .navbar-menu{
-    width:100%;
-    max-width:none;
-  }
-
-  .navbar-logo-img{
-    width:28px;
-    height:28px;
-  }
+  .navbar-menu{ width:100%; max-width:none; }
+  .navbar-logo-img{ width:28px; height:28px; }
 }
 
-
-
-/* ------------------------------------------------
-   HERO SECTION
-------------------------------------------------- */
+/* =========================
+   HERO
+========================= */
 .hero {
   background: linear-gradient(135deg, #081e2b, #0f3144);
   padding: 120px 0;
@@ -507,7 +420,6 @@ body {
   position: relative;
 }
 
-/* HERO UNDERLINE (HIGHLIGHT) */
 .hero-title p::after {
   content: "";
   position: absolute;
@@ -527,27 +439,15 @@ body {
   font-size: 1.1rem;
 }
 
-/* REMOVE UNDERLINE IN BREADCRUMBS */
 .breadcrumbs a {
   text-decoration: none !important;
   color: #fff;
 }
-.page {
-  color: var(--highlight);
-  font-weight: 600;
-}
-.subpage {
-  color: #ffff;
-  font-weight: 600;
-}
+.page { color: var(--highlight); font-weight: 600; }
+.subpage { color: #ffff; font-weight: 600; }
 
+.capability { background: #f8f9fb; }
 
-
-.capability {
-  background: #f8f9fb;
-}
-
-/* HERO */
 .cap-hero {
   background: linear-gradient(135deg, #0d2a3a, #1B4F72);
   color: #fff;
@@ -555,20 +455,11 @@ body {
   text-align: center;
 }
 
-.cap-hero h1 {
-  font-size: 3rem;
-  margin-bottom: 14px;
-}
-
-.hero-sub {
-  max-width: 720px;
-  margin: 0 auto;
-  color: #d6eaf8;
-}
+.cap-hero h1 { font-size: 3rem; margin-bottom: 14px; }
+.hero-sub { max-width: 720px; margin: 0 auto; color: #d6eaf8; }
 
 .badge {
   display: inline-block;
-  /* background: rgba(255,255,255,0.15); */
   background: #ffffff;
   padding: 6px 14px;
   border-radius: 30px;
@@ -576,14 +467,16 @@ body {
   font-size: 0.85rem;
 }
 
-/* SECTIONS */
+/* =========================
+   SECTIONS — REDUCED SPACING
+========================= */
 .cap-section {
-  padding: 80px 0;
+  padding: 48px 0;   /* was 80px */
 }
 
 .cap-band {
   background: #ffffff;
-  padding: 90px 0;
+  padding: 52px 0;   /* was 90px */
 }
 
 .cap-band.light {
@@ -592,7 +485,7 @@ body {
 
 .section-title {
   font-size: 2.1rem;
-  margin-bottom: 40px;
+  margin-bottom: 28px;  /* was 40px */
   text-align: center;
   color: #1B4F72;
 }
@@ -600,48 +493,32 @@ body {
 /* GRID */
 .cap-grid {
   display: grid;
-  gap: 28px;
+  gap: 20px;   /* was 28px */
 }
 
-.cap-grid.two {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.cap-grid.three {
-  grid-template-columns: repeat(3, 1fr);
-}
+.cap-grid.two  { grid-template-columns: repeat(2, 1fr); }
+.cap-grid.three{ grid-template-columns: repeat(3, 1fr); }
 
 /* CARDS */
 .cap-card {
   background: #fff;
   border-radius: 14px;
-  padding: 28px;
+  padding: 24px;   /* was 28px */
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 }
 
-.cap-card.highlight {
-  background: #1B4F72;
-  color: #fff;
-}
-
-.cap-card.outline {
-  border: 2px solid #1B4F72;
-}
+.cap-card.highlight { background: #1B4F72; color: #fff; }
+.cap-card.outline   { border: 2px solid #1B4F72; }
 
 .cap-card h3,
-.cap-card h4 {
-  margin-bottom: 10px;
-}
+.cap-card h4 { margin-bottom: 10px; }
 
 /* LIST */
-.cap-list {
-  list-style: none;
-  padding: 0;
-}
+.cap-list { list-style: none; padding: 0; }
 
 .cap-list li {
   padding-left: 24px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;  /* was 14px */
   position: relative;
 }
 
@@ -657,7 +534,7 @@ body {
 .tag-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;   /* was 14px */
   justify-content: center;
 }
 
@@ -672,34 +549,26 @@ body {
 .cap-cta {
   background: #0d2a3a;
   color: #fff;
-  padding: 90px 0;
+  padding: 60px 0;  /* was 90px */
   text-align: center;
 }
 
-.cap-cta p {
-  margin-bottom: 24px;
-  color: #d6eaf8;
-}
+.cap-cta p { margin-bottom: 24px; color: #d6eaf8; }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .cap-grid.two,
-  .cap-grid.three {
-    grid-template-columns: 1fr;
-  }
+  .cap-grid.three { grid-template-columns: 1fr; }
 }
 
-
-
-
-/* FOOTER BOTTOM */
+/* =========================
+   FOOTER
+========================= */
 .gts-footer {
   background: linear-gradient(135deg, #071a24 0%, #0d2a3a 100%);
-  background-size: cover;
-  padding: 80px 0 40px;
+  padding: 60px 0 40px;  /* was 80px */
   color: rgba(255,255,255,0.85);
 }
-
 
 .gts-footer-inner {
   width: 90%;
@@ -710,16 +579,14 @@ body {
   gap: 60px;
 }
 
-/* Headings */
 .footer-heading {
   font-size: 14px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #F39C12; /* gold accent */
+  color: #F39C12;
   margin: 25px 0 12px;
 }
 
-/* Description */
 .footer-desc {
   max-width: 320px;
   line-height: 1.6;
@@ -727,7 +594,6 @@ body {
   opacity: 0.9;
 }
 
-/* Footer Links */
 .gts-footer-col a {
   display: block;
   font-size: 15px;
@@ -737,95 +603,57 @@ body {
   transition: 0.2s;
 }
 
-.gts-footer-col a:hover {
-  color: #fff;
-  transform: translateX(4px);
-}
+.gts-footer-col a:hover { color: #fff; transform: translateX(4px); }
 
-/* Social Icons */
-.footer-social {
-  display: flex;
-  gap: 14px;
-  margin-top: 18px;
-}
+.footer-social { display: flex; gap: 14px; margin-top: 18px; }
 
 .footer-social img {
   width: 22px;
   opacity: 0.8;
   transition: 0.2s;
-  filter: brightness(0) invert(1); /* ← FORCES WHITE ICON */
+  filter: brightness(0) invert(1);
 }
 
-.footer-social img:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
+.footer-social img:hover { opacity: 1; transform: scale(1.1); }
 
-
-
-/* Footer Bottom */
 .gts-footer-bottom {
-  margin-top: 60px;
+  margin-top: 40px;  /* was 60px */
   text-align: center;
-  padding-top: 30px;
+  padding-top: 24px;
   font-size: 14px;
   color: rgba(255,255,255,0.6);
   border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
-  .gts-footer-inner {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-  }
+  .gts-footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
 
 @media (max-width: 700px) {
-  .gts-footer-inner {
-    grid-template-columns: 1fr;
-  }
+  .gts-footer-inner { grid-template-columns: 1fr; }
 }
 
-
-
-
-
-
-/* ================================================
-   CAPABILITY PAGE — ADDITIONAL STYLES
-   Paste at the bottom of your styles/capability.css
-================================================ */
-
-
-/* ── Overview section: text + contact card side by side ── */
+/* =========================
+   CAPABILITY EXTRA STYLES
+========================= */
 .cap-overview-row {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 28px;
-  align-items: start;        /* both columns align to top */
-  margin-bottom: 40px;       /* breathing space above the three cards */
+  align-items: start;
+  margin-bottom: 28px;  /* was 40px */
 }
 
-/* Override any inherited stretch from cap-grid */
-.cap-overview-row > * {
-  align-self: start;
-}
+.cap-overview-row > * { align-self: start; }
 
-/* Overview text: paragraph line spacing */
-.cap-overview-text h2 {
-  margin-bottom: 16px;
-  color: #1B4F72;
-}
+.cap-overview-text h2 { margin-bottom: 16px; color: #1B4F72; }
 
 .cap-overview-text p {
-  margin-bottom: 14px;   /* gap between each paragraph */
+  margin-bottom: 14px;
   line-height: 1.75;
 }
 
-.cap-overview-text p:last-child {
-  margin-bottom: 0;
-}
+.cap-overview-text p:last-child { margin-bottom: 0; }
 
 .cap-overview-text a {
   color: #1B4F72;
@@ -833,26 +661,16 @@ body {
   font-weight: 500;
 }
 
-.cap-overview-text a:hover {
-  text-decoration: underline;
-}
+.cap-overview-text a:hover { text-decoration: underline; }
 
-/* Contact card: fit to content only, never stretch vertically */
 .cap-contact-card {
   align-self: start !important;
   height: auto !important;
 }
 
-.cap-contact-card h3 {
-  margin-bottom: 14px;
-  font-size: 1rem;
-}
+.cap-contact-card h3 { margin-bottom: 14px; font-size: 1rem; }
 
-.cap-contact-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.cap-contact-card ul { list-style: none; padding: 0; margin: 0; }
 
 .cap-contact-card ul li {
   padding: 5px 0;
@@ -862,16 +680,9 @@ body {
   line-height: 1.5;
 }
 
-.cap-contact-card ul li:last-child {
-  border-bottom: none;
-}
+.cap-contact-card ul li:last-child { border-bottom: none; }
 
-
-/* ── Three info cards (NAICS / Company Data / Partnerships) ── */
-/* The margin-top here creates the visible gap below the overview row */
-.cap-info-cards {
-  margin-top: 8px;
-}
+.cap-info-cards { margin-top: 8px; }
 
 .cap-info-cards .cap-card h3 {
   color: #1B4F72;
@@ -882,31 +693,17 @@ body {
   border-bottom: 2px solid #eaf2f8;
 }
 
-
-/* ── Differentiators tagline ── */
 .diff-tagline {
   font-weight: 600;
   color: #1B4F72;
   margin-bottom: 20px;
 }
 
+/* Download */
+.download-wrap { text-align: center; margin-top: 36px; }  /* was 50px */
 
-/* ── Download section ── */
-.download-wrap {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.download-wrap h3 {
-  color: #1B4F72;
-  margin-bottom: 10px;
-  font-size: 1.25rem;
-}
-
-.download-wrap p {
-  color: #2E4053;
-  margin-bottom: 22px;
-}
+.download-wrap h3 { color: #1B4F72; margin-bottom: 10px; font-size: 1.25rem; }
+.download-wrap p  { color: #2E4053; margin-bottom: 22px; }
 
 .download-btn {
   display: inline-flex;
@@ -923,115 +720,40 @@ body {
   transition: background 0.25s ease, transform 0.2s ease;
 }
 
-.download-btn:hover {
-  background: #cf6d17;
-  transform: translateY(-2px);
-}
+.download-btn:hover { background: #cf6d17; transform: translateY(-2px); }
+.download-btn svg  { display: inline-block; flex-shrink: 0; }
 
-.download-btn svg {
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-
-/* ════════════════════════════════════════════════
+/* =========================
    MOBILE RESPONSIVE
-════════════════════════════════════════════════ */
-
+========================= */
 @media (max-width: 900px) {
   .cap-grid.two,
-  .cap-grid.three {
-    grid-template-columns: 1fr;
-  }
+  .cap-grid.three { grid-template-columns: 1fr; }
 
-  /* Stack overview text above contact card */
-  .cap-overview-row {
-    grid-template-columns: 1fr;
-  }
-
-  /* Contact card goes full width on mobile */
-  .cap-contact-card {
-    width: 100%;
-  }
+  .cap-overview-row { grid-template-columns: 1fr; }
+  .cap-contact-card { width: 100%; }
 }
 
 @media (max-width: 768px) {
-  .hero-title p {
-    font-size: 1.9rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .section-title {
-    font-size: 1.6rem;
-    margin-bottom: 28px;
-  }
-
-  .cap-section {
-    padding: 52px 0;
-  }
-
-  .cap-band {
-    padding: 52px 0;
-  }
-
-  .cap-card {
-    padding: 20px 18px;
-  }
-
-  .cap-overview-row {
-    margin-bottom: 28px;
-  }
+  .hero-title p    { font-size: 1.9rem; }
+  .hero-subtitle   { font-size: 1rem; }
+  .section-title   { font-size: 1.6rem; margin-bottom: 22px; }
+  .cap-section     { padding: 36px 0; }
+  .cap-band        { padding: 36px 0; }
+  .cap-card        { padding: 18px 16px; }
+  .cap-overview-row{ margin-bottom: 22px; }
 }
 
 @media (max-width: 480px) {
-  .hero-title p {
-    font-size: 1.6rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .section-title {
-    font-size: 1.35rem;
-  }
-
-  .cap-section {
-    padding: 40px 0;
-  }
-
-  .cap-band {
-    padding: 40px 0;
-  }
-
-  .cap-card {
-    padding: 18px 14px;
-  }
-
-  .tag-grid span {
-    padding: 8px 12px;
-    font-size: 0.88rem;
-  }
-
-  .download-wrap h3 {
-    font-size: 1.05rem;
-  }
-
-  .download-btn {
-    padding: 12px 18px;
-    font-size: 0.9rem;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .cap-list li {
-    font-size: 0.92rem;
-  }
-
-  .cap-overview-row {
-    margin-bottom: 22px;
-  }
+  .hero-title p    { font-size: 1.6rem; }
+  .hero-subtitle   { font-size: 0.95rem; }
+  .section-title   { font-size: 1.35rem; }
+  .cap-section     { padding: 28px 0; }
+  .cap-band        { padding: 28px 0; }
+  .cap-card        { padding: 16px 12px; }
+  .tag-grid span   { padding: 8px 12px; font-size: 0.88rem; }
+  .download-wrap h3{ font-size: 1.05rem; }
+  .download-btn    { padding: 12px 18px; font-size: 0.9rem; width: 100%; justify-content: center; }
+  .cap-list li     { font-size: 0.92rem; }
+  .cap-overview-row{ margin-bottom: 18px; }
 }
