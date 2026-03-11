@@ -471,17 +471,17 @@ body {
    SECTIONS — REDUCED SPACING
 ========================= */
 .cap-section {
-  padding: 48px 0;   /* was 80px */
+  padding: 32px 0;
 }
 
-/* Keep the original top gap between hero and the first section */
+/* Keep the original top gap between hero and the first section only */
 .hero + .container.cap-section {
   padding-top: 80px;
 }
 
 .cap-band {
   background: #ffffff;
-  padding: 52px 0;   /* was 90px */
+  padding: 32px 0;
 }
 
 .cap-band.light {
@@ -743,8 +743,8 @@ body {
   .hero-title p    { font-size: 1.9rem; }
   .hero-subtitle   { font-size: 1rem; }
   .section-title   { font-size: 1.6rem; margin-bottom: 22px; }
-  .cap-section     { padding: 36px 0; }
-  .cap-band        { padding: 36px 0; }
+  .cap-section     { padding: 24px 0; }
+  .cap-band        { padding: 24px 0; }
   .cap-card        { padding: 18px 16px; }
   .cap-overview-row{ margin-bottom: 22px; }
 }
@@ -753,8 +753,8 @@ body {
   .hero-title p    { font-size: 1.6rem; }
   .hero-subtitle   { font-size: 0.95rem; }
   .section-title   { font-size: 1.35rem; }
-  .cap-section     { padding: 28px 0; }
-  .cap-band        { padding: 28px 0; }
+  .cap-section     { padding: 20px 0; }
+  .cap-band        { padding: 20px 0; }
   .cap-card        { padding: 16px 12px; }
   .tag-grid span   { padding: 8px 12px; font-size: 0.88rem; }
   .download-wrap h3{ font-size: 1.05rem; }
