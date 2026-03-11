@@ -468,10 +468,40 @@ body {
 }
 
 /* =========================
+   JUSTIFIED TEXT — all sections between hero and footer
+========================= */
+.cap-section,
+.cap-band,
+.cap-overview-text,
+.cap-card,
+.cap-list,
+.diff-tagline,
+.download-wrap p {
+  text-align: justify;
+}
+
+/* Keep headings and titles centered */
+.section-title,
+.cap-card h3,
+.cap-card h4,
+.download-wrap h3,
+.download-wrap h4 {
+  text-align: center;
+}
+
+/* Keep tags, certifications row centered */
+.tag-grid { text-align: center; }
+
+/* =========================
    SECTIONS — REDUCED SPACING
 ========================= */
 .cap-section {
   padding: 48px 0;   /* was 80px */
+}
+
+/* Keep the original top gap between hero and the first section */
+.hero + .container.cap-section {
+  padding-top: 80px;
 }
 
 .cap-band {
