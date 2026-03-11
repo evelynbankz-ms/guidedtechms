@@ -1131,3 +1131,21 @@ body {
     align-items: flex-end;
   }
 }
+
+
+
+
+html, body {
+  background: #071a24;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.videos-page {
+  flex: 1;
+  background: #fff;
+}
