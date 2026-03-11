@@ -10,7 +10,7 @@ const grid = document.getElementById("careersGrid");
 
 function escapeHtml(s){
   return String(s||'').replace(/[&<>"']/g,
-    m => ({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[m])
+    m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])
   );
 }
 
@@ -45,57 +45,52 @@ async function loadCareers(){
 
 document.addEventListener("DOMContentLoaded", loadCareers);
 
-// mobile menu 
-const btn = document.getElementById("menuToggle");
-const menu = document.getElementById("navbarMenu");
-const overlay = document.getElementById("navOverlay");
-const closeBtn = document.getElementById("mobileNavClose");
+// Mobile Menu — scoped with different variable names to avoid conflict with about.js
+const careersMenuBtn = document.getElementById("menuToggle");
+const careersMenu = document.getElementById("navbarMenu");
+const careersOverlay = document.getElementById("navOverlay");
+const careersCloseBtn = document.getElementById("mobileNavClose");
 
-if (btn && menu && overlay) {
+if (careersMenuBtn && careersMenu && careersOverlay) {
 
-  const closeMenu = () => {
-    menu.classList.remove("open");
-    overlay.classList.remove("show");
+  const closeCareersMenu = () => {
+    careersMenu.classList.remove("open");
+    careersOverlay.classList.remove("show");
     document.body.style.overflow = "";
     document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-    btn.setAttribute("aria-expanded", "false");
+    careersMenuBtn.setAttribute("aria-expanded", "false");
   };
 
-  const openMenu = () => {
-    menu.classList.add("open");
-    overlay.classList.add("show");
+  const openCareersMenu = () => {
+    careersMenu.classList.add("open");
+    careersOverlay.classList.add("show");
     document.body.style.overflow = "hidden";
-    btn.setAttribute("aria-expanded", "true");
+    careersMenuBtn.setAttribute("aria-expanded", "true");
   };
 
-  // Hamburger toggles open/close
-  btn.addEventListener("click", (e) => {
+  careersMenuBtn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const isOpen = menu.classList.contains("open");
-    if (isOpen) closeMenu();
-    else openMenu();
+    const isOpen = careersMenu.classList.contains("open");
+    if (isOpen) closeCareersMenu();
+    else openCareersMenu();
   });
 
-  // Close button closes
-  closeBtn?.addEventListener("click", (e) => {
+  careersCloseBtn?.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    closeMenu();
+    closeCareersMenu();
   });
 
-  // ✅ FIX: only close if the actual overlay backdrop was clicked
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeMenu();
+  careersOverlay.addEventListener("click", (e) => {
+    if (e.target === careersOverlay) closeCareersMenu();
   });
 
-  // Clicking inside menu should NOT close overlay
-  menu.addEventListener("click", (e) => {
+  careersMenu.addEventListener("click", (e) => {
     e.stopPropagation();
   });
 
-  // Dropdown toggles for nav parents
-  menu.querySelectorAll(".nav-parent").forEach(link => {
+  careersMenu.querySelectorAll(".nav-parent").forEach(link => {
     link.addEventListener("click", function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -105,7 +100,7 @@ if (btn && menu && overlay) {
 
       const wasOpen = item.classList.contains("open");
 
-      menu.querySelectorAll(".nav-item.open").forEach(i => {
+      careersMenu.querySelectorAll(".nav-item.open").forEach(i => {
         if (i !== item) i.classList.remove("open");
       });
 
@@ -114,104 +109,15 @@ if (btn && menu && overlay) {
     });
   });
 
-  // Close when clicking normal links
-  menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
+  careersMenu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
     link.addEventListener("click", () => {
-      closeMenu();
+      closeCareersMenu();
     });
   });
 
-  // Escape key closes
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu.classList.contains("open")) {
-      closeMenu();
-    }
-  });
-}
-
-
-// Mobile Menu JavaScript for About/Careers/Team pages
-// Paste this into scripts/about.js
-
-const btn = document.getElementById("menuToggle");
-const menu = document.getElementById("navbarMenu");
-const overlay = document.getElementById("navOverlay");
-const closeBtn = document.getElementById("mobileNavClose");
-
-if (btn && menu && overlay) {
-
-  const closeMenu = () => {
-    menu.classList.remove("open");
-    overlay.classList.remove("show");
-    document.body.style.overflow = "";
-    document.querySelectorAll(".nav-item.open").forEach(i => i.classList.remove("open"));
-    btn.setAttribute("aria-expanded", "false");
-  };
-
-  const openMenu = () => {
-    menu.classList.add("open");
-    overlay.classList.add("show");
-    document.body.style.overflow = "hidden";
-    btn.setAttribute("aria-expanded", "true");
-  };
-
-  // Hamburger toggles open/close
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const isOpen = menu.classList.contains("open");
-    if (isOpen) closeMenu();
-    else openMenu();
-  });
-
-  // Close button closes
-  closeBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    closeMenu();
-  });
-
-  // ✅ FIX: only close if the actual overlay backdrop was clicked
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeMenu();
-  });
-
-  // Clicking inside menu should NOT close overlay
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
-
-  // Dropdown toggles for nav parents
-  menu.querySelectorAll(".nav-parent").forEach(link => {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const item = this.closest(".nav-item");
-      if (!item) return;
-
-      const wasOpen = item.classList.contains("open");
-
-      menu.querySelectorAll(".nav-item.open").forEach(i => {
-        if (i !== item) i.classList.remove("open");
-      });
-
-      if (wasOpen) item.classList.remove("open");
-      else item.classList.add("open");
-    });
-  });
-
-  // Close when clicking normal links
-  menu.querySelectorAll(".nav-link:not(.nav-parent)").forEach(link => {
-    link.addEventListener("click", () => {
-      closeMenu();
-    });
-  });
-
-  // Escape key closes
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu.classList.contains("open")) {
-      closeMenu();
+    if (e.key === "Escape" && careersMenu.classList.contains("open")) {
+      closeCareersMenu();
     }
   });
 }
