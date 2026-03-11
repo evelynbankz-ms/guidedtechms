@@ -1,4 +1,4 @@
- :root{
+:root{
   --primary: #1B4F72;
   --accent: #E67E22;
   --muted: #2E4053;
@@ -58,7 +58,7 @@ img, video, svg, canvas {
   display: block;
 }
 
-/* 4) Fix the classic mobile “100vw causes overflow” issue */
+/* 4) Fix the classic mobile "100vw causes overflow" issue */
 :root {
   --safe-vw: 100%;
 }
@@ -541,7 +541,21 @@ body {
 }
 
 
+/* ------------------------------------------------
+   VIDEOS PAGE
+------------------------------------------------- */
+.videos-page {
+  padding: 80px 0;
+  background: #fff;
+}
 
+.videos-page h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 40px;
+  text-align: center;
+}
 
 .video-grid {
   display: grid;
@@ -555,6 +569,12 @@ body {
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(27,79,114,.12);
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(27,79,114,.18);
 }
 
 .video-card iframe {
@@ -591,6 +611,13 @@ body {
   gap: 60px;
 }
 
+.footer-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
 /* Headings */
 .footer-heading {
   font-size: 14px;
@@ -598,6 +625,10 @@ body {
   font-weight: 600;
   color: #F39C12; /* gold accent */
   margin: 25px 0 12px;
+}
+
+.footer-heading.mt20 {
+  margin-top: 20px;
 }
 
 /* Description */
@@ -612,7 +643,6 @@ body {
 .gts-footer-col a {
   display: block;
   font-size: 15px;
-  margin-bottom: 8px;
   text-decoration: none;
   color: rgba(255,255,255,0.75);
   transition: 0.2s;
@@ -665,5 +695,218 @@ body {
 @media (max-width: 700px) {
   .gts-footer-inner {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIDEOS PAGE MOBILE RESPONSIVE CSS
+═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  
+  /* HERO */
+  .hero {
+    padding: 100px 0 50px;
+  }
+  
+  .hero-title p {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .breadcrumbs {
+    font-size: 0.85rem;
+  }
+  
+  /* VIDEOS PAGE */
+  .videos-page {
+    padding: 50px 0;
+  }
+  
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .videos-page h2 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+  
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .video-card iframe {
+    height: 180px;
+  }
+  
+  .video-title {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+  
+  /* ═══════════════════════════════════════════════════════════
+     FOOTER - EXACT MATCH TO OTHER PAGES
+  ═══════════════════════════════════════════════════════════ */
+  
+  .gts-footer {
+    padding: 50px 0 25px;
+  }
+  
+  .gts-footer-inner {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 20px;
+  }
+  
+  .gts-footer-col.about-col {
+    grid-column: span 2;
+    order: 0;
+    margin-bottom: 10px;
+  }
+  
+  .gts-footer-col:nth-child(2) {
+    order: 1;
+  }
+  
+  .gts-footer-col:nth-child(3) {
+    order: 2;
+  }
+  
+  .gts-footer-col:nth-child(4) {
+    order: 3;
+  }
+  
+  .footer-logo {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .footer-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 12px;
+  }
+  
+  .footer-heading {
+    font-size: 12px;
+    margin: 0 0 8px 0;
+  }
+  
+  .about-col .footer-heading {
+    margin-top: 14px;
+  }
+  
+  .gts-footer-col:not(.about-col) .footer-heading {
+    margin-top: 0;
+  }
+  
+  .footer-heading.mt20 {
+    margin-top: 16px !important;
+  }
+  
+  .gts-footer-col a {
+    font-size: 0.9rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 2 !important;
+  }
+  
+  .footer-social {
+    margin-top: 12px;
+    gap: 12px !important;
+  }
+  
+  .footer-social a {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .footer-social img {
+    width: 19px;
+  }
+  
+  .gts-footer-bottom {
+    margin-top: 30px;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 480px) {
+  .hero {
+    padding: 90px 0 40px;
+  }
+  
+  .hero-title p {
+    font-size: 1.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .videos-page {
+    padding: 40px 0;
+  }
+  
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  
+  .videos-page h2 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+  
+  .video-grid {
+    gap: 16px;
+  }
+  
+  .video-card iframe {
+    height: 160px;
+  }
+  
+  .video-title {
+    font-size: 0.9rem;
+    padding: 9px 10px;
+  }
+}
+
+/* EXTRA SMALL MOBILE */
+@media (max-width: 360px) {
+  .hero {
+    padding: 85px 0 35px;
+  }
+  
+  .hero-title p {
+    font-size: 1.3rem;
+  }
+  
+  .videos-page {
+    padding: 35px 0;
+  }
+  
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .videos-page h2 {
+    font-size: 1.3rem;
+  }
+  
+  .video-grid {
+    gap: 14px;
   }
 }
