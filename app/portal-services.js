@@ -1,6 +1,7 @@
 /* ============================================================
    FILE: app/portal-services.js
    Page 1 — Services & Pricing with Stripe + Vercel integration
+   WITH BEAUTIFUL AUTH MODAL
    ============================================================ */
 
 import { db, auth } from "../admin/firebase.js";
@@ -8,9 +9,6 @@ import { authReady, currentUser, esc, fmtPrice } from "./portal-layout.js";
 import {
   collection, getDocs, query, where, addDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-import {
-  signInWithPopup, GoogleAuthProvider
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
 const loadText = document.getElementById("loadText");
 
@@ -146,27 +144,165 @@ async function loadPlans(signedIn) {
 }
 
 /* ══════════════════════════════
+   BEAUTIFUL AUTH MODAL
+══════════════════════════════ */
+function showAuthModal() {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  `;
+
+  modal.innerHTML = `
+    <div style="
+      background: white;
+      border-radius: 20px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+      animation: slideUp 0.4s ease;
+      text-align: center;
+    ">
+      <div style="
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #1B4F72, #2471a3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 40px;
+        box-shadow: 0 8px 20px rgba(27, 79, 114, 0.3);
+      ">🔐</div>
+      
+      <h2 style="
+        font-family: 'Poppins', sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 14px;
+      ">Authentication Required</h2>
+      
+      <p style="
+        color: #64748b;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+      ">To continue with your purchase, please sign in to your account or create a new one.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button id="authModalSignIn" style="
+          padding: 14px 32px;
+          border: none;
+          background: linear-gradient(135deg, #1B4F72, #2471a3);
+          color: white;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 15px;
+          font-family: 'Inter', sans-serif;
+          transition: all 0.2s;
+          box-shadow: 0 4px 12px rgba(27, 79, 114, 0.3);
+        ">Sign In</button>
+        
+        <button id="authModalSignUp" style="
+          padding: 14px 32px;
+          border: 2px solid #1B4F72;
+          background: white;
+          color: #1B4F72;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 15px;
+          font-family: 'Inter', sans-serif;
+          transition: all 0.2s;
+        ">Create Account</button>
+        
+        <button id="authModalCancel" style="
+          padding: 10px;
+          border: none;
+          background: transparent;
+          color: #94a3b8;
+          font-weight: 500;
+          cursor: pointer;
+          font-size: 14px;
+          font-family: 'Inter', sans-serif;
+          margin-top: 8px;
+        ">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    #authModalSignIn:hover { 
+      background: linear-gradient(135deg, #154360, #1e5f88);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(27, 79, 114, 0.4);
+    }
+    #authModalSignUp:hover { 
+      background: #f8fafc;
+      border-color: #154360;
+    }
+    #authModalCancel:hover { 
+      color: #64748b;
+      text-decoration: underline;
+    }
+  `;
+  document.head.appendChild(style);
+
+  document.body.appendChild(modal);
+
+  // Sign In button - redirect to user login page
+  modal.querySelector('#authModalSignIn').onclick = () => {
+    window.location.href = '/app/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+  };
+
+  // Sign Up button - redirect to user signup page
+  modal.querySelector('#authModalSignUp').onclick = () => {
+    window.location.href = '/app/signup.html?redirect=' + encodeURIComponent(window.location.pathname);
+  };
+
+  // Cancel button
+  modal.querySelector('#authModalCancel').onclick = () => {
+    document.body.removeChild(modal);
+    document.head.removeChild(style);
+  };
+
+  // Click outside to close
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      document.body.removeChild(modal);
+      document.head.removeChild(style);
+    }
+  };
+}
+
+/* ══════════════════════════════
    AUTH CHECK → STRIPE CHECKOUT
 ══════════════════════════════ */
 async function initiateCheckout(itemData) {
-  // 1. Ensure user is signed in
+  // 1. Check if user is signed in
   if (!currentUser) {
-    const confirmed = confirm("You need to sign in to continue. Sign in now?");
-    if (!confirmed) return;
-
-    try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-      await new Promise(resolve => setTimeout(resolve, 500));
-      if (!currentUser) {
-        alert("Sign-in failed. Please try again.");
-        return;
-      }
-    } catch (err) {
-      if (err.code !== "auth/popup-closed-by-user") {
-        alert("Sign-in failed. Please try again.");
-      }
-      return;
-    }
+    showAuthModal(); // Show modal and redirect to login/signup
+    return;
   }
 
   // 2. Create checkout session document in Firestore
