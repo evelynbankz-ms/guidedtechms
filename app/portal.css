@@ -741,7 +741,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MOBILE PORTRAIT (max-width: 767px) - KEEP SIDEBAR, REDUCE SIZES
+   MOBILE PORTRAIT (max-width: 767px) - KEEP SIDEBAR, 2 CARDS PER ROW
 ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
   
@@ -820,9 +820,6 @@
   
   .portal-section-head {
     padding: 16px 16px 12px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
   
   .portal-section-title {
@@ -837,10 +834,10 @@
     padding: 16px;
   }
   
-  /* SERVICES FLOW - 2 PER ROW */
+  /* SERVICES FLOW - 2 PER ROW ON MOBILE */
   .services-flow {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   
   .services-flow::before {
@@ -848,7 +845,7 @@
   }
   
   .svc-card {
-    padding: 0 8px 4px;
+    padding: 0 6px 4px;
   }
   
   .svc-card::after {
@@ -856,8 +853,8 @@
   }
   
   .svc-icon-ring {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     font-size: 18px;
     margin-bottom: 10px;
   }
@@ -873,7 +870,7 @@
   }
   
   .svc-desc {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     min-height: auto;
     margin-bottom: 10px;
   }
@@ -895,18 +892,18 @@
   }
   
   .btn-subscribe {
-    padding: 8px 10px;
-    font-size: 0.75rem;
+    padding: 7px 8px;
+    font-size: 0.7rem;
   }
   
-  /* PLANS GRID - 2 PER ROW */
+  /* PLANS GRID - 2 PER ROW ON MOBILE */
   .plans-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   
   .plan-card {
-    padding: 16px 12px;
+    padding: 14px 10px;
   }
   
   .plan-popular-badge {
@@ -919,23 +916,23 @@
   }
   
   .plan-name {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
   
   .plan-price {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   
   .plan-period {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .plan-desc {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .plan-feat {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .plan-feat-check {
@@ -945,22 +942,22 @@
   }
   
   .btn-get-started {
-    padding: 9px;
-    font-size: 0.75rem;
+    padding: 8px;
+    font-size: 0.7rem;
   }
   
-  /* SUBSCRIPTION CARDS - 2 PER ROW */
+  /* SUBSCRIPTION CARDS - 2 PER ROW ON MOBILE */
   .sub-cards-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   
   .sub-card {
-    padding: 14px;
+    padding: 12px;
   }
   
   .sub-card-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
   
   .sub-card-type {
@@ -978,11 +975,11 @@
   }
   
   .sub-card-price {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   
   .sub-card-price span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .sub-card-meta {
@@ -990,7 +987,7 @@
   }
   
   .sub-feat {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .sub-feat-dot {
@@ -998,7 +995,7 @@
     height: 5px;
   }
   
-  /* DASHBOARD KPI CARDS - 2 PER ROW */
+  /* DASHBOARD KPI CARDS - 2 PER ROW ON MOBILE */
   .dash-kpi-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
