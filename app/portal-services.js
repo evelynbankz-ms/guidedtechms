@@ -1,7 +1,6 @@
 /* ============================================================
    FILE: app/portal-services.js
    Page 1 — Services & Pricing with Stripe + Vercel integration
-   WITH BEAUTIFUL AUTH MODAL
    ============================================================ */
 
 import { db, auth } from "../admin/firebase.js";
@@ -144,7 +143,7 @@ async function loadPlans(signedIn) {
 }
 
 /* ══════════════════════════════
-   BEAUTIFUL AUTH MODAL
+   STYLED AUTH MODAL
 ══════════════════════════════ */
 function showAuthModal() {
   const modal = document.createElement('div');
