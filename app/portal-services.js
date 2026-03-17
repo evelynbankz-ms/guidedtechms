@@ -1,6 +1,7 @@
 /* ============================================================
    FILE: app/portal-services.js
    Page 1 — Services & Pricing with Stripe + Vercel integration
+   WITH BEAUTIFUL AUTH MODAL
    ============================================================ */
 
 import { db, auth } from "../admin/firebase.js";
@@ -15,15 +16,36 @@ const loadText = document.getElementById("loadText");
    STRIPE CHECKOUT INTEGRATION
 ══════════════════════════════ */
 
-/* ── Stripe publishable key (PLACEHOLDER) ── */
-const STRIPE_PUBLISHABLE_KEY = "pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE";
-
-/* ── Load Stripe.js ── */
+/* ── Load Stripe.js and fetch publishable key from backend ── */
 let stripe = null;
+let stripeKeyLoaded = false;
+
 const stripeScript = document.createElement("script");
 stripeScript.src = "https://js.stripe.com/v3/";
-stripeScript.onload = () => {
-  stripe = window.Stripe(STRIPE_PUBLISHABLE_KEY);
+stripeScript.onload = async () => {
+  try {
+    // Fetch publishable key from backend API
+    const response = await fetch('/api/get-stripe-key');
+    
+    if (!response.ok) {
+      throw new Error('Failed to load Stripe configuration');
+    }
+    
+    const { publishableKey } = await response.json();
+    
+    if (!publishableKey) {
+      throw new Error('Stripe key not available');
+    }
+    
+    // Initialize Stripe with the key
+    stripe = window.Stripe(publishableKey);
+    stripeKeyLoaded = true;
+    console.log('✅ Stripe initialized successfully');
+    
+  } catch (error) {
+    console.error('❌ Failed to initialize Stripe:', error);
+    stripeKeyLoaded = false;
+  }
 };
 document.head.appendChild(stripeScript);
 
@@ -143,9 +165,14 @@ async function loadPlans(signedIn) {
 }
 
 /* ══════════════════════════════
-   STYLED AUTH MODAL
+   BEAUTIFUL AUTH MODAL
 ══════════════════════════════ */
-function showAuthModal() {
+function showAuthModal(itemData) {
+  // Save purchase intent to localStorage
+  if (itemData) {
+    localStorage.setItem('pendingPurchase', JSON.stringify(itemData));
+  }
+
   const modal = document.createElement('div');
   modal.style.cssText = `
     position: fixed;
@@ -159,12 +186,15 @@ function showAuthModal() {
     animation: fadeIn 0.3s ease;
   `;
 
+  const itemName = itemData?.name || 'this service';
+  const itemPrice = itemData?.price ? `$${itemData.price}` : '';
+
   modal.innerHTML = `
     <div style="
       background: white;
       border-radius: 20px;
       padding: 48px 40px;
-      max-width: 480px;
+      max-width: 520px;
       width: 90%;
       box-shadow: 0 25px 70px rgba(0,0,0,0.4);
       animation: slideUp 0.4s ease;
@@ -189,17 +219,45 @@ function showAuthModal() {
         font-weight: 700;
         color: #0f172a;
         margin-bottom: 14px;
-      ">Authentication Required</h2>
+      ">Create Account to Continue</h2>
+      
+      <div style="
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+        text-align: left;
+      ">
+        <div style="font-size: 13px; color: #64748b; margin-bottom: 8px;">You're purchasing:</div>
+        <div style="font-size: 16px; font-weight: 600; color: #0f172a;">${esc(itemName)}</div>
+        ${itemPrice ? `<div style="font-size: 15px; color: #1B4F72; margin-top: 4px;">${itemPrice}</div>` : ''}
+      </div>
       
       <p style="
         color: #64748b;
-        font-size: 16px;
+        font-size: 15px;
         line-height: 1.6;
-        margin-bottom: 32px;
-      ">To continue with your purchase, please sign in to your account or create a new one.</p>
+        margin-bottom: 24px;
+      ">We need to create an account for you to:</p>
+      
+      <ul style="
+        text-align: left;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 28px;
+        list-style: none;
+        padding: 0;
+      ">
+        <li style="margin-bottom: 8px;">✓ Manage your subscription</li>
+        <li style="margin-bottom: 8px;">✓ Access your services dashboard</li>
+        <li style="margin-bottom: 8px;">✓ Track your payments and invoices</li>
+        <li>✓ Get support when you need it</li>
+      </ul>
       
       <div style="display: flex; flex-direction: column; gap: 12px;">
-        <button id="authModalSignIn" style="
+        <button id="authModalSignUp" style="
           padding: 14px 32px;
           border: none;
           background: linear-gradient(135deg, #1B4F72, #2471a3);
@@ -211,20 +269,20 @@ function showAuthModal() {
           font-family: 'Inter', sans-serif;
           transition: all 0.2s;
           box-shadow: 0 4px 12px rgba(27, 79, 114, 0.3);
-        ">Sign In</button>
+        ">Create Account & Continue</button>
         
-        <button id="authModalSignUp" style="
+        <button id="authModalSignIn" style="
           padding: 14px 32px;
-          border: 2px solid #1B4F72;
+          border: 2px solid #e2e8f0;
           background: white;
-          color: #1B4F72;
+          color: #475569;
           border-radius: 12px;
           font-weight: 600;
           cursor: pointer;
           font-size: 15px;
           font-family: 'Inter', sans-serif;
           transition: all 0.2s;
-        ">Create Account</button>
+        ">Already have an account? Sign In</button>
         
         <button id="authModalCancel" style="
           padding: 10px;
@@ -251,14 +309,14 @@ function showAuthModal() {
       from { transform: translateY(30px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-    #authModalSignIn:hover { 
+    #authModalSignUp:hover { 
       background: linear-gradient(135deg, #154360, #1e5f88);
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(27, 79, 114, 0.4);
     }
-    #authModalSignUp:hover { 
+    #authModalSignIn:hover { 
       background: #f8fafc;
-      border-color: #154360;
+      border-color: #cbd5e1;
     }
     #authModalCancel:hover { 
       color: #64748b;
@@ -269,18 +327,19 @@ function showAuthModal() {
 
   document.body.appendChild(modal);
 
-  // Sign In button - redirect to user login page
-  modal.querySelector('#authModalSignIn').onclick = () => {
-    window.location.href = '/app/login.html?redirect=' + encodeURIComponent(window.location.pathname);
-  };
-
   // Sign Up button - redirect to user signup page
   modal.querySelector('#authModalSignUp').onclick = () => {
     window.location.href = '/app/signup.html?redirect=' + encodeURIComponent(window.location.pathname);
   };
 
+  // Sign In button - redirect to user login page
+  modal.querySelector('#authModalSignIn').onclick = () => {
+    window.location.href = '/app/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+  };
+
   // Cancel button
   modal.querySelector('#authModalCancel').onclick = () => {
+    localStorage.removeItem('pendingPurchase');
     document.body.removeChild(modal);
     document.head.removeChild(style);
   };
@@ -288,6 +347,7 @@ function showAuthModal() {
   // Click outside to close
   modal.onclick = (e) => {
     if (e.target === modal) {
+      localStorage.removeItem('pendingPurchase');
       document.body.removeChild(modal);
       document.head.removeChild(style);
     }
@@ -300,7 +360,7 @@ function showAuthModal() {
 async function initiateCheckout(itemData) {
   // 1. Check if user is signed in
   if (!currentUser) {
-    showAuthModal(); // Show modal and redirect to login/signup
+    showAuthModal(itemData); // Show modal with item details and save to localStorage
     return;
   }
 
@@ -335,8 +395,8 @@ async function initiateCheckout(itemData) {
     }
 
     // 4. Redirect to Stripe Checkout
-    if (!stripe) {
-      alert("Stripe is still loading. Please try again in a moment.");
+    if (!stripe || !stripeKeyLoaded) {
+      alert("Payment system is still loading. Please wait a moment and try again.");
       return;
     }
 
@@ -409,4 +469,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadPlans(!!user);
 
   loadText.textContent = "Ready";
+
+  // Check if user just logged in and has a pending purchase
+  if (user) {
+    const pendingPurchase = localStorage.getItem('pendingPurchase');
+    if (pendingPurchase) {
+      try {
+        const itemData = JSON.parse(pendingPurchase);
+        localStorage.removeItem('pendingPurchase');
+        
+        // Small delay to let the page finish loading
+        setTimeout(() => {
+          loadText.textContent = "Continuing to checkout…";
+          initiateCheckout(itemData);
+        }, 500);
+      } catch (err) {
+        console.error('Error resuming purchase:', err);
+        localStorage.removeItem('pendingPurchase');
+      }
+    }
+  }
 });
