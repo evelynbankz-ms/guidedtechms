@@ -387,9 +387,17 @@ async function initiateCheckout(itemData) {
       body: JSON.stringify({ sessionId: docRef.id }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("API Error:", errorData);
+      alert(`Failed to create checkout: ${errorData.error || 'Unknown error'}`);
+      return;
+    }
+
     const result = await response.json();
 
     if (!result.success || !result.sessionId) {
+      console.error("Invalid API response:", result);
       alert("Failed to create checkout session. Please try again.");
       return;
     }
@@ -400,10 +408,12 @@ async function initiateCheckout(itemData) {
       return;
     }
 
+    console.log("Redirecting to Stripe with session:", result.sessionId);
+
     const { error } = await stripe.redirectToCheckout({ sessionId: result.sessionId });
     if (error) {
       console.error("Stripe redirect error:", error);
-      alert("Failed to redirect to checkout. Please try again.");
+      alert(`Payment redirect failed: ${error.message}`);
     }
 
   } catch (err) {
