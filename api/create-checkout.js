@@ -1,13 +1,7 @@
 /* ============================================================
    FILE: api/create-checkout.js
    Vercel Serverless Function — creates Stripe checkout session
-   
-   Place this file in: /api/create-checkout.js
-   
-   REQUIRED ENVIRONMENT VARIABLES (set in Vercel Dashboard):
-   - STRIPE_SECRET_KEY
-   - FIREBASE_SERVICE_ACCOUNT (entire JSON service account as string)
-   - NEXT_PUBLIC_BASE_URL (your domain, e.g., https://yourdomain.com)
+   UPDATED: Always creates fresh sessions, no reuse
    ============================================================ */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -26,13 +20,13 @@ const db = admin.firestore();
 export default async function handler(req, res) {
   // Only accept POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   const { sessionId } = req.body;
 
   if (!sessionId) {
-    return res.status(400).json({ error: 'Missing sessionId' });
+    return res.status(400).json({ success: false, error: 'Missing sessionId' });
   }
 
   try {
@@ -41,19 +35,13 @@ export default async function handler(req, res) {
     const docSnap = await docRef.get();
 
     if (!docSnap.exists) {
-      return res.status(404).json({ error: 'Session not found' });
+      return res.status(404).json({ success: false, error: 'Session not found' });
     }
 
     const data = docSnap.data();
 
-    // Skip if already has Stripe session
-    if (data.stripeSessionId) {
-      return res.json({
-        success: true,
-        sessionId: data.stripeSessionId,
-        message: 'Session already exists',
-      });
-    }
+    // ALWAYS create a new Stripe session (don't reuse old ones)
+    // Old sessions expire after 24 hours and cause 401 errors
 
     // Build line items
     const lineItems = [];
@@ -85,7 +73,7 @@ export default async function handler(req, res) {
     }
 
     // Create Stripe Checkout Session
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.guidedtechms.com';
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -103,12 +91,14 @@ export default async function handler(req, res) {
       },
     });
 
-    // Update Firestore with Stripe session ID
+    // Update Firestore with NEW Stripe session ID
     await docRef.update({
       stripeSessionId: session.id,
       stripeSessionUrl: session.url,
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
+
+    console.log(`✅ Created Stripe session: ${session.id}`);
 
     return res.json({
       success: true,
@@ -116,15 +106,19 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Create checkout error:', error);
+    console.error('❌ Create checkout error:', error);
 
     // Mark as failed in Firestore
     if (sessionId) {
-      await db.collection('checkoutSessions').doc(sessionId).update({
-        status: 'failed',
-        error: error.message,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
+      try {
+        await db.collection('checkoutSessions').doc(sessionId).update({
+          status: 'failed',
+          error: error.message,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (updateError) {
+        console.error('Failed to update error status:', updateError);
+      }
     }
 
     return res.status(500).json({
