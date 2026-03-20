@@ -3,258 +3,371 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Guided Tech Solutions empowers businesses with smart, scalable, and secure technology solutions." />
-  <meta name="keywords" content="Guided Tech Solutions, technology consulting, IT infrastructure, cloud computing, cybersecurity, business automation, software development, AI, tech strategy" />
+  <meta name="description" content="Book a free 30-minute consultation call with Guided Tech Solutions." />
+  <meta name="keywords" content="Guided Tech Solutions, book a call, consultation, Google Meet, tech strategy" />
   <meta name="author" content="Guided Tech Solutions" />
 
-  <title>Guided Tech Solutions — Smarter, Scalable Technology</title>
+  <title>Book a Call — Guided Tech Solutions</title>
 
-  <!-- Favicon Placeholder -->
   <link rel="shortcut icon" href="asset/logo-icon.png" />
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Main CSS -->
+  <!-- Global styles: navbar, hero, footer -->
   <link rel="stylesheet" href="styles/book.css" />
+
+  <!-- Page-specific styles: booking section only -->
+  <link rel="stylesheet" href="styles/book-page.css" />
 </head>
 <body>
   <div class="page-wrapper">
 
-<!-- NAVBAR -->
-<header class="navbar">
-  <div class="navbar-container">
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="navbar-container">
 
-    <!-- LOGO -->
-    <a href="index.html" class="navbar-logo">
-      <img src="asset/logo-icon.png" alt="Guided Tech Solutions Logo" class="navbar-logo-img">
-      <span class="logo-text">Guided Tech Solutions</span>
-    </a>
+        <a href="index.html" class="navbar-logo">
+          <img src="asset/logo-icon.png" alt="Guided Tech Solutions Logo" class="navbar-logo-img">
+          <span class="logo-text">Guided Tech Solutions</span>
+        </a>
 
-    <!-- NAV MENU -->
-    <nav class="navbar-menu" id="navbarMenu">
+        <nav class="navbar-menu" id="navbarMenu">
+          <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="Close menu">✕</button>
 
-      <!-- ✅ ADDED: MOBILE CLOSE BUTTON -->
-      <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="Close menu">✕</button>
-      
-      <a href="index.html" class="nav-link">Home</a>
+          <a href="index.html" class="nav-link">Home</a>
 
-      <!-- ABOUT -->
-      <div class="nav-item">
-        <a href="#" class="nav-link nav-parent">About</a>
-
-        <div class="mega-dropdown">
-          <div class="mega-col">
-            <h4>Company</h4>
-            <a href="about.html"><span class="icon"></span>Company Overview</a>
-            <a href="about.html#mission"><span class="icon"></span>Mission & Vision</a>
-            <a href="about.html#history"><span class="icon"></span>History</a>
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">About</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Company</h4>
+                <a href="about.html"><span class="icon"></span>Company Overview</a>
+                <a href="about.html#mission"><span class="icon"></span>Mission &amp; Vision</a>
+                <a href="about.html#history"><span class="icon"></span>History</a>
+              </div>
+              <div class="mega-col">
+                <h4>Team</h4>
+                <a href="team.html"><span class="icon"></span>Our Team</a>
+                <a href="team.html#leaders"><span class="icon"></span>Leadership</a>
+                <a href="team.html#values"><span class="icon"></span>Our Values</a>
+              </div>
+              <div class="mega-col">
+                <h4>More About Us</h4>
+                <a href="careers.html"><span class="icon"></span>Careers</a>
+              </div>
+            </div>
           </div>
 
-          <div class="mega-col">
-            <h4>Team</h4>
-            <a href="team.html"><span class="icon"></span>Our Team</a>
-            <a href="team.html#leaders"><span class="icon"></span>Leadership</a>
-            <a href="team.html#values"><span class="icon"></span>Our Values</a>
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">Services</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>AI Solutions</h4>
+                <a href="ai.html"><span class="icon"></span>AI Consulting</a>
+                <a href="ai.html#machinelearning"><span class="icon"></span>Machine Learning</a>
+                <a href="ai.html#aiautomation"><span class="icon"></span>Automation AI</a>
+              </div>
+              <div class="mega-col">
+                <h4>By Tool</h4>
+                <a href="automation.html"><span class="icon"></span>Automation</a>
+                <a href="automation.html#rpa"><span class="icon"></span>RPA Setup</a>
+                <a href="automation.html#integration"><span class="icon"></span>Integration Tools</a>
+              </div>
+              <div class="mega-col">
+                <h4>Connector Development</h4>
+                <a href="services.html"><span class="icon"></span>All Services</a>
+                <a href="services.html#consulting"><span class="icon"></span>Consulting</a>
+                <a href="services.html#custom"><span class="icon"></span>Custom Connector</a>
+              </div>
+            </div>
           </div>
 
-          <div class="mega-col">
-            <h4>More About Us</h4>
-            <a href="careers.html"><span class="icon"></span>Careers</a>
+          <a href="capability.html" class="nav-link">Capability</a>
+
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent">Resources</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Articles</h4>
+                <a href="blog.html"><span class="icon"></span>Blogs</a>
+                <a href="faq.html"><span class="icon"></span>Faqs</a>
+              </div>
+              <div class="mega-col">
+                <h4>Others</h4>
+                <a href="casestudy.html"><span class="icon"></span>Case Study</a>
+                <a href="videos.html"><span class="icon"></span>Videos</a>
+              </div>
+            </div>
           </div>
+
+          <div class="nav-item">
+            <a href="#" class="nav-link nav-parent active">Contact</a>
+            <div class="mega-dropdown">
+              <div class="mega-col">
+                <h4>Get in Touch</h4>
+                <a href="contact.html"><span class="icon"></span>Contact Form</a>
+                <a href="contact.html#partnership"><span class="icon"></span>Partnership</a>
+              </div>
+              <div class="mega-col">
+                <h4>More</h4>
+                <a href="contact.html#support"><span class="icon"></span>Support</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div class="navbar-actions">
+          <a href="app/portal-services.html" class="btn-primary">Get Started</a>
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+          </button>
         </div>
+
       </div>
+    </header>
 
-      <!-- SERVICES -->
-      <div class="nav-item">
-        <a href="#" class="nav-link nav-parent">Services</a>
+    <div class="nav-overlay" id="navOverlay"></div>
 
-        <div class="mega-dropdown">
-          <div class="mega-col">
-            <h4>AI Solutions</h4>
-            <a href="ai.html"><span class="icon"></span>AI Consulting</a>
-            <a href="ai.html#machinelearning"><span class="icon"></span>Machine Learning</a>
-            <a href="ai.html#aiautomation"><span class="icon"></span>Automation AI</a>
-          </div>
-
-          <div class="mega-col">
-            <h4>By Tool</h4>
-            <a href="automation.html"><span class="icon"></span>Automation</a>
-            <a href="automation.html#rpa"><span class="icon"></span>RPA Setup</a>
-            <a href="automation.html#integration"><span class="icon"></span>Integration Tools</a>
-          </div>
-
-          <div class="mega-col">
-            <h4>Connector Development</h4>
-            <a href="services.html"><span class="icon"></span>All Services</a>
-            <a href="services.html#consulting"><span class="icon"></span>Consulting</a>
-            <a href="services.html#custom"><span class="icon"></span>Custom Connector</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- CAPABILITY -->
-      <a href="capability.html" class="nav-link">Capability</a>
-
-      <!-- RESOURCES -->
-      <div class="nav-item">
-        <a href="#" class="nav-link nav-parent">Resources</a>
-
-        <div class="mega-dropdown">
-          <div class="mega-col">
-            <h4>Articles</h4>
-            <a href="blog.html"><span class="icon"></span>Blogs</a>
-            <a href="faq.html"><span class="icon"></span>Faqs</a>
-          </div>
-
-          <div class="mega-col">
-            <h4>Others</h4>
-            <a href="casestudy.html"><span class="icon"></span>Case Study</a>
-            <a href="videos.html"><span class="icon"></span>Videos</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- CONTACT -->
-      <div class="nav-item">
-        <a href="#" class="nav-link nav-parent active">Contact</a>
-
-        <div class="mega-dropdown">
-          <div class="mega-col">
-            <h4>Get in Touch</h4>
-            <a href="contact.html"><span class="icon"></span>Contact Form</a>
-            <a href="contact.html#partnership"><span class="icon"></span>Partnership</a>
-          </div>
-
-          <div class="mega-col">
-            <h4>More</h4>
-            <a href="contact.html#support"><span class="icon"></span>Support</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- RIGHT ACTIONS -->
-    <div class="navbar-actions">
-      <a href="app/portal-services.html" class="btn-primary">Get Started</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-      </button>
-    </div>
-
-  </div>
-</header>
-
-<!-- Overlay -->
-<div class="nav-overlay" id="navOverlay"></div>
-
-
- <!-- HERO -->
+    <!-- HERO -->
     <section class="hero">
       <div class="hero-content container">
-
         <div class="hero-title">
           <p>Book a Call</p>
         </div>
-
         <p class="hero-subtitle">
-         Book an exclusive consultation tailored to your business goals.
+          Book an exclusive consultation tailored to your business goals.
         </p>
-
         <div class="breadcrumbs">
-         <a href="index.html">Home</a> › <span class="page">Contact</span> › <span class="subpage">Bookings</span>
+          <a href="index.html">Home</a> › <span class="page">Contact</span> › <span class="subpage">Bookings</span>
         </div>
-
       </div>
     </section>
 
- 
- <!-- FOOTER -->
-<footer class="gts-footer">
+    <!-- BOOKING SECTION -->
+    <section class="booking-section">
+      <div class="container">
+        <div class="booking-grid">
 
-  <div class="gts-footer-inner">
+          <!-- LEFT: Info Panel -->
+          <aside class="booking-info">
 
-    <!-- LEFT COLUMN -->
-    <div class="gts-footer-col about-col">
-      <h2 class="footer-logo">Guided Tech Solutions</h2>
+            <div class="booking-badge">Accepting new consultations</div>
 
-      <p class="footer-desc">
-        Empowering organizations with intelligent, 
-        scalable technology, and modern digital transformation solutions.
-      </p>
+            <h2>Schedule Your <span>Free Strategy Call</span></h2>
+            <p class="lead">
+              Pick a time that works for you. We'll meet on Google Meet for a focused 30-minute session — listening, assessing, and mapping out the right tech strategy for your business.
+            </p>
 
-      <h4 class="footer-heading">CONTACT US</h4>
-      <p>info@guidedtechms.com</p>
+            <ul class="booking-perks">
+              <li>
+                <div class="perk-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="perk-text">
+                  <strong>30-Minute Free Session</strong>
+                  <span>No commitment — pure strategy and honest guidance.</span>
+                </div>
+              </li>
+              <li>
+                <div class="perk-icon">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="perk-text">
+                  <strong>Expert-Led Consultation</strong>
+                  <span>Speak directly with our senior technology consultants.</span>
+                </div>
+              </li>
+              <li>
+                <div class="perk-icon">
+                  <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div class="perk-text">
+                  <strong>Tailored Action Plan</strong>
+                  <span>Walk away with clear next steps specific to your situation.</span>
+                </div>
+              </li>
+              <li>
+                <div class="perk-icon">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <div class="perk-text">
+                  <strong>100% Confidential</strong>
+                  <span>Your info is never shared with any third parties.</span>
+                </div>
+              </li>
+            </ul>
 
-      <!-- Social Icons -->
-      <div class="footer-social">
-        <a href="https://web.facebook.com/profile.php?id=61579123374511&sk=about" target="_blank" rel="noopener">
-          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
-        </a>
-      
-        <a href="https://www.instagram.com" target="_blank" rel="noopener">
-          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
-        </a>
-      
-        <a href="https://www.linkedin.com/company/guided-tech-solutions-of-mississippi/" target="_blank" rel="noopener">
-          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
-        </a>
-      
-        <!-- FIXED: Working Skool icon -->
-        <a href="https://www.skool.com/the-time-saving-business-hub-2509/about?ref=56223a1a91aa4e92911c46ddb2559c94" target="_blank" rel="noopener">
-          <img src="asset/skool-logo.png" alt="Skool">
-        </a>
+            <div class="info-divider"></div>
+
+            <div class="info-contact-row">
+              <a href="mailto:info@guidedtechms.com" class="info-contact-item">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                info@guidedtechms.com
+              </a>
+              <a href="contact.html" class="info-contact-item">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Send us a message instead
+              </a>
+            </div>
+
+            <div class="meet-card">
+              <div class="meet-logo-box">
+                <span class="meet-logo-letter">M</span>
+              </div>
+              <div class="meet-card-text">
+                <strong>Powered by Google Meet</strong>
+                <span>A secure video link is automatically sent to your email upon booking.</span>
+              </div>
+            </div>
+
+          </aside>
+
+          <!-- RIGHT: Embedded Google Calendar -->
+          <div>
+            <div class="calendar-card">
+
+              <div class="calendar-card-header">
+                <div class="cal-header-left">
+                  <div class="cal-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <div class="cal-header-text">
+                    <strong>Book A Call</strong>
+                    <span>Select an available date &amp; time below</span>
+                  </div>
+                </div>
+                <div class="cal-header-badge">Live Availability</div>
+              </div>
+
+              <div class="calendar-tz-notice">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Times shown in <strong>Africa / Lagos (WAT, UTC+1).</strong> Your confirmation email will include the converted time for your timezone.
+              </div>
+
+              <!-- GOOGLE CALENDAR EMBED -->
+              <div class="calendar-embed-wrapper">
+                <iframe
+                  src="https://calendar.google.com/calendar/embed?height=620&wkst=1&ctz=Africa%2FLagos&title=Book%20A%20Call&showPrint=0&showTz=0&src=Y18xMGY1NmU0NGYxMmVjYmQ0YjFkNGViMGYxNTc4ODEwY2IwY2FiNTRlNDZhOWQzNDM1OTY2M2QyZDFjMjc2YWYzQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%231B4F72&showNav=1&showDate=1&showTitle=0&showCalendars=0&mode=MONTH"
+                  title="Book A Call — Guided Tech Solutions"
+                  frameborder="0"
+                  scrolling="no"
+                  allowfullscreen
+                ></iframe>
+              </div>
+
+              <div class="calendar-card-footer">
+                <div class="cal-footer-note">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Secure booking · Your data is never shared
+                </div>
+                <a
+                  href="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Africa%2FLagos&title=Book%20A%20Call&showPrint=0&showTz=0&src=Y18xMGY1NmU0NGYxMmVjYmQ0YjFkNGViMGYxNTc4ODEwY2IwY2FiNTRlNDZhOWQzNDM1OTY2M2QyZDFjMjc2YWYzQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23f4511e"
+                  target="_blank"
+                  rel="noopener"
+                  class="cal-open-link"
+                >
+                  Open in Google Calendar
+                  <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+
+            </div><!-- /calendar-card -->
+
+            <!-- How it Works -->
+            <div class="how-strip">
+              <div class="how-step">
+                <div class="how-step-num">1</div>
+                <div>
+                  <strong>Pick a Time Slot</strong>
+                  <span>Browse available dates on the calendar and click any open slot.</span>
+                </div>
+              </div>
+              <div class="how-step">
+                <div class="how-step-num">2</div>
+                <div>
+                  <strong>Confirm Your Details</strong>
+                  <span>Enter your name, email, and a brief note about your goals.</span>
+                </div>
+              </div>
+              <div class="how-step">
+                <div class="how-step-num">3</div>
+                <div>
+                  <strong>Get Your Meet Link</strong>
+                  <span>A Google Meet link lands in your inbox instantly — ready to join.</span>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /right col -->
+        </div><!-- /booking-grid -->
       </div>
-    </div>
+    </section>
 
+    <!-- FOOTER -->
+    <footer class="gts-footer">
+      <div class="gts-footer-inner">
 
-    <!-- SERVICES -->
-    <div class="gts-footer-col">
-      <h4 class="footer-heading">SERVICES</h4>
-      <a href="ai.html">AI Consulting</a>
-      <a href="ai.html#machinelearning">Machine Learning</a>
-      <a href="ai.html#aiautomation">Automation AI</a>
-      <a href="automation.html#rpa">RPA SetUp</a>
-      <a href="automation.html">Automation</a>
-      <a href="automation.html#integration">Integration Tools</a>
-      <a href="services.html#custom">Custom Connector</a>
-      <a href="services.html#consulting">Consulting</a>
-      <a href="services.html">All Services</a>
-    </div>
-    
+        <div class="gts-footer-col about-col">
+          <h2 class="footer-logo">Guided Tech Solutions</h2>
+          <p class="footer-desc">
+            Empowering organizations with intelligent,
+            scalable technology, and modern digital transformation solutions.
+          </p>
+          <h4 class="footer-heading">CONTACT US</h4>
+          <p>info@guidedtechms.com</p>
+          <div class="footer-social">
+            <a href="https://web.facebook.com/profile.php?id=61579123374511&sk=about" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/company/guided-tech-solutions-of-mississippi/" target="_blank" rel="noopener">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
+            </a>
+            <a href="https://www.skool.com/the-time-saving-business-hub-2509/about?ref=56223a1a91aa4e92911c46ddb2559c94" target="_blank" rel="noopener">
+              <img src="asset/skool-logo.png" alt="Skool">
+            </a>
+          </div>
+        </div>
 
-    <!-- RESOURCES -->
-    <div class="gts-footer-col">
-      <h4 class="footer-heading">RESOURCES</h4>
-      <a href="blog.html">Blog</a>
-      <a href="casestudy.html">Case Studies</a>
-      <a href="videos.html">Videos</a>
-    </div>
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">SERVICES</h4>
+          <a href="ai.html">AI Consulting</a>
+          <a href="ai.html#machinelearning">Machine Learning</a>
+          <a href="ai.html#aiautomation">Automation AI</a>
+          <a href="automation.html#rpa">RPA SetUp</a>
+          <a href="automation.html">Automation</a>
+          <a href="automation.html#integration">Integration Tools</a>
+          <a href="services.html#custom">Custom Connector</a>
+          <a href="services.html#consulting">Consulting</a>
+          <a href="services.html">All Services</a>
+        </div>
 
-    <!-- ABOUT -->
-    <div class="gts-footer-col">
-      <h4 class="footer-heading">ABOUT</h4>
-      <a href="about.html">Company</a>
-      <a href="contact.html">Contact</a>
-     </div>
-  </div>
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">RESOURCES</h4>
+          <a href="blog.html">Blog</a>
+          <a href="casestudy.html">Case Studies</a>
+          <a href="videos.html">Videos</a>
+        </div>
 
+        <div class="gts-footer-col">
+          <h4 class="footer-heading">ABOUT</h4>
+          <a href="about.html">Company</a>
+          <a href="contact.html">Contact</a>
+        </div>
 
+      </div>
+      <div class="gts-footer-bottom">
+        © <span id="year"></span> Guided Tech Solutions — All rights reserved.
+      </div>
+    </footer>
 
-  <div class="gts-footer-bottom">
-    © <span id="year"></span> Guided Tech Solutions — All rights reserved.
-  </div>
+  </div><!-- /page-wrapper -->
 
-</footer>
+  <!-- Page script -->
+  <script src="scripts/book.js"></script>
 
-
- 
-  
-<script src="scripts/about.js"></script>  
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
 </body>
-</html> 
+</html>
