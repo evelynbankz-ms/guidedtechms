@@ -642,6 +642,8 @@ body {
 }
 
 
+
+
 /* ============================================================
    book-page.css
    Styles ONLY for the booking section content.
@@ -1128,5 +1130,131 @@ body {
 
   .how-strip {
     padding: 26px 20px;
+  }
+}
+
+/* ======================
+   Scheduling Button Area
+====================== */
+.scheduling-btn-wrapper {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  text-align: center;
+  min-height: 320px;
+  justify-content: center;
+}
+
+.scheduling-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: left;
+  background: #F0F7FF;
+  border: 1px solid #D6E8F7;
+  border-radius: 14px;
+  padding: 22px 24px;
+  max-width: 560px;
+  width: 100%;
+}
+
+.scheduling-intro-icon {
+  width: 28px;
+  height: 28px;
+  stroke: #1B4F72;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.scheduling-intro strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0d2a3a;
+  margin-bottom: 6px;
+}
+
+.scheduling-intro span {
+  font-size: 13.5px;
+  color: #4a6072;
+  line-height: 1.65;
+}
+
+/* Mini steps row */
+.scheduling-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sched-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #2E4053;
+  font-weight: 500;
+}
+
+.sched-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #1B4F72;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sched-step-arrow {
+  color: #aab8c2;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* Override Google's default button color to match brand */
+#gcal-scheduling-target .scheduling-button {
+  background-color: #1B4F72 !important;
+  border-radius: 12px !important;
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+  padding: 14px 28px !important;
+  font-size: 16px !important;
+  box-shadow: 0 6px 20px rgba(27,79,114,0.30) !important;
+  transition: all 0.25s ease !important;
+}
+
+#gcal-scheduling-target .scheduling-button:hover {
+  background-color: #154360 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(27,79,114,0.38) !important;
+}
+
+@media (max-width: 600px) {
+  .scheduling-btn-wrapper {
+    padding: 28px 20px;
+  }
+  .scheduling-intro {
+    flex-direction: column;
+  }
+  .scheduling-steps {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sched-step-arrow {
+    transform: rotate(90deg);
   }
 }
