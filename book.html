@@ -12,11 +12,8 @@
   <link rel="shortcut icon" href="asset/logo-icon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Global styles: navbar, hero, footer -->
+  <!-- All styles in one file -->
   <link rel="stylesheet" href="styles/book.css" />
-
-  <!-- Page-specific styles: booking section only -->
-  <link rel="stylesheet" href="styles/book-page.css" />
 </head>
 <body>
   <div class="page-wrapper">
@@ -234,28 +231,69 @@
                   </div>
                   <div class="cal-header-text">
                     <strong>Book A Call</strong>
-                    <span>Select an available date &amp; time below</span>
+                    <span>Free 30-minute strategy session</span>
                   </div>
                 </div>
                 <div class="cal-header-badge">Live Availability</div>
               </div>
 
-              <div class="calendar-tz-notice">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Times shown in <strong>Africa / Lagos (WAT, UTC+1).</strong> A Google Meet link is sent to your email automatically on confirmation.
-              </div>
+              <!-- Booking CTA Body -->
+              <div class="booking-cta-body">
 
-              <!-- Google Calendar Appointment Scheduling -->
-              <div class="calendar-embed-wrapper">
-                <iframe
-                  src="https://calendar.app.google/depHYjZ9a5kjRgzZ7"
-                  style="border: 0"
-                  width="100%"
-                  height="600"
-                  frameborder="0"
-                  title="Book an appointment — Guided Tech Solutions"
-                ></iframe>
-              </div>
+                <!-- Steps -->
+                <div class="booking-steps-row">
+                  <div class="booking-step">
+                    <div class="booking-step-num">1</div>
+                    <div class="booking-step-text">
+                      <strong>Click the button</strong>
+                      <span>Opens your live scheduling page</span>
+                    </div>
+                  </div>
+                  <div class="booking-step-divider">
+                    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                  <div class="booking-step">
+                    <div class="booking-step-num">2</div>
+                    <div class="booking-step-text">
+                      <strong>Pick your slot</strong>
+                      <span>Choose a date &amp; time that works</span>
+                    </div>
+                  </div>
+                  <div class="booking-step-divider">
+                    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                  <div class="booking-step">
+                    <div class="booking-step-num">3</div>
+                    <div class="booking-step-text">
+                      <strong>Get your Meet link</strong>
+                      <span>Sent to your inbox instantly</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Main CTA -->
+                <div class="booking-cta-center">
+                  <div class="booking-cta-icon-wrap">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <h3>Ready to get started?</h3>
+                  <p>Click below to view our live availability and lock in your free consultation. Takes less than 2 minutes.</p>
+                  <a
+                    href="https://calendar.app.google/depHYjZ9a5kjRgzZ7"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-book-now"
+                  >
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Book an Appointment
+                  </a>
+                  <p class="booking-cta-note">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Secure · Free · No commitment required
+                  </p>
+                </div>
+
+              </div><!-- /booking-cta-body -->
 
               <div class="calendar-card-footer">
                 <div class="cal-footer-note">
